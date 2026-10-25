@@ -3,6 +3,13 @@ permissions:
   contents: read
 on:
   push:
+    paths:
+      - 'Source/**'
+      - 'Tests/**'
+      - 'CMakeLists.txt'
+      - 'cmake/**'
+      - 'packaging/**'
+      - '.github/workflows/build.yml'
   pull_request:
   workflow_dispatch:
 jobs:
@@ -48,4 +55,3 @@ jobs:
             build/PocketOne_artefacts/Release/VST3/
             build/PocketOne_artefacts/Release/Standalone/
             dist/*-Setup.exe
-
