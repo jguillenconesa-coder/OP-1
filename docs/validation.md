@@ -40,3 +40,9 @@ A user reported Windows loader error "ordinal 345" on the standalone and failure
 The processor smoke suite plays all 25 presets, checks finite/nonzero output, verifies the four embedded melodic WAVs, plays all eight slots in each of the three kits plus GM kick aliases, and restores an embedded kit session before triggering GM snare. Five Windows suites passed under Wine after the manifest and factory bank changes; installer file hashes, VST3 loading and uninstall also passed. The new manifest probe rejects the original published 0.2.0 executable. Native Ableton validation remains pending.
 
 The updated three-suite Linux build also passed, including factory-bank playback and state coverage. Native Windows CI run 40239892035 passed processor/module/manifest tests and standalone startup, then failed at NSIS input path handling; the packaging script now uses the compiler platform’s path separator. This is separate from the original missing Common Controls activation manifest.
+
+## 0.2.2: banco de usuario, OLED y audio
+
+Cuatro suites Linux y seis Windows bajo Wine pasaron. Se comprobaron las once vistas OLED con cambios de telemetría, las rutas y persistencia del importador ZIP, el mapeo de raíz de muestra, la conservación del tempo/patrón al seleccionar sonidos y las 36 cargas de tiempo real. El banco privado del usuario se importó y sus 79 presets se reprodujeron con salida finita/no silenciosa; el kit activo se restauró en otra instancia sin ese banco instalado. El instalador actualizó los archivos con hashes correctos, cargó el VST3 y se desinstaló en el prefijo aislado.
+
+La ejecución sintética Linux dio 0 bloques fuera de plazo en 18.432 callbacks y 0 llamadas de heap monitorizadas. No mide audio físico, round-trip, ni dropouts en Ableton. El CI nativo de 0.2.1, ejecución 40240430390, sí terminó correctamente en Windows, Linux y macOS, incluida la comprobación de arranque de la aplicación Windows y el instalador/desinstalador.

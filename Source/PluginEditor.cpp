@@ -8,6 +8,13 @@ void text(juce::Graphics& g,const juce::String& s,juce::Rectangle<int> r,float s
 }
 }
 void PocketLook::drawButtonText(juce::Graphics& g,juce::TextButton& button,bool over,bool down) {
+    if(button.getProperties().contains("transportIcon")) {
+        const int role=int(button.getProperties()["transportIcon"]);const float x=button.getWidth()*.5f,y=button.getHeight()*.5f;
+        g.setColour(role==0?hardwareColours[3]:juce::Colour(0xff59677a));
+        if(role==0)g.fillEllipse(x-7,y-7,14,14);
+        else if(role==2)g.fillRect(x-6,y-6,12.f,12.f);
+        else {juce::Path shape;if(role==1){shape.addTriangle(x-5,y-8,x-5,y+8,x+8,y);g.fillPath(shape);}else {const float direction=role==3?-1.f:1.f;shape.startNewSubPath(x-direction*4,y-7);shape.lineTo(x+direction*4,y);shape.lineTo(x-direction*4,y+7);g.strokePath(shape,juce::PathStrokeType(1.5f));}}return;
+    }
     if(!button.getProperties().contains("modeIcon")) {juce::LookAndFeel_V4::drawButtonText(g,button,over,down);return;}
     const int mode=int(button.getProperties()["modeIcon"]);const float x=button.getWidth()*.5f,y=button.getHeight()*.5f;
     g.setColour(mode==0?hardwareColours[0]:mode==1?hardwareColours[1]:mode==2?hardwareColours[3]:juce::Colour(0xff627185));
@@ -105,9 +112,10 @@ PocketEditor::PocketEditor(PocketProcessor& p) : AudioProcessorEditor(p),process
     clear.setTooltip("Erase the selected tape track. Export or save your project first.");
     octaveDown.onClick=[this]{if(page==4) processor.rewindTape();else setOctave(octave-1);};
     octaveUp.onClick=[this]{if(page==4) {auto* p=processor.state.getParameter("tapeSpeed");p->setValueNotifyingHost(p->convertTo0to1(p->getValue()<.99f?2.f:1.f));}else setOctave(octave+1);};
-    tapeRecord.setButtonText("●");tapeRecord.setColour(juce::TextButton::textColourOffId,hardwareColours[3]);tapeRecord.setTooltip("Record to the selected tape track; starts tape playback.");
+    tapeRecord.setButtonText("REC");tapeRecord.setColour(juce::TextButton::textColourOffId,hardwareColours[3]);tapeRecord.setTooltip("Record to the selected tape track; starts tape playback.");
     tapeRecord.onClick=[this]{if(tapeRecord.getToggleState()){auto* p=processor.state.getParameter("tapePlay");p->setValueNotifyingHost(1);selectMode(2);}};
-    sequence.setButtonText("▶");panic.setButtonText("■");octaveDown.setButtonText("‹");octaveUp.setButtonText("›");
+    sequence.setButtonText("PLAY");panic.setButtonText("STOP");octaveDown.setButtonText("<");octaveUp.setButtonText(">");
+    int role=0;for(auto* button:{&tapeRecord,&sequence,&panic,&octaveDown,&octaveUp})button->getProperties().set("transportIcon",role++);
     addAndMakeVisible(tapeTrack); tapeTrack.addItemList({"Track 1","Track 2","Track 3","Track 4"},1);
     addAndMakeVisible(tapeLength); tapeLength.addItemList({"4 sec","8 sec","16 sec"},1);
     trackAttachment=std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(p.state,"tapeTrack",tapeTrack);
@@ -177,7 +185,9 @@ void PocketEditor::applySoundSlot(int slot) {
     if(shiftKey.getToggleState()||juce::ModifierKeys::getCurrentModifiers().isShiftDown()) {
         const int selected=presets.getSelectedItemIndex();if(selected>=0)soundSlots[size_t(slot)]=selected;shiftKey.setToggleState(false,juce::dontSendNotification);return;
     }
-    presets.setSelectedItemIndex(soundSlots[size_t(slot)],juce::sendNotificationSync);
+    const int selected=soundSlots[size_t(slot)];
+    if(selected<25) processor.applyPreset(selected);else {juce::String error;if(!processor.applyUserPreset(selected-25,error))juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon,"Sound slot",error);}
+    presets.setSelectedItemIndex(selected,juce::dontSendNotification);
 }
 void PocketEditor::setOctave(int value) {
     octave=juce::jlimit(-2,1,value); const int base=60+octave*12;
@@ -276,7 +286,7 @@ void PocketEditor::paint(juce::Graphics& g) {
     for(size_t i=0;i<4;++i){frame.labels[i]=knobLabels[i];frame.values[i]=float(knobs[i].getValue());frame.trackGains[i]=get(("track"+juce::String(int(i+1))).toRawUTF8());}
     {juce::Graphics::ScopedSaveState save(g);g.setOrigin(285,39);g.reduceClipRegion(0,0,251,123);pocket::drawScreen(g,frame);}
     g.setColour(line);g.drawLine(34,230,1130,230,1);g.drawLine(212,233,212,407,1);
-    text(g,"POCKET ONE",{1137,283,33,90},10,ink);
+    {juce::Graphics::ScopedSaveState save(g);g.addTransform(juce::AffineTransform::rotation(-float(pocket::pi)*.5f).translated(1157,351));text(g,"pocket one",{-50,-7,100,15},10,ink);}
     g.setColour(juce::Colour(0xff596777));for(int y=46;y<61;y+=5)for(int x=1145;x<1158;x+=5)g.fillEllipse(float(x),float(y),1.5f,1.5f);
     const float level=std::min(1.f,std::abs(processor.scope[0].load())*5);
     for(int i=0;i<8;++i){g.setColour(i<int(level*8)?hardwareColours[1]:juce::Colour(0xffb4c0cb));g.fillRoundedRectangle(1146,104.f+i*8,7,4,1);}

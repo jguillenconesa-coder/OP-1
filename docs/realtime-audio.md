@@ -26,3 +26,7 @@ En Ableton/Windows usa el controlador ASIO del fabricante, 48 kHz y 128 muestras
 El VST3 utiliza el dispositivo configurado en Live. El standalone incluye WASAPI; este paquete no incorpora el SDK ASIO ni promete ASIO dentro de la aplicación independiente.
 
 Carga bancos, cambia muestras grandes y guarda/abre sesiones con el transporte parado. Las instantáneas de muestra/cinta aún usan el bloqueo de callback para obtener datos coherentes; copiar audio mientras se reproduce puede bloquear brevemente el procesamiento. No se afirma que guardar, cargar o importar sea libre de cortes. La validación final de dropouts necesita el equipo, interfaz y proyecto real del usuario.
+
+## Medición Linux nativa de esta actualización
+
+La prueba Release completó 18.432 bloques en las 36 cargas, sin llamadas de heap monitorizadas y sin bloques por encima de su plazo en esa ejecución. El peor p99 fue el 8,41% del presupuesto. A 48 kHz, el peor p99 entre motores fue 112,03 µs con 64 muestras (presupuesto 1.333,33 µs), 118,76 µs con 128 (2.666,67 µs) y 207,93 µs con 256 (5.333,33 µs). Los datos completos están en [realtime-metrics-linux.json](realtime-metrics-linux.json). Son resultados de una máquina virtual compartida, no una garantía para Windows, el controlador o Ableton.

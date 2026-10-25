@@ -131,7 +131,7 @@ int main(int argc,char** argv) {
   }
   // Every OLED page renders deterministic frames and reacts to its live telemetry.
   for(int screen=0;screen<11;++screen) {
-   pocket::ScreenFrame frame;frame.engine=screen<6?screen:0;frame.page=screen<6?0:screen==10?4:screen-5;frame.mode=screen==10?3:2;frame.voices=4;frame.level=.2f;frame.envelope=.4f;frame.stage=1;frame.samplePosition=.2f;frame.lfoPhase=.2f;frame.tapePosition=.5f;frame.trackGains={.8f,.6f,.7f,.5f};frame.sample.fill(.5f);
+   pocket::ScreenFrame frame;frame.engine=screen<6?screen:0;frame.page=screen<6?0:screen==10?4:screen-5;frame.mode=screen==10?3:2;frame.voices=4;frame.level=.02f;frame.envelope=.4f;frame.stage=1;frame.samplePosition=.2f;frame.lfoPhase=.2f;frame.tapePosition=.5f;frame.trackGains={.8f,.6f,.7f,.5f};frame.sample.fill(.5f);
    juce::Image first(juce::Image::ARGB,251,123,true),second(juce::Image::ARGB,251,123,true);
    {juce::Graphics graphics(first);pocket::drawScreen(graphics,frame);}
    frame.time=2.1f;frame.level=.7f;frame.envelope=.8f;frame.samplePosition=.8f;frame.lfoPhase=.8f;frame.tapePosition=1.7f;
