@@ -37,6 +37,10 @@ jobs:
       - name: Windows and macOS tests
         if: runner.os != 'Linux'
         run: ctest --test-dir build -C Release --output-on-failure
+      - name: Test Windows standalone startup
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./packaging/windows/test-startup.ps1 -BuildDir build
       - name: Install NSIS
         if: runner.os == 'Windows'
         run: choco install nsis --no-progress -y
@@ -49,6 +53,7 @@ jobs:
         shell: pwsh
         run: ./packaging/windows/test-installer.ps1 -BuildDir build
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: Pocket-One-${{ runner.os }}
           path: |

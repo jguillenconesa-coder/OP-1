@@ -17,6 +17,10 @@ try {
     if ($CompilerExit -ne 0) { throw "NSIS failed with exit code $CompilerExit" }
 } catch {
     $_ | Out-String | Add-Content $Log
+    if ($env:GITHUB_ACTIONS -and (Test-Path $Log)) {
+        $Detail = ((Get-Content $Log -Tail 35) -join " | ").Replace("%", "%25").Replace("`r", "%0D").Replace("`n", "%0A")
+        Write-Host "::error title=NSIS packaging failed::$Detail"
+    }
     throw
 } finally {
     if ($env:GITHUB_STEP_SUMMARY -and (Test-Path $Log)) {
