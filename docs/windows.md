@@ -24,3 +24,15 @@ Samples and four-track audio are embedded in the DAW's plugin state (24-bit WAV 
 Current cloud result: real Windows PE64 VST3 and standalone binaries were built using clang-cl 19.1.7 and Microsoft's CRT/SDK. Four Windows test targets and installer/uninstaller checks passed under Wine 10. This is Wine validation, not a native DAW compatibility claim. See `windows-cross-build.md` for the reproducible build route.
 
 Official Windows NSIS packages use the standard x86 Unicode installer container; it still installs only the x64 VST3/application and uses 64-bit Program Files/registry paths. The cloud's Linux NSIS package also supplies amd64 stubs, selected with `POCKET_AMD64_INSTALLER`. You do not need to obtain extra stubs to build the installer on Windows.
+
+## Ableton Live does not list Pocket One
+
+Pocket One is a **VST3 instrument**, listed as **Pocket One** under **Plug-ins > VST3 > Pocket Instruments**. It will not appear under the name OP-1 or in the VST2 list. Use a MIDI track. VST3 support requires **Live 10.1 or later**; this Windows build requires Windows 10/11 x64.
+
+1. Close Live, run Setup.exe and leave **VST3 instrument (DAW)** selected.
+2. Check that this file exists: `C:\Program Files\Common Files\VST3\Pocket One.vst3\Contents\x86_64-win\Pocket One.vst3`. The outer `.vst3` is a folder: keep its full structure. Installing the standalone EXE alone does not install a plugin.
+3. Open Live's Preferences/Settings > Plug-ins and enable **Use VST3 Plug-In System Folders**. Custom VST2 folders do not control VST3 discovery.
+4. Hold **Alt** while clicking **Rescan** to force a full scan, then search for **Pocket One** in the VST3 category. Allow the scan to finish.
+5. If it remains absent, run `powershell -NoProfile -ExecutionPolicy Bypass -File .\packaging\windows\diagnose-ableton.ps1` from the downloaded repository. This read-only script checks the bundle path and x64 module and prints Pocket One entries from available Live logs. It does not clear preferences, delete caches or send logs anywhere.
+
+When reporting a failure, include the Live version, Windows version, whether Setup or portable ZIP was used, and the script output. A successful standalone launch or module factory test does not prove that Live's scanner accepted the plugin. Native Ableton validation is still pending.
