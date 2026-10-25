@@ -7,3 +7,7 @@ Se incluyen instalador Windows x64, ZIP portable, paquete Linux, kit de compilac
 [v0.2.0](v0.2.0) se conserva por trazabilidad; sus binarios Windows tienen el defecto de manifiesto descrito en las [notas de corrección](../docs/releases/v0.2.1.md). No utilices su instalador.
 
 Son versiones preliminares sin firma digital. La comprobación bajo Wine no sustituye una prueba en Ableton real. Véanse la [licencia](../LICENSE) y los [avisos de terceros](../THIRD_PARTY_NOTICES.md).
+
+## Banco de las muestras del usuario
+
+[Descargar 79 presets y dos kits](user-banks/README.md). Requiere Pocket One 0.2.2 o posterior: BANK → seleccionar ZIP sin descomprimir.
