@@ -19,10 +19,14 @@ Native environment: Debian 13 x86_64, GCC 14.2, CMake 4.4.4, JUCE 8.0.6.
 - NSIS 3.11 compiled a real amd64 Unicode Windows installer. In an isolated Wine prefix, it installed the standalone and VST3 with SHA256-identical contents and registered version 0.2.0. The installed VST3 loaded successfully. Uninstall removed the product files and registration.
 - xwin itself matches the SHA256 published with its official release. No signature/TLS/checksum checks or JUCE platform guards were disabled.
 
+## Publication CI evidence
+
+After the initial publication, GitHub Actions compiled/tested Linux and macOS successfully. The Windows MSVC build and tests passed, but packaging exposed missing amd64 installer stubs in the official Windows NSIS distribution. Main now defaults to the standard Unicode installer container for native Windows packaging, keeping all application/plugin payloads x64; the cloud build explicitly selects its available amd64 stubs. The originally published preview installer was independently verified under Wine. Current CI results are available in the repository's Actions tab.
+
 ## Not established
 
-- GitHub Actions execution. Native Windows/MSVC CI is configured but has not run; the current cross-build/Wine checks above are separate evidence.
-- macOS compilation, DAW scanning/automation, physical audio listening, interactive UI operation or hardware matching.
+- Native DAW/audio-device compatibility; CI compilation/tests and the Wine results are separate evidence.
+- DAW scanning/automation, physical audio listening, interactive UI operation or hardware matching.
 - Original OP-1 project compatibility, complete tape editing, production-grade anti-aliasing, or automatic standalone session persistence.
 
-The original cloud setup script was exercised end-to-end and subsequently used for the same native tool/dependency layout. Source code remains uncommitted for review. Build products are ignored by Git. Saved environment configuration and publication are separate from these current-machine results.
+The original cloud setup script was exercised end-to-end and subsequently used for the same native tool/dependency layout. The initial source and verified downloads were published under tag `v0.2.0`; later packaging/CI fixes are on main. Build products are ignored by Git. Saved environment configuration and publication are separate from these current-machine results.

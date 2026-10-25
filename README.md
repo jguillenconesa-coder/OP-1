@@ -19,7 +19,7 @@
 
 También se ha configurado la creación de una [release de GitHub](https://github.com/jguillenconesa-coder/OP-1/releases) al publicar la etiqueta `v0.2.0`. Los archivos versionados de `downloads/v0.2.0` permiten descargarlos directamente desde el repositorio.
 
-**Versión preliminar.** El instalador no tiene firma digital. Se probaron los ejecutables Windows y su instalación/desinstalación bajo Wine; queda pendiente probar el instrumento en un DAW Windows real. No hay un binario de macOS verificado.
+**Versión preliminar.** El instalador no tiene firma digital. Se probaron los ejecutables Windows y su instalación/desinstalación bajo Wine; queda pendiente probar el instrumento en un DAW Windows real. La release no incluye un instalador de macOS; CI genera sus artefactos de compilación.
 
 ## Instalar en Windows
 

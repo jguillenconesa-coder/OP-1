@@ -1,5 +1,9 @@
 Unicode True
+; Official Windows NSIS packages omit amd64 stubs. The standard Unicode
+; installer can install x64 payloads; opt into amd64 only where stubs exist.
+!ifdef POCKET_AMD64_INSTALLER
 Target amd64-unicode
+!endif
 !include "MUI2.nsh"
 !include "x64.nsh"
 !include "WinVer.nsh"

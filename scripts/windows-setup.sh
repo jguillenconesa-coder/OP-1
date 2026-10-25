@@ -52,4 +52,4 @@ source scripts/windows-env.sh
 cmake -S . -B build-win-msvc -G Ninja -DCMAKE_MAKE_PROGRAM=/workspace/.op1-tools/bin/ninja -DCMAKE_TOOLCHAIN_FILE=cmake/clang-cl-x64.cmake -DJUCE_PACKAGE_PATH=/workspace/juce-installed/lib/cmake/JUCE-8.0.6 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_CONFIGURATION=Release -DJUCE_TARGET_ARCHITECTURE=x86_64 -DCMAKE_CROSSCOMPILING_EMULATOR=/workspace/OP-1/scripts/run-wine.sh
 cmake --build build-win-msvc --parallel 3
 mkdir -p dist
-NSISDIR=/workspace/windows-tools/root/usr/share/nsis /workspace/windows-tools/root/usr/bin/makensis -V3 -DARTIFACT_DIR=/workspace/OP-1/build-win-msvc/PocketOne_artefacts/Release -DSOURCE_DIR=/workspace/OP-1 -DOUTPUT_DIR=/workspace/OP-1/dist packaging/windows/PocketOne.nsi
+NSISDIR=/workspace/windows-tools/root/usr/share/nsis /workspace/windows-tools/root/usr/bin/makensis -V3 -DPOCKET_AMD64_INSTALLER=1 -DARTIFACT_DIR=/workspace/OP-1/build-win-msvc/PocketOne_artefacts/Release -DSOURCE_DIR=/workspace/OP-1 -DOUTPUT_DIR=/workspace/OP-1/dist packaging/windows/PocketOne.nsi
