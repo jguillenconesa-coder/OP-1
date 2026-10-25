@@ -4,6 +4,7 @@
 #include "Engine.h"
 #include "Tape.h"
 #include "NoteQueue.h"
+#include "SoundLibrary.h"
 class PocketProcessor : public juce::AudioProcessor,private juce::MidiKeyboardStateListener {
 public:
     explicit PocketProcessor(juce::File libraryDirectory={});
@@ -35,6 +36,30 @@ public:
     static juce::StringArray factoryPresetNames();
     std::atomic<int> currentFactoryPreset{-1},currentUserPreset{-1};
     juce::StringArray userPresetNames() const;
+    std::vector<SoundInfo> soundCatalog() const;
+    bool loadSound(const juce::String& id,juce::String& error);
+    juce::String selectedSound() const;
+    bool isFavorite(const juce::String&) const;
+    void toggleFavorite(const juce::String&);
+    bool assignSoundSlot(bool drums,int slot);
+    bool recallSoundSlot(bool drums,int slot,juce::String& error);
+    juce::String soundSlot(bool drums,int slot) const;
+    bool importSamples(const juce::Array<juce::File>&,juce::String& error);
+    std::atomic<int> clipboardKind{0};
+    bool copySound(juce::String& error);
+    bool pasteSound(juce::String& error);
+    bool tapeEdit(const juce::String& action,bool shifted,juce::String& error);
+    std::pair<float,float> currentTapeTake();
+    bool slideTape(double delta,juce::String& error);
+    void seekTape(double seconds) {pendingTapeSeek.store(float(seconds));}
+    std::atomic<float> tapeSpool{0};
+    std::atomic<bool> tapeBreak{false},tapeChop{false};
+    void tapeMemo(int slot,bool store);
+    bool startInputCapture(juce::String& error);
+    bool finishInputCapture(juce::String& error);
+    std::atomic<bool> inputCapturing{false};
+    std::atomic<int> inputCaptureFrames{0};
+    bool exportMix(const juce::File&,juce::String& error);
     bool importUserBank(const juce::File&,juce::String& error);
     bool applyUserPreset(int index,juce::String& error);
     juce::AudioProcessorValueTreeState state;
@@ -50,14 +75,29 @@ public:
     std::array<std::atomic<int>,16> steps{};
 private:
     static juce::AudioProcessorValueTreeState::ParameterLayout layout();
-    enum class Param {engine,tone,color,envelope,effect,attack,decay,sustain,release,lfoRate,lfoDepth,lfoDestination,lfoShape,delayTime,delayFeedback,drive,sampleLoop,sampleRoot,volume,sequencer,tempo,track1,track2,track3,track4,tapePlay,tapeRecord,tapeOverdub,tapeTrack,tapeSpeed,tapeLength,Count};
+    enum class Param {engine,tone,color,envelope,effect,attack,decay,sustain,release,lfoRate,lfoDepth,lfoDestination,lfoShape,delayTime,delayFeedback,drive,sampleLoop,sampleRoot,volume,sequencer,tempo,track1,track2,track3,track4,tapePlay,tapeRecord,tapeOverdub,tapeTrack,tapeSpeed,tapeLength,tapeLoop,tapeLoopIn,tapeLoopOut,metronome,inputMonitor,inputGain,tapeRecordGain,eqLow,eqMid,eqHigh,eqMix,masterDrive,masterEcho,masterDelayTime,masterFeedback,clickVolume,Count};
     std::array<std::atomic<float>*,size_t(Param::Count)> audioParameters{};
     void handleNoteOn(juce::MidiKeyboardState*,int,int,float) override;
     void handleNoteOff(juce::MidiKeyboardState*,int,int,float) override;
     pocket::NoteQueue uiToAudio,audioToUi;
     std::atomic<bool> keyboardOverflow{false},keyboardDisplayReset{false};
     bool reflectingHostNotes=false;
-    struct UserPreset {juce::String name;juce::File sample;std::array<juce::File,8> kit;juce::var parameters;bool isKit=false;};
+    struct UserPreset {juce::String name,id,bank,source;juce::File sample;std::array<juce::File,8> kit;juce::var parameters;bool isKit=false;};
+    mutable juce::CriticalSection libraryStateLock;
+    juce::String selectedSoundId;
+    juce::StringArray favorites;
+    std::array<std::array<juce::String,8>,2> soundSlotIds;
+    std::array<std::array<juce::ValueTree,8>,2> slotSettings;
+    juce::ValueTree soundClipboard;juce::String soundClipboardId;
+    juce::ValueTree librarySnapshot() const;
+    void restoreLibrary(const juce::ValueTree&);
+    void setSelectedSound(const juce::String&);
+    void initializeSoundSlots();
+    juce::ValueTree tapeEditSnapshot();
+    void restoreTapeEdits(const juce::ValueTree&);
+    std::atomic<float> pendingTapeSeek{-1};
+    std::array<std::array<float,21>,2> tapeMemos{};
+    std::array<bool,2> memoSaved{};
     juce::File libraryDirectory;
     std::vector<UserPreset> userPresets;
     void refreshUserPresets();
@@ -74,5 +114,14 @@ private:
     bool wasSequencing=false;
     int lastHostStep=-1;
     float outputGain=.7f,outputSmoothing=.002f;
+    std::vector<float> inputCapture;
+    int captureWrite=0;
+    double captureRate=48000;
+    float clickDecay=.99f;
+    float eqLowState=0,eqHighState=0,eqLowCoefficient=0,eqHighCoefficient=0;
+    std::array<float,3> eqGains{{1,1,1}};
+    std::array<float,192000> masterDelay{};size_t masterDelayWrite=0;
+    float masterDriveSmooth=0,masterEchoSmooth=0,masterTimeSmooth=.281f,eqMixSmooth=0;
+    double clickBeat=0,clickPhase=0;float clickEnvelope=0;int64_t lastClickBeat=-1;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PocketProcessor)
 };

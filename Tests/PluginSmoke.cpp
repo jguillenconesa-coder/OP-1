@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "PluginProcessor.h"
 #include "ScreenAnimations.h"
+#include "SoundBrowser.h"
 #include <iostream>
 #include <memory>
 #include <stdexcept>
@@ -129,12 +130,40 @@ int main(int argc,char** argv) {
    check(!bankProcessor->importUserBank(invalid,error),"Unsafe bank path was accepted");check(!library.getChildFile("Library/escape.wav").exists(),"ZIP escaped its bank folder");
    check(bankProcessor->userPresetNames().size()==1,"Failed import damaged existing bank");
   }
+  // Browser metadata and independent edited sound slots survive project state.
+  auto libraryProcessor=std::make_unique<PocketProcessor>(library.getChildFile("Catalog"));
+  check(libraryProcessor->soundCatalog().size()==25,"Factory catalog incomplete");
+  libraryProcessor->applyPreset(0);libraryProcessor->state.getParameter("tone")->setValueNotifyingHost(.83f);
+  libraryProcessor->toggleFavorite("factory:0");check(libraryProcessor->assignSoundSlot(false,0),"Could not store edited synth slot");
+  check(libraryProcessor->soundSlot(true,0)=="factory:22","Synth assignment changed drum slots");
+  libraryProcessor->applyPreset(22);libraryProcessor->getStateInformation(saved);
+  auto slotsRestored=std::make_unique<PocketProcessor>(library.getChildFile("Catalog"));slotsRestored->setStateInformation(saved.getData(),int(saved.getSize()));
+  check(slotsRestored->isFavorite("factory:0"),"Favorite was not restored");check(slotsRestored->recallSoundSlot(false,0,error),"Stored synth slot did not recall");
+  check(std::abs(slotsRestored->state.getRawParameterValue("tone")->load()-.83f)<.001,"Slot lost edited sound parameters");
+  check(slotsRestored->copySound(error),"Sound lift failed");slotsRestored->state.getParameter("tone")->setValueNotifyingHost(.12f);slotsRestored->state.getParameter("masterDrive")->setValueNotifyingHost(.2f);
+  check(slotsRestored->pasteSound(error),"Sound drop failed");check(std::abs(slotsRestored->state.getRawParameterValue("tone")->load()-.83f)<.001,"Sound clipboard lost parameters");check(std::abs(slotsRestored->state.getRawParameterValue("masterDrive")->load()-.2f)<.001,"Pasting sound overwrote master settings");
+  // Capture actual input into a sampler without leaking monitored audio by default.
+  auto capture=std::make_unique<PocketProcessor>(library.getChildFile("Capture"));capture->prepareToPlay(48000,256);
+  check(capture->startInputCapture(error),"Input capture did not start");
+  for(int block=0;block<32;++block){for(int i=0;i<256;++i){float value=float(std::sin(2*pocket::pi*220*(block*256+i)/48000))*.3f;buffer.setSample(0,i,value);buffer.setSample(1,i,value);}midi.clear();capture->processBlock(buffer,midi);check(buffer.getMagnitude(0,0,256)==0,"Input leaked while monitoring was disabled");}
+  check(capture->finishInputCapture(error),"Input capture did not finish");check(capture->sampleFrames.load()==8192,"Captured input had wrong length");
+  buffer.clear();midi.addEvent(juce::MidiMessage::noteOn(1,60,.8f),0);capture->processBlock(buffer,midi);check(buffer.getMagnitude(0,0,256)>.001,"Captured sample is silent");
+  // MIDI metronome and master processing exercise the newly connected mixer pages.
+  capture->requestPanic();capture->state.getParameter("inputMonitor")->setValueNotifyingHost(1);capture->state.getParameter("volume")->setValueNotifyingHost(1);
+  auto inputEnergy=[&](float boost){auto* eq=capture->state.getParameter("eqLow");eq->setValueNotifyingHost(eq->convertTo0to1(boost));double energy=0;for(int block=0;block<100;++block){for(int i=0;i<256;++i){float value=float(std::sin(2*pocket::pi*100*(block*256+i)/48000))*.1f;buffer.setSample(0,i,value);buffer.setSample(1,i,value);}midi.clear();capture->processBlock(buffer,midi);if(block>30)for(int i=0;i<256;++i)energy+=buffer.getSample(0,i)*buffer.getSample(0,i);}return energy;};
+  const double flat=inputEnergy(0),boosted=inputEnergy(12);check(boosted>flat*4,"Master low EQ has no audible effect");
+  capture->state.getParameter("inputMonitor")->setValueNotifyingHost(0);capture->state.getParameter("metronome")->setValueNotifyingHost(1);capture->requestPanic();buffer.clear();midi.clear();capture->processBlock(buffer,midi);check(buffer.getMagnitude(0,0,256)>.01,"Metronome did not produce a click");
+  // Browser search narrows the list independently of the playing sound.
+  {auto editor=std::unique_ptr<juce::AudioProcessorEditor>(libraryProcessor->createEditor());SoundBrowser* browser=nullptr;for(auto* child:editor->getChildren())if(auto* found=dynamic_cast<SoundBrowser*>(child))browser=found;check(browser!=nullptr,"Sound browser is missing");
+   juce::TextEditor* search=nullptr;juce::ListBox* list=nullptr;for(auto* child:browser->getChildren()){if(child->getComponentID()=="sound-search")search=dynamic_cast<juce::TextEditor*>(child);if(child->getComponentID()=="sound-results")list=dynamic_cast<juce::ListBox*>(child);}check(search&&list,"Browser controls are missing");
+   search->setText("Soft keys",false);search->onTextChange();check(list->getListBoxModel()->getNumRows()==1,"Browser search did not narrow results");
+   search->setText("a sound that does not exist",false);search->onTextChange();check(list->getListBoxModel()->getNumRows()==0,"Browser empty state failed");}
   // Every OLED page renders deterministic frames and reacts to its live telemetry.
-  for(int screen=0;screen<11;++screen) {
-   pocket::ScreenFrame frame;frame.engine=screen<6?screen:0;frame.page=screen<6?0:screen==10?4:screen-5;frame.mode=screen==10?3:2;frame.voices=4;frame.level=.02f;frame.envelope=.4f;frame.stage=1;frame.samplePosition=.2f;frame.lfoPhase=.2f;frame.tapePosition=.5f;frame.trackGains={.8f,.6f,.7f,.5f};frame.sample.fill(.5f);
+  for(int screen=0;screen<14;++screen) {
+   pocket::ScreenFrame frame;frame.engine=screen<6?screen:0;frame.page=screen<6?0:screen==10?4:screen>10?screen-6:screen-5;frame.mode=screen>=10?3:2;frame.voices=4;frame.level=.02f;frame.envelope=.4f;frame.stage=1;frame.samplePosition=.2f;frame.lfoPhase=.2f;frame.tapePosition=.5f;frame.trackGains={.8f,.6f,.7f,.5f};frame.sample.fill(.5f);
    juce::Image first(juce::Image::ARGB,251,123,true),second(juce::Image::ARGB,251,123,true);
    {juce::Graphics graphics(first);pocket::drawScreen(graphics,frame);}
-   frame.time=2.1f;frame.level=.7f;frame.envelope=.8f;frame.samplePosition=.8f;frame.lfoPhase=.8f;frame.tapePosition=1.7f;
+   frame.time=2.1f;frame.level=.7f;frame.envelope=.8f;frame.samplePosition=.8f;frame.lfoPhase=.8f;frame.tapePosition=1.7f;frame.values={.7f,.4f,.5f,.8f};
    {juce::Graphics graphics(second);pocket::drawScreen(graphics,frame);}
    int changed=0;for(int y=0;y<123;++y)for(int x=0;x<251;++x)if(first.getPixelAt(x,y)!=second.getPixelAt(x,y))++changed;
    check(changed>3,"OLED page did not respond to animation telemetry");

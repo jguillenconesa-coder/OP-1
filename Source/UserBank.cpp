@@ -17,7 +17,7 @@ void PocketProcessor::refreshUserPresets() {
         auto json=juce::JSON::parse(file.loadFileAsString());if(int(json["formatVersion"])!=1) continue;
         auto* presets=json["presets"].getArray();if(!presets||presets->size()>256) continue;
         for(const auto& item:*presets) {
-            UserPreset p;p.name=item["name"].toString().substring(0,100);p.parameters=item["parameters"];
+            UserPreset p;p.bank=json["name"].toString();if(p.bank.isEmpty())p.bank="User bank";p.source=item["source"].toString();p.name=item["name"].toString().substring(0,100);p.parameters=item["parameters"];
             if(p.name.isEmpty()||!p.parameters.isObject()) continue;
             auto* slots=item["kit"].getArray();p.isKit=slots!=nullptr;
             bool valid=true;
@@ -25,7 +25,9 @@ void PocketProcessor::refreshUserPresets() {
                 if(slots->size()!=8) continue;
                 for(int i=0;i<8;++i) {const auto path=(*slots)[i].toString();p.kit[size_t(i)]=bank.getChildFile(path);valid&=safeAudioPath(path)&&p.kit[size_t(i)].existsAsFile();}
             } else {const auto path=item["sample"].toString();p.sample=bank.getChildFile(path);valid=safeAudioPath(path)&&p.sample.existsAsFile();}
-            if(valid) userPresets.push_back(std::move(p));
+            p.id="user:"+p.bank+":"+p.name+":"+(p.isKit?p.kit[0].getFileName():p.sample.getFileName());
+            if(p.source.isEmpty())p.source=p.isKit?"8 samples":p.sample.getFileName();
+            if(valid&&std::none_of(userPresets.begin(),userPresets.end(),[&](const auto& existing){return existing.id==p.id;})) userPresets.push_back(std::move(p));
         }
     }
 }
@@ -80,5 +82,5 @@ bool PocketProcessor::applyUserPreset(int index,juce::String& error) {
         const float value=float(p.parameters[id]);if(!std::isfinite(value)) continue;
         auto* parameter=state.getParameter(id);parameter->beginChangeGesture();parameter->setValueNotifyingHost(juce::jlimit(0.f,1.f,parameter->convertTo0to1(value)));parameter->endChangeGesture();
     }
-    currentFactoryPreset.store(-1);currentUserPreset.store(index);requestPanic();return true;
+    setSelectedSound(p.id);currentFactoryPreset.store(-1);currentUserPreset.store(index);requestPanic();return true;
 }

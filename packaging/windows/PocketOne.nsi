@@ -20,7 +20,7 @@ Target amd64-unicode
   !define OUTPUT_DIR "."
 !endif
 !ifndef VERSION
-  !define VERSION "0.2.2"
+  !define VERSION "0.3.0"
 !endif
 Name "Pocket One"
 OutFile "${OUTPUT_DIR}${PATH_SEP}Pocket-One-${VERSION}-Windows-x64-Setup.exe"
@@ -28,7 +28,7 @@ InstallDir "$PROGRAMFILES64\Pocket Instruments\Pocket One"
 RequestExecutionLevel admin
 SetCompressor /SOLID lzma
 SetCompressorDictSize 32
-VIProductVersion "0.2.2.0"
+VIProductVersion "0.3.0.0"
 VIAddVersionKey /LANG=1033 "ProductName" "Pocket One"
 VIAddVersionKey /LANG=1033 "FileDescription" "Pocket One VST3 and standalone installer"
 VIAddVersionKey /LANG=1033 "FileVersion" "${VERSION}"

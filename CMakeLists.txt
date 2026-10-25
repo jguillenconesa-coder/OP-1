@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(PocketOne VERSION 0.2.2 LANGUAGES C CXX)
+project(PocketOne VERSION 0.3.0 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(MSVC)
@@ -39,7 +39,7 @@ if(POCKET_BUILD_PLUGIN)
   juce_add_binary_data(PocketFactoryData HEADER_NAME FactoryData.h NAMESPACE FactoryData SOURCES ${POCKET_FACTORY_WAVS})
   set_target_properties(PocketFactoryData PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
   target_link_libraries(PocketOne PRIVATE PocketFactoryData)
-  target_sources(PocketOne PRIVATE Source/PluginProcessor.cpp Source/PluginEditor.cpp Source/UserBank.cpp Source/ScreenAnimations.cpp)
+  target_sources(PocketOne PRIVATE Source/PluginProcessor.cpp Source/PluginEditor.cpp Source/UserBank.cpp Source/ScreenAnimations.cpp Source/SoundLibrary.cpp Source/SoundBrowser.cpp Source/TapeControls.cpp Source/InputCapture.cpp)
   if(WIN32 AND CMAKE_CROSSCOMPILING)
     # llvm-mt cannot inject manifests into PE files. Embed the dependency as an
     # explicit RC resource instead; /manifest:no must never drop Common Controls.

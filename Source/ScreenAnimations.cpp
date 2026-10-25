@@ -10,11 +10,12 @@ void dot(juce::Graphics& g,float x,float y,float radius) {g.fillEllipse(x-radius
 }
 void drawScreen(juce::Graphics& g,const ScreenFrame& f) {
     g.fillAll(juce::Colour(0xff070b10));
-    const auto title=f.page==4?(f.mode==3?"MIX":"TAPE"):f.page==1?"ENVELOPE":f.page==2?"LFO":f.page==3?"ECHO / DRIVE":juce::StringArray{"FM / REACTOR","PHASE","STRING","SAMPLER","DRUM","SAMPLE KIT"}[std::clamp(f.engine,0,5)];
+    const auto title=f.page>=5?juce::StringArray{"MASTER EQ","MASTER FX","MASTER OUT"}[std::clamp(f.page-5,0,2)]:f.page==4?(f.mode==3?"MIX":"TAPE"):f.page==1?"ENVELOPE":f.page==2?"LFO":f.page==3?"ECHO / DRIVE":juce::StringArray{"FM / REACTOR","PHASE","STRING","SAMPLER","DRUM","SAMPLE KIT"}[std::clamp(f.engine,0,5)];
     label(g,title,{10,4,172,14},10,colors[2]);label(g,juce::String(f.voices)+" VOICES",{183,5,63,12},8,colors[0]);
     const float activity=std::clamp(f.level*6,0.f,1.f),phase=f.time*.7f;
     juce::Path curve;
-    if(f.page==4) {
+    if(f.page>=5){for(int i=0;i<4;++i){g.setColour(colors[size_t(i)]);const float value=f.values[size_t(i)];const float normalized=f.page==5&&i<3?(value+12)/24:std::clamp(value,0.f,1.f);g.drawRoundedRectangle(18.f+i*58,27,40,59,3,1);g.fillRoundedRectangle(21.f+i*58,82-normalized*51,34,std::max(1.f,normalized*51),2);} }
+    else if(f.page==4) {
         if(f.mode==3) {
             for(int i=0;i<4;++i){label(g,juce::String(i+1),{10,24+i*17,13,14},9,colors[size_t(i)]);g.setColour(colors[size_t(i)].withAlpha(.22f));g.fillRoundedRectangle(29,27.f+i*17,206,9,2);g.setColour(colors[size_t(i)]);g.fillRoundedRectangle(29,27.f+i*17,206*f.trackGains[size_t(i)]*(.35f+.65f*activity),9,2);}
         } else {
