@@ -7,15 +7,17 @@ Nothing is uploaded by this script. It does not include SDK caches or credential
 from pathlib import Path
 import hashlib
 import json
+import re
 import subprocess
 import tarfile
 import zipfile
 
 root = Path(__file__).resolve().parents[1]
+version = re.search(r'project\(PocketOne VERSION ([0-9.]+)', (root/'CMakeLists.txt').read_text()).group(1)
 dist = root / 'dist'
-output = root / 'downloads/v0.2.0'
+output = root / f'downloads/v{version}'
 output.mkdir(parents=True, exist_ok=True)
-required = [dist/'Pocket-One-0.2.0-Windows-x64-Setup.exe',
+required = [dist/f'Pocket-One-{version}-Windows-x64-Setup.exe',
             root/'build-win-msvc/PocketOne_artefacts/Release/Standalone/Pocket One.exe',
             root/'build/PocketOne_artefacts/Release/Standalone/Pocket One']
 for item in required:
@@ -33,12 +35,12 @@ for name in ['Source', 'Tests', 'cmake', 'scripts', 'packaging', 'docs', 'licens
 source.extend(root/name for name in ['CMakeLists.txt', '.gitignore', 'README.md', 'README.en.md',
                                    'CREDITS.md', 'THIRD_PARTY_NOTICES.md', 'CONTRIBUTING.md', 'LICENSE'])
 source = sorted(set(source))
-with zipfile.ZipFile(output/'Pocket-One-0.2.0-Windows-build-kit.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
+with zipfile.ZipFile(output/f'Pocket-One-{version}-Windows-build-kit.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
     for item in source:
-        archive.write(item, 'Pocket-One-0.2.0/'+str(item.relative_to(root)))
+        archive.write(item, f'Pocket-One-{version}/'+str(item.relative_to(root)))
 
 build_readme = dist/'BUILD-FROM-SOURCE.md'
-build_readme.write_text('''# Pocket One 0.2.0 corresponding source
+build_readme.write_text(f'''# Pocket One {version} corresponding source
 
 `Pocket-One/` contains the project; `JUCE/` contains the complete dependency source
 at commit 51a8a6d7aeae7326956d747737ccf1575e61e209, including original notices.
@@ -68,32 +70,32 @@ THIRD_PARTY_NOTICES.md for licences/credits. Build/test infrastructure is suppli
 alongside the source. The Windows cross-build helper is specific to /workspace;
 native builds above work independently of the cloud helper layout.
 ''')
-with tarfile.open(output/'Pocket-One-0.2.0-corresponding-source.tar.gz', 'w:gz') as archive:
-    archive.add(build_readme, 'Pocket-One-0.2.0/BUILD-FROM-SOURCE.md')
+with tarfile.open(output/f'Pocket-One-{version}-corresponding-source.tar.gz', 'w:gz') as archive:
+    archive.add(build_readme, f'Pocket-One-{version}/BUILD-FROM-SOURCE.md')
     for item in source:
-        archive.add(item, 'Pocket-One-0.2.0/Pocket-One/'+str(item.relative_to(root)), recursive=False)
+        archive.add(item, f'Pocket-One-{version}/Pocket-One/'+str(item.relative_to(root)), recursive=False)
     for item in sorted(juce.rglob('*')):
         if item.is_file() and '.git' not in item.relative_to(juce).parts:
-            archive.add(item, 'Pocket-One-0.2.0/JUCE/'+str(item.relative_to(juce)), recursive=False)
+            archive.add(item, f'Pocket-One-{version}/JUCE/'+str(item.relative_to(juce)), recursive=False)
 
 win = root/'build-win-msvc/PocketOne_artefacts/Release'
-with zipfile.ZipFile(output/'Pocket-One-0.2.0-Windows-x64-portable.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
+with zipfile.ZipFile(output/f'Pocket-One-{version}-Windows-x64-portable.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
     for folder in ['VST3', 'Standalone']:
         for item in sorted((win/folder).rglob('*')):
             if item.is_file() and item.suffix.lower() not in ('.pdb', '.lib', '.exp'):
-                archive.write(item, 'Pocket-One-0.2.0/'+str(item.relative_to(win)))
+                archive.write(item, f'Pocket-One-{version}/'+str(item.relative_to(win)))
     for item in source:
         if item.suffix == '.md' or 'licenses' in item.parts or item.name == 'LICENSE':
-            archive.write(item, 'Pocket-One-0.2.0/'+str(item.relative_to(root)))
-with tarfile.open(output/'Pocket-One-0.2.0-linux-x86_64.tar.gz', 'w:gz') as archive:
+            archive.write(item, f'Pocket-One-{version}/'+str(item.relative_to(root)))
+with tarfile.open(output/f'Pocket-One-{version}-linux-x86_64.tar.gz', 'w:gz') as archive:
     native = root/'build/PocketOne_artefacts/Release'
     for item, name in [(native/'VST3/Pocket One.vst3', 'Pocket One.vst3'),
                        (native/'Standalone/Pocket One', 'Pocket One'),
                        (root/'docs', 'docs'), (root/'licenses', 'licenses')]:
-        archive.add(item, 'Pocket-One-0.2.0/'+name)
+        archive.add(item, f'Pocket-One-{version}/'+name)
     for name in ['README.md', 'README.en.md', 'CREDITS.md', 'THIRD_PARTY_NOTICES.md', 'LICENSE']:
-        archive.add(root/name, 'Pocket-One-0.2.0/'+name)
-(output/'Pocket-One-0.2.0-Windows-x64-Setup.exe').write_bytes(required[0].read_bytes())
+        archive.add(root/name, f'Pocket-One-{version}/'+name)
+(output/f'Pocket-One-{version}-Windows-x64-Setup.exe').write_bytes(required[0].read_bytes())
 lines = []
 for item in sorted(output.iterdir()):
     if item.is_file() and item.suffix in ('.exe', '.zip', '.gz'):

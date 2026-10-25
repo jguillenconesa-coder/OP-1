@@ -2,7 +2,7 @@
 param([string]$BuildDir = "build")
 $ErrorActionPreference = "Stop"
 $SourceDir = (Resolve-Path (Join-Path $PSScriptRoot "../..")).Path
-$Setup = Join-Path $SourceDir "dist/Pocket-One-0.2.0-Windows-x64-Setup.exe"
+$Setup = Join-Path $SourceDir "dist/Pocket-One-0.2.1-Windows-x64-Setup.exe"
 $Install = Join-Path $env:ProgramW6432 "Pocket Instruments/Pocket One"
 $Plugin = Join-Path $env:CommonProgramW6432 "VST3/Pocket One.vst3/Contents/x86_64-win/Pocket One.vst3"
 $Registry = "HKLM:/Software/Microsoft/Windows/CurrentVersion/Uninstall/PocketOne"

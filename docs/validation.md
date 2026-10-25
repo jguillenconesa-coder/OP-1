@@ -30,3 +30,7 @@ After the initial publication, GitHub Actions compiled/tested Linux and macOS su
 - Original OP-1 project compatibility, complete tape editing, production-grade anti-aliasing, or automatic standalone session persistence.
 
 The original cloud setup script was exercised end-to-end and subsequently used for the same native tool/dependency layout. The initial source and verified downloads were published under tag `v0.2.0`; later packaging/CI fixes are on main. Build products are ignored by Git. Saved environment configuration and publication are separate from these current-machine results.
+
+## Correction for the original Windows 0.2.0 packages
+
+A user reported Windows loader error "ordinal 345" on the standalone and failure to discover the plugin in Live. Inspection confirmed that `/manifest:no` in the cross toolchain had dropped JUCE's Common Controls v6 dependency. Wine module loading had not exposed the missing activation context. Version 0.2.1 embeds explicit EXE/DLL manifest resources; regression checks inspect the actual PE resources before module loading. The previous Wine result must not be treated as proof that 0.2.0 started on native Windows.

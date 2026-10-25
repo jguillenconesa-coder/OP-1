@@ -1,0 +1,2 @@
+// DLL activation context, used when the VST3 is loaded by a host.
+2 24 "common-controls.manifest"

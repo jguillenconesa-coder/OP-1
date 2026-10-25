@@ -2,7 +2,7 @@
 
 **Sintetizador VST3 y aplicación independiente inspirados en el Teenage Engineering OP-1.** Interfaz gris, pantalla animada, cuatro mandos azul/verde/blanco/naranja y teclado de dos octavas. Implementación independiente; no contiene firmware, muestras de fábrica ni gráficos originales.
 
-[English manual](README.en.md) · [Créditos](CREDITS.md) · [Licencia](LICENSE) · [Notas de versión](docs/releases/v0.2.0.md)
+[English manual](README.en.md) · [Créditos](CREDITS.md) · [Licencia](LICENSE) · [Notas de versión](docs/releases/v0.2.1.md)
 
 ![Interfaz real de Pocket One](docs/interface.png)
 
@@ -10,14 +10,14 @@
 
 | Paquete | Descarga |
 | --- | --- |
-| Instalador Windows 10/11 x64 | [Pocket-One-0.2.0-Windows-x64-Setup.exe](https://github.com/jguillenconesa-coder/OP-1/raw/refs/heads/main/downloads/v0.2.0/Pocket-One-0.2.0-Windows-x64-Setup.exe) |
-| Windows portable: aplicación y VST3 | [ZIP](downloads/v0.2.0/Pocket-One-0.2.0-Windows-x64-portable.zip) |
-| Linux x86_64: aplicación y VST3 | [TAR.GZ](downloads/v0.2.0/Pocket-One-0.2.0-linux-x86_64.tar.gz) |
-| Fuentes completas con JUCE | [Código fuente correspondiente](downloads/v0.2.0/Pocket-One-0.2.0-corresponding-source.tar.gz) |
-| Kit de compilación del proyecto | [ZIP](downloads/v0.2.0/Pocket-One-0.2.0-Windows-build-kit.zip) |
-| Integridad de las descargas | [SHA256SUMS.txt](downloads/v0.2.0/SHA256SUMS.txt) |
+| Instalador Windows 10/11 x64 | [Pocket-One-0.2.1-Windows-x64-Setup.exe](https://github.com/jguillenconesa-coder/OP-1/raw/refs/heads/main/downloads/v0.2.1/Pocket-One-0.2.1-Windows-x64-Setup.exe) |
+| Windows portable: aplicación y VST3 | [ZIP](downloads/v0.2.1/Pocket-One-0.2.1-Windows-x64-portable.zip) |
+| Linux x86_64: aplicación y VST3 | [TAR.GZ](downloads/v0.2.1/Pocket-One-0.2.1-linux-x86_64.tar.gz) |
+| Fuentes completas con JUCE | [Código fuente correspondiente](downloads/v0.2.1/Pocket-One-0.2.1-corresponding-source.tar.gz) |
+| Kit de compilación del proyecto | [ZIP](downloads/v0.2.1/Pocket-One-0.2.1-Windows-build-kit.zip) |
+| Integridad de las descargas | [SHA256SUMS.txt](downloads/v0.2.1/SHA256SUMS.txt) |
 
-También se ha configurado la creación de una [release de GitHub](https://github.com/jguillenconesa-coder/OP-1/releases) al publicar la etiqueta `v0.2.0`. Los archivos versionados de `downloads/v0.2.0` permiten descargarlos directamente desde el repositorio.
+También se ha configurado la creación de una [release de GitHub](https://github.com/jguillenconesa-coder/OP-1/releases) al publicar la etiqueta `v0.2.1`. Los archivos versionados de `downloads/v0.2.1` permiten descargarlos directamente desde el repositorio.
 
 **Versión preliminar.** El instalador no tiene firma digital. Se probaron los ejecutables Windows y su instalación/desinstalación bajo Wine; queda pendiente probar el instrumento en un DAW Windows real. La release no incluye un instalador de macOS; CI genera sus artefactos de compilación.
 

@@ -42,7 +42,7 @@ This is a constrained loop recorder, not a full recreation of OP-1 tape. It has 
 
 See [Windows build/install instructions](docs/windows.md). Run `packaging\windows\build.cmd` on Windows with Visual Studio 2022 C++ tools, CMake, Git and NSIS 3.11+ installed. The installer is generated in `dist/`, installs the VST3 bundle to the standard Common Files folder, installs the standalone app/Start menu shortcut, and registers an uninstaller. The C++ runtime is statically linked.
 
-**Windows x64 installer generated:** `dist/Pocket-One-0.2.0-Windows-x64-Setup.exe`. It contains real PE64 Windows binaries cross-compiled with clang-cl and Microsoft's CRT/SDK. Four Windows test targets pass under Wine 10, including VST3 module loading. Installation file hashes, registration and uninstall were checked in an isolated Wine prefix. These checks do not replace a test in a native Windows DAW. The installer is unsigned. See [cross-build instructions](docs/windows-cross-build.md). GitHub Actions is configured for native MSVC validation but has not been run.
+**Windows x64 installer generated:** `dist/Pocket-One-0.2.1-Windows-x64-Setup.exe`. It contains real PE64 Windows binaries cross-compiled with clang-cl and Microsoft's CRT/SDK. Four Windows test targets pass under Wine 10, including VST3 module loading. Installation file hashes, registration and uninstall were checked in an isolated Wine prefix. These checks do not replace a test in a native Windows DAW. The installer is unsigned. See [cross-build instructions](docs/windows-cross-build.md). GitHub Actions is configured for native MSVC validation but has not been run.
 
 ## Build from source
 
@@ -76,4 +76,4 @@ xvfb-run -a ./build/plugin_smoke_artefacts/Release/plugin_smoke "$PWD/docs/inter
 
 See [validation evidence and limitations](docs/validation.md) and [OTTO/TOP-1 design references](docs/references.md). No code or assets from those projects have been imported.
 
-Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.2.0`.
+Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.2.1`.

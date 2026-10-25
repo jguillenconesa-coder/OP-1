@@ -1,9 +1,9 @@
 # Descargas versionadas
 
-Los archivos de [`v0.2.0`](v0.2.0) son los paquetes construidos y verificados durante la preparación del proyecto. Se incluyen aquí para que estén disponibles desde el repositorio aun cuando la API o el trabajo de GitHub Releases no estén disponibles.
+**Windows: utiliza [v0.2.1](v0.2.1)**. Corrige el error de ordinal 345 al abrir la aplicación y la dependencia ausente que puede impedir el escaneo VST3.
 
-- Instalador Windows x64, ZIP portable, paquete Linux y fuentes.
-- `SHA256SUMS.txt` comprueba integridad: `sha256sum --check SHA256SUMS.txt` dentro de la carpeta de versión. En PowerShell puedes usar `Get-FileHash -Algorithm SHA256`.
-- La etiqueta `v0.2.0` activa un trabajo que comprueba los hashes y adjunta estos mismos archivos a una release preliminar.
+Se incluyen instalador Windows x64, ZIP portable, paquete Linux, kit de compilación, fuentes completas con JUCE y `SHA256SUMS.txt`. Los archivos se publican también en GitHub Releases. Comprueba hashes con `sha256sum --check SHA256SUMS.txt` o `Get-FileHash -Algorithm SHA256`.
 
-Los paquetes Windows se validaron bajo Wine, no en un DAW Windows real. Son binarios sin firma digital. No se distribuye un binario macOS sin verificar. Véanse [las notas de versión](../docs/releases/v0.2.0.md), [la licencia](../LICENSE) y [los avisos de terceros](../THIRD_PARTY_NOTICES.md).
+[v0.2.0](v0.2.0) se conserva por trazabilidad; sus binarios Windows tienen el defecto de manifiesto descrito en las [notas de corrección](../docs/releases/v0.2.1.md). No utilices su instalador.
+
+Son versiones preliminares sin firma digital. La comprobación bajo Wine no sustituye una prueba en Ableton real. Véanse la [licencia](../LICENSE) y los [avisos de terceros](../THIRD_PARTY_NOTICES.md).

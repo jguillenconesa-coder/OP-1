@@ -14,6 +14,7 @@ set(_includes "/imsvc${POCKET_MSVC_SDK}/crt/include /imsvc${POCKET_MSVC_SDK}/sdk
 set(CMAKE_C_FLAGS_INIT "${_includes}")
 set(CMAKE_CXX_FLAGS_INIT "${_includes}")
 set(_libs "/libpath:${POCKET_MSVC_SDK}/crt/lib/x86_64 /libpath:${POCKET_MSVC_SDK}/sdk/lib/ucrt/x86_64 /libpath:${POCKET_MSVC_SDK}/sdk/lib/um/x86_64")
+# llvm-mt cannot write PE resources; CMakeLists embeds required manifests via RC.
 set(CMAKE_EXE_LINKER_FLAGS_INIT "${_libs} /manifest:no")
 set(CMAKE_SHARED_LINKER_FLAGS_INIT "${_libs} /manifest:no")
 set(CMAKE_MODULE_LINKER_FLAGS_INIT "${_libs} /manifest:no")

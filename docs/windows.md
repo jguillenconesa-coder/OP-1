@@ -1,6 +1,6 @@
 # Windows x64 installation
 
-Close your DAW before installing/updating. Run `Pocket-One-0.2.0-Windows-x64-Setup.exe` and approve Windows' administrator prompt. Select the VST3 instrument, standalone application, or both.
+Close your DAW before installing/updating. Run `Pocket-One-0.2.1-Windows-x64-Setup.exe` and approve Windows' administrator prompt. Select the VST3 instrument, standalone application, or both.
 
 - VST3: `C:\Program Files\Common Files\VST3\Pocket One.vst3` (complete bundle).
 - Standalone: `C:\Program Files\Pocket Instruments\Pocket One\Pocket One.exe` and Start menu shortcut.
@@ -36,3 +36,9 @@ Pocket One is a **VST3 instrument**, listed as **Pocket One** under **Plug-ins >
 5. If it remains absent, run `powershell -NoProfile -ExecutionPolicy Bypass -File .\packaging\windows\diagnose-ableton.ps1` from the downloaded repository. This read-only script checks the bundle path and x64 module and prints Pocket One entries from available Live logs. It does not clear preferences, delete caches or send logs anywhere.
 
 When reporting a failure, include the Live version, Windows version, whether Setup or portable ZIP was used, and the script output. A successful standalone launch or module factory test does not prove that Live's scanner accepted the plugin. Native Ableton validation is still pending.
+
+## Windows loader error: ordinal 345 (fixed in 0.2.1)
+
+The original 0.2.0 cross-built EXE and VST3 omitted the embedded Common Controls v6 activation manifest. Windows could therefore resolve `COMCTL32.dll` to its legacy version, which lacks ordinal 345 (`TaskDialogIndirect`). This can prevent the standalone from starting and the DAW from scanning the VST3. Installing Visual C++ redistributables or changing VST2 folders does not address this defect.
+
+Close Live and Pocket One, install **0.2.1** over 0.2.0, then hold Alt while clicking Live's Rescan. Both the EXE (resource ID 1) and VST3 DLL (resource ID 2) now embed the dependency. New PE-resource regression checks reject the original 0.2.0 binaries; Wine-only load tests previously missed this problem. No native Ableton compatibility claim is implied by this repair.
