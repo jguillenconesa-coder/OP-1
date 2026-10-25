@@ -3,6 +3,8 @@
 #include "PluginProcessor.h"
 class PocketLook : public juce::LookAndFeel_V4 {
 public:
+    void drawButtonText(juce::Graphics&,juce::TextButton&,bool,bool) override;
+    void drawButtonBackground(juce::Graphics&,juce::Button&,const juce::Colour&,bool,bool) override;
     void drawRotarySlider(juce::Graphics&,int,int,int,int,float,float,float,juce::Slider&) override;
 };
 class HardwareKeyboard : public juce::MidiKeyboardComponent {
@@ -23,16 +25,26 @@ private:
     void timerCallback() override;
     void selectPage(int);
     void chooseSample();
+    void chooseBank();
+    void refreshPresetMenu();
     void chooseExport();
     void chooseSession(bool save);
     void setOctave(int);
+    void selectMode(int);
+    void applySoundSlot(int);
     PocketProcessor& processor;
     PocketLook look;
     juce::TooltipWindow tooltip{this,650};
-    int page=0,octave=0;
+    int page=0,octave=0,mainMode=0;
+    std::array<int,8> soundSlots{{0,1,2,3,18,19,22,23}};
+    std::array<juce::TextButton,4> modeButtons;
+    std::array<juce::TextButton,8> slotButtons;
+    juce::TextButton shiftKey{"shift"},helpKey{"?"},tapTempoKey{"TAP"};
+    double lastTempoTap=0;
     std::array<juce::String,4> knobLabels;
     std::array<juce::TextButton,5> pageButtons;
     juce::ComboBox presets,tapeTrack,tapeLength;
+    juce::TextButton importBank{"BANK"};
     juce::TextButton saveSession{"SAVE"},loadSession{"OPEN"};
     juce::TextButton loadSample{"LOAD"},loopSample{"LOOP"},tapePlay{"PLAY"},tapeRecord{"REC"},overdub{"OVER"},rewind{"|<"},clear{"CLEAR"},exportTape{"EXPORT"},octaveDown{"OCT -"},octaveUp{"OCT +"};
     juce::Slider tapeSpeed;

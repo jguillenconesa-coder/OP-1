@@ -14,15 +14,17 @@ struct Parameters {
     float attack=.02f,decay=.2f,sustain=.8f,release=.3f;
     float lfoRate=1,lfoDepth=0; int lfoDestination=0,lfoShape=0;
     float delayTime=.281f,feedback=.42f,drive=0;
-    bool sampleLoop=false;
+    bool sampleLoop=false; float sampleRoot=60;
 };
 struct Sample { std::vector<float> frames; double rate=48000; };
 class Engine {
 public:
     static constexpr int polyphony=8;
-    void prepare(double rate) { sampleRate=std::max(8000.0,rate); smoothing=float(1-std::exp(-1.0/(sampleRate*.012))); reset(); }
-    void reset() { voices={}; delay.fill(0); write=0; filter=0; current={}; lfoPhase=0; bends.fill(0); pedals.fill(false); }
+    void prepare(double rate) { sampleRate=std::max(8000.0,rate); smoothing=float(1-std::exp(-1.0/(sampleRate*.012))); cachedCutoff=-1;reset(); }
+    void reset() { voices={}; delay.fill(0); write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1; }
     void setSample(Sample data) { sample=std::move(data); voices={}; }
+    void swapSample(Sample& data) {std::swap(sample,data);voices={};}
+    void swapKit(std::array<Sample,8>& data) {kit.swap(data);voices={};}
     const Sample& getSample() const { return sample; }
     void setKit(std::array<Sample,8> data) { kit=std::move(data); voices={}; }
     const std::array<Sample,8>& getKit() const { return kit; }
@@ -30,7 +32,7 @@ public:
         if(note>=60) return (note-60)%8;
         switch(note) {case 35:case 36:return 0;case 38:case 40:return 1;case 42:case 44:return 2;case 46:return 3;case 41:case 43:case 45:case 47:case 48:case 50:return 4;case 39:return 5;case 49:case 57:return 6;case 37:case 51:return 7;default:return note%8;}
     }
-    void pitchBend(int channel,float semitones) { bends[channelIndex(channel)]=std::clamp(semitones,-2.f,2.f); }
+    void pitchBend(int channel,float semitones) { bends[channelIndex(channel)]=std::exp2(std::clamp(semitones,-2.f,2.f)/12.f); }
     void sustainPedal(int channel,bool down) {
         pedals[channelIndex(channel)]=down;
         if(!down) for(auto& v:voices) if(v.channel==channel&&!v.keyDown) v.released=true;
@@ -42,8 +44,7 @@ public:
         *v={}; v->active=true; v->keyDown=true; v->note=note; v->channel=channel;
         v->velocity=std::clamp(velocity,0.f,1.f); v->age=++age;
         v->frequency=440.0*std::pow(2.0,(note-69)/12.0);
-        v->stringLength=std::clamp(int(sampleRate/v->frequency),2,int(v->stringBuffer.size()));
-        for(int i=0;i<v->stringLength;++i) v->stringBuffer[size_t(i)]=noise()*.6f;
+        v->stringLength=std::clamp(int(sampleRate/v->frequency),2,8192);
     }
     void noteOff(int note,int channel=1) {
         for(auto& v:voices) if(v.active&&v.note==note&&v.channel==channel) { v.keyDown=false; if(!pedals[channelIndex(channel)]) v.released=true; }
@@ -52,27 +53,44 @@ public:
         for(auto& v:voices) if(channel==0||v.channel==channel) { v.keyDown=false; v.released=true; }
         if(channel==0) pedals.fill(false); else pedals[channelIndex(channel)]=false;
     }
+    struct VisualState {float envelope=0,progress=0,lfo=0;int active=0,stage=0;uint64_t trigger=0;};
+    VisualState visualState(int mode) const noexcept {
+        VisualState out;out.trigger=age;out.lfo=float(lfoPhase);uint64_t latest=0;
+        for(const auto& v:voices) if(v.active) {
+            ++out.active;out.envelope=std::max(out.envelope,v.level);
+            if(v.age>=latest) {latest=v.age;out.stage=v.released?4:v.stage==0?1:std::abs(v.level-currentSustain)>.005f?2:3;
+                const size_t length=mode==5?kit[size_t(kitSlot(v.note))].frames.size():sample.frames.size();
+                if(length) out.progress=std::clamp(float(v.samplePosition/double(length))+(mode==3?current.tone*.9f:0.f),0.f,1.f);
+            }
+        }
+        return out;
+    }
     float next(const Parameters& target) {
         auto follow=[this](float& v,float t){v+=smoothing*(t-v);};
         follow(current.tone,target.tone); follow(current.color,target.color); follow(current.envelope,target.envelope);
         follow(current.effect,target.effect); follow(current.volume,target.volume); follow(current.drive,target.drive);
         follow(current.delayTime,target.delayTime); follow(current.feedback,target.feedback);
-        const auto& p=current;
+        const auto& p=current;currentSustain=target.sustain;
         lfoPhase+=std::clamp(double(target.lfoRate),.05,20.0)/sampleRate; lfoPhase-=std::floor(lfoPhase);
         const double lfo=target.lfoDepth*(target.lfoShape==1 ? 1-4*std::abs(lfoPhase-.5) : target.lfoShape==2 ? (lfoPhase<.5?1:-1) : std::sin(2*pi*lfoPhase));
         const double pitchMod=target.lfoDestination==0?lfo*2:0;
+        const double pitchFactor=pitchMod==0?1:std::exp2(pitchMod/12);
+        const double kitPitch=target.engine==5?std::exp2((p.tone-.5)*2):1;
+        if(cachedAttack!=target.attack||cachedMacro!=p.envelope) attackStep=float(1/(sampleRate*(.001+target.attack*target.attack*4*(.5+p.envelope))));
+        if(cachedDecay!=target.decay) decayFactor=float(std::exp(-1/(sampleRate*(.005+target.decay*target.decay*3))));
+        if(cachedRelease!=target.release||cachedMacro!=p.envelope) releaseFactor=float(std::exp(-1/(sampleRate*(.008+target.release*target.release*5*(.5+p.envelope)))));
+        cachedAttack=target.attack;cachedDecay=target.decay;cachedRelease=target.release;cachedMacro=p.envelope;
+        if(cachedRoot!=target.sampleRoot) {cachedRoot=target.sampleRoot;rootFrequency=440*std::exp2((cachedRoot-69)/12);}
+
         float sum=0;
         for(auto& v:voices) {
             if(!v.active) continue;
-            const float attack=.001f+target.attack*target.attack*4.f*(.5f+p.envelope);
-            const float decay=.005f+target.decay*target.decay*3.f;
-            const float release=.008f+target.release*target.release*5.f*(.5f+p.envelope);
-            if(v.released) v.level*=float(std::exp(-1.0/(release*sampleRate)));
-            else if(v.stage==0) { v.level=std::min(1.f,v.level+float(1.0/(attack*sampleRate))); if(v.level>=1) v.stage=1; }
-            else v.level=target.sustain+(v.level-target.sustain)*float(std::exp(-1.0/(decay*sampleRate)));
+            if(v.released) v.level*=releaseFactor;
+            else if(v.stage==0) {v.level=std::min(1.f,v.level+attackStep);if(v.level>=1) v.stage=1;}
+            else v.level=target.sustain+(v.level-target.sustain)*decayFactor;
             if(target.engine!=4&&target.engine!=5&&v.released&&v.level<.0001f) { v.active=false; continue; }
-            const double bend=bends[channelIndex(v.channel)]+pitchMod;
-            const double frequency=v.frequency*std::pow(2.0,bend/12.0);
+            const double bend=bends[channelIndex(v.channel)]*pitchFactor;
+            const double frequency=v.frequency*bend;
             v.phase+=frequency/sampleRate; v.phase-=std::floor(v.phase);
             v.modPhase+=frequency*(1+std::round(p.color*7))/sampleRate; v.modPhase-=std::floor(v.modPhase);
             float s=0, amplitude=v.level;
@@ -82,8 +100,10 @@ public:
                 const double phase=v.phase<bendPoint?.5*v.phase/bendPoint:.5+.5*(v.phase-bendPoint)/(1-bendPoint);
                 s=float(std::cos(2*pi*phase)*(1-p.color*.45)+std::sin(4*pi*v.phase)*p.color*.45);
             } else if(target.engine==2) {
+                auto& stringBuffer=stringBuffers[size_t(&v-voices.data())];
+                if(!v.stringReady) {for(int i=0;i<v.stringLength;++i) stringBuffer[size_t(i)]=noise()*.6f;v.stringReady=true;}
                 auto a=size_t(v.stringIndex),b=size_t((v.stringIndex+1)%v.stringLength);
-                s=v.stringBuffer[a]; v.stringBuffer[a]=(s+v.stringBuffer[b])*(.475f+p.tone*.0245f);
+                s=stringBuffer[a]; stringBuffer[a]=(s+stringBuffer[b])*(.475f+p.tone*.0245f);
                 v.stringIndex=(v.stringIndex+1)%v.stringLength;
                 s=s*(1-p.color*.5f)+float(std::sin(2*pi*v.phase))*v.level*p.color*.25f;
             } else if(target.engine==3&&!sample.frames.empty()) {
@@ -97,7 +117,7 @@ public:
                 const auto a=std::min(size_t(position),sample.frames.size()-1),b=std::min(a+1,sample.frames.size()-1);
                 const float fraction=float(position-std::floor(position));
                 s=sample.frames[a]+fraction*(sample.frames[b]-sample.frames[a]);
-                v.samplePosition+=sample.rate/sampleRate*std::pow(2.0,(v.note-60+bend)/12.0);
+                v.samplePosition+=sample.rate/sampleRate*v.frequency/rootFrequency*bend;
             } else if(target.engine==5) {
                 const auto& hit=kit[size_t(kitSlot(v.note))];
                 const double length=hit.frames.size()*std::clamp(double(p.color),.05,1.0);
@@ -105,7 +125,7 @@ public:
                 const auto a=std::min(size_t(v.samplePosition),hit.frames.size()-1),b=std::min(a+1,hit.frames.size()-1);
                 const float fraction=float(v.samplePosition-std::floor(v.samplePosition));
                 s=hit.frames[a]+fraction*(hit.frames[b]-hit.frames[a]);
-                v.samplePosition+=hit.rate/sampleRate*std::pow(2.0,((p.tone-.5)*24+bend)/12.0);
+                v.samplePosition+=hit.rate/sampleRate*kitPitch*bend;
                 amplitude=1; // Kit samples are one-shots; note-off does not truncate hits.
             } else if(target.engine==4) {
                 const int kind=(v.note%12==0||v.note%12==7)?0:(v.note%12==2||v.note%12==4)?1:2;
@@ -120,8 +140,9 @@ public:
             v.time+=1/sampleRate;
             sum+=s*amplitude*v.velocity*.16f;
         }
-        const double cutoff=(900+p.tone*14500)*std::pow(2.0,target.lfoDestination==1?lfo*3:0);
-        const float coefficient=float(1-std::exp(-2*pi*std::min(cutoff,sampleRate*.42)/sampleRate));
+        const double cutoff=(900+p.tone*14500)*(target.lfoDestination==1&&lfo!=0?std::exp2(lfo*3):1);
+        if(cutoff!=cachedCutoff) {cachedCutoff=cutoff;filterCoefficient=float(1-std::exp(-2*pi*std::min(cutoff,sampleRate*.42)/sampleRate));}
+        const float coefficient=filterCoefficient;
         filter+=coefficient*(sum-filter);
         const float driven=std::tanh(filter*(1+p.drive*12))/(1+p.drive*2);
         const auto lag=std::clamp(size_t(sampleRate*p.delayTime),size_t(1),delay.size()-1);
@@ -132,13 +153,16 @@ public:
 private:
     static size_t channelIndex(int ch) { return size_t(std::clamp(ch,1,17)-1); }
     struct Voice {
-        bool active=false,released=false,keyDown=false; int note=0,channel=1,stage=0,stringLength=2,stringIndex=0;
+        bool active=false,released=false,keyDown=false,stringReady=false; int note=0,channel=1,stage=0,stringLength=2,stringIndex=0;
         uint64_t age=0; float velocity=0,level=0,lastNoise=0;
         double phase=0,modPhase=0,frequency=440,samplePosition=0,time=0,drumPhase=0;
-        std::array<float,8192> stringBuffer{};
     };
     float noise() { random^=random<<13; random^=random>>17; random^=random<<5; return float(double(random)/4294967295.0*2-1); }
+    float currentSustain=.8f;
+    float cachedAttack=-1,cachedDecay=-1,cachedRelease=-1,cachedMacro=-1,attackStep=0,decayFactor=0,releaseFactor=0;
+    double cachedRoot=-1,rootFrequency=261.625565,cachedCutoff=-1;float filterCoefficient=0;
     double sampleRate=48000,lfoPhase=0; float smoothing=.0017f; Parameters current;
+    std::array<std::array<float,8192>,polyphony> stringBuffers{};
     std::array<Voice,polyphony> voices{}; std::array<float,192000> delay{};
     std::array<float,17> bends{}; std::array<bool,17> pedals{};
     Sample sample; std::array<Sample,8> kit;

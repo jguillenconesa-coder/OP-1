@@ -27,8 +27,8 @@ public:
     float process(float input,bool play,bool record,bool overdub,int selected,float speed,float seconds,const std::array<float,4>& gains) {
         if(!play||tracks[0].empty()) return input;
         const auto length=std::clamp(size_t(rate*seconds),size_t(2),tracks[0].size());
-        position=std::fmod(position+double(length),double(length));
-        const auto a=size_t(position),b=(a+1)%length; const float fraction=float(position-double(a));
+        if(position<0||position>=double(length)) {position=std::fmod(position,double(length));if(position<0)position+=double(length);}
+        const auto a=size_t(position),b=a+1==length?size_t(0):a+1; const float fraction=float(position-double(a));
         float mixed=input;
         for(size_t i=0;i<4;++i) {
             const float old=tracks[i][a]+fraction*(tracks[i][b]-tracks[i][a]);

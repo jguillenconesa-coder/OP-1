@@ -30,3 +30,5 @@ OTTO/TOP-1 son referencias de diseño, no dependencias incorporadas. Sus fuentes
 Las herramientas de compilación/prueba no se distribuyen dentro del instalador. El código fuente de JUCE conserva sus propios créditos y avisos de dependencias. Véanse [avisos de terceros](THIRD_PARTY_NOTICES.md) y [licencia del proyecto](LICENSE).
 
 Factory sound bank: 25 original parameter recipes, 24 original drum one-shots and four pitched samples generated for this project. The WAV assets are CC0-1.0; the code retains AGPL-3.0-only. Format references: [te-op1](https://github.com/jstnfst/te-op1) (Field) and [OP Patch Utility](https://github.com/AlexCharlton/op-patch-util); no source or sound assets were copied from these references.
+
+OLED animation references: OTTO-1 Nuke, TapeScreen and DrumSampleScreen, revision ba534c6c1ed93a6b15cd13a93287b9e8f6f8ca6b (MPL-2.0 upstream). Pocket One implements original JUCE drawing code and geometry; no OTTO source/assets were copied. Hardware layout also references the user-supplied OP-1 user guide v2.2 and photographs, which are not redistributed.

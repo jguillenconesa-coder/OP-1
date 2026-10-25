@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "PluginProcessor.h"
+#include "ScreenAnimations.h"
 #include <iostream>
 #include <memory>
 #include <stdexcept>
@@ -90,11 +91,62 @@ int main(int argc,char** argv) {
   midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,38,.8f),0);kitRestored->processBlock(buffer,midi);
   check(buffer.getMagnitude(0,0,256)>.001,"Embedded kit state failed to restore");
   p->state.getParameter("tapePlay")->setValueNotifyingHost(0);p->state.getParameter("tapeRecord")->setValueNotifyingHost(0);p->applyPreset(0);
-  if(argc>1) {
+  // Import a ZIP bank into an isolated library, then reopen it and restore its sound state.
+  auto library=juce::File::getSpecialLocation(juce::File::tempDirectory).getNonexistentChildFile("pocket-bank-test","",false);
+  library.createDirectory();
+  struct RemoveLibrary {juce::File file;~RemoveLibrary(){file.deleteRecursively();}} removeLibrary{library};
+  auto bankProcessor=std::make_unique<PocketProcessor>(library.getChildFile("Library"));
+  if(argc==3&&juce::String::fromUTF8(argv[1])=="--bank") {
+   check(bankProcessor->importUserBank(juce::File(juce::String::fromUTF8(argv[2])),error),error.toRawUTF8());
+   const auto names=bankProcessor->userPresetNames();check(!names.isEmpty(),"Imported bank is empty");
+   for(int preset=0;preset<names.size();++preset) {
+    check(bankProcessor->applyUserPreset(preset,error),error.toRawUTF8());bankProcessor->prepareToPlay(48000,256);
+    midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,60,.8f),0);double total=0;
+    for(int b=0;b<1100;++b){bankProcessor->processBlock(buffer,midi);midi.clear();for(int i=0;i<256;++i){auto value=buffer.getSample(0,i);check(std::isfinite(value),"User preset output is not finite");total+=value*value;}}
+    if(total<=.000001) throw std::runtime_error("Silent user preset: "+names[preset].toStdString());
+   }
+   bankProcessor->getStateInformation(saved);auto independent=std::make_unique<PocketProcessor>(library.getChildFile("No bank installed"));independent->setStateInformation(saved.getData(),int(saved.getSize()));independent->prepareToPlay(48000,256);
+   midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,60,.8f),0);independent->processBlock(buffer,midi);
+   check(buffer.getMagnitude(0,0,256)>.00001,"User kit state requires external files");
+   std::cout<<"PASS: all "<<names.size()<<" user presets decoded, played finite audio, and restored without their bank"<<std::endl;
+  } else {
+   juce::MemoryBlock wavData;juce::WavAudioFormat format;
+   std::unique_ptr<juce::AudioFormatWriter> writer(format.createWriterFor(new juce::MemoryOutputStream(wavData,false),48000,1,16,{},0));
+   juce::AudioBuffer<float> fixture(1,4800);for(int i=0;i<4800;++i)fixture.setSample(0,i,float(std::sin(2*pocket::pi*220*i/48000))*.7f);
+   check(writer&&writer->writeFromAudioSampleBuffer(fixture,0,4800),"Bank test WAV generation failed");writer.reset();
+   auto makeZip=[&](const juce::String& manifest,const juce::String& audioPath){
+    juce::ZipFile::Builder builder;builder.addEntry(new juce::MemoryInputStream(wavData.getData(),wavData.getSize(),true),9,audioPath,juce::Time::getCurrentTime());
+    builder.addEntry(new juce::MemoryInputStream(manifest.toRawUTF8(),manifest.getNumBytesAsUTF8(),true),9,"bank.json",juce::Time::getCurrentTime());
+    auto target=library.getNonexistentChildFile("test",".zip",false);juce::FileOutputStream output(target);check(builder.writeToStream(output,nullptr),"Bank ZIP generation failed");return target;
+   };
+   const auto valid=makeZip(R"({"formatVersion":1,"presets":[{"name":"Test bass","sample":"samples/test.wav","parameters":{"sampleRoot":45,"attack":0,"effect":0}}]})","samples/test.wav");
+   bankProcessor->state.getParameter("tempo")->setValueNotifyingHost(.65f);const auto tempoBefore=bankProcessor->state.getRawParameterValue("tempo")->load();bankProcessor->steps[0].store(77);
+   check(bankProcessor->importUserBank(valid,error),"Valid bank import failed");check(bankProcessor->userPresetNames().size()==1,"Bank catalog missing");
+   check(bankProcessor->applyUserPreset(0,error),"User preset selection failed");check(bankProcessor->state.getRawParameterValue("sampleRoot")->load()==45,"Sample root note was not applied");
+   check(bankProcessor->state.getRawParameterValue("tempo")->load()==tempoBefore&&bankProcessor->steps[0].load()==77,"Sound preset changed tempo or pattern");
+   auto reopened=std::make_unique<PocketProcessor>(library.getChildFile("Library"));check(reopened->userPresetNames().size()==1,"Bank did not persist across instances");
+   const auto invalid=makeZip(R"({"formatVersion":1,"presets":[{"name":"Invalid","sample":"../escape.wav","parameters":{}}]})","../escape.wav");
+   check(!bankProcessor->importUserBank(invalid,error),"Unsafe bank path was accepted");check(!library.getChildFile("Library/escape.wav").exists(),"ZIP escaped its bank folder");
+   check(bankProcessor->userPresetNames().size()==1,"Failed import damaged existing bank");
+  }
+  // Every OLED page renders deterministic frames and reacts to its live telemetry.
+  for(int screen=0;screen<11;++screen) {
+   pocket::ScreenFrame frame;frame.engine=screen<6?screen:0;frame.page=screen<6?0:screen==10?4:screen-5;frame.mode=screen==10?3:2;frame.voices=4;frame.level=.2f;frame.envelope=.4f;frame.stage=1;frame.samplePosition=.2f;frame.lfoPhase=.2f;frame.tapePosition=.5f;frame.trackGains={.8f,.6f,.7f,.5f};frame.sample.fill(.5f);
+   juce::Image first(juce::Image::ARGB,251,123,true),second(juce::Image::ARGB,251,123,true);
+   {juce::Graphics graphics(first);pocket::drawScreen(graphics,frame);}
+   frame.time=2.1f;frame.level=.7f;frame.envelope=.8f;frame.samplePosition=.8f;frame.lfoPhase=.8f;frame.tapePosition=1.7f;
+   {juce::Graphics graphics(second);pocket::drawScreen(graphics,frame);}
+   int changed=0;for(int y=0;y<123;++y)for(int x=0;x<251;++x)if(first.getPixelAt(x,y)!=second.getPixelAt(x,y))++changed;
+   check(changed>3,"OLED page did not respond to animation telemetry");
+  }
+  if(argc>1&&juce::String::fromUTF8(argv[1])!="--bank") {
+   p->prepareToPlay(48000,256);midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,69,.8f),0);p->processBlock(buffer,midi);midi.clear();
    std::unique_ptr<juce::AudioProcessorEditor> editor(p->createEditor());
    auto image=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);
    juce::FileOutputStream output{juce::File(juce::String::fromUTF8(argv[1]))}; output.setPosition(0);output.truncate();juce::PNGImageFormat png;
    check(png.writeImageToStream(image,output),"Screenshot failed");
+   auto frames=juce::File::getSpecialLocation(juce::File::tempDirectory).getChildFile("pocket-one-animation-preview");frames.createDirectory();
+   for(int frame=0;frame<24;++frame) {for(int block=0;block<10;++block)p->processBlock(buffer,midi);auto preview=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);juce::FileOutputStream file(frames.getChildFile("frame-"+juce::String(frame).paddedLeft('0',2)+".png"));check(png.writeImageToStream(preview,file),"Animation preview failed");}
    for(auto* child:editor->getChildren()) if(auto* button=dynamic_cast<juce::TextButton*>(child)) if(button->getButtonText()=="TAPE") button->onClick();
    auto tapeImage=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);
    juce::FileOutputStream tapeOutput{juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("tape.png")};
