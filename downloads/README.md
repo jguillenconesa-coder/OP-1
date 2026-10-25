@@ -1,6 +1,6 @@
 # Descargas versionadas
 
-**Windows: utiliza [v0.2.1](v0.2.1)**. Corrige el error de ordinal 345 al abrir la aplicación y la dependencia ausente que puede impedir el escaneo VST3.
+**Windows: utiliza [v0.2.2](v0.2.2)**. Añade la interfaz hardware animada, bancos de usuario y mejoras de audio. Mantiene la corrección del ordinal 345 de [v0.2.1](v0.2.1).
 
 Se incluyen instalador Windows x64, ZIP portable, paquete Linux, kit de compilación, fuentes completas con JUCE y `SHA256SUMS.txt`. Los archivos se publican también en GitHub Releases. Comprueba hashes con `sha256sum --check SHA256SUMS.txt` o `Get-FileHash -Algorithm SHA256`.
 

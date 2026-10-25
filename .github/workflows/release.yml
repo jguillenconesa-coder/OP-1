@@ -9,14 +9,14 @@ on:
       tag:
         description: Existing release tag with downloads/<tag> assets
         required: true
-        default: v0.2.1
+        default: v0.2.2
 permissions:
   contents: write
 jobs:
   publish:
     runs-on: ubuntu-latest
     env:
-      RELEASE_TAG: ${{ github.event.inputs.tag || (startsWith(github.ref, 'refs/tags/') && github.ref_name) || 'v0.2.1' }}
+      RELEASE_TAG: ${{ github.event.inputs.tag || (startsWith(github.ref, 'refs/tags/') && github.ref_name) || 'v0.2.2' }}
     steps:
       - uses: actions/checkout@v4
         with:

@@ -1,3 +1,17 @@
+# 0.2.2
+
+- Rebuilt the editor around the supplied hardware layout, raised key caps, mode icons, T1–T4, sound slots, transport and tap tempo.
+- Added original OTTO-inspired animated OLED screens driven by bounded audio telemetry; 30 fps UI rendering.
+- Added persistent user ZIP banks, root notes, safe import and a reproducible bank generator. Verified the separately delivered 79-preset user bank.
+- Removed the keyboard mutex from the audio callback, cached parameter pointers and DSP coefficients, and avoided unnecessary string-buffer clearing and per-sample tape modulo.
+- Added 36 realtime workloads with tracked callback heap checks and timing reports. Four Linux/six Wine Windows suites and installer/uninstaller checks pass. Native Ableton validation remains pending.
+
+# 0.2.1
+
+- Fixed Windows ordinal 345 loader failures by embedding Common Controls v6 activation manifests in EXE and VST3. Added a regression check that rejects the original 0.2.0 executable.
+- Added 25 original factory presets, three eight-pad drum kits and four melodic samples (28 CC0 WAVs).
+- Fixed native NSIS packaging paths/stubs. Native CI passed Windows/Linux/macOS, including Windows app startup and installer/uninstaller checks.
+
 # 0.2.0
 
 - Added sampler and kick/snare/hat synthesis engines.
