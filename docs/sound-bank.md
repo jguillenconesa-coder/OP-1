@@ -27,3 +27,14 @@ Las 28 muestras WAV se incluyen además en `Assets/Factory`, en los paquetes de 
 | [Manual oficial del OP-1 original](https://teenage.engineering/guides/op-1/original/synthesizer) | Referencia prevista para los motores y controles; la consulta directa está bloqueada en este entorno. |
 
 No se ha localizado y validado un banco oficial de fábrica redistribuible. Un preset de síntesis del hardware contiene parámetros de su motor; **Pocket One todavía no importa esos parámetros ni emula todos esos motores**. Un AIFF de batería puede contener varios golpes y marcas dentro de un solo archivo: el botón LOAD actual lo importa como una muestra melódica, no convierte automáticamente sus slices en un kit. Los presets actuales aproximan familias de timbres FM, fase, cuerda y sampler; no se ha medido su semejanza frente a presets originales.
+
+### Patches concretos localizados
+
+En el directorio público [`te-op1/presets`](https://github.com/jstnfst/te-op1/tree/master/presets) se comprobaron archivos de referencia como:
+
+- [Gentle bass / PHASE](https://github.com/jstnfst/te-op1/blob/master/presets/phase-nitro-element-gentle_bass.json).
+- [Realistic cello / FM](https://github.com/jstnfst/te-op1/blob/master/presets/fm-spring-tremolo-realistic_cello.json).
+- [Violons / STRING](https://github.com/jstnfst/te-op1/blob/master/presets/string-grid-tremolo-violons.json).
+- [Glass harp / DIGITAL](https://github.com/jstnfst/te-op1/blob/master/presets/digital-punch-value-glass_harp.json).
+
+Son referencias comunitarias documentadas en un proyecto para Field; su presencia no demuestra que formen parte del banco de fábrica del OP-1 original ni concede por sí sola permiso para redistribuirlas. En Pocket One, Round bass y Bowed hybrid ofrecen familias de timbre relacionadas. DIGITAL no está implementado como motor propio y el pad de fase no lo sustituye de forma equivalente. Los parámetros numéricos de esos patches no se han copiado ni convertido automáticamente.

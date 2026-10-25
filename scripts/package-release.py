@@ -96,6 +96,11 @@ with tarfile.open(output/f'Pocket-One-{version}-linux-x86_64.tar.gz', 'w:gz') as
     for name in ['README.md', 'README.en.md', 'CREDITS.md', 'THIRD_PARTY_NOTICES.md', 'LICENSE']:
         archive.add(root/name, f'Pocket-One-{version}/'+name)
 (output/f'Pocket-One-{version}-Windows-x64-Setup.exe').write_bytes(required[0].read_bytes())
+with zipfile.ZipFile(output/f'Pocket-One-{version}-Factory-Samples.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
+    for item in sorted((root/'Assets/Factory').iterdir()):
+        if item.is_file(): archive.write(item, 'Factory Samples/'+item.name)
+    archive.write(root/'licenses/CC0-1.0.txt', 'Factory Samples/CC0-1.0.txt')
+    archive.write(root/'docs/sound-bank.md', 'Factory Samples/sound-bank.md')
 lines = []
 for item in sorted(output.iterdir()):
     if item.is_file() and item.suffix in ('.exe', '.zip', '.gz'):

@@ -38,3 +38,5 @@ A user reported Windows loader error "ordinal 345" on the standalone and failure
 ## Factory bank regression coverage (0.2.1)
 
 The processor smoke suite plays all 25 presets, checks finite/nonzero output, verifies the four embedded melodic WAVs, plays all eight slots in each of the three kits plus GM kick aliases, and restores an embedded kit session before triggering GM snare. Five Windows suites passed under Wine after the manifest and factory bank changes; installer file hashes, VST3 loading and uninstall also passed. The new manifest probe rejects the original published 0.2.0 executable. Native Ableton validation remains pending.
+
+The updated three-suite Linux build also passed, including factory-bank playback and state coverage. Native Windows CI run 40239892035 passed processor/module/manifest tests and standalone startup, then failed at NSIS input path handling; the packaging script now uses the compiler platform’s path separator. This is separate from the original missing Common Controls activation manifest.
