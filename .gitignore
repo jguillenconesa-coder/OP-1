@@ -1,0 +1,7 @@
+/build*/
+/.cache/
+*.wav
+.DS_Store
+
+/dist/
+*.pocketone

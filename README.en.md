@@ -1,0 +1,79 @@
+# Pocket One 0.2
+
+An OP-1-inspired **VST3 instrument and standalone application**, written in C++17 with JUCE 8. Independent of Teenage Engineering; no original firmware, factory samples, graphics or branding are included. The interface uses a grey enclosure, dark animated display, blue/green/white/orange encoders and two rows of button keys.
+
+![Actual JUCE editor](docs/interface.png)
+
+## Instruments and controls
+
+Eight-voice velocity-sensitive **FM**, **phase distortion**, **plucked string**, **sampler** and **drum** engines. Select the engine above the display, use the factory-sound menu, or play MIDI and the on-screen keyboard. OCT -/+ transposes the displayed keyboard. Computer keyboard notes start on A when the keyboard component has focus. MIDI channels remain independent for note release/sustain, with a fixed +/-2 semitone pitch wheel range on FM, phase and sampler. The string engine's delay-line fundamental is not currently pitch-bent; its tonal overlay can be modulated.
+
+The four encoders change function with the selected page:
+
+| Page | Blue | Green | White | Orange |
+| --- | --- | --- | --- | --- |
+| SYNTH | Tone / sample start | Color / sample length | Envelope macro | Echo mix |
+| ENV | Attack | Decay | Sustain | Release |
+| LFO | Rate (0.05–20 Hz) | Depth | Pitch / filter | Sine / triangle / square |
+| FX | Delay time (50–1000 ms) | Feedback | Echo mix | Drive |
+| TAPE | Track 1 gain | Track 2 gain | Track 3 gain | Track 4 gain |
+
+Double-click an encoder to restore its parameter default. Parameters are automatable in a DAW. The five original macros, delay time/feedback and drive use 12 ms smoothing; engine switches and track gains are immediate. The envelope macro scales attack/release in addition to the ENV page's independent ADSR controls. OUTPUT is the master level, affecting live sound and tape playback, and is smoothed over 5 ms.
+
+**Sampler:** choose SAMPLER, then LOAD a WAV/AIFF. Up to the first 16 seconds at 8–192 kHz are imported and stereo files are downmixed to mono. C4/MIDI 60 is the root. START and LENGTH trim the window; LOOP repeats it while the note is held. No microphone or incoming DAW audio recording is implemented. Empty sampler slots display a load prompt.
+
+**Drums:** C/G pitch classes trigger kick, D/E snare, and other pitch classes hi-hat. Tone, Color and the Envelope macro change pitch/noise/decay. Hits are one-shots; there is no factory drum-sample library.
+
+**Sequencer:** PLAY enables 16th-note playback; in a DAW, also start host transport. Click steps to toggle gates. Play a note, then **Shift-click** a step to write that pitch. Hover a step to read its note. Host PPQ/tempo drive pattern position, including seeks; otherwise the internal tempo runs the pattern. MIDI sustain (CC64) is supported. STOP disables sequence/tape recording/playback and requests a voice/effect panic.
+
+## Four-track tape and sessions
+
+![Actual tape page](docs/tape.png)
+
+Choose TAPE, select a track and a 4/8/16-second loop. Arm REC, press the tape PLAY button, then play the instrument or sequence. OVER adds to existing material; with OVER off, recording replaces the selected track as the playhead passes. Other tracks keep playing. Turn REC off to listen. In a DAW, host transport must also run.
+
+Playback speed ranges from -2x to +2x, including reverse and freeze. Recording always advances at normal 1x. `|<` rewinds; CLEAR immediately erases the selected track. Track audio is recorded before the master OUTPUT gain. Four mono tracks are summed to stereo dual mono. EXPORT writes the selected loop duration as a **four-channel, 24-bit WAV of the raw tracks**; speed/mixer/master settings are not baked into the export.
+
+**SAVE / OPEN** manage complete `.pocketone` sessions. DAW project state also embeds the sample, pattern and all four tape tracks, using 24-bit WAV compressed for storage. Original sample paths are not required. Restoring disarms tape recording. Save/load operations copy and encode audio and can briefly block processing; do them while transport is stopped. Standalone automatic persistence has not been established, so explicitly save before quitting.
+
+This is a constrained loop recorder, not a full recreation of OP-1 tape. It has no cut/lift/drop, undo, long disk-streamed tape, bounce, microphone/radio, or stereo panning. It is not compatible with original OP-1 presets/projects. There has been no measured hardware matching. High harmonic settings can alias; production-grade oversampling remains outstanding.
+
+## Windows installer
+
+See [Windows build/install instructions](docs/windows.md). Run `packaging\windows\build.cmd` on Windows with Visual Studio 2022 C++ tools, CMake, Git and NSIS 3.11+ installed. The installer is generated in `dist/`, installs the VST3 bundle to the standard Common Files folder, installs the standalone app/Start menu shortcut, and registers an uninstaller. The C++ runtime is statically linked.
+
+**Windows x64 installer generated:** `dist/Pocket-One-0.2.0-Windows-x64-Setup.exe`. It contains real PE64 Windows binaries cross-compiled with clang-cl and Microsoft's CRT/SDK. Four Windows test targets pass under Wine 10, including VST3 module loading. Installation file hashes, registration and uninstall were checked in an isolated Wine prefix. These checks do not replace a test in a native Windows DAW. The installer is unsigned. See [cross-build instructions](docs/windows-cross-build.md). GitHub Actions is configured for native MSVC validation but has not been run.
+
+## Build from source
+
+CMake 3.22+, a C++17 compiler and Git are required. JUCE is pinned to `51a8a6d7aeae7326956d747737ccf1575e61e209` (8.0.6); use `-DJUCE_PATH=/path/to/JUCE` for an existing checkout. Native Windows builds require MSVC, not MinGW.
+
+Debian/Ubuntu prerequisites:
+
+```sh
+sudo apt-get install build-essential cmake pkg-config libasound2-dev \
+  libx11-dev libxext-dev libxinerama-dev libxrandr-dev libxcursor-dev \
+  libxrender-dev libxfixes-dev libfreetype-dev libfontconfig-dev libgl-dev
+```
+
+From the repository root (Windows: use `cmake -S . -B build -A x64` instead of the first command):
+
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release --parallel 2
+ctest --test-dir build -C Release --output-on-failure
+```
+
+Outputs: `build/PocketOne_artefacts/Release/VST3/Pocket One.vst3` and `Standalone/`. Copy the **entire VST3 bundle** to your plugin directory, rescan, and insert it on an instrument track. Binaries are specific to their build operating system; Linux binaries cannot run in Windows DAWs. For this prepared cloud machine, source `scripts/cloud-env.sh` before building; see [cloud setup](docs/cloud.md).
+
+## Verification and licensing
+
+Three CTest targets exercise the core engines, tape and plugin, including real audio, MIDI offsets, host seeks, embedded sample/tape state and four-channel export. For dependency-free core tests, configure with `-DPOCKET_BUILD_PLUGIN=OFF`. `engine_tests build/demo.wav` renders an audio demonstration. The smoke executable optionally captures both editor pages under a real/virtual display:
+
+```sh
+xvfb-run -a ./build/plugin_smoke_artefacts/Release/plugin_smoke "$PWD/docs/interface.png"
+```
+
+See [validation evidence and limitations](docs/validation.md) and [OTTO/TOP-1 design references](docs/references.md). No code or assets from those projects have been imported.
+
+Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.2.0`.
