@@ -30,7 +30,7 @@ if revision != '51a8a6d7aeae7326956d747737ccf1575e61e209':
 
 # Source is an explicit list; exclude build caches, downloads, Git data and symlinks.
 source = []
-for name in ['Source', 'Tests', 'cmake', 'scripts', 'packaging', 'docs', 'licenses', '.github']:
+for name in ['Source', 'Tests', 'Assets', 'cmake', 'scripts', 'packaging', 'docs', 'licenses', '.github']:
     source.extend(p for p in (root/name).rglob('*') if p.is_file() and not p.is_symlink())
 source.extend(root/name for name in ['CMakeLists.txt', '.gitignore', 'README.md', 'README.en.md',
                                    'CREDITS.md', 'THIRD_PARTY_NOTICES.md', 'CONTRIBUTING.md', 'LICENSE'])

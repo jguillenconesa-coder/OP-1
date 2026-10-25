@@ -35,3 +35,7 @@ No code, samples, fonts, artwork or logos from Teenage Engineering, OTTO-1 or TO
 ## Corresponding source and rebuilding
 
 The `Pocket-One-0.2.0-corresponding-source.tar.gz` download contains this project's source, build/installer scripts, licence notices and the complete pinned JUCE source. Its root `BUILD-FROM-SOURCE.md` explains offline JUCE selection. Native Windows builds still require the normal Windows compiler/SDK installation. The archive does not contain credentials, machine-specific caches, private Git metadata or unrelated workspace files.
+
+## Original factory samples
+
+The 28 WAVs in `Assets/Factory` were procedurally generated for Pocket One and are dedicated under CC0-1.0. They contain no OP-1 factory recordings. The generator is project code under AGPL-3.0-only. See `Assets/Factory/README.md`.

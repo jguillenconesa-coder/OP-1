@@ -12,7 +12,7 @@ try {
     if (!(Test-Path $Nsis)) { throw "Install NSIS 3.11+ (for example: choco install nsis)." }
     $OutputDir = Join-Path $SourceDir "dist"
     New-Item -ItemType Directory -Force $OutputDir | Out-Null
-    & $Nsis "/DARTIFACT_DIR=$Artifacts" "/DSOURCE_DIR=$SourceDir" "/DOUTPUT_DIR=$OutputDir" (Join-Path $PSScriptRoot "PocketOne.nsi") 2>&1 | Tee-Object -FilePath $Log
+    & $Nsis "/DPATH_SEP=\" "/DARTIFACT_DIR=$Artifacts" "/DSOURCE_DIR=$SourceDir" "/DOUTPUT_DIR=$OutputDir" (Join-Path $PSScriptRoot "PocketOne.nsi") 2>&1 | Tee-Object -FilePath $Log
     $CompilerExit = $LASTEXITCODE
     if ($CompilerExit -ne 0) { throw "NSIS failed with exit code $CompilerExit" }
 } catch {

@@ -80,3 +80,7 @@ Pocket One se aproxima a la distribución de controles y al flujo creativo del O
 [Créditos completos](CREDITS.md): Teenage Engineering como inspiración; OTTO/TOP-1 como referencias; JUCE, Steinberg y los proyectos de herramientas/bibliotecas utilizados. No hay afiliación ni recursos originales copiados.
 
 Código original: **AGPL-3.0-only**, con [licencia completa](LICENSE). La distribución abierta usa la opción AGPLv3 de JUCE y GPLv3 del SDK VST3. Los componentes externos conservan sus licencias y avisos: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Factory sounds
+
+25 original presets, three embedded eight-pad drum kits and four melodic samples. See [the sound bank guide](docs/sound-bank.md) for MIDI mapping, sample credits and OP-1 preset references.

@@ -34,3 +34,7 @@ The original cloud setup script was exercised end-to-end and subsequently used f
 ## Correction for the original Windows 0.2.0 packages
 
 A user reported Windows loader error "ordinal 345" on the standalone and failure to discover the plugin in Live. Inspection confirmed that `/manifest:no` in the cross toolchain had dropped JUCE's Common Controls v6 dependency. Wine module loading had not exposed the missing activation context. Version 0.2.1 embeds explicit EXE/DLL manifest resources; regression checks inspect the actual PE resources before module loading. The previous Wine result must not be treated as proof that 0.2.0 started on native Windows.
+
+## Factory bank regression coverage (0.2.1)
+
+The processor smoke suite plays all 25 presets, checks finite/nonzero output, verifies the four embedded melodic WAVs, plays all eight slots in each of the three kits plus GM kick aliases, and restores an embedded kit session before triggering GM snare. Five Windows suites passed under Wine after the manifest and factory bank changes; installer file hashes, VST3 loading and uninstall also passed. The new manifest probe rejects the original published 0.2.0 executable. Native Ableton validation remains pending.

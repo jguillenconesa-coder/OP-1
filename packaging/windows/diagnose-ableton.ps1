@@ -18,6 +18,12 @@ if ($Offset -lt 0 -or $Offset -gt $Bytes.Length - 6) { throw 'Invalid PE header 
 if ([BitConverter]::ToUInt32($Bytes, $Offset) -ne 0x4550 -or [BitConverter]::ToUInt16($Bytes, $Offset + 4) -ne 0x8664) {
     throw 'The installed module is not a Windows x64 PE module.'
 }
+$Version = (Get-Item -LiteralPath $Module).VersionInfo.ProductVersion
+Write-Host "Installed plugin version: $Version"
+if ($Version -like '0.2.0*') {
+    Write-Host 'FAIL: 0.2.0 has a missing Common Controls manifest (ordinal 345). Install 0.2.1 or later.'
+    exit 1
+}
 Write-Host 'PASS: Windows x64 module is installed in the standard VST3 bundle location.'
 Get-FileHash -LiteralPath $Module -Algorithm SHA256 | Format-List
 Write-Host 'In Live Preferences/Settings > Plug-ins, enable VST3 system folders.'

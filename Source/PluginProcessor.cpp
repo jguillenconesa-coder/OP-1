@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "FactoryPresets.h"
+#include "FactoryData.h"
 namespace {
 juce::String encodeAudio(const juce::AudioBuffer<float>& audio,double rate) {
     juce::MemoryBlock data;
@@ -29,12 +31,13 @@ bool decodeAudio(const juce::String& encoded,juce::AudioBuffer<float>& audio,dou
 }
 }
 PocketProcessor::PocketProcessor() : AudioProcessor(BusesProperties().withOutput("Output",juce::AudioChannelSet::stereo(),true)),state(*this,nullptr,"PocketOne",layout()) {
+    loadFactoryKit(0);
     const int notes[]={60,-1,67,-1,63,-1,70,-1,60,72,67,-1,63,-1,58,-1};
     for(int i=0;i<16;++i) steps[size_t(i)].store(notes[i]);
 }
 juce::AudioProcessorValueTreeState::ParameterLayout PocketProcessor::layout() {
     juce::AudioProcessorValueTreeState::ParameterLayout p;
-    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"engine",1},"Engine",juce::StringArray{"FM","PHASE","STRING","SAMPLER","DRUM"},0));
+    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"engine",1},"Engine",juce::StringArray{"FM","PHASE","STRING","SAMPLER","DRUM","KIT"},0));
     auto number=[&](const char* id,float low,float high,float value){p.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{id,1},id,low,high,value));};
     auto flag=[&](const char* id){p.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{id,1},id,false));};
     for(auto pair:{std::pair{"tone",.45f},{"color",.35f},{"envelope",.35f},{"effect",.2f},{"volume",.7f},{"attack",.02f},{"decay",.2f},{"sustain",.8f},{"release",.3f},{"lfoDepth",0.f},{"delayFeedback",.42f},{"drive",0.f},{"track1",.8f},{"track2",.8f},{"track3",.8f},{"track4",.8f}}) number(pair.first,0,1,pair.second);
@@ -127,6 +130,7 @@ bool PocketProcessor::loadSample(const juce::File& file,juce::String& error) {
     for(int i=0;i<length;++i) data.frames[size_t(i)]=reader->numChannels>1?(audio.getSample(0,i)+audio.getSample(1,i))*.5f:audio.getSample(0,i);
     {const juce::ScopedLock lock(getCallbackLock()); engine.setSample(std::move(data)); sampleFrames.store(length);}
     for(auto pair:{std::pair{"tone",0.f},{"color",1.f},{"engine",3.f}}) {auto* parameter=state.getParameter(pair.first); parameter->beginChangeGesture(); parameter->setValueNotifyingHost(parameter->convertTo0to1(pair.second)); parameter->endChangeGesture();}
+    currentFactoryPreset.store(-1);
     return true;
 }
 void PocketProcessor::clearTape() {const juce::ScopedLock lock(getCallbackLock()); tape.clear(int(state.getRawParameterValue("tapeTrack")->load()));}
@@ -140,23 +144,62 @@ bool PocketProcessor::exportTape(const juce::File& file,juce::String& error) {
     if(!writer) {error="Cannot create WAV writer.";return false;}
     stream.release(); if(!writer->writeFromAudioSampleBuffer(audio,0,audio.getNumSamples())) {error="Could not write all tape frames.";return false;} return true;
 }
-void PocketProcessor::applyPreset(int index) {
-    const std::array<std::array<float,7>,6> presets{{{0,.18f,.15f,.2f,.15f,.01f,.18f},{0,.7f,.62f,.6f,.35f,.08f,.5f},{1,.58f,.3f,.4f,.28f,.04f,.4f},{2,.7f,.2f,.25f,.25f,.01f,.3f},{4,.28f,.2f,.3f,.05f,0,.1f},{4,.7f,.8f,.1f,.12f,0,.1f}}};
-    if(index<0||index>=int(presets.size())) return;
-    const auto& values=presets[size_t(index)]; const char* ids[]={"engine","tone","color","envelope","effect","attack","release"};
-    for(int i=0;i<7;++i) {auto* parameter=state.getParameter(ids[i]); parameter->beginChangeGesture(); parameter->setValueNotifyingHost(parameter->convertTo0to1(values[size_t(i)])); parameter->endChangeGesture();}
-    for(auto pair:{std::pair{"decay",.2f},{"sustain",.8f},{"lfoDepth",0.f},{"drive",0.f},{"delayTime",.281f},{"delayFeedback",.42f}}) {auto* parameter=state.getParameter(pair.first); parameter->beginChangeGesture(); parameter->setValueNotifyingHost(parameter->convertTo0to1(pair.second)); parameter->endChangeGesture();}
-    requestPanic();
+juce::StringArray PocketProcessor::factoryPresetNames() {
+    juce::StringArray names;for(const auto& preset:pocket::factoryPresets) names.add(preset.name);return names;
 }
+pocket::Sample PocketProcessor::factorySample(const juce::String& name) const {
+    int size=0;const char* bytes=FactoryData::getNamedResource(name.toRawUTF8(),size);
+    if(!bytes||size<1) return {};
+    juce::WavAudioFormat wav;
+    std::unique_ptr<juce::AudioFormatReader> reader(wav.createReaderFor(new juce::MemoryInputStream(bytes,size,false),true));
+    if(!reader) return {};
+    juce::AudioBuffer<float> audio(1,int(reader->lengthInSamples));
+    if(!reader->read(&audio,0,audio.getNumSamples(),0,true,false)) return {};
+    pocket::Sample result;result.rate=reader->sampleRate;
+    result.frames.assign(audio.getReadPointer(0),audio.getReadPointer(0)+audio.getNumSamples());return result;
+}
+void PocketProcessor::loadFactoryKit(int index) {
+    const char* kits[]={"Studio","Circuit","Dust"};
+    const char* hits[]={"kick","snare","closed_hat","open_hat","tom","clap","crash","rim"};
+    if(index<0||index>2) return;
+    std::array<pocket::Sample,8> kit;
+    for(size_t i=0;i<kit.size();++i) kit[i]=factorySample(juce::String(kits[index])+"_"+hits[i]+"_wav");
+    const juce::ScopedLock lock(getCallbackLock());engine.setKit(std::move(kit));
+}
+void PocketProcessor::applyPreset(int index) {
+    if(index<0||index>=int(pocket::factoryPresets.size())) return;
+    const auto& p=pocket::factoryPresets[size_t(index)];
+    // Decode factory assets off the audio thread; only swap under the callback lock.
+    if(p.sample>=0) {
+        const char* names[]={"VelvetKeys_wav","GlassMallet_wav","AirChoir_wav","LowPluck_wav"};
+        auto data=factorySample(names[p.sample]);const int frames=int(data.frames.size());
+        const juce::ScopedLock lock(getCallbackLock());engine.setSample(std::move(data));sampleFrames.store(frames);
+    }
+    if(p.kit>=0) loadFactoryKit(p.kit);
+    const std::pair<const char*,float> values[]={
+        {"engine",float(p.engine)},{"tone",p.tone},{"color",p.color},{"envelope",p.envelope},{"effect",p.effect},
+        {"attack",p.attack},{"release",p.release},{"decay",p.decay},{"sustain",p.sustain},
+        {"lfoRate",p.lfoRate},{"lfoDepth",p.lfoDepth},{"lfoDestination",0},{"lfoShape",0},
+        {"drive",p.drive},{"delayTime",.281f},{"delayFeedback",.42f},{"sampleLoop",0}};
+    for(const auto& value:values) {auto* parameter=state.getParameter(value.first);parameter->beginChangeGesture();parameter->setValueNotifyingHost(parameter->convertTo0to1(value.second));parameter->endChangeGesture();}
+    currentFactoryPreset.store(index);requestPanic();
+}
+
 void PocketProcessor::getStateInformation(juce::MemoryBlock& dest) {
     auto tree=state.copyState(); for(int i=0;i<16;++i) tree.setProperty("step"+juce::String(i),steps[size_t(i)].load(),nullptr);
+    std::array<pocket::Sample,8> kitCopy;
     juce::AudioBuffer<float> sampleAudio,tapeAudio; double sampleRate=48000,tapeRate=48000;
-    {const juce::ScopedLock lock(getCallbackLock()); const auto& sample=engine.getSample(); sampleRate=sample.rate;
+    {const juce::ScopedLock lock(getCallbackLock()); kitCopy=engine.getKit();const auto& sample=engine.getSample(); sampleRate=sample.rate;
         if(!sample.frames.empty()) {sampleAudio.setSize(1,int(sample.frames.size())); sampleAudio.copyFrom(0,0,sample.frames.data(),sampleAudio.getNumSamples());}
         const auto& tracks=tape.getTracks(); tapeRate=tape.getRate();
         if(!tracks[0].empty()) {tapeAudio.setSize(4,int(tracks[0].size())); for(int c=0;c<4;++c) tapeAudio.copyFrom(c,0,tracks[size_t(c)].data(),tapeAudio.getNumSamples());}
     }
     if(sampleAudio.getNumSamples()>0) tree.setProperty("sampleAudio",encodeAudio(sampleAudio,sampleRate),nullptr);
+    tree.setProperty("factoryPreset",currentFactoryPreset.load(),nullptr);
+    for(size_t i=0;i<kitCopy.size();++i) if(!kitCopy[i].frames.empty()) {
+        juce::AudioBuffer<float> hit(1,int(kitCopy[i].frames.size()));hit.copyFrom(0,0,kitCopy[i].frames.data(),hit.getNumSamples());
+        tree.setProperty("kitAudio"+juce::String(int(i)),encodeAudio(hit,kitCopy[i].rate),nullptr);
+    }
     if(tapeAudio.getNumSamples()>0) tree.setProperty("tapeAudio",encodeAudio(tapeAudio,tapeRate),nullptr);
     if(auto xml=tree.createXml()) copyXmlToBinary(*xml,dest);
 }
@@ -168,12 +211,24 @@ void PocketProcessor::setStateInformation(const void* data,int size) {
         const bool hasTape=decodeAudio(tree.getProperty("tapeAudio").toString(),tapeAudio,tapeRate,4)&&tapeAudio.getNumChannels()==4;
         if(auto record=tree.getChildWithProperty("id","tapeRecord");record.isValid()) record.setProperty("value",0.f,nullptr);
         // Encoded payloads belong to the state snapshot, not the live parameter tree.
+        std::array<pocket::Sample,8> restoredKit;
+        bool hasKit=false;
+        for(size_t i=0;i<restoredKit.size();++i) {
+            const auto key="kitAudio"+juce::String(int(i));juce::AudioBuffer<float> hit;double sr=32000;
+            if(decodeAudio(tree.getProperty(key).toString(),hit,sr,1)) {
+                restoredKit[i].rate=sr;restoredKit[i].frames.assign(hit.getReadPointer(0),hit.getReadPointer(0)+hit.getNumSamples());hasKit=true;
+            }
+            tree.removeProperty(key,nullptr);
+        }
+        const int selected=int(tree.getProperty("factoryPreset",-1));
+        currentFactoryPreset.store(selected>=0&&selected<int(pocket::factoryPresets.size())?selected:-1);
+        tree.removeProperty("factoryPreset",nullptr);
         tree.removeProperty("sampleAudio",nullptr); tree.removeProperty("tapeAudio",nullptr);
         pocket::Sample sample; sample.rate=sampleRate;
         if(hasSample) sample.frames.assign(sampleAudio.getReadPointer(0),sampleAudio.getReadPointer(0)+sampleAudio.getNumSamples());
         std::array<std::vector<float>,4> tracks;
         if(hasTape) for(int c=0;c<4;++c) tracks[size_t(c)].assign(tapeAudio.getReadPointer(c),tapeAudio.getReadPointer(c)+tapeAudio.getNumSamples());
-        {const juce::ScopedLock lock(getCallbackLock()); engine.setSample(std::move(sample)); sampleFrames.store(hasSample?sampleAudio.getNumSamples():0);
+        {const juce::ScopedLock lock(getCallbackLock()); if(hasKit) engine.setKit(std::move(restoredKit));engine.setSample(std::move(sample)); sampleFrames.store(hasSample?sampleAudio.getNumSamples():0);
             if(hasTape) {tape.restore(std::move(tracks),tapeRate); tape.prepare(rate);} else {tape.prepare(rate); for(int c=0;c<4;++c) tape.clear(c);}
             for(int i=0;i<16;++i) steps[size_t(i)].store(juce::jlimit(-1,127,int(tree.getProperty("step"+juce::String(i),-1))));
             state.replaceState(tree);

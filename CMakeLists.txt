@@ -35,6 +35,10 @@ if(POCKET_BUILD_PLUGIN)
     FORMATS VST3 Standalone PRODUCT_NAME "Pocket One"
     IS_SYNTH TRUE NEEDS_MIDI_INPUT TRUE NEEDS_MIDI_OUTPUT FALSE
     COPY_PLUGIN_AFTER_BUILD FALSE VST3_AUTO_MANIFEST ${_pocket_manifest})
+  file(GLOB POCKET_FACTORY_WAVS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Assets/Factory/*.wav")
+  juce_add_binary_data(PocketFactoryData HEADER_NAME FactoryData.h NAMESPACE FactoryData SOURCES ${POCKET_FACTORY_WAVS})
+  set_target_properties(PocketFactoryData PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
+  target_link_libraries(PocketOne PRIVATE PocketFactoryData)
   target_sources(PocketOne PRIVATE Source/PluginProcessor.cpp Source/PluginEditor.cpp)
   if(WIN32 AND CMAKE_CROSSCOMPILING)
     # llvm-mt cannot inject manifests into PE files. Embed the dependency as an

@@ -28,3 +28,5 @@ OTTO/TOP-1 son referencias de diseño, no dependencias incorporadas. Sus fuentes
 | CMake, Ninja y GCC | Sus respectivos proyectos y colaboradores | Configuración, compilación y pruebas |
 
 Las herramientas de compilación/prueba no se distribuyen dentro del instalador. El código fuente de JUCE conserva sus propios créditos y avisos de dependencias. Véanse [avisos de terceros](THIRD_PARTY_NOTICES.md) y [licencia del proyecto](LICENSE).
+
+Factory sound bank: 25 original parameter recipes, 24 original drum one-shots and four pitched samples generated for this project. The WAV assets are CC0-1.0; the code retains AGPL-3.0-only. Format references: [te-op1](https://github.com/jstnfst/te-op1) (Field) and [OP Patch Utility](https://github.com/AlexCharlton/op-patch-util); no source or sound assets were copied from these references.

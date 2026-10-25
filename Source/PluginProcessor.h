@@ -29,6 +29,8 @@ public:
     void rewindTape();
     void requestPanic() { panicRequested.store(true); }
     void applyPreset(int index);
+    static juce::StringArray factoryPresetNames();
+    std::atomic<int> currentFactoryPreset{-1};
     juce::AudioProcessorValueTreeState state;
     juce::MidiKeyboardState keyboard;
     std::array<std::atomic<float>,256> scope{};
@@ -38,6 +40,8 @@ public:
     std::array<std::atomic<int>,16> steps{};
 private:
     static juce::AudioProcessorValueTreeState::ParameterLayout layout();
+    pocket::Sample factorySample(const juce::String& name) const;
+    void loadFactoryKit(int index);
     pocket::Engine engine;
     pocket::Tape tape;
     std::atomic<bool> panicRequested{false};

@@ -68,6 +68,27 @@ int main(int argc,char** argv) {
   host.beat=2;portable->processBlock(buffer,midi);check(portable->playhead.load()==8,"Host beat position not followed");
   host.beat=.75;portable->processBlock(buffer,midi);check(portable->playhead.load()==3,"Host seek not followed");
   host.running=false;portable->processBlock(buffer,midi);check(portable->playhead.load()==-1,"Host stop ignored");portable->setPlayHead(nullptr);
+  // Every embedded sound must be playable without files on the user's disk.
+  p->state.getParameter("tapePlay")->setValueNotifyingHost(0);p->state.getParameter("tapeRecord")->setValueNotifyingHost(0);
+  p->state.getParameter("sequencer")->setValueNotifyingHost(0);
+  check(PocketProcessor::factoryPresetNames().size()==25,"Factory sound catalog is incomplete");
+  for(int preset=0;preset<25;++preset) {
+   p->applyPreset(preset);p->prepareToPlay(48000,256);midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,60,.8f),0);
+   double total=0;
+   for(int b=0;b<60;++b) {p->processBlock(buffer,midi);midi.clear();for(int i=0;i<256;++i){const auto v=buffer.getSample(0,i);check(std::isfinite(v),"Factory sound produced nonfinite output");total+=v*v;}}
+   check(total>.001,"Factory preset is silent");
+   if(preset>=18&&preset<=21) check(p->sampleFrames.load()==64000,"Embedded melodic WAV missing");
+  }
+  // All eight slots in every kit, including the GM kick alias, must have audio.
+  for(int kit=22;kit<25;++kit) for(int pad=0;pad<9;++pad) {
+   p->applyPreset(kit);p->prepareToPlay(48000,256);midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,pad==8?36:60+pad,.8f),0);
+   double total=0;for(int b=0;b<24;++b){p->processBlock(buffer,midi);midi.clear();for(int i=0;i<256;++i)total+=buffer.getSample(0,i)*buffer.getSample(0,i);}
+   check(total>.001,"Embedded kit pad is silent");
+  }
+  p->getStateInformation(saved);auto kitRestored=std::make_unique<PocketProcessor>();kitRestored->setStateInformation(saved.getData(),int(saved.getSize()));kitRestored->prepareToPlay(48000,256);
+  check(kitRestored->currentFactoryPreset.load()==24,"Kit preset selection failed to restore");
+  midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,38,.8f),0);kitRestored->processBlock(buffer,midi);
+  check(buffer.getMagnitude(0,0,256)>.001,"Embedded kit state failed to restore");
   p->state.getParameter("tapePlay")->setValueNotifyingHost(0);p->state.getParameter("tapeRecord")->setValueNotifyingHost(0);p->applyPreset(0);
   if(argc>1) {
    std::unique_ptr<juce::AudioProcessorEditor> editor(p->createEditor());

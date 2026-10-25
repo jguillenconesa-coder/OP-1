@@ -52,7 +52,8 @@ PocketEditor::PocketEditor(PocketProcessor& p) : AudioProcessorEditor(p),process
         b.onClick=[this,i]{selectPage(int(i));};
     }
     addAndMakeVisible(presets); presets.setTextWhenNothingSelected("FACTORY SOUNDS");
-    presets.addItemList({"Soft keys","Glass bells","Phase pad","Plucked wire","Drum machine","Bright hats"},1);
+    presets.addItemList(PocketProcessor::factoryPresetNames(),1);
+    presets.setTooltip("25 factory sounds: synthesis, melodic samples and three 8-pad drum kits.");
     presets.onChange=[this]{processor.applyPreset(presets.getSelectedItemIndex());};
     for(auto pair:{std::pair{&loopSample,"sampleLoop"},{&tapePlay,"tapePlay"},{&tapeRecord,"tapeRecord"},{&overdub,"tapeOverdub"}}) {
         addAndMakeVisible(*pair.first); pair.first->setClickingTogglesState(true);
@@ -73,7 +74,7 @@ PocketEditor::PocketEditor(PocketProcessor& p) : AudioProcessorEditor(p),process
     addAndMakeVisible(tapeSpeed); tapeSpeed.setSliderStyle(juce::Slider::LinearHorizontal); tapeSpeed.setTextBoxStyle(juce::Slider::TextBoxRight,false,38,20);
     tapeSpeed.setTooltip("Tape playback speed: reverse, stop, half or double speed. Recording always runs at x1.");
     speedAttachment=std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(p.state,"tapeSpeed",tapeSpeed);
-    addAndMakeVisible(engine); engine.addItemList({"01 / FM","02 / PHASE","03 / STRING","04 / SAMPLER","05 / DRUM"},1);
+    addAndMakeVisible(engine); engine.addItemList({"01 / FM","02 / PHASE","03 / STRING","04 / SAMPLER","05 / DRUM","06 / SAMPLE KIT"},1);
     engine.setColour(juce::ComboBox::backgroundColourId,juce::Colour(0xff202b2e)); engine.setColour(juce::ComboBox::outlineColourId,juce::Colours::transparentBlack);
     engineAttachment=std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(p.state,"engine",engine);
     for(auto* s : {&volume,&tempo}) { addAndMakeVisible(*s); s->setSliderStyle(juce::Slider::LinearHorizontal); s->setTextBoxStyle(juce::Slider::TextBoxRight,false,45,20); s->setColour(juce::Slider::textBoxTextColourId,juce::Colour(0xff343b3b)); s->setColour(juce::Slider::textBoxOutlineColourId,juce::Colours::transparentBlack); }
@@ -132,6 +133,7 @@ void PocketEditor::selectPage(int selected) {
 }
 void PocketEditor::timerCallback() {
     const int e=int(processor.state.getRawParameterValue("engine")->load());
+    presets.setSelectedItemIndex(processor.currentFactoryPreset.load(),juce::dontSendNotification);
     loadSample.setVisible(page!=4&&e==3); loopSample.setVisible(page!=4&&e==3);
     if(page==0) {knobLabels[0]=e==3?"START":"TONE"; knobLabels[1]=e==3?"LENGTH":"COLOR";}
     for(size_t i=0;i<16;++i) {
@@ -228,7 +230,7 @@ void PocketEditor::paint(juce::Graphics& g) {
             const float x=238+float(i)*346/255,y=137-processor.scope[i].load(std::memory_order_relaxed)*79;
             if(i==0)wave.startNewSubPath(x,y);else wave.lineTo(x,y);
         }
-        caption=juce::StringArray{"FREQUENCY MODULATION","PHASE DISTORTION","PLUCKED STRING",processor.sampleFrames.load()>0?"SAMPLE / ROOT C4":"LOAD A WAV / AIFF TO PLAY","C/G: KICK  D/E: SNARE  OTHER: HAT"}[e];
+        caption=juce::StringArray{"FREQUENCY MODULATION","PHASE DISTORTION","PLUCKED STRING",processor.sampleFrames.load()>0?"SAMPLE / ROOT C4":"LOAD A WAV / AIFF TO PLAY","C/G: KICK  D/E: SNARE  OTHER: HAT","8 PADS / C4-G4 + GM DRUM NOTES"}[e];
     }
     g.setColour(colours[size_t(page==0?e%4:(page-1)%4)]);g.strokePath(wave,juce::PathStrokeType(1.7f));
     text(g,caption,{238,170,346,16},9,juce::Colour(0xff95a4a3),juce::Justification::centredLeft);

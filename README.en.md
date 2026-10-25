@@ -77,3 +77,7 @@ xvfb-run -a ./build/plugin_smoke_artefacts/Release/plugin_smoke "$PWD/docs/inter
 See [validation evidence and limitations](docs/validation.md) and [OTTO/TOP-1 design references](docs/references.md). No code or assets from those projects have been imported.
 
 Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.2.1`.
+
+## Factory sounds
+
+25 original presets, three embedded eight-pad drum kits and four melodic samples. See [the sound bank guide](docs/sound-bank.md) for MIDI mapping, sample credits and OP-1 preset references.

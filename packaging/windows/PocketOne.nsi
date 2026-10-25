@@ -7,6 +7,9 @@ Target amd64-unicode
 !include "MUI2.nsh"
 !include "x64.nsh"
 !include "WinVer.nsh"
+!ifndef PATH_SEP
+  !define PATH_SEP "/"
+!endif
 !ifndef ARTIFACT_DIR
   !error "Define ARTIFACT_DIR with the Release artefacts directory"
 !endif
@@ -20,7 +23,7 @@ Target amd64-unicode
   !define VERSION "0.2.1"
 !endif
 Name "Pocket One"
-OutFile "${OUTPUT_DIR}/Pocket-One-${VERSION}-Windows-x64-Setup.exe"
+OutFile "${OUTPUT_DIR}${PATH_SEP}Pocket-One-${VERSION}-Windows-x64-Setup.exe"
 InstallDir "$PROGRAMFILES64\Pocket Instruments\Pocket One"
 RequestExecutionLevel admin
 SetCompressor /SOLID lzma
@@ -32,7 +35,7 @@ VIAddVersionKey /LANG=1033 "FileVersion" "${VERSION}"
 VIAddVersionKey /LANG=1033 "LegalCopyright" "Pocket Instruments"
 !define MUI_ABORTWARNING
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "${SOURCE_DIR}/LICENSE"
+!insertmacro MUI_PAGE_LICENSE "${SOURCE_DIR}${PATH_SEP}LICENSE"
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -55,26 +58,32 @@ Function .onInit
 FunctionEnd
 Section "VST3 instrument (DAW)" VST3
   SetOutPath "$COMMONFILES64\VST3\Pocket One.vst3"
-  File /r "${ARTIFACT_DIR}/VST3/Pocket One.vst3/*.*"
+  File /r "${ARTIFACT_DIR}${PATH_SEP}VST3${PATH_SEP}Pocket One.vst3${PATH_SEP}*.*"
 SectionEnd
 Section "Standalone instrument" Standalone
   SetOutPath "$INSTDIR"
-  File "${ARTIFACT_DIR}/Standalone/Pocket One.exe"
+  File "${ARTIFACT_DIR}${PATH_SEP}Standalone${PATH_SEP}Pocket One.exe"
   CreateDirectory "$SMPROGRAMS\Pocket One"
   CreateShortcut "$SMPROGRAMS\Pocket One\Pocket One.lnk" "$INSTDIR\Pocket One.exe"
 SectionEnd
 Section "Documentation and uninstaller" Required
   SectionIn RO
   SetOutPath "$INSTDIR"
-  File "${SOURCE_DIR}/README.md"
-  File "${SOURCE_DIR}/LICENSE"
-  File "${SOURCE_DIR}/CREDITS.md"
-  File "${SOURCE_DIR}/THIRD_PARTY_NOTICES.md"
-  File /r "${SOURCE_DIR}/licenses"
-  File "${SOURCE_DIR}/docs/windows.md"
+  File "${SOURCE_DIR}${PATH_SEP}README.md"
+  File "${SOURCE_DIR}${PATH_SEP}LICENSE"
+  File "${SOURCE_DIR}${PATH_SEP}CREDITS.md"
+  File "${SOURCE_DIR}${PATH_SEP}THIRD_PARTY_NOTICES.md"
+  File /r "${SOURCE_DIR}${PATH_SEP}licenses"
+  SetOutPath "$INSTDIR\Factory Samples"
+  File /r "${SOURCE_DIR}${PATH_SEP}Assets${PATH_SEP}Factory${PATH_SEP}*.*"
+  SetOutPath "$INSTDIR"
+  File "${SOURCE_DIR}${PATH_SEP}docs${PATH_SEP}windows.md"
   SetOutPath "$INSTDIR\Source"
-  File "${SOURCE_DIR}/CMakeLists.txt"
-  File /r "${SOURCE_DIR}/Source" "${SOURCE_DIR}/Tests" "${SOURCE_DIR}/cmake"
+  File "${SOURCE_DIR}${PATH_SEP}CMakeLists.txt"
+  File /r "${SOURCE_DIR}${PATH_SEP}Source" "${SOURCE_DIR}${PATH_SEP}Tests" "${SOURCE_DIR}${PATH_SEP}cmake"
+  SetOutPath "$INSTDIR"
+  SetOutPath "$INSTDIR\Source\Assets\Factory"
+  File /r "${SOURCE_DIR}${PATH_SEP}Assets${PATH_SEP}Factory${PATH_SEP}*.*"
   SetOutPath "$INSTDIR"
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\PocketOne" "DisplayName" "Pocket One"
@@ -96,6 +105,7 @@ Section "Uninstall"
   Delete "$INSTDIR\CREDITS.md"
   Delete "$INSTDIR\THIRD_PARTY_NOTICES.md"
   RMDir /r "$INSTDIR\licenses"
+  RMDir /r "$INSTDIR\Factory Samples"
   Delete "$INSTDIR\windows.md"
   Delete "$SMPROGRAMS\Pocket One\Pocket One.lnk"
   RMDir "$SMPROGRAMS\Pocket One"
