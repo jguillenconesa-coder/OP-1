@@ -8,6 +8,7 @@ import argparse
 import collections
 import hashlib
 import io
+from contextlib import closing
 import json
 import lzma
 from pathlib import Path, PurePosixPath
@@ -67,7 +68,7 @@ def inspect(path):
                 with tempfile.TemporaryDirectory(prefix='pocket-firmware-db-') as directory:
                     db = Path(directory)/'op1.db'
                     db.write_bytes(content)
-                    with sqlite3.connect(db.as_uri()+'?mode=ro', uri=True) as conn:
+                    with closing(sqlite3.connect(db.as_uri()+'?mode=ro', uri=True)) as conn:
                         conn.execute('PRAGMA trusted_schema=OFF')
                         conn.execute('PRAGMA query_only=ON')
                         conn.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, 8 * 1024 * 1024)

@@ -38,6 +38,25 @@ jobs:
       - name: Windows and macOS tests
         if: runner.os != 'Linux'
         run: ctest --test-dir build -C Release --output-on-failure
+      - name: Publish CTest failure details
+        if: failure()
+        shell: bash
+        run: |
+          python - <<'PYTESTLOG'
+          from pathlib import Path
+          import os
+          path = Path('build/Testing/Temporary/LastTest.log')
+          if path.exists():
+              text = path.read_text(errors='replace')[-60000:]
+              summary = os.environ.get('GITHUB_STEP_SUMMARY')
+              if summary:
+                  with open(summary, 'a', encoding='utf-8') as output:
+                      output.write('### CTest diagnostics\n\n```text\n' + text + '\n```\n')
+              for section in text.split('----------------------------------------------------------'):
+                  if 'Test Failed.' in section:
+                      message = section[-6000:].replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+                      print('::error title=CTest failure::' + message)
+          PYTESTLOG
       - name: Test Windows standalone startup
         if: runner.os == 'Windows'
         shell: pwsh

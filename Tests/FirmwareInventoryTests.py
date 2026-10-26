@@ -2,6 +2,7 @@
 """Synthetic fixtures only: no Teenage Engineering firmware or assets."""
 import importlib.util
 import io
+from contextlib import closing
 import lzma
 from pathlib import Path
 import sqlite3
@@ -18,9 +19,10 @@ spec.loader.exec_module(module)
 class InventoryTests(unittest.TestCase):
     def fixture(self, root, name='content/op1.db', link=False):
         db = root/'source.db'
-        with sqlite3.connect(db) as conn:
+        with closing(sqlite3.connect(db)) as conn:
             conn.execute('CREATE TABLE synth_slots(id INTEGER,patch TEXT)')
             conn.execute('INSERT INTO synth_slots VALUES(0,?)', ('{"name":"Synthetic","type":"fm"}',))
+            conn.commit()
         stream = io.BytesIO()
         with tarfile.open(fileobj=stream, mode='w') as archive:
             info = tarfile.TarInfo(name)
