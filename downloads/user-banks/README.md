@@ -1,6 +1,6 @@
 # Banco de muestras aportadas por el usuario
 
-**[Descargar ZIP: 79 presets y dos kits](https://github.com/jguillenconesa-coder/OP-1/raw/refs/heads/main/downloads/user-banks/Pocket-One-User-Samples-Bank.zip)**
+**[Descargar ZIP: 79 presets y dos kits](https://github.com/jguillenconesa-coder/Tiny-one/raw/refs/heads/main/downloads/user-banks/Pocket-One-User-Samples-Bank.zip)**
 
 En Pocket One 0.2.2 o posterior, pulsa **BROWSE → IMPORT BANK** y selecciona el ZIP sin descomprimir (en 0.2.2: BANK). Importa con el transporte parado. Los sonidos aparecen como **USER / nombre**.
 

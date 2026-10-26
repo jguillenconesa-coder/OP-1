@@ -32,7 +32,7 @@ bool decodeAudio(const juce::String& encoded,juce::AudioBuffer<float>& audio,dou
 }
 PocketProcessor::PocketProcessor(juce::File soundsDirectory) : AudioProcessor(BusesProperties().withInput("Input",juce::AudioChannelSet::stereo(),true).withOutput("Output",juce::AudioChannelSet::stereo(),true)),state(*this,nullptr,"PocketOne",layout()) {
     libraryDirectory=soundsDirectory==juce::File{}?juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory).getChildFile("Pocket Instruments/Pocket One/Banks"):soundsDirectory;
-    const char* audioIds[]={"engine","tone","color","envelope","effect","attack","decay","sustain","release","lfoRate","lfoDepth","lfoDestination","lfoShape","delayTime","delayFeedback","drive","sampleLoop","sampleRoot","volume","sequencer","tempo","track1","track2","track3","track4","tapePlay","tapeRecord","tapeOverdub","tapeTrack","tapeSpeed","tapeLength","tapeLoop","tapeLoopIn","tapeLoopOut","metronome","inputMonitor","inputGain","tapeRecordGain","eqLow","eqMid","eqHigh","eqMix","masterDrive","masterEcho","masterDelayTime","masterFeedback","clickVolume","seqMode","seqLength","seqRate","seqGate","seqSwing","arpOctaves","seqVelocity","seqEuclidean","seqPulses","seqRotation"};
+    const char* audioIds[]={"engine","tone","color","envelope","effect","attack","decay","sustain","release","lfoRate","lfoDepth","lfoDestination","lfoShape","delayTime","delayFeedback","drive","sampleLoop","sampleRoot","volume","sequencer","tempo","track1","track2","track3","track4","tapePlay","tapeRecord","tapeOverdub","tapeTrack","tapeSpeed","tapeLength","tapeLoop","tapeLoopIn","tapeLoopOut","metronome","inputMonitor","inputGain","tapeRecordGain","eqLow","eqMid","eqHigh","eqMix","masterDrive","masterEcho","masterDelayTime","masterFeedback","clickVolume","seqMode","seqLength","seqRate","seqGate","seqSwing","arpOctaves","seqVelocity","seqEuclidean","seqPulses","seqRotation","sampleClean"};
     for(size_t i=0;i<audioParameters.size();++i) audioParameters[i]=state.getRawParameterValue(audioIds[i]);
     for(int pad=0;pad<pocket::kitCapacity;++pad){const char* ids[]={"start","end","gain","pitch","reverse","gated"};for(int i=0;i<6;++i)padParameters[size_t(pad)][size_t(i)]=state.getRawParameterValue(padParameterId(pad,ids[i]));}
     keyboard.addListener(this);
@@ -72,7 +72,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PocketProcessor::layout() {
             {"lfoDepth","LFO: Depth"},
             {"delayFeedback","Sound FX: Echo Feedback"},
             {"drive","Sound FX: Drive"},
-            {"sampleRoot","Sampler: Root Note"},
+            {"sampleRoot","Sampler: Root Note"},{"sampleClean","Sampler: Clean Playback"},
             {"lfoRate","LFO: Rate"},
             {"delayTime","Sound FX: Echo Time"},
             {"sequencer","Sequencer: Run"},
@@ -140,6 +140,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PocketProcessor::layout() {
             p.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{padParameterId(pad,field),1},prefix+juce::String(field).substring(0,1).toUpperCase()+juce::String(field).substring(1),juce::NormalisableRange<float>(low,high,.01f),initial,juce::AudioParameterFloatAttributes().withLabel(juce::String(field)=="pitch"?"st":"")));}
         for(const auto* field:{"reverse","gated"})p.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{padParameterId(pad,field),1},prefix+juce::String(field).substring(0,1).toUpperCase()+juce::String(field).substring(1),false));
     }
+    flag("sampleClean");
     return p;
 }
 void PocketProcessor::prepareToPlay(double sr,int) {
@@ -172,7 +173,7 @@ void PocketProcessor::processBlock(juce::AudioBuffer<float>& buffer,juce::MidiBu
     p.engine=int(get(Param::engine)); p.tone=get(Param::tone); p.color=get(Param::color); p.envelope=get(Param::envelope); p.effect=get(Param::effect); p.volume=1;
     p.attack=get(Param::attack); p.decay=get(Param::decay); p.sustain=get(Param::sustain); p.release=get(Param::release);
     p.lfoRate=get(Param::lfoRate); p.lfoDepth=get(Param::lfoDepth); p.lfoDestination=int(get(Param::lfoDestination)); p.lfoShape=int(get(Param::lfoShape));
-    p.delayTime=get(Param::delayTime); p.feedback=get(Param::delayFeedback); p.drive=get(Param::drive); p.sampleLoop=get(Param::sampleLoop)>.5f;p.sampleRoot=get(Param::sampleRoot);
+    p.delayTime=get(Param::delayTime); p.feedback=get(Param::delayFeedback); p.drive=get(Param::drive); p.sampleLoop=get(Param::sampleLoop)>.5f;p.sampleRoot=get(Param::sampleRoot);p.sampleClean=get(Param::sampleClean)>.5f;
     if(p.engine==5)for(size_t pad=0;pad<p.pads.size();++pad){const auto& source=padParameters[pad];auto& target=p.pads[pad];target.start=source[0]->load(std::memory_order_relaxed);target.end=source[1]->load(std::memory_order_relaxed);target.gain=source[2]->load(std::memory_order_relaxed);target.pitch=source[3]->load(std::memory_order_relaxed);target.reverse=source[4]->load(std::memory_order_relaxed)>.5f;target.gated=source[5]->load(std::memory_order_relaxed)>.5f;}
     const float outputTarget=get(Param::volume);
     bool running=get(Param::sequencer)>.5f;
@@ -331,7 +332,7 @@ void PocketProcessor::applyPreset(int index) {
         {"engine",float(p.engine)},{"tone",p.tone},{"color",p.color},{"envelope",p.envelope},{"effect",p.effect},
         {"attack",p.attack},{"release",p.release},{"decay",p.decay},{"sustain",p.sustain},
         {"lfoRate",p.lfoRate},{"lfoDepth",p.lfoDepth},{"lfoDestination",0},{"lfoShape",0},
-        {"sampleRoot",60},{"drive",p.drive},{"delayTime",.281f},{"delayFeedback",.42f},{"sampleLoop",0}};
+        {"sampleRoot",60},{"drive",p.drive},{"delayTime",.281f},{"delayFeedback",.42f},{"sampleLoop",0},{"sampleClean",0}};
     for(const auto& value:values) {auto* parameter=state.getParameter(value.first);parameter->beginChangeGesture();parameter->setValueNotifyingHost(parameter->convertTo0to1(value.second));parameter->endChangeGesture();}
     setSelectedSound("factory:"+juce::String(index));currentFactoryPreset.store(index);currentUserPreset.store(-1);requestPanic();
 }
@@ -373,7 +374,7 @@ void PocketProcessor::setStateInformation(const void* data,int size) {
             }
             tree.removeProperty(key,nullptr);
         }
-        for(const char* id:{"seqMode","seqLength","seqRate","seqGate","seqSwing","arpOctaves","seqVelocity","seqEuclidean","seqPulses","seqRotation"})
+        for(const char* id:{"seqMode","seqLength","seqRate","seqGate","seqSwing","arpOctaves","seqVelocity","seqEuclidean","seqPulses","seqRotation","sampleClean"})
             if(!tree.getChildWithProperty("id",id).isValid()){juce::ValueTree parameter("PARAM");parameter.setProperty("id",id,nullptr);auto* p=state.getParameter(id);parameter.setProperty("value",p->convertFrom0to1(p->getDefaultValue()),nullptr);tree.addChild(parameter,-1,nullptr);}
         {const juce::ScopedLock lock(libraryStateLock);for(int pad=0;pad<pocket::kitCapacity;++pad)kitNames[size_t(pad)]=tree.getProperty("kitName"+juce::String(pad),"Pad "+juce::String(pad+1)).toString().substring(0,160);}
         for(int pad=0;pad<pocket::kitCapacity;++pad)publishPadPreview(pad,restoredKit[size_t(pad)]);

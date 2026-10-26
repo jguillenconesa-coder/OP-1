@@ -25,3 +25,7 @@ Cargar un archivo en un pad 9–24 de un kit antiguo lo amplía a 24; los demás
 El motor sigue teniendo **ocho voces simultáneas**; 24 pads describe las fuentes disponibles. No se garantiza reproducción idéntica al DSP del OP-1 ni se interpretan automáticamente sus valores de recorte de 32 bits. Los ajustes del firmware motivan la organización; nuestros parámetros usan unidades explícitas.
 
 Las formas de onda se calculan al cargar, fuera del callback. El audio consulta parámetros cacheados y usa almacenamiento fijo para afinaciones. Cargar recursos y guardar/restaurar el estado puede tomar brevemente el bloqueo del callback: haz esas operaciones con el transporte detenido. No hay latencia de buffering añadida; la latencia del dispositivo/DAW se mide aparte.
+
+## CLEAN SAMPLE (0.6.0)
+
+El botón inferior CLEAN SAMPLE corresponde a **Sampler: Clean Playback**. Bypassea la coloración del filtro global y la saturación seca implícita al reproducir sampler/kit. Los efectos y drive elegidos siguen activos. La primera nota tras preparar el motor usa inmediatamente sus valores neutros; los cambios del botón con audio en marcha se suavizan. Los proyectos antiguos conservan el modo desactivado. No equivale a reproducir el circuito analógico o los efectos originales del OP-1.

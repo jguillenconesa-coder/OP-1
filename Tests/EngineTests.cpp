@@ -60,6 +60,11 @@ int main(int argc,char** argv) {
    p.pads[23].end=1;p.pads[23].pitch=12;const auto pitched=energy(83,2000);p.pads[23].pitch=0;check(energy(83,2000)>pitched*1.4,"Pad pitch does not change sample playback speed");
    p.pads[0].gated=true;p.release=0;e->reset();e->noteOn(60,1);for(int i=0;i<300;++i)e->next(p);e->noteOff(60);for(int i=0;i<4400;++i)e->next(p);check(e->visualState(5).active==0,"Gated pad voice stuck after release");
   }
+  {pocket::Kit kit;kit[0].rate=48000;kit[0].frames.resize(2048);for(int i=0;i<2048;++i)kit[0].frames[size_t(i)]=float(std::sin(2*pocket::pi*8000*i/48000))*.7f;
+   const auto reference=kit[0].frames;e->setKit(std::move(kit),24);e->reset();p={};p.engine=5;p.tone=.5f;p.color=1;p.effect=0;p.volume=1;p.sampleClean=true;
+   e->noteOn(60,1);double error=0;for(int i=0;i<1024;++i){const double difference=e->next(p)-reference[size_t(i)]*.16;error+=difference*difference;}
+   check(std::sqrt(error/1024)<.00001,"Clean sample path changes the dry PCM waveform");
+  }
   if(argc>1) {
    e->prepare(48000); p={}; std::vector<int16_t> pcm;
    for(int section=0;section<3;++section) { p.engine=section; e->noteOn(60, .8f); e->noteOn(67,.7f); e->noteOn(75,.6f);

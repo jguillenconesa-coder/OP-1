@@ -22,7 +22,7 @@ ctest --test-dir build-win-msvc --output-on-failure
 install='/workspace/windows-tools/wine-prefix/drive_c/Program Files/Pocket Instruments/Pocket One'
 plugin='/workspace/windows-tools/wine-prefix/drive_c/Program Files/Common Files/VST3/Pocket One.vst3'
 if [[ -e "$install" || -e "$plugin" ]]; then echo 'Refusing to overwrite an existing isolated test installation'; exit 1; fi
-scripts/run-wine.sh /workspace/OP-1/dist/Pocket-One-0.5.0-Windows-x64-Setup.exe /S > build/installer-install.log 2>&1
+scripts/run-wine.sh /workspace/OP-1/dist/Pocket-One-0.6.0-Windows-x64-Setup.exe /S > build/installer-install.log 2>&1
 python3 - <<'PY'
 from pathlib import Path
 import hashlib,time

@@ -20,3 +20,5 @@ El número del pad usa dos cifras para facilitar su ordenación. Las unidades f�
 En Ableton, usa **Configure** para exponer los parámetros que quieras y después **MIDI Map** para asignar tus controles. Toca/mueve el parámetro deseado o elígelo entre los que permite el host; los nombres anteriores ayudan a distinguir nivel general, mezcla, efecto de sonido y pad. Los nombres no fijan números CC ni introducen un segundo mapeo que interfiera con el DAW. El standalone sigue recibiendo notas, sustain y pitch bend; esta versión no añade un sistema propio de MIDI Learn.
 
 Los botones de edición de cinta y de archivos no se convierten en CC por cambiar el nombre de los parámetros. En proyectos existentes, el host puede conservar etiquetas antiguas en su caché hasta volver a abrir el plugin o actualizar los parámetros expuestos.
+
+0.6.0 añade **Sampler: Clean Playback** (botón CLEAN SAMPLE), común a sampler y kit. El parámetro se añade al final de la lista y los controles previos mantienen sus IDs y orden. Los bancos de referencia lo activan para conservar mejor el espectro original.

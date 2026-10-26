@@ -85,7 +85,7 @@ bool PocketProcessor::applyUserPreset(int index,juce::String& error) {
     if(p.isKit)for(int pad=0;pad<pocket::kitCapacity;++pad)publishPadPreview(pad,kit[size_t(pad)]);
     {const juce::ScopedLock lock(getCallbackLock());if(p.isKit){engine.swapKit(kit,p.kitCount);kitPads.store(p.kitCount);}else {sampleFrames.store(int(sample.frames.size()));engine.swapSample(sample);}}
     // Sound changes intentionally preserve output level, tempo, sequence and tape.
-    const char* allowed[]={"tone","color","envelope","effect","attack","decay","sustain","release","sampleRoot","sampleLoop","lfoRate","lfoDepth","lfoDestination","lfoShape","delayTime","delayFeedback","drive"};
+    const char* allowed[]={"tone","color","envelope","effect","attack","decay","sustain","release","sampleRoot","sampleLoop","sampleClean","lfoRate","lfoDepth","lfoDestination","lfoShape","delayTime","delayFeedback","drive"};
     for(const auto* id:allowed) if(p.parameters.hasProperty(id)) {
         const float value=float(p.parameters[id]);if(!std::isfinite(value)) continue;
         auto* parameter=state.getParameter(id);parameter->beginChangeGesture();parameter->setValueNotifyingHost(juce::jlimit(0.f,1.f,parameter->convertTo0to1(value)));parameter->endChangeGesture();

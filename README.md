@@ -1,8 +1,8 @@
-# Pocket One 0.5.0
+# Pocket One 0.6.0
 
 **Sintetizador VST3 y aplicación independiente inspirados en el Teenage Engineering OP-1.** Interfaz gris, pantalla animada, cuatro mandos azul/verde/blanco/naranja y teclado de dos octavas. Implementación independiente; no contiene firmware, muestras de fábrica ni gráficos originales.
 
-[English manual](README.en.md) · [Créditos](CREDITS.md) · [Licencia](LICENSE) · [Notas de versión](docs/releases/v0.5.0.md)
+[English manual](README.en.md) · [Créditos](CREDITS.md) · [Licencia](LICENSE) · [Notas de versión](docs/releases/v0.6.0.md)
 
 ![Interfaz y pantalla animada de Pocket One](docs/screen-animation.gif)
 
@@ -12,15 +12,15 @@
 
 | Paquete | Descarga |
 | --- | --- |
-| Instalador Windows 10/11 x64 | [Pocket-One-0.5.0-Windows-x64-Setup.exe](https://github.com/jguillenconesa-coder/OP-1/raw/refs/heads/main/downloads/v0.5.0/Pocket-One-0.5.0-Windows-x64-Setup.exe) |
-| Windows portable: aplicación y VST3 | [ZIP](downloads/v0.5.0/Pocket-One-0.5.0-Windows-x64-portable.zip) |
-| Linux x86_64: aplicación y VST3 | [TAR.GZ](downloads/v0.5.0/Pocket-One-0.5.0-linux-x86_64.tar.gz) |
-| Fuentes completas con JUCE | [Código fuente correspondiente](downloads/v0.5.0/Pocket-One-0.5.0-corresponding-source.tar.gz) |
-| Kit de compilación del proyecto | [ZIP](downloads/v0.5.0/Pocket-One-0.5.0-Windows-build-kit.zip) |
-| WAVs originales del banco de fábrica (CC0) | [ZIP de 28 muestras](downloads/v0.5.0/Pocket-One-0.5.0-Factory-Samples.zip) |
-| Integridad de las descargas | [SHA256SUMS.txt](downloads/v0.5.0/SHA256SUMS.txt) |
+| Instalador Windows 10/11 x64 | [Pocket-One-0.6.0-Windows-x64-Setup.exe](https://github.com/jguillenconesa-coder/Tiny-one/raw/refs/heads/main/downloads/v0.6.0/Pocket-One-0.6.0-Windows-x64-Setup.exe) |
+| Windows portable: aplicación y VST3 | [ZIP](downloads/v0.6.0/Pocket-One-0.6.0-Windows-x64-portable.zip) |
+| Linux x86_64: aplicación y VST3 | [TAR.GZ](downloads/v0.6.0/Pocket-One-0.6.0-linux-x86_64.tar.gz) |
+| Fuentes completas con JUCE | [Código fuente correspondiente](downloads/v0.6.0/Pocket-One-0.6.0-corresponding-source.tar.gz) |
+| Kit de compilación del proyecto | [ZIP](downloads/v0.6.0/Pocket-One-0.6.0-Windows-build-kit.zip) |
+| WAVs originales del banco de fábrica (CC0) | [ZIP de 28 muestras](downloads/v0.6.0/Pocket-One-0.6.0-Factory-Samples.zip) |
+| Integridad de las descargas | [SHA256SUMS.txt](downloads/v0.6.0/SHA256SUMS.txt) |
 
-También se ha configurado la creación de una [release de GitHub](https://github.com/jguillenconesa-coder/OP-1/releases) al publicar la etiqueta `v0.5.0`. Los archivos versionados de `downloads/v0.5.0` permiten descargarlos directamente desde el repositorio.
+También se ha configurado la creación de una [release de GitHub](https://github.com/jguillenconesa-coder/Tiny-one/releases) al publicar la etiqueta `v0.6.0`. Los archivos versionados de `downloads/v0.6.0` permiten descargarlos directamente desde el repositorio.
 
 **Versión preliminar.** El instalador no tiene firma digital. Se probaron los ejecutables Windows y su instalación/desinstalación bajo Wine; el CI nativo de 0.2.1 también pasó en Windows, Linux y macOS; queda pendiente probar el instrumento en un DAW Windows real. La release no incluye un instalador de macOS; CI genera sus artefactos de compilación.
 
@@ -101,3 +101,7 @@ El plugin declara 0 muestras de latencia añadida. Las pruebas incluyen ocho voc
 [Correspondencia completa de botones, combinaciones Shift y límites](docs/buttons-and-browser.md).
 
 [Controles MIDI y automatización con nombres claros](docs/midi-controls.md) · [Avance del estudio DSP original](docs/dsp-research.md).
+
+## Referencias originales en el repositorio privado
+
+La 0.6.0 añade CLEAN SAMPLE para conservar el espectro de los samples y un [banco privado de referencia](downloads/private-banks/README.md) con nueve sampler y 14 kits de 24 pads del firmware suministrado. Se importan desde BROWSE → IMPORT BANK. Son fuentes secas con regiones/frecuencias raíz recuperadas; no son una conversión de los motores FM/Phase ni de sus efectos. Las descargas requieren acceso a Tiny-one.

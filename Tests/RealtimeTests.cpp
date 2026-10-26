@@ -39,7 +39,7 @@ int main(int argc,char** argv) {
    p->processBlock(audio,midi);midi.clear();for(int i=0;i<64;++i)p->processBlock(audio,midi);
    std::vector<double> times;times.reserve(512);allocations=frees=0;double peak=0;
    for(int iteration=0;iteration<512;++iteration) {
-    if(iteration%64==0) {auto* mode=p->state.getParameter("seqMode");mode->setValueNotifyingHost(mode->convertTo0to1(float((iteration/64)%7)));midi.addEvent(juce::MidiMessage::pitchWheel(1,8192+(iteration%128?1000:0)),0);for(int note:{48,52,55,59,60,68,76,83})midi.addEvent(juce::MidiMessage::noteOn(1,note,.8f),0);}
+    if(iteration%64==0) {p->state.getParameter("sampleClean")->setValueNotifyingHost(float((iteration/64)%2));auto* mode=p->state.getParameter("seqMode");mode->setValueNotifyingHost(mode->convertTo0to1(float((iteration/64)%7)));midi.addEvent(juce::MidiMessage::pitchWheel(1,8192+(iteration%128?1000:0)),0);for(int note:{48,52,55,59,60,68,76,83})midi.addEvent(juce::MidiMessage::noteOn(1,note,.8f),0);}
     if(iteration%128==0){const std::array<uint8_t,128> sysex{};midi.addEvent(juce::MidiMessage::createSysExMessage(sysex.data(),int(sysex.size())),0);}
     if(iteration%100==0)p->keyboard.noteOn(2,65,.6f);
     if(iteration%100==50)p->keyboard.noteOff(2,65,0);

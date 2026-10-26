@@ -1,6 +1,6 @@
 # Windows x64 installation
 
-Close your DAW before installing/updating. Run `Pocket-One-0.5.0-Windows-x64-Setup.exe` and approve Windows' administrator prompt. Select the VST3 instrument, standalone application, or both.
+Close your DAW before installing/updating. Run `Pocket-One-0.6.0-Windows-x64-Setup.exe` and approve Windows' administrator prompt. Select the VST3 instrument, standalone application, or both.
 
 - VST3: `C:\Program Files\Common Files\VST3\Pocket One.vst3` (complete bundle).
 - Standalone: `C:\Program Files\Pocket Instruments\Pocket One\Pocket One.exe` and Start menu shortcut.
@@ -45,4 +45,4 @@ Close Live and Pocket One, install **0.2.1** over 0.2.0, then hold Alt while cli
 
 For user sound banks and the new hardware layout, see [user-banks.md](user-banks.md) and [hardware-interface.md](hardware-interface.md). For measured callback performance and driver settings see [realtime-audio.md](realtime-audio.md).
 
-Version 0.5.0 reorganizes presets/samples under BROWSE; use IMPORT BANK for existing ZIP banks. See [buttons-and-browser.md](buttons-and-browser.md). IN needs a configured input device; the standalone may initially enable JUCE's "Mute audio input" option, which must be disabled to capture. Host instrument-input routing varies by DAW.
+Version 0.6.0 reorganizes presets/samples under BROWSE; use IMPORT BANK for existing ZIP banks. See [buttons-and-browser.md](buttons-and-browser.md). IN needs a configured input device; the standalone may initially enable JUCE's "Mute audio input" option, which must be disabled to capture. Host instrument-input routing varies by DAW.

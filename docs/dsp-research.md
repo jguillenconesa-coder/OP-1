@@ -46,3 +46,11 @@ Antes de implantar un motor equivalente quedan por resolver:
 4. Contrastar audio, envolvente y espectro con la máquina o una ejecución validada del DSP antes de afirmar fidelidad.
 
 Cambiar el FM actual por una fórmula supuesta y cargar los números de los presets no cumpliría esas verificaciones. Se mantienen los motores estables mientras la reconstrucción se investiga por separado.
+
+## Continuación: estructuras y banco de referencia (0.6.0)
+
+La ruta de inicialización FM en `0x019a21d8` llama a `0x019f15f8` con direcciones del objeto más 4, 12, 20 y 28. La ruta Pd `0x01a0bc14` usa offsets 4 y 12. La identidad matemática del subobjeto común no está validada; cuatro inicializaciones no bastan para afirmar «FM de cuatro operadores». Se han delimitado vecindades de procesamiento candidatas en `0x019a23d4` y `0x01a0bc5c`, con bucles hardware y acceso a tablas. El resto del análisis de despacho y aritmética permanece abierto.
+
+Los 14 kits muestreados ofrecen una verificación independiente del formato de posiciones: `round(end * 44100 * 12 / 2^31)` corresponde a `frames - 1` en los 14 archivos RAW. Se interpreta END como inclusivo y se construyen 336 regiones de audio. Los nueve presets sampler aportan sus frecuencias raíz mediante `base_freq`. El banco de referencia privado conserva esas fuentes; los modos, pitch/gain por pad, envolventes y efectos originales no se convierten sin pruebas.
+
+El nuevo modo CLEAN SAMPLE soluciona una diferencia propia del plugin detectada durante esa comparación: TONE controla el inicio del sampler, pero también limitaba su filtro global a 900 Hz con inicio cero. La ruta limpia permite comparar la fuente sin esa coloración ni saturación seca, y conserva la ruta antigua para proyectos anteriores. Esto mejora la reproducción de muestras; no demuestra equivalencia del DSP completo del OP-1.

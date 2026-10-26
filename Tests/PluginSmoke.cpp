@@ -143,6 +143,7 @@ int main(int argc,char** argv) {
     for(int b=0;b<1100;++b){bankProcessor->processBlock(buffer,midi);midi.clear();for(int i=0;i<256;++i){auto value=buffer.getSample(0,i);check(std::isfinite(value),"User preset output is not finite");total+=value*value;}}
     if(total<=.000001) throw std::runtime_error("Silent user preset: "+names[preset].toStdString());
    }
+   for(int preset=0;preset<names.size();++preset){check(bankProcessor->applyUserPreset(preset,error),error.toRawUTF8());if(bankProcessor->state.getRawParameterValue("engine")->load()!=5)continue;for(int pad=0;pad<bankProcessor->kitPads.load();++pad){bankProcessor->prepareToPlay(48000,256);midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,60+pad,1.f),0);double energy=0;for(int block=0;block<128;++block){bankProcessor->processBlock(buffer,midi);midi.clear();for(int frame=0;frame<256;++frame)energy+=std::pow(buffer.getSample(0,frame),2);}if(energy<.00000001)throw std::runtime_error("Silent imported pad "+std::to_string(pad+1)+" / "+names[preset].toStdString());}}
    bankProcessor->getStateInformation(saved);auto independent=std::make_unique<PocketProcessor>(library.getChildFile("No bank installed"));independent->setStateInformation(saved.getData(),int(saved.getSize()));independent->prepareToPlay(48000,256);
    midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,60,.8f),0);independent->processBlock(buffer,midi);
    check(buffer.getMagnitude(0,0,256)>.00001,"User kit state requires external files");

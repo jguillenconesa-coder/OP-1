@@ -67,10 +67,14 @@ Windows x64: ocho suites pasaron bajo Wine, incluyendo carga real del VST3 y com
 
 ## 0.5.0: pads y cierre SQLite en Windows
 
-La corrección del cierre de conexiones del lector de firmware pasó el CI nativo en Windows/Linux/macOS: [run 40294659124](https://github.com/jguillenconesa-coder/OP-1/actions/runs/40294659124). El fallo previo de 0.4.0 afectaba a la eliminación de temporales del script Python en Windows, no al arranque del VST3. Los logs de pruebas se publican ahora en el resumen de CI.
+La corrección del cierre de conexiones del lector de firmware pasó el CI nativo en Windows/Linux/macOS: [run 40294659124](https://github.com/jguillenconesa-coder/Tiny-one/actions/runs/40294659124). El fallo previo de 0.4.0 afectaba a la eliminación de temporales del script Python en Windows, no al arranque del VST3. Los logs de pruebas se publican ahora en el resumen de CI.
 
 Las pruebas nuevas ejercitan los 24 pads de cada kit de fábrica y el alias GM de kick, recorte/reversa/ganancia/afinación por pad y liberación gated. Un banco sintético de 24 se importa con ajustes individuales y se restaura sin banco externo; los kits antiguos recuperan su mapa de ocho y valores de pad neutros. El test de interfaz abre KIT EDIT, selecciona el pad 24 y verifica que su deslizador modifica `pad24_gain`. Se generan capturas reales del panel y el OLED representa 24 pads.
 
 Las cargas de tiempo real incluyen notas hasta MIDI 83 y ajustes de los 24 pads, además de los modos de secuenciación y la carga anterior de cinta/FX. Los resultados actuales se guardan en [realtime-metrics-linux.json](realtime-metrics-linux.json); cero llamadas de heap monitorizadas y cero muestras de latencia declarada son límites de esas pruebas, no una garantía de audio sin cortes en un DAW concreto.
 
 Se comprueba además que todos los parámetros del host tengan categoría y nombres únicos, incluidos Output: Volume y Pad 24: Pitch. El cambio conserva IDs, rangos y pasos de 0,01 de los parámetros float. La comparación de parámetros normalizados usa tolerancia numérica para ARM/macOS. El lector de cabeceras LDR se prueba con fixtures sintéticos de payload, fill, checksum y truncamiento; el ensamblador del firmware no se distribuye.
+
+## 0.6.0: fuentes de referencia y ruta limpia
+
+Las pruebas sintéticas del generador verifican CRC/contenedor, frecuencia raíz MIDI, 24 regiones Q31 con END inclusivo y conservación exacta del PCM dentro de los WAV. El banco real contiene 23 entradas y 336 regiones; el smoke test toca todos los pads, comprueba audio finito/no silencioso y restaura el kit sin su banco. La ruta CLEAN SAMPLE se compara desde la primera nota con una senoide PCM de 8 kHz, a velocidad y sample rate originales, con un límite RMSE de 1e-5. La prueba no establece equivalencia de envolventes/efectos del OP-1. Se mantienen los nombres MIDI y los IDs/orden de los parámetros previos.

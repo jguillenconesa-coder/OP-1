@@ -80,5 +80,30 @@ class LoaderMapTests(unittest.TestCase):
         for invalid in [data[:-1],bytes([data[0]^1])+data[1:]]:
             with self.assertRaises(ValueError):mapper.inspect(invalid)
 
+class FirmwareBankTests(unittest.TestCase):
+    def test_synthetic_bank_pcm_roots_and_24_regions(self):
+        import json
+        import zipfile
+        import wave
+        spec=importlib.util.spec_from_file_location('firmware_bank',Path(__file__).resolve().parents[1]/'scripts/build-firmware-bank.py')
+        bank=importlib.util.module_from_spec(spec);spec.loader.exec_module(bank)
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d);db=root/'factory.db'
+            with closing(sqlite3.connect(db)) as conn:
+                conn.execute('CREATE TABLE synth_presets(patch TEXT)');conn.execute('CREATE TABLE drum_presets(patch TEXT)')
+                conn.execute('INSERT INTO synth_presets VALUES(?)',(json.dumps(dict(type='sampler',name='fixture',base_freq=440)),))
+                q=lambda frame:round(frame*2**31/(44100*12))
+                conn.execute('INSERT INTO drum_presets VALUES(?)',(json.dumps(dict(type='drum',name='kit',start=[q(i*10) for i in range(24)],end=[q(i*10+9) for i in range(24)])),));conn.commit()
+            pcm=b''.join(struct.pack('<h',i*100-12000) for i in range(240));raw=io.BytesIO()
+            with tarfile.open(fileobj=raw,mode='w') as archive:
+                for name,content in [('content/op1_factory.db',db.read_bytes()),('content/audio/factory_synth/fixture.raw',pcm),('content/audio/factory_drum/kit.raw',pcm)]:
+                    info=tarfile.TarInfo(name);info.size=len(content);archive.addfile(info,io.BytesIO(content))
+            compressed=lzma.compress(raw.getvalue(),format=lzma.FORMAT_ALONE);source=root/'fixture.op1';source.write_bytes(struct.pack('<I',zlib.crc32(compressed))+compressed);target=root/'bank.zip'
+            report=bank.build(source,target,44100);self.assertEqual(report['presets'],2);self.assertEqual(report['regions'],24)
+            with zipfile.ZipFile(target) as archive:
+                manifest=json.loads(archive.read('bank.json'));sample,kit=manifest['presets'];self.assertEqual(sample['parameters']['sampleRoot'],69);self.assertEqual(sample['parameters']['sampleClean'],1);self.assertEqual(len(kit['kit']),24)
+                with wave.open(io.BytesIO(archive.read(kit['kit'][0]))) as audio:self.assertEqual(audio.readframes(10),pcm[:20]);self.assertEqual(audio.getframerate(),44100)
+            with self.assertRaises(ValueError):bank.drum_region(100,10,240,44100)
+
 if __name__ == '__main__':
     unittest.main()

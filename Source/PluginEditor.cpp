@@ -106,6 +106,7 @@ PocketEditor::PocketEditor(PocketProcessor& p) : AudioProcessorEditor(p),process
     comKey.onClick=[this]{showComMenu();};comKey.setTooltip("Album / COM: export stereo mix, tracks and sessions.");
     micKey.onClick=[this]{if(shifted()){juce::String error;if(processor.inputCapturing.load()){if(!processor.finishInputCapture(error))showError(error);else {mainMode=0;selectPage(0);status.setText("Captured input loaded into sampler",juce::dontSendNotification);}}else if(!processor.startInputCapture(error))showError(error);else status.setText("Capturing input (up to 16 seconds). Shift + IN again to finish.",juce::dontSendNotification);}else setParameter("inputMonitor",processor.state.getRawParameterValue("inputMonitor")->load()>.5f?0:1);};micKey.setTooltip("Input monitor / record source. Shift + IN starts or finishes a 16-second sampler recording. Configure input in your host.");
     metroAttachment=std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(p.state,"metronome",metroKey);metroKey.setClickingTogglesState(true);metroKey.setTooltip("Toggle metronome at internal/host tempo.");
+    addAndMakeVisible(cleanSample);cleanSample.setClickingTogglesState(true);cleanSample.setTooltip("Neutral sample/kit playback: bypass the implicit tone filter and dry saturation. Explicit effects remain active.");cleanAttachment=std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(p.state,"sampleClean",cleanSample);
     addAndMakeVisible(status);status.setColour(juce::Label::textColourId,juce::Colour(0xff536c80));status.setFont(juce::FontOptions(11));
     for(auto pair:{std::pair{&loopSample,"sampleLoop"},{&tapePlay,"tapePlay"},{&tapeRecord,"tapeRecord"},{&overdub,"tapeOverdub"}}) {
         addAndMakeVisible(*pair.first); pair.first->setClickingTogglesState(true);
@@ -186,7 +187,7 @@ void PocketEditor::resized() {
     engine.setBounds(600,452,169,27);tempo.setBounds(785,452,178,27);loadSample.setBounds(980,452,77,27);loopSample.setBounds(1066,452,80,27);
     tapeTrack.setBounds(602,452,80,27);tapeLength.setBounds(686,452,75,27);tapeSpeed.setBounds(769,452,135,27);
     tapePlay.setBounds(912,452,45,27);overdub.setBounds(963,452,49,27);clear.setBounds(1018,452,55,27);exportTape.setBounds(1079,452,67,27);
-    rewind.setVisible(false);browser.setBounds(18,516,1164,262);status.setBounds(35,490,800,23);kitEditKey.setBounds(850,487,140,26);kitEditor.setBounds(18,516,1164,262);sequenceSettings.setBounds(1000,487,146,26);
+    rewind.setVisible(false);browser.setBounds(18,516,1164,262);status.setBounds(35,490,620,23);cleanSample.setBounds(690,487,150,26);kitEditKey.setBounds(850,487,140,26);kitEditor.setBounds(18,516,1164,262);sequenceSettings.setBounds(1000,487,146,26);
 }
 void PocketEditor::selectMode(int mode) {
     if(shifted()&&mode<2){showBrowser(mode==0?2:4);shiftKey.setToggleState(false,juce::dontSendNotification);return;}
@@ -243,6 +244,7 @@ void PocketEditor::selectPage(int selected) {
 void PocketEditor::timerCallback() {
     processor.updateKeyboardDisplay();
     const int e=int(processor.state.getRawParameterValue("engine")->load());
+    cleanSample.setVisible(mainMode<2&&(e==3||e==5));
     const bool showKit=kitOpen&&e==5&&mainMode<2;kitEditor.setVisible(showKit);if(showKit)kitEditor.refresh();browser.setVisible(browserOpen&&!showKit);kitEditKey.setVisible(e==5&&mainMode<2);
     micKey.setButtonText(processor.inputCapturing.load()?"REC":processor.state.getRawParameterValue("inputMonitor")->load()>.5f?"IN ON":"IN");
     const auto selected=processor.selectedSound();if(selected!=lastSelectedSound){lastSelectedSound=selected;browser.syncSelection();}

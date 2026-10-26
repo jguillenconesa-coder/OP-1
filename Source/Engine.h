@@ -17,7 +17,7 @@ struct Parameters {
     float attack=.02f,decay=.2f,sustain=.8f,release=.3f;
     float lfoRate=1,lfoDepth=0; int lfoDestination=0,lfoShape=0;
     float delayTime=.281f,feedback=.42f,drive=0;
-    bool sampleLoop=false; float sampleRoot=60;
+    bool sampleClean=false;bool sampleLoop=false; float sampleRoot=60;
 };
 struct Sample { std::vector<float> frames; double rate=48000; };
 using Kit=std::array<Sample,kitCapacity>;
@@ -25,7 +25,7 @@ class Engine {
 public:
     static constexpr int polyphony=8;
     void prepare(double rate) { sampleRate=std::max(8000.0,rate); smoothing=float(1-std::exp(-1.0/(sampleRate*.012))); cachedCutoff=-1;reset(); }
-    void reset() { voices={}; delay.fill(0); write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1; }
+    void reset() { voices={}; delay.fill(0); write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1;cleanMix=0;cleanInitialized=false; }
     void setSample(Sample data) { sample=std::move(data); voices={}; }
     void swapSample(Sample& data) {std::swap(sample,data);voices={};}
     void swapKit(Kit& data,int count=8) {kit.swap(data);kitCount=count==24?24:8;voices={};}
@@ -72,7 +72,8 @@ public:
         return out;
     }
     float next(const Parameters& target) {
-        auto follow=[this](float& v,float t){v+=smoothing*(t-v);};
+        if(!cleanInitialized){const bool clean=target.sampleClean&&(target.engine==3||target.engine==5);cleanMix=clean?1.f:0.f;if(clean)current=target;cleanInitialized=true;}
+        auto follow=[this,&target](float& v,float t){v+=smoothing*(t-v);if(target.sampleClean&&std::abs(v-t)<.00002f)v=t;};
         follow(current.tone,target.tone); follow(current.color,target.color); follow(current.envelope,target.envelope);
         follow(current.effect,target.effect); follow(current.volume,target.volume); follow(current.drive,target.drive);
         follow(current.delayTime,target.delayTime); follow(current.feedback,target.feedback);
@@ -155,11 +156,15 @@ public:
         if(cutoff!=cachedCutoff) {cachedCutoff=cutoff;filterCoefficient=float(1-std::exp(-2*pi*std::min(cutoff,sampleRate*.42)/sampleRate));}
         const float coefficient=filterCoefficient;
         filter+=coefficient*(sum-filter);
-        const float driven=std::tanh(filter*(1+p.drive*12))/(1+p.drive*2);
+        follow(cleanMix,target.sampleClean&&(target.engine==3||target.engine==5)?1.f:0.f);
+        const float legacyDriven=std::tanh(filter*(1+p.drive*12))/(1+p.drive*2);
+        const float cleanDriven=p.drive<.000001f?sum:std::tanh(sum*(1+p.drive*12))/(1+p.drive*2);
+        const float driven=legacyDriven+(cleanDriven-legacyDriven)*cleanMix;
         const auto lag=std::clamp(size_t(sampleRate*p.delayTime),size_t(1),delay.size()-1);
         const float echo=delay[(write+delay.size()-lag)%delay.size()];
         delay[write]=std::tanh(driven+echo*std::clamp(p.feedback,0.f,.85f)); write=(write+1)%delay.size();
-        return std::tanh((driven+echo*p.effect*.7f)*p.volume);
+        const float output=(driven+echo*p.effect*.7f)*p.volume,limited=std::tanh(output);
+        return limited+(output-limited)*cleanMix;
     }
 private:
     static size_t channelIndex(int ch) { return size_t(std::clamp(ch,1,17)-1); }
@@ -169,7 +174,7 @@ private:
         double phase=0,modPhase=0,frequency=440,samplePosition=0,time=0,drumPhase=0;
     };
     float noise() { random^=random<<13; random^=random>>17; random^=random<<5; return float(double(random)/4294967295.0*2-1); }
-    float currentSustain=.8f;
+    bool cleanInitialized=false;float cleanMix=0,currentSustain=.8f;
     float cachedAttack=-1,cachedDecay=-1,cachedRelease=-1,cachedMacro=-1,attackStep=0,decayFactor=0,releaseFactor=0;
     double cachedRoot=-1,rootFrequency=261.625565,cachedCutoff=-1;float filterCoefficient=0;
     double sampleRate=48000,lfoPhase=0; float smoothing=.0017f; Parameters current;

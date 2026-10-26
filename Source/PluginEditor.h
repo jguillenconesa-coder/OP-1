@@ -58,6 +58,8 @@ private:
     std::array<juce::TextButton,4> modeButtons;
     std::array<juce::TextButton,8> slotButtons;
     juce::TextButton browseKey{"BROWSE"},splitKey{"SPLIT"},liftKey{"LIFT"},dropKey{"DROP"},undoKey{"UNDO"},sequencerKey{"SEQ"},comKey{"COM"},micKey{"IN"},metroKey{"CLICK"};
+    juce::TextButton cleanSample{"CLEAN SAMPLE"};
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> cleanAttachment;
     juce::Label status;
     juce::TextButton sequenceSettings{"SEQ SETTINGS"};
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> metroAttachment;
