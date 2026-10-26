@@ -47,6 +47,19 @@ int main(int argc,char** argv) {
   e->prepare(48000); p={}; p.tone=0;p.color=0;p.effect=0; e->pitchBend(1,2);e->noteOn(69,1);
   int bentCrossings=0;float previous=0;for(int i=0;i<48000;++i){const auto v=e->next(p);if(i>=4800&&v>0&&previous<=0)++bentCrossings;previous=v;}
   check(std::abs(bentCrossings/.9-493.883)<3,"Pitch bend did not shift by two semitones");
+  // Twenty-four independent kit voices use trim, reverse, gain and pitch.
+  {
+   pocket::Kit kit;for(int pad=0;pad<24;++pad){kit[size_t(pad)].rate=48000;kit[size_t(pad)].frames.assign(4800,.5f);}
+   kit[23].frames.assign(4800,0);for(int i=0;i<1200;++i)kit[23].frames[size_t(i)]=.5f;
+   e->setKit(std::move(kit),24);p={};p.engine=5;p.tone=.5f;p.color=1;p.effect=0;
+   check(pocket::Engine::kitSlot(83,24)==23&&pocket::Engine::kitSlot(68,8)==0,"Kit MIDI mapping compatibility failed");
+   auto energy=[&](int note,int frames){e->reset();for(int i=0;i<20000;++i)e->next(p);e->noteOn(note,1);double sum=0;for(int i=0;i<frames;++i){const auto sample=e->next(p);sum+=sample*sample;}return sum;};
+   check(energy(83,500)>0.01,"Pad 24 is not reachable");p.pads[23].reverse=true;check(energy(83,500)<.000001,"Reverse pad did not start from its tail");
+   p.pads[23].reverse=false;p.pads[23].start=.5f;check(energy(83,500)<.000001,"Pad start trim ignored");p.pads[23].start=0;p.pads[23].gain=0;check(energy(83,500)<.000001,"Per-pad gain did not mute");
+   p.pads[23].gain=1;p.pads[23].end=0;check(energy(83,500)<.000001,"Empty pad trim is not silent");
+   p.pads[23].end=1;p.pads[23].pitch=12;const auto pitched=energy(83,2000);p.pads[23].pitch=0;check(energy(83,2000)>pitched*1.4,"Pad pitch does not change sample playback speed");
+   p.pads[0].gated=true;p.release=0;e->reset();e->noteOn(60,1);for(int i=0;i<300;++i)e->next(p);e->noteOff(60);for(int i=0;i<4400;++i)e->next(p);check(e->visualState(5).active==0,"Gated pad voice stuck after release");
+  }
   if(argc>1) {
    e->prepare(48000); p={}; std::vector<int16_t> pcm;
    for(int section=0;section<3;++section) { p.engine=section; e->noteOn(60, .8f); e->noteOn(67,.7f); e->noteOn(75,.6f);

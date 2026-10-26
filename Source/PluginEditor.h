@@ -2,6 +2,7 @@
 #pragma once
 #include "PluginProcessor.h"
 #include "SoundBrowser.h"
+#include "KitEditor.h"
 class PocketLook : public juce::LookAndFeel_V4 {
 public:
     void drawButtonText(juce::Graphics&,juce::TextButton&,bool,bool) override;
@@ -46,6 +47,9 @@ private:
     PocketProcessor& processor;
     PocketLook look;
     SoundBrowser browser;
+    KitEditor kitEditor;
+    juce::TextButton kitEditKey{"KIT EDIT"};
+    bool kitOpen=false;
     juce::String lastSelectedSound;
     bool browserOpen=true,showSequence=false;
     juce::TooltipWindow tooltip{this,650};

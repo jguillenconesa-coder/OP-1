@@ -34,6 +34,7 @@ PocketProcessor::PocketProcessor(juce::File soundsDirectory) : AudioProcessor(Bu
     libraryDirectory=soundsDirectory==juce::File{}?juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory).getChildFile("Pocket Instruments/Pocket One/Banks"):soundsDirectory;
     const char* audioIds[]={"engine","tone","color","envelope","effect","attack","decay","sustain","release","lfoRate","lfoDepth","lfoDestination","lfoShape","delayTime","delayFeedback","drive","sampleLoop","sampleRoot","volume","sequencer","tempo","track1","track2","track3","track4","tapePlay","tapeRecord","tapeOverdub","tapeTrack","tapeSpeed","tapeLength","tapeLoop","tapeLoopIn","tapeLoopOut","metronome","inputMonitor","inputGain","tapeRecordGain","eqLow","eqMid","eqHigh","eqMix","masterDrive","masterEcho","masterDelayTime","masterFeedback","clickVolume","seqMode","seqLength","seqRate","seqGate","seqSwing","arpOctaves","seqVelocity","seqEuclidean","seqPulses","seqRotation"};
     for(size_t i=0;i<audioParameters.size();++i) audioParameters[i]=state.getRawParameterValue(audioIds[i]);
+    for(int pad=0;pad<pocket::kitCapacity;++pad){const char* ids[]={"start","end","gain","pitch","reverse","gated"};for(int i=0;i<6;++i)padParameters[size_t(pad)][size_t(i)]=state.getRawParameterValue(padParameterId(pad,ids[i]));}
     keyboard.addListener(this);
     initializeSoundSlots();
     refreshUserPresets();
@@ -80,6 +81,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout PocketProcessor::layout() {
     p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"seqPulses",1},"Euclidean pulses",0,16,8));
     p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"seqRotation",1},"Euclidean rotation",0,15,0));
     number("seqGate",.1f,1,1);number("seqSwing",0,.45f,0);number("seqVelocity",.1f,1,.8f);
+    for(int pad=0;pad<pocket::kitCapacity;++pad){
+        const auto prefix="Pad "+juce::String(pad+1)+" ";
+        for(const auto* field:{"start","end","gain","pitch"}){const float low=juce::String(field)=="pitch"?-24:0,high=juce::String(field)=="pitch"?24:juce::String(field)=="gain"?2:1,initial=juce::String(field)=="end"||juce::String(field)=="gain"?1:0;
+            p.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{padParameterId(pad,field),1},prefix+field,low,high,initial));}
+        for(const auto* field:{"reverse","gated"})p.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{padParameterId(pad,field),1},prefix+field,false));
+    }
     return p;
 }
 void PocketProcessor::prepareToPlay(double sr,int) {
@@ -113,6 +120,7 @@ void PocketProcessor::processBlock(juce::AudioBuffer<float>& buffer,juce::MidiBu
     p.attack=get(Param::attack); p.decay=get(Param::decay); p.sustain=get(Param::sustain); p.release=get(Param::release);
     p.lfoRate=get(Param::lfoRate); p.lfoDepth=get(Param::lfoDepth); p.lfoDestination=int(get(Param::lfoDestination)); p.lfoShape=int(get(Param::lfoShape));
     p.delayTime=get(Param::delayTime); p.feedback=get(Param::delayFeedback); p.drive=get(Param::drive); p.sampleLoop=get(Param::sampleLoop)>.5f;p.sampleRoot=get(Param::sampleRoot);
+    if(p.engine==5)for(size_t pad=0;pad<p.pads.size();++pad){const auto& source=padParameters[pad];auto& target=p.pads[pad];target.start=source[0]->load(std::memory_order_relaxed);target.end=source[1]->load(std::memory_order_relaxed);target.gain=source[2]->load(std::memory_order_relaxed);target.pitch=source[3]->load(std::memory_order_relaxed);target.reverse=source[4]->load(std::memory_order_relaxed)>.5f;target.gated=source[5]->load(std::memory_order_relaxed)>.5f;}
     const float outputTarget=get(Param::volume);
     bool running=get(Param::sequencer)>.5f;
     double bpm=get(Param::tempo),ppq=0; bool hostPosition=false,hostPlaying=true;
@@ -250,9 +258,11 @@ void PocketProcessor::loadFactoryKit(int index) {
     const char* kits[]={"Studio","Circuit","Dust"};
     const char* hits[]={"kick","snare","closed_hat","open_hat","tom","clap","crash","rim"};
     if(index<0||index>2) return;
-    std::array<pocket::Sample,8> kit;
-    for(size_t i=0;i<kit.size();++i) kit[i]=factorySample(juce::String(kits[index])+"_"+hits[i]+"_wav");
-    const juce::ScopedLock lock(getCallbackLock());engine.swapKit(kit);
+    pocket::Kit kit;
+    for(size_t i=0;i<kit.size();++i) kit[i]=factorySample(juce::String(kits[(index+int(i/8))%3])+"_"+hits[i%8]+"_wav");
+    {const juce::ScopedLock lock(libraryStateLock);for(int pad=0;pad<pocket::kitCapacity;++pad)kitNames[size_t(pad)]=juce::String(kits[(index+pad/8)%3])+" / "+hits[pad%8];}
+    for(int pad=0;pad<pocket::kitCapacity;++pad)publishPadPreview(pad,kit[size_t(pad)]);
+    const juce::ScopedLock lock(getCallbackLock());engine.swapKit(kit,24);kitPads.store(24);
 }
 void PocketProcessor::applyPreset(int index) {
     if(index<0||index>=int(pocket::factoryPresets.size())) return;
@@ -263,7 +273,7 @@ void PocketProcessor::applyPreset(int index) {
         auto data=factorySample(names[p.sample]);const int frames=int(data.frames.size());publishSamplePreview(data);
         const juce::ScopedLock lock(getCallbackLock());engine.swapSample(data);sampleFrames.store(frames);
     }
-    if(p.kit>=0) loadFactoryKit(p.kit);
+    if(p.kit>=0){loadFactoryKit(p.kit);for(int pad=0;pad<pocket::kitCapacity;++pad)for(const auto* field:{"start","end","gain","pitch","reverse","gated"}){auto* parameter=state.getParameter(padParameterId(pad,field));parameter->setValueNotifyingHost(parameter->getDefaultValue());}}
     const std::pair<const char*,float> values[]={
         {"engine",float(p.engine)},{"tone",p.tone},{"color",p.color},{"envelope",p.envelope},{"effect",p.effect},
         {"attack",p.attack},{"release",p.release},{"decay",p.decay},{"sustain",p.sustain},
@@ -275,9 +285,10 @@ void PocketProcessor::applyPreset(int index) {
 
 void PocketProcessor::getStateInformation(juce::MemoryBlock& dest) {
     auto tree=state.copyState();tree.removeChild(tree.getChildWithName("TapeEdits"),nullptr);tree.addChild(tapeEditSnapshot(),-1,nullptr);tree.removeChild(tree.getChildWithName("SoundLibrary"),nullptr);tree.addChild(librarySnapshot(),-1,nullptr); for(int i=0;i<16;++i) tree.setProperty("step"+juce::String(i),steps[size_t(i)].load(),nullptr);
-    std::array<pocket::Sample,8> kitCopy;
+    {const juce::ScopedLock lock(libraryStateLock);for(int pad=0;pad<pocket::kitCapacity;++pad)tree.setProperty("kitName"+juce::String(pad),kitNames[size_t(pad)],nullptr);}
+    pocket::Kit kitCopy;
     juce::AudioBuffer<float> sampleAudio,tapeAudio; double sampleRate=48000,tapeRate=48000;
-    {const juce::ScopedLock lock(getCallbackLock()); kitCopy=engine.getKit();const auto& sample=engine.getSample(); sampleRate=sample.rate;
+    {const juce::ScopedLock lock(getCallbackLock()); kitCopy=engine.getKit();tree.setProperty("kitCount",engine.getKitCount(),nullptr);const auto& sample=engine.getSample(); sampleRate=sample.rate;
         if(!sample.frames.empty()) {sampleAudio.setSize(1,int(sample.frames.size())); sampleAudio.copyFrom(0,0,sample.frames.data(),sampleAudio.getNumSamples());}
         const auto& tracks=tape.getTracks(); tapeRate=tape.getRate();
         if(!tracks[0].empty()) {tapeAudio.setSize(4,int(tracks[0].size())); for(int c=0;c<4;++c) tapeAudio.copyFrom(c,0,tracks[size_t(c)].data(),tapeAudio.getNumSamples());}
@@ -300,7 +311,7 @@ void PocketProcessor::setStateInformation(const void* data,int size) {
         const bool hasTape=decodeAudio(tree.getProperty("tapeAudio").toString(),tapeAudio,tapeRate,4)&&tapeAudio.getNumChannels()==4;
         if(auto record=tree.getChildWithProperty("id","tapeRecord");record.isValid()) record.setProperty("value",0.f,nullptr);
         // Encoded payloads belong to the state snapshot, not the live parameter tree.
-        std::array<pocket::Sample,8> restoredKit;
+        pocket::Kit restoredKit;
         bool hasKit=false;
         for(size_t i=0;i<restoredKit.size();++i) {
             const auto key="kitAudio"+juce::String(int(i));juce::AudioBuffer<float> hit;double sr=32000;
@@ -311,6 +322,8 @@ void PocketProcessor::setStateInformation(const void* data,int size) {
         }
         for(const char* id:{"seqMode","seqLength","seqRate","seqGate","seqSwing","arpOctaves","seqVelocity","seqEuclidean","seqPulses","seqRotation"})
             if(!tree.getChildWithProperty("id",id).isValid()){juce::ValueTree parameter("PARAM");parameter.setProperty("id",id,nullptr);auto* p=state.getParameter(id);parameter.setProperty("value",p->convertFrom0to1(p->getDefaultValue()),nullptr);tree.addChild(parameter,-1,nullptr);}
+        {const juce::ScopedLock lock(libraryStateLock);for(int pad=0;pad<pocket::kitCapacity;++pad)kitNames[size_t(pad)]=tree.getProperty("kitName"+juce::String(pad),"Pad "+juce::String(pad+1)).toString().substring(0,160);}
+        for(int pad=0;pad<pocket::kitCapacity;++pad)publishPadPreview(pad,restoredKit[size_t(pad)]);
         const int selected=int(tree.getProperty("factoryPreset",-1));
         currentFactoryPreset.store(selected>=0&&selected<int(pocket::factoryPresets.size())?selected:-1);
         tree.removeProperty("factoryPreset",nullptr);
@@ -320,9 +333,10 @@ void PocketProcessor::setStateInformation(const void* data,int size) {
         publishSamplePreview(sample);
         std::array<std::vector<float>,4> tracks;
         if(hasTape) for(int c=0;c<4;++c) tracks[size_t(c)].assign(tapeAudio.getReadPointer(c),tapeAudio.getReadPointer(c)+tapeAudio.getNumSamples());
-        {const juce::ScopedLock lock(getCallbackLock()); if(hasKit) engine.swapKit(restoredKit);engine.swapSample(sample); sampleFrames.store(hasSample?sampleAudio.getNumSamples():0);
+        {const juce::ScopedLock lock(getCallbackLock()); if(hasKit) engine.swapKit(restoredKit,int(tree.getProperty("kitCount",8)));kitPads.store(engine.getKitCount());engine.swapSample(sample); sampleFrames.store(hasSample?sampleAudio.getNumSamples():0);
             if(hasTape) {tape.restore(std::move(tracks),tapeRate); tape.prepare(rate);} else {tape.prepare(rate); for(int c=0;c<4;++c) tape.clear(c);}
             for(int i=0;i<16;++i) steps[size_t(i)].store(juce::jlimit(-1,127,int(tree.getProperty("step"+juce::String(i),-1))));
+            for(int pad=0;pad<pocket::kitCapacity;++pad)for(const auto* field:{"start","end","gain","pitch","reverse","gated"}){const auto id=padParameterId(pad,field);if(!tree.getChildWithProperty("id",id).isValid()){juce::ValueTree parameter("PARAM");parameter.setProperty("id",id,nullptr);auto* p=state.getParameter(id);parameter.setProperty("value",p->convertFrom0to1(p->getDefaultValue()),nullptr);tree.addChild(parameter,-1,nullptr);}}
             state.replaceState(tree);engine.allNotesOff();heldNotes.clear();seqNote=-1;sequenceNote.store(-1);wasSequencing=false;lastHostStep=INT64_MIN;
         }
         restoreTapeEdits(edits);
@@ -330,3 +344,10 @@ void PocketProcessor::setStateInformation(const void* data,int size) {
 }
 juce::AudioProcessorEditor* PocketProcessor::createEditor() {return new PocketEditor(*this);}
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter() {return new PocketProcessor();}
+
+juce::String PocketProcessor::padParameterId(int pad,const char* field){return "pad"+juce::String(pad+1)+"_"+field;}
+bool PocketProcessor::loadKitPad(int pad,const juce::File& file,juce::String& error){if(pad<0||pad>=pocket::kitCapacity)return false;auto sample=readSample(file,error);if(sample.frames.empty())return false;publishPadPreview(pad,sample);{const juce::ScopedLock lock(libraryStateLock);kitNames[size_t(pad)]=file.getFileName();}{const juce::ScopedLock lock(getCallbackLock());engine.swapKitPad(pad,sample);kitPads.store(engine.getKitCount());}setSelectedSound({});currentFactoryPreset.store(-1);currentUserPreset.store(-1);return true;}
+void PocketProcessor::publishPadPreview(int pad,const pocket::Sample& sample){auto& preview=padPreviews[size_t(pad)];for(size_t bin=0;bin<preview.size();++bin){float peak=0;for(size_t i=sample.frames.size()*bin/preview.size();i<sample.frames.size()*(bin+1)/preview.size();++i)peak=std::max(peak,std::abs(sample.frames[i]));preview[bin].store(peak,std::memory_order_relaxed);}}
+std::array<float,128> PocketProcessor::kitPadPreview(int pad){std::array<float,128> out{};if(pad>=0&&pad<pocket::kitCapacity)for(size_t i=0;i<out.size();++i)out[i]=padPreviews[size_t(pad)][i].load(std::memory_order_relaxed);return out;}
+
+juce::String PocketProcessor::kitPadName(int pad) const{if(pad<0||pad>=pocket::kitCapacity)return {};const juce::ScopedLock lock(libraryStateLock);return kitNames[size_t(pad)];}

@@ -49,8 +49,9 @@ void drawScreen(juce::Graphics& g,const ScreenFrame& f) {
         g.setColour(colors[0]);g.drawVerticalLine(int(13+start*224),27,86);g.setColour(colors[1]);g.drawVerticalLine(int(13+end*224),27,86);
         if(f.voices>0){g.setColour(colors[3]);g.drawVerticalLine(int(13+f.samplePosition*224),24,89);}
     } else if(f.engine>=4) {
-        const int pad=f.engine==5?Engine::kitSlot(f.note):f.note%12==0||f.note%12==7?0:f.note%12==2||f.note%12==4?1:2;
-        for(int i=0;i<8;++i){const float x=15.f+i*28;const bool hit=i==pad&&f.voices>0;g.setColour(colors[size_t(i%4)].withAlpha(hit?.5f+activity*.5f:.23f));g.drawRoundedRectangle(x,33,23,43,4,1);if(hit){g.fillRoundedRectangle(x+2,57-activity*20,19,17+activity*20,2);g.drawEllipse(x+4-activity*2,39-activity*2,15+activity*4,15+activity*4,1);}label(g,juce::String(i+1),{int(x+8),79,16,12},8,colors[size_t(i%4)]);}
+        const int pad=f.engine==5?Engine::kitSlot(f.note,f.kitPads):f.note%12==0||f.note%12==7?0:f.note%12==2||f.note%12==4?1:2;
+        if(f.engine==5&&f.kitPads==24){for(int i=0;i<24;++i){const float x=15.f+(i%8)*28,y=29.f+(i/8)*23;const bool hit=i==pad&&f.voices>0;g.setColour(colors[size_t(i%4)].withAlpha(hit?.5f+activity*.5f:.3f));g.drawRoundedRectangle(x,y,23,19,2,1);if(hit)g.fillRoundedRectangle(x+1,y+1,21,17,2);label(g,juce::String(i+1),{int(x+2),int(y+3),19,12},8,hit?juce::Colour(0xff071015):colors[size_t(i%4)]);}}
+        else for(int i=0;i<8;++i){const float x=15.f+i*28;const bool hit=i==pad&&f.voices>0;g.setColour(colors[size_t(i%4)].withAlpha(hit?.5f+activity*.5f:.23f));g.drawRoundedRectangle(x,33,23,43,4,1);if(hit){g.fillRoundedRectangle(x+2,57-activity*20,19,17+activity*20,2);g.drawEllipse(x+4-activity*2,39-activity*2,15+activity*4,15+activity*4,1);}label(g,juce::String(i+1),{int(x+8),79,16,12},8,colors[size_t(i%4)]);}
     } else if(f.engine==2) {
         for(int string=0;string<4;++string){juce::Path wire;const float y=35.f+string*13;for(int i=0;i<180;++i){const float u=float(i)/179;const float x=25+u*200,v=y+std::sin(u*float(pi)*(1+string))*std::sin(phase*12+u*14)*activity*(3+f.color*5);if(i==0)wire.startNewSubPath(x,v);else wire.lineTo(x,v);}g.setColour(colors[size_t(string)]);g.strokePath(wire,juce::PathStrokeType(1));dot(g,25,y,2);dot(g,225,y,2);}
     } else if(f.engine==1) {

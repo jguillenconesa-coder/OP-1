@@ -1,4 +1,4 @@
-# Pocket One 0.4.0
+# Pocket One 0.5.0
 
 An OP-1-inspired **VST3 instrument and standalone application**, written in C++17 with JUCE 8. Independent of Teenage Engineering; no original firmware, factory samples, graphics or branding are included. The interface uses a grey enclosure, dark animated display, blue/green/white/orange encoders and two rows of button keys.
 
@@ -6,7 +6,7 @@ An OP-1-inspired **VST3 instrument and standalone application**, written in C++1
 
 ## Instruments and controls
 
-Eight-voice velocity-sensitive **FM**, **phase distortion**, **plucked string**, **sampler**, **drum** and **eight-pad sample kit** engines. Select the engine above the display, use the factory-sound menu, or play MIDI and the on-screen keyboard. The arrow buttons transpose the keyboard in sound modes. Computer keyboard notes start on A when the keyboard component has focus. MIDI channels remain independent for note release/sustain, with a fixed +/-2 semitone pitch wheel range on FM, phase and sampler. The string engine's delay-line fundamental is not currently pitch-bent; its tonal overlay can be modulated.
+Eight-voice velocity-sensitive **FM**, **phase distortion**, **plucked string**, **sampler**, **drum** and **24-pad sample kit** engines. Select the engine above the display, use the factory-sound menu, or play MIDI and the on-screen keyboard. The arrow buttons transpose the keyboard in sound modes. Computer keyboard notes start on A when the keyboard component has focus. MIDI channels remain independent for note release/sustain, with a fixed +/-2 semitone pitch wheel range on FM, phase and sampler. The string engine's delay-line fundamental is not currently pitch-bent; its tonal overlay can be modulated.
 
 SYNTH/DRUM/TAPE/MIX select modes. T1 selects the engine page, T2 the envelope, T3 effects and T4 LFO. In tape/mixer mode T1–T4 select a track. SEQ reveals the 16-step editor. Shift + a sound slot 1–8 stores the edited sound; synth/drum assignments and favorites persist in project state. The four encoders change function with the selected page:
 
@@ -22,7 +22,7 @@ Double-click an encoder to restore its parameter default. Parameters are automat
 
 **Sampler:** choose SAMPLER, then LOAD a WAV/AIFF. Up to the first 16 seconds at 8–192 kHz are imported and stereo files are downmixed to mono. C4/MIDI 60 is the root. START and LENGTH trim the window; LOOP repeats it while the note is held. IN monitors enabled host/standalone audio input; Shift + IN captures up to 16 seconds into the sampler. Configure/unmute the input device first. Empty sampler slots display a load prompt.
 
-**Drums:** C/G pitch classes trigger kick, D/E snare, and other pitch classes hi-hat. Tone, Color and the Envelope macro change pitch/noise/decay. Hits are one-shots. The separate KIT engine includes Studio, Circuit and Dust: three original eight-pad sample kits, mapped to MIDI 60–67 and common GM aliases.
+**Drums:** C/G pitch classes trigger kick, D/E snare, and other pitch classes hi-hat. Tone, Color and the Envelope macro change pitch/noise/decay. Hits are one-shots. The separate KIT engine includes Studio, Circuit and Dust: three 24-pad kits using the existing original samples, mapped to MIDI 60–83 and common GM aliases.
 
 **Sequencer:** PLAY enables 16th-note playback; in a DAW, also start host transport. Latch Shift to reveal the steps, then click them to toggle gates. Play a note, then **Shift-click** a step to write that pitch. Hover a step to read its note. Host PPQ/tempo drive pattern position, including seeks; otherwise the internal tempo runs the pattern. MIDI sustain (CC64) is supported. STOP disables sequence/tape recording/playback and requests a voice/effect panic.
 
@@ -42,7 +42,7 @@ This is a constrained loop recorder, not a full recreation of OP-1 tape. It now 
 
 See [Windows build/install instructions](docs/windows.md). Run `packaging\windows\build.cmd` on Windows with Visual Studio 2022 C++ tools, CMake, Git and NSIS 3.11+ installed. The installer is generated in `dist/`, installs the VST3 bundle to the standard Common Files folder, installs the standalone app/Start menu shortcut, and registers an uninstaller. The C++ runtime is statically linked.
 
-**Windows x64 installer:** `Pocket-One-0.4.0-Windows-x64-Setup.exe`. Six Windows suites and installer/uninstaller checks pass under Wine, including actual VST3 loading and Common Controls manifest inspection. Four Linux suites pass. Native CI for 0.2.1 also passed Windows/Linux/macOS, including Windows app startup and installer checks; this does not validate a native Ableton project. The installer remains unsigned. See [cross-build instructions](docs/windows-cross-build.md).
+**Windows x64 installer:** `Pocket-One-0.5.0-Windows-x64-Setup.exe`. Eight Windows suites and installer/uninstaller checks pass under Wine, including actual VST3 loading and Common Controls manifest inspection. Six Linux suites pass. Native CI for the 0.4.0 SQLite fix also passed Windows/Linux/macOS, including Windows app startup and installer checks; this does not validate a native Ableton project. The installer remains unsigned. See [cross-build instructions](docs/windows-cross-build.md).
 
 ## Build from source
 
@@ -76,11 +76,11 @@ xvfb-run -a ./build/plugin_smoke_artefacts/Release/plugin_smoke "$PWD/docs/inter
 
 See [validation evidence and limitations](docs/validation.md) and [OTTO/TOP-1 design references](docs/references.md). No code or assets from those projects have been imported.
 
-Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.4.0`.
+Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.5.0`.
 
 ## Factory sounds
 
-25 original presets, three embedded eight-pad drum kits and four melodic samples. See [the sound bank guide](docs/sound-bank.md) for MIDI mapping, sample credits and OP-1 preset references.
+25 original presets, three embedded 24-pad drum kits and four melodic samples. See [the sound bank guide](docs/sound-bank.md) for MIDI mapping, sample credits and OP-1 preset references.
 
 ## User banks, animations and realtime audio
 
@@ -92,6 +92,10 @@ The processor reports **0 added latency samples**. The realtime test checks trac
 
 See the [complete button/browser guide](docs/buttons-and-browser.md): contextual tape tricks, master EQ/FX pages, input capture, shortcuts and differences from the original firmware.
 
-## Extended sequencing (0.4.0)
+## Extended sequencing (introduced in 0.4.0)
 
 Use **SEQ SETTINGS / SEQ: …** or **Shift + SEQ** for forward/reverse/pendulum/random patterns, held-note arpeggios, rate, gate, swing, length, velocity and a Euclidean rhythm mask. These independent implementations follow host position/tempo and save with the session. See [sequencer controls](docs/sequencers.md) and the [firmware research ledger](docs/firmware-analysis.md). No original firmware/resources are included.
+
+## 24-pad kits (0.5.0)
+
+The **KIT EDIT** panel selects/auditions 24 pads across C4–B5 and edits trim, gain, pitch, reverse and one-shot/gated playback. Load WAV/AIFF per pad; active kits are embedded in projects. Legacy eight-slot banks keep their original note mapping. Factory kits combine the existing Studio/Circuit/Dust resources in three groups of eight; no original OP-1 resources are bundled. [Kit guide](docs/kits.md).

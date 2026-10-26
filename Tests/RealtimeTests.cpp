@@ -32,13 +32,14 @@ int main(int argc,char** argv) {
   for(double rate:{48000.,96000.}) for(int block:{64,128,256}) for(int preset:presets) {
    p->applyPreset(preset);p->prepareToPlay(rate,block);
    for(auto item:{std::pair{"sequencer",1.f},{"seqGate",.65f},{"seqSwing",.5f},{"seqEuclidean",1.f},{"tapePlay",1.f},{"tapeRecord",1.f},{"tapeOverdub",1.f},{"lfoDepth",.35f},{"drive",.7f},{"effect",.7f},{"sampleLoop",1.f},{"metronome",1.f},{"masterDrive",.6f},{"masterEcho",.3f},{"eqLow",.25f}}) p->state.getParameter(item.first)->setValueNotifyingHost(item.second);
+   for(int pad=0;pad<24;++pad)for(const auto* field:{"pitch","gain","start","end","reverse","gated"}){auto* parameter=p->state.getParameter(PocketProcessor::padParameterId(pad,field));const float value=juce::String(field)=="pitch"?float(pad%7-3):juce::String(field)=="gain"?.8f:juce::String(field)=="end"?.9f:juce::String(field)=="start"?.01f:float(pad%2);parameter->setValueNotifyingHost(parameter->convertTo0to1(value));}
    juce::String captureError;if(!p->startInputCapture(captureError))throw std::runtime_error(captureError.toStdString());
    juce::AudioBuffer<float> audio(2,block);juce::MidiBuffer midi;midi.ensureSize(16384);
-   for(int note:{48,52,55,59,60,64,67,72})midi.addEvent(juce::MidiMessage::noteOn(1,note,.8f),0);
+   for(int note:{48,52,55,59,60,68,76,83})midi.addEvent(juce::MidiMessage::noteOn(1,note,.8f),0);
    p->processBlock(audio,midi);midi.clear();for(int i=0;i<64;++i)p->processBlock(audio,midi);
    std::vector<double> times;times.reserve(512);allocations=frees=0;double peak=0;
    for(int iteration=0;iteration<512;++iteration) {
-    if(iteration%64==0) {auto* mode=p->state.getParameter("seqMode");mode->setValueNotifyingHost(mode->convertTo0to1(float((iteration/64)%7)));midi.addEvent(juce::MidiMessage::pitchWheel(1,8192+(iteration%128?1000:0)),0);for(int note:{48,52,55,59,60,64,67,72})midi.addEvent(juce::MidiMessage::noteOn(1,note,.8f),0);}
+    if(iteration%64==0) {auto* mode=p->state.getParameter("seqMode");mode->setValueNotifyingHost(mode->convertTo0to1(float((iteration/64)%7)));midi.addEvent(juce::MidiMessage::pitchWheel(1,8192+(iteration%128?1000:0)),0);for(int note:{48,52,55,59,60,68,76,83})midi.addEvent(juce::MidiMessage::noteOn(1,note,.8f),0);}
     if(iteration%128==0){const std::array<uint8_t,128> sysex{};midi.addEvent(juce::MidiMessage::createSysExMessage(sysex.data(),int(sysex.size())),0);}
     if(iteration%100==0)p->keyboard.noteOn(2,65,.6f);
     if(iteration%100==50)p->keyboard.noteOff(2,65,0);

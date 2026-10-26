@@ -40,3 +40,7 @@ Las divisiones de tomas usan almacenamiento reservado antes del procesamiento, i
 ## Secuenciadores de 0.4.0
 
 El motor de pasos/arpegiador usa almacenamiento fijo para las teclas de 16 canales y los candidatos de hasta tres octavas. El recorrido pseudoaleatorio se deriva del tick del host, sin RNG compartido ni asignaciones. Gate y swing se calculan por muestra. Las 36 cargas de pruebas recorren los siete modos e incluyen la máscara euclídea; no se observaron llamadas de heap monitorizadas. La ejecución Linux registrada tuvo dos overruns y un peor p99 del 20,47 % del presupuesto en la VM compartida: [medidas](realtime-metrics-linux.json). No sustituye una medición de round-trip ASIO en Live.
+
+## Kits de 24 pads de 0.5.0
+
+Las 36 cargas actuales añaden ajustes por pad y notas hasta MIDI 83. En los 18.432 callbacks registrados no hubo llamadas de heap monitorizadas; el peor p99 usó 13.91 % del presupuesto y hubo 0 callbacks por encima del plazo en la VM compartida. La latencia declarada sigue en cero muestras. La medición no sustituye una prueba de Live/ASIO en el equipo del usuario.

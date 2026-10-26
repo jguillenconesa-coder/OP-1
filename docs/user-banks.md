@@ -3,7 +3,7 @@
 En **0.3.0**, pulsa **BROWSE → IMPORT BANK** y elige un ZIP Pocket One. En 0.2.2 el botón se llama BANK. Espera a que termine la importación con el transporte parado; los presets aparecen en la biblioteca bajo el nombre del banco. Puedes buscar, filtrar y separar variantes de muestras únicas. La biblioteca permanece en el equipo al cerrar y reabrir el plugin.
 
 - Windows: `%APPDATA%\Pocket Instruments\Pocket One\Banks`.
-- Las sesiones y proyectos del DAW incorporan la muestra o las ocho muestras del kit activo, junto con `sampleRoot`. Se pueden abrir sin instalar de nuevo el banco.
+- Las sesiones y proyectos del DAW incorporan la muestra o las 8/24 muestras del kit activo, junto con `sampleRoot`. Se pueden abrir sin instalar de nuevo el banco.
 - Cargar un sonido mantiene el volumen de salida, el tempo, el patrón y el audio grabado en cinta.
 - Las muestras estéreo se convierten a mono en este motor. La envolvente, el delay y el LFO son los de Pocket One; no se importan los algoritmos de efectos del OP-1.
 - Un AIFF de sampler se reproduce como audio. No implica soporte para los presets de síntesis ni los slices de batería del OP-1.
@@ -29,3 +29,7 @@ Los AIFF declaran `type: sampler`, `synth_version: 3` y audio estéreo; son inst
 El banco se ofrece ahora como [descarga directa del repositorio](../downloads/user-banks/README.md), después de que el enlace local del chat no permitiera descargarlo. No se etiqueta CC0: sus autores y condiciones de redistribución siguen pendientes de identificación. La infraestructura y los presets de parámetros propios sí forman parte del código público; el banco de fábrica original del proyecto sigue disponible con sus licencias.
 
 En 0.3.0, [buttons-and-browser.md](buttons-and-browser.md) explica el navegador, favoritos, slots y el botón ADD SAMPLES.
+
+## Kits ampliados de 0.5.0
+
+El formato `formatVersion: 1` admite ahora un array `kit` de ocho **o 24** rutas de audio. Los bancos de ocho mantienen la asignación histórica. Un array opcional `pads` contiene hasta un objeto por muestra, con `start`, `end` (0–1), `gain` (0–2), `pitch` (-24–24 semitonos), `reverse` y `gated`. Campos omitidos usan sus valores por defecto; los valores se limitan al rango de los parámetros. Los elementos deben ser objetos y sus ajustes numéricos finitos o booleanos. No confundir `pads` con los ocho slots de selección de presets. [Guía del editor](kits.md).

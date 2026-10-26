@@ -1,4 +1,4 @@
-# Navegador y botones — Pocket One 0.4.0
+# Navegador y botones — Pocket One 0.5.0
 
 ## Seleccionar sonidos sin confundir muestras y presets
 
@@ -73,3 +73,7 @@ La cinta sigue limitada a 4/8/16 segundos, grabación a x1 y cuatro pistas mono.
 ## Secuenciadores ampliados (0.4.0)
 
 **SEQ SETTINGS / SEQ: …** o **Shift + SEQ** permite elegir dirección, arpegiador, longitud, velocidad, swing, gate y máscara euclídea. **SEQ** muestra/oculta pasos. PLAY en SYNTH/DRUM inicia el secuenciador; en ARP mantén notas MIDI o del teclado en pantalla. [Guía con los valores y límites](sequencers.md). Los modos nuevos son implementaciones propias; no ejecutan código del OP-1.
+
+## Kits de 24 pads (0.5.0)
+
+Carga un kit en DRUM y pulsa **KIT EDIT**. Los 24 botones seleccionan/preescuchan pads; la forma de onda muestra el recorte. Cada pad tiene START, END, GAIN, PITCH, REVERSE y GATED. LOAD PAD sustituye su audio; RESET PAD recupera sus controles. Los ocho accesos de sonido de la máquina siguen seleccionando presets, mientras que el teclado toca los pads. [Guía y compatibilidad](kits.md).

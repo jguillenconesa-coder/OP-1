@@ -2,6 +2,7 @@
 #include "PluginProcessor.h"
 #include "ScreenAnimations.h"
 #include "SoundBrowser.h"
+#include "KitEditor.h"
 #include <iostream>
 #include <memory>
 #include <stdexcept>
@@ -113,13 +114,14 @@ int main(int argc,char** argv) {
    check(total>.001,"Factory preset is silent");
    if(preset>=18&&preset<=21) check(p->sampleFrames.load()==64000,"Embedded melodic WAV missing");
   }
-  // All eight slots in every kit, including the GM kick alias, must have audio.
-  for(int kit=22;kit<25;++kit) for(int pad=0;pad<9;++pad) {
-   p->applyPreset(kit);p->prepareToPlay(48000,256);midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,pad==8?36:60+pad,.8f),0);
+  // All 24 slots in every kit, including the GM kick alias, must have audio.
+  for(int kit=22;kit<25;++kit) for(int pad=0;pad<25;++pad) {
+   p->applyPreset(kit);p->prepareToPlay(48000,256);midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,pad==24?36:60+pad,.8f),0);
    double total=0;for(int b=0;b<24;++b){p->processBlock(buffer,midi);midi.clear();for(int i=0;i<256;++i)total+=buffer.getSample(0,i)*buffer.getSample(0,i);}
    check(total>.001,"Embedded kit pad is silent");
   }
   p->getStateInformation(saved);auto kitRestored=std::make_unique<PocketProcessor>();kitRestored->setStateInformation(saved.getData(),int(saved.getSize()));kitRestored->prepareToPlay(48000,256);
+  check(kitRestored->kitPads.load()==24,"24-pad kit count did not restore");
   check(kitRestored->currentFactoryPreset.load()==24,"Kit preset selection failed to restore");
   midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,38,.8f),0);kitRestored->processBlock(buffer,midi);
   check(buffer.getMagnitude(0,0,256)>.001,"Embedded kit state failed to restore");
@@ -157,6 +159,13 @@ int main(int argc,char** argv) {
    check(bankProcessor->importUserBank(valid,error),"Valid bank import failed");check(bankProcessor->userPresetNames().size()==1,"Bank catalog missing");check(bankProcessor->importUserBank(valid,error),"Repeat bank import failed");check(bankProcessor->userPresetNames().size()==1,"Reimport duplicated the bank catalog");
    check(bankProcessor->applyUserPreset(0,error),"User preset selection failed");check(bankProcessor->state.getRawParameterValue("sampleRoot")->load()==45,"Sample root note was not applied");
    check(bankProcessor->state.getRawParameterValue("tempo")->load()==tempoBefore&&bankProcessor->steps[0].load()==77,"Sound preset changed tempo or pattern");
+   juce::String paths;for(int pad=0;pad<24;++pad){if(pad)paths+=",";paths+="\"samples/test.wav\"";}
+   const auto kit24=makeZip("{\"formatVersion\":1,\"presets\":[{\"name\":\"24 pad fixture\",\"kit\":["+paths+"],\"pads\":[{\"gain\":0.25,\"pitch\":7,\"reverse\":true}],\"parameters\":{}}]}","samples/test.wav");
+   auto extended=std::make_unique<PocketProcessor>(library.getChildFile("24 pad library"));check(extended->importUserBank(kit24,error),"24-pad bank import failed");check(extended->applyUserPreset(0,error),"24-pad bank load failed");check(extended->kitPads.load()==24,"Imported kit count wrong");
+   check(extended->state.getRawParameterValue("pad1_gain")->load()==.25f&&extended->state.getRawParameterValue("pad1_pitch")->load()==7&&extended->state.getRawParameterValue("pad1_reverse")->load()==1,"Per-pad bank settings not applied");
+   extended->getStateInformation(saved);auto embedded=std::make_unique<PocketProcessor>(library.getChildFile("Missing kit bank"));embedded->setStateInformation(saved.getData(),int(saved.getSize()));embedded->prepareToPlay(48000,256);midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,83,.8f),0);embedded->processBlock(buffer,midi);check(buffer.getMagnitude(0,0,256)>.00001,"Embedded pad 24 needs external bank");
+   auto oldTree=juce::ValueTree::fromXml(*juce::AudioProcessor::getXmlFromBinary(saved.getData(),int(saved.getSize())));oldTree.removeProperty("kitCount",nullptr);for(int child=oldTree.getNumChildren();--child>=0;)if(oldTree.getChild(child).getProperty("id").toString().startsWith("pad"))oldTree.removeChild(child,nullptr);for(int pad=8;pad<24;++pad)oldTree.removeProperty("kitAudio"+juce::String(pad),nullptr);juce::MemoryBlock oldKit;juce::AudioProcessor::copyXmlToBinary(*oldTree.createXml(),oldKit);embedded->setStateInformation(oldKit.getData(),int(oldKit.getSize()));check(embedded->kitPads.load()==8,"Legacy embedded kit lost eight-pad mapping");check(embedded->state.getRawParameterValue("pad1_gain")->load()==1&&embedded->state.getRawParameterValue("pad1_reverse")->load()==0,"Legacy kit inherited per-pad edits");
+   {std::unique_ptr<juce::AudioProcessorEditor> editor(extended->createEditor());for(auto* child:editor->getChildren())if(auto* button=dynamic_cast<juce::TextButton*>(child))if(button->getButtonText()=="KIT EDIT")button->onClick();bool edited=false;for(auto* child:editor->getChildren())if(auto* kit=dynamic_cast<KitEditor*>(child)){check(kit->isVisible(),"Kit editor did not open");for(auto* control:kit->getChildren())if(auto* button=dynamic_cast<juce::TextButton*>(control))if(button->getButtonText().startsWith("24 /"))button->onClick();for(auto* control:kit->getChildren())if(control->getComponentID()=="pad-control-2")if(auto* slider=dynamic_cast<juce::Slider*>(control)){slider->setValue(.3,juce::sendNotificationSync);edited=true;}}check(edited&&std::abs(extended->state.getRawParameterValue("pad24_gain")->load()-.3f)<.001,"Kit editor gain changed the wrong pad");}
    auto reopened=std::make_unique<PocketProcessor>(library.getChildFile("Library"));check(reopened->userPresetNames().size()==1,"Bank did not persist across instances");
    const auto invalid=makeZip(R"({"formatVersion":1,"presets":[{"name":"Invalid","sample":"../escape.wav","parameters":{}}]})","../escape.wav");
    check(!bankProcessor->importUserBank(invalid,error),"Unsafe bank path was accepted");check(!library.getChildFile("Library/escape.wav").exists(),"ZIP escaped its bank folder");
@@ -217,6 +226,7 @@ int main(int argc,char** argv) {
     for(auto* child:editor->getChildren())if(auto* button=dynamic_cast<juce::TextButton*>(child))if(button->getButtonText()=="SYNTH")button->onClick();
     for(auto* child:editor->getChildren())if(auto* browser=dynamic_cast<SoundBrowser*>(child)){for(auto* field:browser->getChildren())if(field->getComponentID()=="sound-search")if(auto* search=dynamic_cast<juce::TextEditor*>(field)){search->setText("crystal",false);search->onTextChange();}browser->syncSelection();}
     auto browserImage=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);juce::FileOutputStream browserOutput{juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("sound-browser.png")};browserOutput.setPosition(0);browserOutput.truncate();check(png.writeImageToStream(browserImage,browserOutput),"Browser screenshot failed");}
+   {p->applyPreset(22);for(auto* child:editor->getChildren())if(auto* button=dynamic_cast<juce::TextButton*>(child))if(button->getButtonText()=="DRUM")button->onClick();for(auto* child:editor->getChildren())if(auto* button=dynamic_cast<juce::TextButton*>(child))if(button->getButtonText()=="KIT EDIT")button->onClick();auto shot=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);juce::FileOutputStream file(juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("kit-editor.png"));file.setPosition(0);file.truncate();check(png.writeImageToStream(shot,file),"Kit editor screenshot failed");}
    for(auto* child:editor->getChildren()) if(auto* button=dynamic_cast<juce::TextButton*>(child)) if(button->getButtonText()=="TAPE") button->onClick();
    auto tapeImage=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);
    juce::FileOutputStream tapeOutput{juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("tape.png")};

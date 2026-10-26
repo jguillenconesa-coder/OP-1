@@ -62,6 +62,11 @@ public:
     std::atomic<bool> inputCapturing{false};
     std::atomic<int> inputCaptureFrames{0};
     bool exportMix(const juce::File&,juce::String& error);
+    std::atomic<int> kitPads{8};
+    bool loadKitPad(int,const juce::File&,juce::String&);
+    std::array<float,128> kitPadPreview(int);
+    juce::String kitPadName(int) const;
+    static juce::String padParameterId(int,const char*);
     bool importUserBank(const juce::File&,juce::String& error);
     bool applyUserPreset(int index,juce::String& error);
     juce::AudioProcessorValueTreeState state;
@@ -80,13 +85,15 @@ private:
     static juce::AudioProcessorValueTreeState::ParameterLayout layout();
     enum class Param {engine,tone,color,envelope,effect,attack,decay,sustain,release,lfoRate,lfoDepth,lfoDestination,lfoShape,delayTime,delayFeedback,drive,sampleLoop,sampleRoot,volume,sequencer,tempo,track1,track2,track3,track4,tapePlay,tapeRecord,tapeOverdub,tapeTrack,tapeSpeed,tapeLength,tapeLoop,tapeLoopIn,tapeLoopOut,metronome,inputMonitor,inputGain,tapeRecordGain,eqLow,eqMid,eqHigh,eqMix,masterDrive,masterEcho,masterDelayTime,masterFeedback,clickVolume,seqMode,seqLength,seqRate,seqGate,seqSwing,arpOctaves,seqVelocity,seqEuclidean,seqPulses,seqRotation,Count};
     std::array<std::atomic<float>*,size_t(Param::Count)> audioParameters{};
+    std::array<std::array<std::atomic<float>*,6>,pocket::kitCapacity> padParameters{};
     void handleNoteOn(juce::MidiKeyboardState*,int,int,float) override;
     void handleNoteOff(juce::MidiKeyboardState*,int,int,float) override;
     pocket::NoteQueue uiToAudio,audioToUi;
     std::atomic<bool> keyboardOverflow{false},keyboardDisplayReset{false};
     bool reflectingHostNotes=false;
-    struct UserPreset {juce::String name,id,bank,source;juce::File sample;std::array<juce::File,8> kit;juce::var parameters;bool isKit=false;};
+    struct UserPreset {juce::String name,id,bank,source;juce::File sample;std::array<juce::File,pocket::kitCapacity> kit;int kitCount=8;juce::var parameters,pads;bool isKit=false;};
     mutable juce::CriticalSection libraryStateLock;
+    std::array<juce::String,pocket::kitCapacity> kitNames;
     juce::String selectedSoundId,lastSynthSound="factory:0",lastDrumSound="factory:22";
     juce::StringArray favorites;
     std::array<std::array<juce::String,8>,2> soundSlotIds;
@@ -104,6 +111,8 @@ private:
     juce::File libraryDirectory;
     std::vector<UserPreset> userPresets;
     void refreshUserPresets();
+    std::array<std::array<std::atomic<float>,128>,pocket::kitCapacity> padPreviews{};
+    void publishPadPreview(int,const pocket::Sample&);
     void publishSamplePreview(const pocket::Sample&);
     double processedTime=0;
     static pocket::Sample readSample(const juce::File&,juce::String& error);

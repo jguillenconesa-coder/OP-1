@@ -1,8 +1,8 @@
-# Pocket One 0.4.0
+# Pocket One 0.5.0
 
 **Sintetizador VST3 y aplicación independiente inspirados en el Teenage Engineering OP-1.** Interfaz gris, pantalla animada, cuatro mandos azul/verde/blanco/naranja y teclado de dos octavas. Implementación independiente; no contiene firmware, muestras de fábrica ni gráficos originales.
 
-[English manual](README.en.md) · [Créditos](CREDITS.md) · [Licencia](LICENSE) · [Notas de versión](docs/releases/v0.4.0.md)
+[English manual](README.en.md) · [Créditos](CREDITS.md) · [Licencia](LICENSE) · [Notas de versión](docs/releases/v0.5.0.md)
 
 ![Interfaz y pantalla animada de Pocket One](docs/screen-animation.gif)
 
@@ -12,15 +12,15 @@
 
 | Paquete | Descarga |
 | --- | --- |
-| Instalador Windows 10/11 x64 | [Pocket-One-0.4.0-Windows-x64-Setup.exe](https://github.com/jguillenconesa-coder/OP-1/raw/refs/heads/main/downloads/v0.4.0/Pocket-One-0.4.0-Windows-x64-Setup.exe) |
-| Windows portable: aplicación y VST3 | [ZIP](downloads/v0.4.0/Pocket-One-0.4.0-Windows-x64-portable.zip) |
-| Linux x86_64: aplicación y VST3 | [TAR.GZ](downloads/v0.4.0/Pocket-One-0.4.0-linux-x86_64.tar.gz) |
-| Fuentes completas con JUCE | [Código fuente correspondiente](downloads/v0.4.0/Pocket-One-0.4.0-corresponding-source.tar.gz) |
-| Kit de compilación del proyecto | [ZIP](downloads/v0.4.0/Pocket-One-0.4.0-Windows-build-kit.zip) |
-| WAVs originales del banco de fábrica (CC0) | [ZIP de 28 muestras](downloads/v0.4.0/Pocket-One-0.4.0-Factory-Samples.zip) |
-| Integridad de las descargas | [SHA256SUMS.txt](downloads/v0.4.0/SHA256SUMS.txt) |
+| Instalador Windows 10/11 x64 | [Pocket-One-0.5.0-Windows-x64-Setup.exe](https://github.com/jguillenconesa-coder/OP-1/raw/refs/heads/main/downloads/v0.5.0/Pocket-One-0.5.0-Windows-x64-Setup.exe) |
+| Windows portable: aplicación y VST3 | [ZIP](downloads/v0.5.0/Pocket-One-0.5.0-Windows-x64-portable.zip) |
+| Linux x86_64: aplicación y VST3 | [TAR.GZ](downloads/v0.5.0/Pocket-One-0.5.0-linux-x86_64.tar.gz) |
+| Fuentes completas con JUCE | [Código fuente correspondiente](downloads/v0.5.0/Pocket-One-0.5.0-corresponding-source.tar.gz) |
+| Kit de compilación del proyecto | [ZIP](downloads/v0.5.0/Pocket-One-0.5.0-Windows-build-kit.zip) |
+| WAVs originales del banco de fábrica (CC0) | [ZIP de 28 muestras](downloads/v0.5.0/Pocket-One-0.5.0-Factory-Samples.zip) |
+| Integridad de las descargas | [SHA256SUMS.txt](downloads/v0.5.0/SHA256SUMS.txt) |
 
-También se ha configurado la creación de una [release de GitHub](https://github.com/jguillenconesa-coder/OP-1/releases) al publicar la etiqueta `v0.4.0`. Los archivos versionados de `downloads/v0.4.0` permiten descargarlos directamente desde el repositorio.
+También se ha configurado la creación de una [release de GitHub](https://github.com/jguillenconesa-coder/OP-1/releases) al publicar la etiqueta `v0.5.0`. Los archivos versionados de `downloads/v0.5.0` permiten descargarlos directamente desde el repositorio.
 
 **Versión preliminar.** El instalador no tiene firma digital. Se probaron los ejecutables Windows y su instalación/desinstalación bajo Wine; el CI nativo de 0.2.1 también pasó en Windows, Linux y macOS; queda pendiente probar el instrumento en un DAW Windows real. La release no incluye un instalador de macOS; CI genera sus artefactos de compilación.
 
@@ -35,7 +35,7 @@ La versión portable se extrae sin instalador; copia el paquete `.vst3` completo
 
 ## Qué incluye
 
-- **Seis modos y ocho voces:** FM, distorsión de fase, cuerda pulsada, sampler WAV/AIFF, batería sintética y kits de ocho muestras.
+- **Seis modos y ocho voces:** FM, distorsión de fase, cuerda pulsada, sampler WAV/AIFF, batería sintética y kits de 24 muestras con edición por pad.
 - **Controles hardware:** modos SYNTH/DRUM/TAPE/MIX; T1 motor, T2 ADSR, T3 FX y T4 LFO; accesos independientes SYNTH/DRUM; cinta con SPLIT/JOIN, LIFT/DROP, loop y tape tricks. MIX añade EQ y efectos de master.
 - **MIDI y automatización:** velocidad, sustain CC64, pitch bend en motores compatibles y sonidos iniciales.
 - **Secuenciadores:** patrón de 1–16 pasos con dirección normal, inversa, péndulo o aleatoria; arpegiador UP/DOWN/UP-DOWN con 1–3 octavas, gate, swing y máscara euclídea. Sincronización con tempo, posición y saltos del host. [Uso](docs/sequencers.md).
@@ -45,6 +45,8 @@ La versión portable se extrae sin instalador; copia el paquete `.vst3` completo
 ![Página real de cinta](docs/tape.png)
 
 [Análisis estático del firmware 246 con REA](docs/firmware-analysis.md): inventario verificable de 169 presets synth y 24 drum. El firmware y sus recursos no se incluyen en el plugin.
+
+[Editor de kits de 24 pads](docs/kits.md): recorte, volumen, afinación, reversa y gate por pad.
 
 ## Uso rápido
 
@@ -88,7 +90,7 @@ Código original: **AGPL-3.0-only**, con [licencia completa](LICENSE). La distri
 
 ## Presets y bancos de muestras
 
-25 presets originales, tres kits integrados de ocho pads y cuatro instrumentos muestreados. [Guía del banco y referencias de presets OP-1](docs/sound-bank.md).
+25 presets originales, tres kits integrados de 24 pads y cuatro instrumentos muestreados. [Guía del banco y referencias de presets OP-1](docs/sound-bank.md).
 
 **BROWSE → IMPORT BANK** importa un ZIP y lo identifica por su banco. **ADD SAMPLES** añade archivos a la biblioteca. La colección de 79 presets y dos kits aportada por el usuario tiene [descarga directa](downloads/user-banks/README.md). El navegador ofrece variantes y vista de muestras únicas sin duplicarlas. Favoritos y slots se guardan con el proyecto. [Uso, formato y generador de bancos](docs/user-banks.md).
 

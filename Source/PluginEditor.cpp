@@ -78,7 +78,7 @@ bool HardwareKeyboard::mouseDownOnKey(int note,const juce::MouseEvent& event) {
     return accidental||event.position.y>=getHeight()*.30f;
 }
 bool HardwareKeyboard::mouseDraggedToKey(int note,const juce::MouseEvent& event) {return mouseDownOnKey(note,event);}
-PocketEditor::PocketEditor(PocketProcessor& p) : AudioProcessorEditor(p),processor(p),browser(p),keyboard(p.keyboard) {
+PocketEditor::PocketEditor(PocketProcessor& p) : AudioProcessorEditor(p),processor(p),browser(p),kitEditor(p),keyboard(p.keyboard) {
     setLookAndFeel(&look); setSize(1200,790);
     look.setColour(juce::TextButton::buttonColourId,juce::Colour(0xffdbe1e9));
     look.setColour(juce::TextButton::textColourOffId,juce::Colour(0xff66717d));
@@ -96,8 +96,9 @@ PocketEditor::PocketEditor(PocketProcessor& p) : AudioProcessorEditor(p),process
         auto& b=pageButtons[i]; addAndMakeVisible(b); b.setButtonText(i<4?juce::String(int(i+1)):"TAPE");
         b.onClick=[this,i]{if(mainMode==3&&i<4){const int pages[]={4,5,6,7};selectPage(pages[i]);}else if(mainMode==2&&i<4){setParameter("tapeTrack",float(i));selectPage(4);}else {const int pages[]={0,1,3,2,4};selectPage(pages[i]);}};
     }
+    addAndMakeVisible(kitEditor);kitEditor.setVisible(false);addAndMakeVisible(kitEditKey);kitEditKey.onClick=[this]{kitOpen=!kitOpen;browserOpen=true;setSize(1200,790);kitEditor.refresh();timerCallback();};
     addAndMakeVisible(browser);browser.onImportBank=[this]{chooseBank();};browser.onImportSamples=[this]{chooseSamples();};browser.onError=[this](const juce::String& error){showError(error);};browser.onLoaded=[this]{const bool drum=processor.state.getRawParameterValue("engine")->load()>=4;mainMode=drum?1:0;selectPage(0);lastSelectedSound=processor.selectedSound();repaint();};
-    addAndMakeVisible(browseKey);browseKey.onClick=[this]{browserOpen=!browserOpen;browser.setVisible(browserOpen);setSize(1200,browserOpen?790:540);};
+    addAndMakeVisible(browseKey);browseKey.onClick=[this]{kitOpen=false;kitEditor.setVisible(false);browserOpen=!browserOpen;browser.setVisible(browserOpen);setSize(1200,browserOpen?790:540);};
     for(auto* button:{&splitKey,&liftKey,&dropKey,&undoKey,&sequencerKey,&comKey,&micKey,&metroKey})addAndMakeVisible(*button);
     splitKey.onClick=[this]{doTapeEdit("split");};liftKey.onClick=[this]{doTapeEdit(mainMode>=2?"lift":"copySound");};dropKey.onClick=[this]{doTapeEdit(mainMode>=2?"drop":processor.clipboardKind.load()==2?"pasteSound":"sampler");};undoKey.onClick=[this]{doTapeEdit("undo");};
     sequencerKey.onClick=[this]{if(shifted()){showSequenceMenu();shiftKey.setToggleState(false,juce::dontSendNotification);}else {showSequence=!showSequence;timerCallback();}};sequencerKey.setTooltip("Show sequence steps. Shift + SEQ opens mode, timing and arpeggio settings.");
@@ -185,7 +186,7 @@ void PocketEditor::resized() {
     engine.setBounds(600,452,169,27);tempo.setBounds(785,452,178,27);loadSample.setBounds(980,452,77,27);loopSample.setBounds(1066,452,80,27);
     tapeTrack.setBounds(602,452,80,27);tapeLength.setBounds(686,452,75,27);tapeSpeed.setBounds(769,452,135,27);
     tapePlay.setBounds(912,452,45,27);overdub.setBounds(963,452,49,27);clear.setBounds(1018,452,55,27);exportTape.setBounds(1079,452,67,27);
-    rewind.setVisible(false);browser.setBounds(18,516,1164,262);status.setBounds(35,490,950,23);sequenceSettings.setBounds(1000,487,146,26);
+    rewind.setVisible(false);browser.setBounds(18,516,1164,262);status.setBounds(35,490,800,23);kitEditKey.setBounds(850,487,140,26);kitEditor.setBounds(18,516,1164,262);sequenceSettings.setBounds(1000,487,146,26);
 }
 void PocketEditor::selectMode(int mode) {
     if(shifted()&&mode<2){showBrowser(mode==0?2:4);shiftKey.setToggleState(false,juce::dontSendNotification);return;}
@@ -199,7 +200,7 @@ void PocketEditor::selectMode(int mode) {
 bool PocketEditor::shifted() const {return shiftKey.getToggleState()||juce::ModifierKeys::getCurrentModifiers().isShiftDown();}
 void PocketEditor::setParameter(const char* id,float value){auto* p=processor.state.getParameter(id);p->beginChangeGesture();p->setValueNotifyingHost(p->convertTo0to1(value));p->endChangeGesture();}
 void PocketEditor::showError(const juce::String& message){status.setText(message,juce::dontSendNotification);}
-void PocketEditor::showBrowser(int kind){browserOpen=true;browser.setVisible(true);setSize(1200,790);browser.showKind(kind);browser.syncSelection();}
+void PocketEditor::showBrowser(int kind){kitOpen=false;kitEditor.setVisible(false);browserOpen=true;browser.setVisible(true);setSize(1200,790);browser.showKind(kind);browser.syncSelection();}
 void PocketEditor::applySoundSlot(int slot) {
     if(mainMode>=2){applyTapeTrick(slot);return;}
     const bool drums=mainMode==1||processor.state.getRawParameterValue("engine")->load()>=4;
@@ -242,6 +243,7 @@ void PocketEditor::selectPage(int selected) {
 void PocketEditor::timerCallback() {
     processor.updateKeyboardDisplay();
     const int e=int(processor.state.getRawParameterValue("engine")->load());
+    const bool showKit=kitOpen&&e==5&&mainMode<2;kitEditor.setVisible(showKit);if(showKit)kitEditor.refresh();browser.setVisible(browserOpen&&!showKit);kitEditKey.setVisible(e==5&&mainMode<2);
     micKey.setButtonText(processor.inputCapturing.load()?"REC":processor.state.getRawParameterValue("inputMonitor")->load()>.5f?"IN ON":"IN");
     const auto selected=processor.selectedSound();if(selected!=lastSelectedSound){lastSelectedSound=selected;browser.syncSelection();}
     const bool tapeMode=mainMode>=2;splitKey.setEnabled(tapeMode);liftKey.setEnabled(true);splitKey.setButtonText(shifted()?"JOIN":"SPLIT");dropKey.setTooltip(tapeMode?"Drop the lifted take at the head":"Load the tape clipboard into the sampler");
@@ -315,7 +317,7 @@ void PocketEditor::paint(juce::Graphics& g) {
     g.setColour(juce::Colour(0xff05080b));g.fillRoundedRectangle(285,39,251,123,2);
     pocket::ScreenFrame frame;frame.page=page;frame.mode=mainMode;
     const auto get=[this](const char* id){return processor.state.getRawParameterValue(id)->load();};
-    frame.engine=int(get("engine"));frame.note=processor.lastNote.load();frame.voices=processor.visualVoices.load();frame.stage=processor.visualEnvelopeStage.load();frame.step=processor.playhead.load();
+    frame.engine=int(get("engine"));frame.kitPads=processor.kitPads.load();frame.note=processor.sequenceNote.load()>=0?processor.sequenceNote.load():processor.lastNote.load();frame.voices=processor.visualVoices.load();frame.stage=processor.visualEnvelopeStage.load();frame.step=processor.playhead.load();
     frame.time=processor.visualTime.load();frame.level=processor.visualLevel.load();frame.envelope=processor.visualEnvelope.load();frame.samplePosition=processor.visualSamplePosition.load();frame.lfoPhase=processor.visualLfoPhase.load();
     frame.tapePosition=processor.tapePosition.load();frame.tapeLength=float(4<<int(get("tapeLength")));frame.track=int(get("tapeTrack"));
     frame.tone=get("tone");frame.color=get("color");frame.attack=get("attack");frame.decay=get("decay");frame.sustain=get("sustain");frame.release=get("release");frame.lfoRate=get("lfoRate");frame.lfoShape=int(get("lfoShape"));frame.delay=get("delayTime");frame.feedback=get("delayFeedback");

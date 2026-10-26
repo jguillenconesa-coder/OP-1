@@ -8,8 +8,11 @@
 
 namespace pocket {
 constexpr double pi = 3.14159265358979323846;
+constexpr int kitCapacity=24;
+struct PadSettings {float start=0,end=1,gain=1,pitch=0;bool reverse=false,gated=false;};
 struct Parameters {
     int engine=0;
+    std::array<PadSettings,kitCapacity> pads{};
     float tone=.45f,color=.35f,envelope=.35f,effect=.2f,volume=.7f;
     float attack=.02f,decay=.2f,sustain=.8f,release=.3f;
     float lfoRate=1,lfoDepth=0; int lfoDestination=0,lfoShape=0;
@@ -17,6 +20,7 @@ struct Parameters {
     bool sampleLoop=false; float sampleRoot=60;
 };
 struct Sample { std::vector<float> frames; double rate=48000; };
+using Kit=std::array<Sample,kitCapacity>;
 class Engine {
 public:
     static constexpr int polyphony=8;
@@ -24,12 +28,14 @@ public:
     void reset() { voices={}; delay.fill(0); write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1; }
     void setSample(Sample data) { sample=std::move(data); voices={}; }
     void swapSample(Sample& data) {std::swap(sample,data);voices={};}
-    void swapKit(std::array<Sample,8>& data) {kit.swap(data);voices={};}
+    void swapKit(Kit& data,int count=8) {kit.swap(data);kitCount=count==24?24:8;voices={};}
+    void swapKitPad(int pad,Sample& data){if(pad>=0&&pad<kitCapacity){std::swap(kit[size_t(pad)],data);if(pad>=kitCount)kitCount=24;voices={};}}
+    int getKitCount() const{return kitCount;}
     const Sample& getSample() const { return sample; }
-    void setKit(std::array<Sample,8> data) { kit=std::move(data); voices={}; }
-    const std::array<Sample,8>& getKit() const { return kit; }
-    static int kitSlot(int note) {
-        if(note>=60) return (note-60)%8;
+    void setKit(Kit data,int count=8) {kit=std::move(data);kitCount=count==24?24:8;voices={};}
+    const Kit& getKit() const { return kit; }
+    static int kitSlot(int note,int count=8) {
+        if(note>=60) return (note-60)%(count==24?24:8);
         switch(note) {case 35:case 36:return 0;case 38:case 40:return 1;case 42:case 44:return 2;case 46:return 3;case 41:case 43:case 45:case 47:case 48:case 50:return 4;case 39:return 5;case 49:case 57:return 6;case 37:case 51:return 7;default:return note%8;}
     }
     void pitchBend(int channel,float semitones) { bends[channelIndex(channel)]=std::exp2(std::clamp(semitones,-2.f,2.f)/12.f); }
@@ -59,7 +65,7 @@ public:
         for(const auto& v:voices) if(v.active) {
             ++out.active;out.envelope=std::max(out.envelope,v.level);
             if(v.age>=latest) {latest=v.age;out.stage=v.released?4:v.stage==0?1:std::abs(v.level-currentSustain)>.005f?2:3;
-                const size_t length=mode==5?kit[size_t(kitSlot(v.note))].frames.size():sample.frames.size();
+                const size_t length=mode==5?kit[size_t(kitSlot(v.note,kitCount))].frames.size():sample.frames.size();
                 if(length) out.progress=std::clamp(float(v.samplePosition/double(length))+(mode==3?current.tone*.9f:0.f),0.f,1.f);
             }
         }
@@ -82,6 +88,7 @@ public:
         cachedAttack=target.attack;cachedDecay=target.decay;cachedRelease=target.release;cachedMacro=p.envelope;
         if(cachedRoot!=target.sampleRoot) {cachedRoot=target.sampleRoot;rootFrequency=440*std::exp2((cachedRoot-69)/12);}
 
+        if(target.engine==5)for(size_t i=0;i<padPitch.size();++i)if(target.pads[i].pitch!=cachedPadPitch[i]){cachedPadPitch[i]=target.pads[i].pitch;padPitch[i]=std::exp2(std::clamp(double(target.pads[i].pitch),-24.,24.)/12);}
         float sum=0;
         for(auto& v:voices) {
             if(!v.active) continue;
@@ -119,14 +126,18 @@ public:
                 s=sample.frames[a]+fraction*(sample.frames[b]-sample.frames[a]);
                 v.samplePosition+=sample.rate/sampleRate*v.frequency/rootFrequency*bend;
             } else if(target.engine==5) {
-                const auto& hit=kit[size_t(kitSlot(v.note))];
-                const double length=hit.frames.size()*std::clamp(double(p.color),.05,1.0);
-                if(hit.frames.empty()||v.samplePosition>=length) {v.active=false;continue;}
-                const auto a=std::min(size_t(v.samplePosition),hit.frames.size()-1),b=std::min(a+1,hit.frames.size()-1);
-                const float fraction=float(v.samplePosition-std::floor(v.samplePosition));
-                s=hit.frames[a]+fraction*(hit.frames[b]-hit.frames[a]);
-                v.samplePosition+=hit.rate/sampleRate*kitPitch*bend;
-                amplitude=1; // Kit samples are one-shots; note-off does not truncate hits.
+                const auto slot=size_t(kitSlot(v.note,kitCount));const auto& hit=kit[slot];const auto& pad=target.pads[slot];
+                if(hit.frames.empty()){v.active=false;continue;}
+                const double start=std::clamp(double(pad.start),0.,1.)*double(hit.frames.size());
+                const double end=std::clamp(double(pad.end),0.,1.)*double(hit.frames.size());
+                const double length=std::max(0.,end-start)*std::clamp(double(p.color),.05,1.0);
+                if(length<1||v.samplePosition>=length||(pad.gated&&v.released&&v.level<.0001f)){v.active=false;continue;}
+                const double position=std::clamp(pad.reverse?start+length-1-v.samplePosition:start+v.samplePosition,0.,double(hit.frames.size()-1));
+                const auto a=size_t(position),b=std::min(a+1,hit.frames.size()-1);
+                const float fraction=float(position-double(a));
+                s=(hit.frames[a]+fraction*(hit.frames[b]-hit.frames[a]))*pad.gain;
+                v.samplePosition+=hit.rate/sampleRate*kitPitch*bend*padPitch[slot];
+                amplitude=pad.gated?v.level:1; // One-shots retain legacy note-off behavior.
             } else if(target.engine==4) {
                 const int kind=(v.note%12==0||v.note%12==7)?0:(v.note%12==2||v.note%12==4)?1:2;
                 const double duration=kind==0?.08+p.envelope*.7:kind==1?.04+p.envelope*.4:.015+p.envelope*.16;
@@ -165,7 +176,9 @@ private:
     std::array<std::array<float,8192>,polyphony> stringBuffers{};
     std::array<Voice,polyphony> voices{}; std::array<float,192000> delay{};
     std::array<float,17> bends{}; std::array<bool,17> pedals{};
-    Sample sample; std::array<Sample,8> kit;
+    Sample sample;Kit kit;int kitCount=8;
+    std::array<float,kitCapacity> cachedPadPitch{};
+    std::array<double,kitCapacity> padPitch{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
     size_t write=0; uint64_t age=0; uint32_t random=0x12345678; float filter=0;
 };
 }

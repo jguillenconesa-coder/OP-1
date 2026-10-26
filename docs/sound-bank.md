@@ -1,6 +1,6 @@
 # Presets y kits de fábrica de Pocket One
 
-El selector **FACTORY SOUNDS** incluye **25 presets originales**: 18 sonidos de síntesis/batería, cuatro instrumentos muestreados y tres kits de ocho muestras. Están incorporados en el VST3 y en la aplicación: no requieren descargas ni localizar carpetas. Elegir un sonido cambia los parámetros del sintetizador; no borra la cinta ni el patrón. Selecciona los sonidos con el transporte parado.
+**BROWSE → Factory** incluye **25 presets originales**: 18 sonidos de síntesis/batería, cuatro instrumentos muestreados y tres kits de 24 pads con las 24 muestras propias Studio/Circuit/Dust. Están incorporados en el VST3 y en la aplicación: no requieren descargas ni localizar carpetas. Elegir un sonido cambia los parámetros del sintetizador; no borra la cinta ni el patrón. Selecciona los sonidos con el transporte parado.
 
 - FM: Soft keys, Glass bells, Digital tine, Hollow bass, Metallic lead, Orbit chimes.
 - PHASE: Slow pad, Round bass, Reed keys, Warm organ, Glass sweep.
@@ -11,9 +11,9 @@ El selector **FACTORY SOUNDS** incluye **25 presets originales**: 18 sonidos de 
 
 ## Tocar los kits
 
-Selecciona un preset **KIT**. Las notas MIDI **60–67** disparan los ocho sonidos; el patrón se repite cada ocho notas por encima de 60. También se admiten notas GM: 36 kick, 38 snare, 42 hi-hat cerrado, 46 abierto, 45 tom, 39 clap, 49 crash y 37 rim. La denominación de octavas de Live puede variar; utiliza los números MIDI como referencia.
+Selecciona un preset **KIT**. Las notas MIDI **60–83** disparan los 24 pads; el patrón se repite cada 24 notas por encima de 60. También se admiten notas GM: 36 kick, 38 snare, 42 hi-hat cerrado, 46 abierto, 45 tom, 39 clap, 49 crash y 37 rim. La denominación de octavas de Live puede variar; utiliza los números MIDI como referencia.
 
-Son muestras de un solo disparo: soltar la tecla no corta el golpe. TONE ajusta la afinación y COLOR la longitud. Volumen, velocidad MIDI y efectos siguen activos. Las ocho muestras y el preset seleccionado se guardan dentro de la sesión; no dependen de rutas externas.
+Por defecto son muestras de un solo disparo: soltar la tecla no corta el golpe. KIT EDIT permite GATED, recorte, volumen, afinación y reversa por pad. TONE ajusta la afinación y COLOR la longitud. Volumen, velocidad MIDI y efectos siguen activos. Las 24 muestras y el preset seleccionado se guardan dentro de la sesión; no dependen de rutas externas.
 
 Las 28 muestras WAV se incluyen además en `Assets/Factory`, en los paquetes de fuentes y en **Factory Samples** dentro de la carpeta de instalación Windows. Se pueden arrastrar a otro sampler. Su generador reproducible es `scripts/generate-factory-samples.py`; los WAV son CC0-1.0. No son grabaciones del hardware original.
 
@@ -38,3 +38,5 @@ En el directorio público [`te-op1/presets`](https://github.com/jstnfst/te-op1/t
 - [Glass harp / DIGITAL](https://github.com/jstnfst/te-op1/blob/master/presets/digital-punch-value-glass_harp.json).
 
 Son referencias comunitarias documentadas en un proyecto para Field; su presencia no demuestra que formen parte del banco de fábrica del OP-1 original ni concede por sí sola permiso para redistribuirlas. En Pocket One, Round bass y Bowed hybrid ofrecen familias de timbre relacionadas. DIGITAL no está implementado como motor propio y el pad de fase no lo sustituye de forma equivalente. Los parámetros numéricos de esos patches no se han copiado ni convertido automáticamente.
+
+Los bancos/proyectos antiguos de ocho conservan su repetición cada ocho notas. Los nuevos kits de fábrica rotan los tres grupos de ocho sonidos; no son 72 grabaciones distintas. [Editor y compatibilidad](kits.md).
