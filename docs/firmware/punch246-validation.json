@@ -1,0 +1,41 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "model": "GNU 13.1 BF524 with documented local D-register writeback patch; not hardware validation",
+  "render": "0x019e6260",
+  "reset": "0x019e6160",
+  "coefficient_float_source": "0x018be744",
+  "coefficient_runtime": "0xff801f50",
+  "conversion": "0x01aa6fd0",
+  "range_initializer": "0x01a1e914",
+  "range_output": "0x01de5cb0",
+  "sine_source": "0x018b6688",
+  "sine_runtime": "0x0101e5e8",
+  "assumed_effect_rate_hz": 44100,
+  "random_blocks": 512,
+  "stored_preset_streams": 3,
+  "blocks": 2048,
+  "samples": 131072,
+  "complete_states": 2048,
+  "artifacts": {
+    "punch246-input.bin": {
+      "bytes": 712704,
+      "sha256": "f7f14f9af4f068cffb014a7988b2b79f31abe884ce99afe64133adb447705470",
+      "matches_committed_fixture": true
+    },
+    "punch246-output.bin": {
+      "bytes": 696860,
+      "sha256": "48f1cfaf67bf1d7c986df8ecedb63276de3620f6a4112db5296492b76da8818d",
+      "matches_committed_fixture": true
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "patch_sha256": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+  "limitations": [
+    "Isolated mono effect with original converted coefficients; original complete preset routing and hardware timing are not validated.",
+    "44.1 kHz effect clock is an integration assumption supported by the 64-frame effect/128-frame voice contract, not an independent codec clock measurement."
+  ]
+}

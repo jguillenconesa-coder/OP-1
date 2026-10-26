@@ -138,3 +138,34 @@ Las tardanzas se conservan en el informe: no se certifican cero dropouts ni se
 mide la latencia de ida/vuelta ASIO. El usuario ha confirmado que el VST3 anterior
 funciona en Ableton en lo probado, sin especificar versión/buffer; esta nueva
 entrega requiere su propia comprobación en Windows real.
+
+
+## 0.11.0: Punch y rutas combinadas
+
+**72 cargas / 36.864 callbacks por plataforma**, con Digital/Phase + envolvente
+rev246 + Punch, automatización de los cuatro controles FX y las cargas anteriores.
+Se midieron 48/96 kHz y bloques 64/128/256 sin compilación simultánea. No se
+observaron llamadas de heap monitorizadas. El test de audio mantiene exactamente
+los offsets MIDI/pedal/bend y el silencio post-CC120 con las tres particiones.
+
+| Medición final | Linux | Windows bajo Wine |
+| --- | --- | --- |
+| Peor p99 como % del plazo | 14.50 % | 28.67 % |
+| Rutas con Punch: peor p99 | 14.50 % | 25.68 % |
+| Callbacks fuera de plazo observados | 2 | 7 |
+| Llamadas de heap monitorizadas | 0 | 0 |
+| Latencia declarada | 0 muestras | 0 muestras |
+
+[Datos Linux 0.11.0](releases/v0.11.0-linux-realtime.json) ·
+[Datos Wine 0.11.0](releases/v0.11.0-windows-wine-realtime.json).
+Estas cifras no certifican cero dropouts ni latencia física cero. Punch usa
+procesamiento por muestra con coeficientes/feedback retenidos en bloques internos
+de 64 muestras, sin acumular un bloque del host. A tasas distintas de 44,1 kHz
+la interpolación causal y los filtros tienen retardo de grupo. Se añaden DC a
+5 Hz, limitación de salida y un fade de inserción de 12 ms, todos propios.
+
+El feedback original puede sostener oscilación: Punch activo declara una cola
+potencialmente infinita, compatible con el contrato VST3 de JUCE. STOP/CC120
+reinician el estado y la integración queda en silencio hasta nuevo audio. No se
+recorta artificialmente esa cola a una release finita. El modelo/kernel original
+y la integración propia se distinguen en [la guía](punch246-native.md).

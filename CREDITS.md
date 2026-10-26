@@ -75,3 +75,15 @@ and tests are independently written. Stored numeric fields and numeric oracle
 traces are documented research observations, not a distributed firmware image.
 GNU model limitations and original-preset omissions remain explicit in
 [the Digital method](docs/digital246-research.md).
+
+
+## Punch, manual and preset inventory (0.11.0)
+
+The user-supplied Teenage Engineering OP-1 v2.2 manual defines the documented
+control names, octave behavior and Helicopter/Singing Birds exercise targets.
+REA's read-only SQLite inspector independently inventories the rev246 factory DB;
+evidence and the source digest are recorded. No manual images, original database,
+audio or firmware instructions are redistributed in this work. Punch kernel,
+adapter, visual drawing, harness and tests are independently written; numeric
+coefficients/traces are documented observations. The GNU tool patch retains its
+separate terms. Existing reference attributions above continue to apply.

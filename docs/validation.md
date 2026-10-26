@@ -1,10 +1,11 @@
-# Validation log — Pocket One 0.10.0
+# Validation log — Pocket One 0.11.0
 
-Current release: 0.10.0 adds independently reconstructed Digital 246 with 16
-additional CORE presets. [Evidence and binary hashes](releases/v0.10.0-validation.json).
-The user reported the prior VST3 working in Ableton for the functions tried;
-installed version, Live version and buffer were not specified. This is a limited
-firsthand report and does not validate 0.10.0 or ASIO timing. Historical records follow.
+Current release: **13 Linux and 15 Windows/Wine suites passed**.
+[0.11.0 evidence and binary hashes](releases/v0.11.0-validation.json).
+Punch is a verified isolated mono kernel with independently designed integration;
+this is not a complete OP-1 replica. [Full target matrix](original-op1-coverage.md).
+Prior user confirmation of Ableton VST3 operation is limited to the functions and
+unspecified version tried; the new release still needs native Windows/ASIO testing.
 
 Native environment: Debian 13 x86_64, GCC 14.2, CMake 4.4.4, JUCE 8.0.6.
 
@@ -260,3 +261,38 @@ Full suite, realtime and installer results are recorded in the versioned
 allocation/retrigger policy, effects including Punch, FM tables, device latency
 and complete acoustic equivalence remain pending. No original firmware/image/code
 or GNU simulator binary is bundled.
+
+
+## 0.11.0: Punch, octaves and original-target inventory
+
+- 131,072 original mono-effect samples / 2,048 complete 208-byte states and display
+  words agree with the independent core, including extreme valid controls,
+  arbitrary state, stage changes, input cessation and reset. Original helpers
+  convert 129 coefficients and initialize four ranges; a fresh private
+  reproduction matches both committed fixtures. ASan/UBSan pass.
+- The streaming adapter agrees at 44.1 kHz with integration DC removal disabled;
+  own conversion/filter/DC behavior is tested at seven host rates. The effect
+  clock is an explicit integration assumption, not a physical codec measurement.
+- GUI/MIDI set-3 switching, host-index append, edited slots/clipboard/sessions,
+  safe 0.10 defaults, infinite-tail declaration and exact post-panic silence pass.
+  All four combinations of Phase/Digital with Punch on/off are independent of
+  host block partitions 64/128/256 in the timestamp/bend/pedal/FX test.
+- Keyboard −4…+4 and MIDI range bounds, project/slot/clipboard persistence pass.
+  The initially added reopening test had a harness lifetime bug (processor
+  destroyed before its editor); the editor is now explicitly closed first.
+  The final complete Windows/Wine suite passes after correction.
+- Differential render against 0.10.0: 70 configurations × three rates × 8,192
+  frames = **1,720,320 identical floats**, 6,881,280 bytes each, SHA256
+  `dab4dbd83ef24a6ce75fcaaeb73faf192b4915b370682dd66fe91b0156b727fd`.
+  Compile the same Tools/LegacyEngineRender.cpp against each revision's Source
+  directory with the same compiler/flags and compare stdout. This does not cover
+  every possible saved project or controller trajectory.
+- REA's read-only synth inventory returns 169 rows without truncation and the
+  expected DB hash. The reproducible named/numeric manifest covers 169 synth
+  patches and 24 kits. Manual recipes and pending dependencies are recorded;
+  listing metadata is not a claim of complete playable original presets.
+
+Versioned realtime metrics and installer evidence are linked above. Native
+Windows/ASIO timing, original full LFO/play modes/mixing/output, remaining motors
+and FX, and acoustic comparison remain pending. Original firmware instructions,
+DB image and manual illustrations are not distributed.

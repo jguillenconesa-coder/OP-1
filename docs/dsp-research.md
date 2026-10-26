@@ -255,3 +255,18 @@ verificada y el mismo modelo GNU documentado. Se integra como opción junto al
 FM propio con 16 presets adicionales, sin convertir FX/LFO/octave originales.
 [Contrato, oráculos y reproducción](digital246-research.md). Punch se investigó
 como candidato, pero todavía no se ha portado ni validado su ruta completa.
+
+
+## Punch y alcance completo (0.11.0)
+
+El procesador mono 0x019e6260 y reset 0x019e6160 están reconstruidos de forma
+independiente. Los oráculos comparan 131.072 muestras, 2.048 estados completos
+y valores de display, cuatro rangos y 129 conversiones de coeficientes. Una
+segunda reproducción privada coincide con ambos fixtures. La integración
+causal/DC es propia y el reloj FX de 44,1 kHz sigue siendo una hipótesis explícita.
+[Contrato y uso](punch246-native.md).
+
+REA inspeccionó de nuevo el DB original en lectura sin truncamiento: 169 patches
+synth. El inventario propio incluye además 24 kits. Los ejercicios Helicopter y
+Singing Birds del manual se registran con sus dependencias; no se les asigna
+estado de réplica completa. [Matriz de motores/FX/LFO/envolventes y recetas](original-op1-coverage.md).

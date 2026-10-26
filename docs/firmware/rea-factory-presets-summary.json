@@ -1,0 +1,33 @@
+{
+  "evidence_id": "ev_25d5fd6eed14198b668ebc9aa7e72baa3ff6f9e78b808d00ffc1669c25b4f19e",
+  "subject": {
+    "name": "op1_factory.db",
+    "sha256": "be4572298fe9dc83b106d5c4eaf1cc972280d97f028f3eaebc0c76dc68ac9cf0"
+  },
+  "provider": {
+    "id": "sqlite",
+    "name": "REA SQLite database inspector",
+    "version": "SQLite 3.53.4"
+  },
+  "operation": "inspect_sqlite_database",
+  "columns": [
+    "id",
+    "folder"
+  ],
+  "returned_rows": 169,
+  "truncated": false,
+  "folder_counts": {
+    "digital": 16,
+    "dna": 16,
+    "dr wave": 16,
+    "dsynth": 16,
+    "cluster": 16,
+    "voltage": 16,
+    "phase": 16,
+    "pulse": 16,
+    "string": 16,
+    "fm": 16,
+    "sampler": 9
+  },
+  "scope": "REA read-only SQLite inventory of synth identifiers/folders, not DSP decompilation, audio equivalence or original preset implementation."
+}

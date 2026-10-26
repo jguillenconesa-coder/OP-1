@@ -1,0 +1,110 @@
+{
+  "version": "0.11.0",
+  "date": "2026-10-26",
+  "linux_suites_passed": 13,
+  "windows_wine_suites_passed": 15,
+  "realtime_workloads_per_platform": 72,
+  "punch_samples_compared": 131072,
+  "punch_complete_states_compared": 2048,
+  "punch_display_words_compared": 2048,
+  "punch_coefficients_compared": 129,
+  "punch_private_reproductions": 2,
+  "punch_sanitizers": "ASan and UBSan passed",
+  "reference_model": "GNU 13.1 BF524 with documented local D-register deferred writeback patch; not hardware validation",
+  "fx_clock_hz": 44100,
+  "fx_clock_status": "Integration assumption; not independent codec-clock validation",
+  "legacy_audio_regression": {
+    "baseline": "553a16728b28d1562510374b6bd60ff22e626173",
+    "configurations": 70,
+    "rates": [
+      44100,
+      48000,
+      96000
+    ],
+    "samples": 1720320,
+    "bytes_each": 6881280,
+    "identical": true,
+    "sha256": "dab4dbd83ef24a6ce75fcaaeb73faf192b4915b370682dd66fe91b0156b727fd",
+    "harness": "Tools/LegacyEngineRender.cpp",
+    "scope": "Same GCC -O2 differential harness against 0.10/current headers; original six engines plus 16 Phase and 16 Digital with both envelopes, notes/bend/FILTER LFO/note-off trajectories, Punch disabled; not every possible old project."
+  },
+  "factory_inventory": {
+    "synth_patches": 169,
+    "drum_kits": 24,
+    "rea_synth_rows": 169,
+    "rea_truncated": false,
+    "implemented_all_original_presets": false,
+    "manifest_sha256": "573c4ecd54a83d529ae49fe4093c185c1672d5c896c485d735ab16d1c6688a36"
+  },
+  "manual_targets": [
+    "Helicopter / Value LFO routing still pending",
+    "Singing Birds / original FM, Spring, Tremolo, play mode and Tombola still pending"
+  ],
+  "native_ableton_asio_validated": false,
+  "standalone_main_window_confirmed_in_wine": false,
+  "prior_user_feedback": "Prior VST3 works in Ableton for functions tried; installed/plugin/Live versions and buffer unspecified. Does not validate this new build.",
+  "installer_validation": "Isolated Wine install/hash/source/version/module/manifest/uninstall checks; main GUI startup remains separate.",
+  "installer_sha256": "See downloads/v0.11.0/SHA256SUMS.txt; installer embeds this report so its own hash is external.",
+  "linux_realtime": {
+    "version": "0.11.0",
+    "platform": "Linux x86_64 Release / shared cloud VM",
+    "workloads": 72,
+    "callbacks": 36864,
+    "reported_latency_samples": 0,
+    "tracked_heap_calls": 0,
+    "deadline_overruns": 2,
+    "worst_p99_budget_percent": 14.498625,
+    "preset_legend": {
+      "-1": "Phase 246 + reconstructed envelope",
+      "-2": "Phase 246 + previous envelope",
+      "-3": "Digital 246 + reconstructed envelope",
+      "-4": "Digital 246 + previous envelope",
+      "-5": "Digital 246 + original envelope + Punch",
+      "-6": "Phase 246 + original envelope + Punch"
+    },
+    "scope": "Eight voices, oscillator/ADSR/Punch automation, MIDI/GUI/SysEx, tape/capture, FX/EQ/LFO and sequencers; no concurrent compilation. VM timings and reported host latency do not certify native Windows/ASIO, round-trip latency or zero dropouts.",
+    "digital_punch_p99_budget_percent": 13.70925,
+    "phase_punch_p99_budget_percent": 14.498625,
+    "punch_p99_budget_percent": 14.498625
+  },
+  "windows_wine_realtime": {
+    "version": "0.11.0",
+    "platform": "Windows x64 under Wine / shared cloud VM",
+    "workloads": 72,
+    "callbacks": 36864,
+    "reported_latency_samples": 0,
+    "tracked_heap_calls": 0,
+    "deadline_overruns": 7,
+    "preset_legend": {
+      "-1": "Phase 246 + reconstructed envelope",
+      "-2": "Phase 246 + previous envelope",
+      "-3": "Digital 246 + reconstructed envelope",
+      "-4": "Digital 246 + previous envelope",
+      "-5": "Digital 246 + original envelope + Punch",
+      "-6": "Phase 246 + original envelope + Punch"
+    },
+    "scope": "Eight voices, oscillator/ADSR/Punch automation, MIDI/GUI/SysEx, tape/capture, FX/EQ/LFO and sequencers; no concurrent compilation. VM timings and reported host latency do not certify native Windows/ASIO, round-trip latency or zero dropouts.",
+    "worst_p99_budget_percent": 28.6725,
+    "digital_punch_p99_budget_percent": 17.78625,
+    "phase_punch_p99_budget_percent": 25.679999999999996,
+    "punch_p99_budget_percent": 25.679999999999996
+  },
+  "binaries": {
+    "windows_standalone": {
+      "bytes": 10952704,
+      "sha256": "ea2ddf5d402da061e3bc35ddb6a84e4030986fcd3b23976d8830bfc2896af058"
+    },
+    "windows_vst3": {
+      "bytes": 11529216,
+      "sha256": "c7248d253b6d2a64feed7c2fd7e10470fd740be8fd9a28a48911049977aec809"
+    },
+    "linux_standalone": {
+      "bytes": 13827760,
+      "sha256": "55a269589a15dd755067c5a12c9eea4585dbec3b9504e00f7dcce5ce4445206b"
+    },
+    "linux_vst3": {
+      "bytes": 14445136,
+      "sha256": "9d469e0b3f4cad4a5453d17c9a2b17b5033e94844d9030c4598b302afdd2bdd5"
+    }
+  }
+}

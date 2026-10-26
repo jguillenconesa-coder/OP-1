@@ -59,9 +59,10 @@ private:
     std::array<juce::TextButton,4> modeButtons;
     std::array<juce::TextButton,8> slotButtons;
     juce::TextButton browseKey{"BROWSE"},splitKey{"SPLIT"},liftKey{"LIFT"},dropKey{"DROP"},undoKey{"UNDO"},sequencerKey{"SEQ"},comKey{"COM"},micKey{"IN"},metroKey{"CLICK"};
-    juce::TextButton phase246{"PHASE 246 CORE"};bool lastPhase246=false,lastPhaseEnvelope=false,lastDigital246=false,lastDigitalEnvelope=false;
+    juce::TextButton phase246{"PHASE 246 CORE"};bool lastPhase246=false,lastPhaseEnvelope=false,lastDigital246=false,lastDigitalEnvelope=false,lastPunch246=false;
     juce::TextButton phaseEnvelope{"246 ENVELOPE"};
-    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> phaseAttachment,envelopeAttachment,digitalAttachment,digitalEnvelopeAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> phaseAttachment,envelopeAttachment,digitalAttachment,digitalEnvelopeAttachment,punchAttachment;
+    juce::TextButton punch246{"PUNCH 246"};
     juce::TextButton digital246{"DIGITAL 246 CORE"},digitalEnvelope{"246 ENVELOPE"};
     juce::TextButton cleanSample{"CLEAN SAMPLE"};
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> cleanAttachment;

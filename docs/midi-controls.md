@@ -90,3 +90,14 @@ fijos del host se llaman **Digital 246: Blue Feedback / Green Ratio / White
 Detune and Sync / Orange XOR**, más los cuatro controles Envelope y los dos
 interruptores. Se añaden después de todos los parámetros de 0.9.0; la lista
 normalizada de motores conserva el mismo orden. [Guía](digital246-native.md).
+
+
+## Punch 246 (0.11.0)
+
+Con PUNCH 246 activo, set 3 sigue Frequency / Punch / Rounds / Power. Los nombres
+fijos del host añaden su función: Blue Frequency, Green Punch Feedback Limit,
+White Rounds / Stages y Orange Power / Mix. El interruptor se llama Punch 246:
+Experimental Sound Effect. Los cinco parámetros se añaden después de Digital
+246; los cuatro IDs Screen: Knob y todos los índices anteriores se conservan.
+Al apagarlo, set 3 vuelve al efecto anterior. Los números son raw, no Hz ni
+porcentajes calibrados del manual. [Guía](punch246-native.md).

@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "manual_sha256": "f0c1a9262f4d5a713216d3b76bd0e5b39b9c8bd47c0ed3fc6cb9583cf62f2f50",
+  "manual_pages": 56,
+  "scope": "Manual exercise targets; descriptive positions are not calibrated raw firmware words. These are not claimed as complete playable original presets.",
+  "recipes": [
+    {
+      "name": "Helicopter",
+      "section": "16.3",
+      "pdf_pages": [
+        51,
+        52
+      ],
+      "engine": "digital",
+      "envelope": "mid/long attack, long release, decay and sustain clockwise maximum",
+      "octave": 4,
+      "effect": "punch",
+      "effect_display_values": {
+        "blue": "middle",
+        "green": "60–65",
+        "white": 24,
+        "orange": 99
+      },
+      "lfo": "value",
+      "lfo_destination": "FX / blue",
+      "lfo_speed": "middle / 3 o’clock",
+      "lfo_amount": "50–100",
+      "implemented_components": [
+        "Digital core",
+        "ADSR core",
+        "Punch mono core"
+      ],
+      "pending": [
+        "Original Value LFO and FX-blue routing",
+        "Display-to-raw calibration",
+        "Complete original mixing/output and acoustic comparison"
+      ]
+    },
+    {
+      "name": "Singing birds",
+      "section": "16.4",
+      "pdf_page": 52,
+      "engine": "fm",
+      "envelope": "short attack/decay, low sustain, long or mid release (both descriptions occur)",
+      "play_mode": "mono",
+      "portamento": 60,
+      "octave": 3,
+      "effect": "spring",
+      "effect_settings": "bright tone, mid turns, maximum damping, mid level",
+      "lfo": "tremolo",
+      "lfo_settings": "speed 3 o’clock, pitch 20–30, volume 20–50, straight envelope",
+      "sequencer": "tombola",
+      "sequencer_speed": 2,
+      "pending": [
+        "Original FM core",
+        "Original Spring",
+        "Original Tremolo",
+        "Mono/portamento behavior",
+        "Tombola",
+        "Display-to-raw calibration and acoustic comparison"
+      ]
+    }
+  ]
+}

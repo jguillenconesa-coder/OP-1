@@ -1,0 +1,133 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+@SETUP@
+imm32 P0, 0x01a1e914
+CALL (P0);
+imm32 P0, 0x018b6688
+imm32 P1, 0x0101e5e8
+P2 = 8192;
+LSETUP(copy_sine,copy_sine_end) LC0 = P2;
+copy_sine:
+R0 = [P0++];
+copy_sine_end: W[P1++] = R0;
+R0.H = table_args;
+R0.L = table_args;
+P0 = 5;
+EXCPT 0;
+R0.H = range_args;
+R0.L = range_args;
+P0 = 5;
+EXCPT 0;
+P0.H = inputs;
+P0.L = inputs;
+P1.H = input_ptr;
+P1.L = input_ptr;
+[P1] = P0;
+P0.H = results;
+P0.L = results;
+P1.H = result_ptr;
+P1.L = result_ptr;
+[P1] = P0;
+probe_loop:
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P4 = 344;
+P4 = P1 + P4;
+R0 = [P4];
+CC = R0 == 0;
+IF CC JUMP copy_audio;
+CC = R0 == 2;
+IF CC JUMP reset_state;
+P2.H = state;
+P2.L = state;
+P3 = 52;
+LSETUP(copy_state,copy_state_end) LC0 = P3;
+copy_state:
+R0 = [P1++];
+copy_state_end: [P2++] = R0;
+JUMP copy_audio;
+reset_state:
+R0.H = state;
+R0.L = state;
+R1 = 0;
+imm32 P0, 0x019e6160
+CALL (P0);
+copy_audio:
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P4 = 216;
+P1 = P1 + P4;
+P0.H = result_ptr;
+P0.L = result_ptr;
+P2 = [P0];
+P3 = 32;
+LSETUP(copy_audio_start,copy_audio_end) LC0 = P3;
+copy_audio_start:
+R0 = [P1++];
+copy_audio_end: [P2++] = R0;
+R0.H = state;
+R0.L = state;
+P0.H = result_ptr;
+P0.L = result_ptr;
+R1 = [P0];
+P0.H = input_ptr;
+P0.L = input_ptr;
+R2 = [P0];
+R3 = 208;
+R2 = R2 + R3;
+imm32 P0, 0x019e6260
+CALL (P0);
+P0.H = result_ptr;
+P0.L = result_ptr;
+P1 = [P0];
+P4 = 128;
+P2 = P1 + P4;
+P3.H = state;
+P3.L = state;
+P4 = 52;
+LSETUP(save_state,save_state_end) LC0 = P4;
+save_state:
+R0 = [P3++];
+save_state_end: [P2++] = R0;
+P3.H = state;
+P3.L = state;
+P4 = [P3+204];
+P4 = P4 << 2;
+P4 = P4 << 2;
+imm32 P3, 0xff801774
+P3 = P3 + P4;
+R0 = W[P3] (Z);
+[P2++] = R0;
+[P0] = P2;
+P0.H = input_ptr;
+P0.L = input_ptr;
+R0 = [P0];
+R1 = 348;
+R0 = R0 + R1;
+[P0] = R0;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF !CC JUMP probe_loop;
+R0.H = io_args;
+R0.L = io_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+table_args: .long 1,0xff801f50,516
+range_args: .long 1,0x01de5cb0,24
+io_args: .long 1,results,@BYTES@
+input_ptr: .long 0
+result_ptr: .long 0
+state: .space 208
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "database_sha256": "be4572298fe9dc83b106d5c4eaf1cc972280d97f028f3eaebc0c76dc68ac9cf0",
+  "status": "Numeric stored FX fields for additional experimental variants; original complete routing is not validated.",
+  "presets": [
+    {
+      "name": "didg",
+      "type": "digital",
+      "original_fx_active": true,
+      "controls": [
+        6000,
+        28315,
+        20000,
+        28000
+      ]
+    },
+    {
+      "name": "bass phase",
+      "type": "phase",
+      "original_fx_active": true,
+      "controls": [
+        9186,
+        0,
+        25088,
+        32767
+      ]
+    },
+    {
+      "name": "roar bass",
+      "type": "phase",
+      "original_fx_active": true,
+      "controls": [
+        7233,
+        28175,
+        16992,
+        32767
+      ]
+    }
+  ]
+}

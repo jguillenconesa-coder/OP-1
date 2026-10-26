@@ -49,3 +49,19 @@ operator's LDR hash and reproduces 262,144 numeric samples plus 2,048 complete
 states in a new private directory. `digital-controls.json` records 16 stored
 numeric control/envelope sets, not complete original patches. No firmware code
 or image is included. [Method and model limits](../../docs/digital246-research.md).
+
+
+## Punch and full target inventory (0.11.0)
+
+`punch-stream.s.in` and `verify-punch246.py` reproduce the original isolated mono
+effect with scalar conversion of 129 original float coefficients and range
+initialization. The 131,072 samples, 2,048 complete states and display words are
+numeric observations; no firmware instructions/image are included. The runtime
+adapter's clock assumption, rate conversion, DC removal and gating are separate
+from the verified kernel. See docs/punch246-native.md.
+
+`factory-preset-inventory.json` contains names and selected numeric fields for
+169 synth patches and 24 kits. `scripts/inventory-factory-presets.py` regenerates
+it read-only from the exact operator DB into a new file. `manual-sound-targets.json`
+records the two exercise recipes and PDF hash, not a claim of implemented
+original sounds. REA inventory evidence is summarized separately under docs/firmware.

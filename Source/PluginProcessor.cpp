@@ -55,11 +55,16 @@ PocketProcessor::PocketProcessor(juce::File soundsDirectory) : AudioProcessor(Bu
     phaseLayout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"digital246Envelope",1},"Digital 246: Original Envelope",false));
     const char* digitalEnvelopeNames[]={"Digital 246: Envelope Attack","Digital 246: Envelope Decay","Digital 246: Envelope Sustain","Digital 246: Envelope Release"};
     for(size_t i=0;i<4;++i)phaseLayout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{pocket::digital246EnvelopeIds[i],1},digitalEnvelopeNames[i],0,i==2?32767:16383,envelopeDefaults[i]));
+    phaseLayout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"punch246Enabled",1},"Punch 246: Experimental Sound Effect",false));
+    const char* punchNames[]={"Punch 246: Blue Frequency","Punch 246: Green Punch Feedback Limit","Punch 246: White Rounds / Stages","Punch 246: Orange Power / Mix"};
+    const int punchDefaults[]={6000,15000,20000,28000};
+    for(size_t i=0;i<4;++i)phaseLayout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{pocket::punch246Ids[i],1},punchNames[i],pocket::punch246Min[i],pocket::punch246Max[i],punchDefaults[i]));
     phaseState=std::make_unique<juce::AudioProcessorValueTreeState>(*this,nullptr,"Phase246",std::move(phaseLayout));
     phaseAudio[0]=phaseState->getRawParameterValue("phase246Enabled");for(size_t i=0;i<4;++i)phaseAudio[i+1]=phaseState->getRawParameterValue(pocket::phase246Ids[i]);
     phaseAudio[5]=phaseState->getRawParameterValue("phase246Envelope");for(size_t i=0;i<4;++i)phaseAudio[i+6]=phaseState->getRawParameterValue(pocket::phase246EnvelopeIds[i]);
     phaseAudio[10]=phaseState->getRawParameterValue("digital246Enabled");for(size_t i=0;i<4;++i)phaseAudio[i+11]=phaseState->getRawParameterValue(pocket::digital246Ids[i]);
     phaseAudio[15]=phaseState->getRawParameterValue("digital246Envelope");for(size_t i=0;i<4;++i)phaseAudio[i+16]=phaseState->getRawParameterValue(pocket::digital246EnvelopeIds[i]);
+    phaseAudio[20]=phaseState->getRawParameterValue("punch246Enabled");for(size_t i=0;i<4;++i)phaseAudio[i+21]=phaseState->getRawParameterValue(pocket::punch246Ids[i]);
     setScreenPage(0);
     for(int pad=0;pad<pocket::kitCapacity;++pad){const char* ids[]={"start","end","gain","pitch","reverse","gated"};for(int i=0;i<6;++i)padParameters[size_t(pad)][size_t(i)]=state.getRawParameterValue(padParameterId(pad,ids[i]));}
     keyboard.addListener(this);
@@ -83,6 +88,7 @@ juce::String PocketProcessor::screenParameterId(int index) const {
     if(visiblePage.load()==1&&phase246EnvelopeEnabled())return pocket::phase246EnvelopeIds[size_t(index)];
     if(visiblePage.load()==0&&digital246Enabled())return pocket::digital246Ids[size_t(index)];
     if(visiblePage.load()==1&&digital246EnvelopeEnabled())return pocket::digital246EnvelopeIds[size_t(index)];
+    if(visiblePage.load()==3&&punch246Enabled())return pocket::punch246Ids[size_t(index)];
     return ids[size_t(visiblePage.load())][size_t(index)];
 }
 void PocketProcessor::setScreenPage(int page,bool tapeMode) {
@@ -91,6 +97,7 @@ void PocketProcessor::setScreenPage(int page,bool tapeMode) {
     const char* envelope[]={"attack","decay","sustain","release"};
     for(int i=0;i<4;++i){if(visiblePage.load()==0)screenKnobs[size_t(i)]->followNative(state.getParameter(normal[i]),phaseState->getParameter(pocket::phase246Ids[size_t(i)]),phaseState->getParameter(pocket::digital246Ids[size_t(i)]),*phaseAudio[0],*phaseAudio[10],*audioParameters[size_t(Param::engine)]);
         else if(visiblePage.load()==1)screenKnobs[size_t(i)]->followNative(state.getParameter(envelope[i]),phaseState->getParameter(pocket::phase246EnvelopeIds[size_t(i)]),phaseState->getParameter(pocket::digital246EnvelopeIds[size_t(i)]),*phaseAudio[5],*phaseAudio[15],*audioParameters[size_t(Param::engine)],phaseAudio[0],phaseAudio[10]);
+        else if(visiblePage.load()==3)screenKnobs[size_t(i)]->followSwitch(state.getParameter(i==0?"delayTime":i==1?"delayFeedback":i==2?"effect":"drive"),phaseState->getParameter(pocket::punch246Ids[size_t(i)]),*phaseAudio[20]);
         else if(page==4&&tapeMode&&i==1)screenKnobs[1]->followTapeTrack();else screenKnobs[size_t(i)]->follow(state.getParameter(screenParameterId(i)));}
 }
 void PocketProcessor::handleNoteOn(juce::MidiKeyboardState*,int channel,int note,float velocity) {
@@ -201,6 +208,8 @@ void PocketProcessor::prepareToPlay(double sr,int) {
     keyboardDisplayReset.store(true);rate=sr; engine.prepare(sr); tape.prepare(sr); clock=0; step=0; seqNote=-1; sequenceNote.store(-1);heldNotes.clear();previousSeqMode=-1;wasSequencing=false;lastHostStep=INT64_MIN;
 }
 double PocketProcessor::getTailLengthSeconds() const {
+    // The isolated feedback effect can sustain oscillation after input ends.
+    if(punch246Enabled())return std::numeric_limits<double>::infinity();
     const double feedback=std::clamp(double(state.getRawParameterValue("delayFeedback")->load()),.01,.85);
     const double echo=state.getRawParameterValue("delayTime")->load()*std::log(.00001)/std::log(feedback);
     const double release=state.getRawParameterValue("release")->load(),macro=state.getRawParameterValue("envelope")->load();
@@ -230,6 +239,7 @@ void PocketProcessor::processBlock(juce::AudioBuffer<float>& buffer,juce::MidiBu
     p.phase246Envelope=phaseAudio[5]->load(std::memory_order_relaxed)>.5f;for(size_t i=0;i<4;++i)p.phase246Adsr[i]=int16_t(phaseAudio[i+6]->load(std::memory_order_relaxed));
     p.digital246=phaseAudio[10]->load(std::memory_order_relaxed)>.5f;for(size_t i=0;i<4;++i)p.digital246Controls[i]=int16_t(phaseAudio[i+11]->load(std::memory_order_relaxed));
     p.digital246Envelope=phaseAudio[15]->load(std::memory_order_relaxed)>.5f;for(size_t i=0;i<4;++i)p.digital246Adsr[i]=int16_t(phaseAudio[i+16]->load(std::memory_order_relaxed));
+    p.punch246=phaseAudio[20]->load(std::memory_order_relaxed)>.5f;for(size_t i=0;i<4;++i)p.punch246Controls[i]=int16_t(phaseAudio[i+21]->load(std::memory_order_relaxed));
     p.engine=int(get(Param::engine)); p.tone=get(Param::tone); p.color=get(Param::color); p.envelope=get(Param::envelope); p.effect=get(Param::effect); p.volume=1;
     p.attack=get(Param::attack); p.decay=get(Param::decay); p.sustain=get(Param::sustain); p.release=get(Param::release);
     p.lfoRate=get(Param::lfoRate); p.lfoDepth=get(Param::lfoDepth); p.lfoDestination=int(get(Param::lfoDestination)); p.lfoShape=int(get(Param::lfoShape));
@@ -382,6 +392,7 @@ void PocketProcessor::applyPreset(int index) {
     if(index<0||index>=int(pocket::factoryPresets.size())) return;
     phaseState->getParameter("phase246Enabled")->setValueNotifyingHost(0);phaseState->getParameter("phase246Envelope")->setValueNotifyingHost(0);
     phaseState->getParameter("digital246Enabled")->setValueNotifyingHost(0);phaseState->getParameter("digital246Envelope")->setValueNotifyingHost(0);
+    phaseState->getParameter("punch246Enabled")->setValueNotifyingHost(0);
     const auto& p=pocket::factoryPresets[size_t(index)];
     // Decode factory assets off the audio thread; only swap under the callback lock.
     if(p.sample>=0) {
@@ -419,8 +430,16 @@ void PocketProcessor::applyDigital246Preset(int index) {
     phaseState->getParameter("digital246Enabled")->setValueNotifyingHost(1);phaseState->getParameter("digital246Envelope")->setValueNotifyingHost(1);
     setSelectedSound("digital246:"+juce::String(index));currentFactoryPreset.store(-1);currentUserPreset.store(-1);requestPanic(false);
 }
+void PocketProcessor::applyPunch246Preset(int index) {
+    if(index<0||index>=int(pocket::punch246Presets.size()))return;
+    const auto& patch=pocket::punch246Presets[size_t(index)];
+    if(patch.engine==0)applyDigital246Preset(patch.preset);else applyPhase246Preset(patch.preset);
+    for(size_t i=0;i<4;++i){auto* p=phaseState->getParameter(pocket::punch246Ids[i]);p->setValueNotifyingHost(p->convertTo0to1(patch.controls[i]));}
+    phaseState->getParameter("punch246Enabled")->setValueNotifyingHost(1);
+    setSelectedSound("punch246:"+juce::String(index));currentFactoryPreset.store(-1);currentUserPreset.store(-1);requestPanic(false);
+}
 void PocketProcessor::getStateInformation(juce::MemoryBlock& dest) {
-    auto tree=state.copyState();tree.removeChild(tree.getChildWithName("Phase246"),nullptr);tree.addChild(phaseState->copyState(),-1,nullptr);tree.setProperty("screenPage",screenPage(),nullptr);tree.setProperty("screenTape",screenTapeMode(),nullptr);tree.removeChild(tree.getChildWithName("TapeEdits"),nullptr);tree.addChild(tapeEditSnapshot(),-1,nullptr);tree.removeChild(tree.getChildWithName("SoundLibrary"),nullptr);tree.addChild(librarySnapshot(),-1,nullptr); for(int i=0;i<16;++i) tree.setProperty("step"+juce::String(i),steps[size_t(i)].load(),nullptr);
+    auto tree=state.copyState();tree.removeChild(tree.getChildWithName("Phase246"),nullptr);tree.addChild(phaseState->copyState(),-1,nullptr);tree.setProperty("screenPage",screenPage(),nullptr);tree.setProperty("keyboardOctave",keyboardOctave.load(),nullptr);tree.setProperty("screenTape",screenTapeMode(),nullptr);tree.removeChild(tree.getChildWithName("TapeEdits"),nullptr);tree.addChild(tapeEditSnapshot(),-1,nullptr);tree.removeChild(tree.getChildWithName("SoundLibrary"),nullptr);tree.addChild(librarySnapshot(),-1,nullptr); for(int i=0;i<16;++i) tree.setProperty("step"+juce::String(i),steps[size_t(i)].load(),nullptr);
     {const juce::ScopedLock lock(libraryStateLock);for(int pad=0;pad<pocket::kitCapacity;++pad)tree.setProperty("kitName"+juce::String(pad),kitNames[size_t(pad)],nullptr);}
     pocket::Kit kitCopy;
     juce::AudioBuffer<float> sampleAudio,tapeAudio; double sampleRate=48000,tapeRate=48000;
@@ -440,7 +459,7 @@ void PocketProcessor::getStateInformation(juce::MemoryBlock& dest) {
 }
 juce::ValueTree PocketProcessor::normalizedPhaseState(juce::ValueTree tree) const {
     if(!tree.isValid())tree=juce::ValueTree("Phase246");
-    const char* ids[]={"phase246Enabled","phase246Blue","phase246Green","phase246White","phase246Orange","phase246Envelope","phase246Attack","phase246Decay","phase246Sustain","phase246Release","digital246Enabled","digital246Blue","digital246Green","digital246White","digital246Orange","digital246Envelope","digital246Attack","digital246Decay","digital246Sustain","digital246Release"};
+    const char* ids[]={"phase246Enabled","phase246Blue","phase246Green","phase246White","phase246Orange","phase246Envelope","phase246Attack","phase246Decay","phase246Sustain","phase246Release","digital246Enabled","digital246Blue","digital246Green","digital246White","digital246Orange","digital246Envelope","digital246Attack","digital246Decay","digital246Sustain","digital246Release","punch246Enabled","punch246Blue","punch246Green","punch246White","punch246Orange"};
     for(const char* id:ids)if(!tree.getChildWithProperty("id",id).isValid()){
         juce::ValueTree child("PARAM");child.setProperty("id",id,nullptr);auto* p=phaseState->getParameter(id);
         child.setProperty("value",p->convertFrom0to1(p->getDefaultValue()),nullptr);tree.addChild(child,-1,nullptr);
@@ -486,6 +505,7 @@ void PocketProcessor::setStateInformation(const void* data,int size) {
             for(int pad=0;pad<pocket::kitCapacity;++pad)for(const auto* field:{"start","end","gain","pitch","reverse","gated"}){const auto id=padParameterId(pad,field);if(!tree.getChildWithProperty("id",id).isValid()){juce::ValueTree parameter("PARAM");parameter.setProperty("id",id,nullptr);auto* p=state.getParameter(id);parameter.setProperty("value",p->convertFrom0to1(p->getDefaultValue()),nullptr);tree.addChild(parameter,-1,nullptr);}}
             phaseState->replaceState(phase);state.replaceState(tree);engine.reset();resetOutputHistory();heldNotes.clear();seqNote=-1;sequenceNote.store(-1);wasSequencing=false;lastHostStep=INT64_MIN;
         }
+        keyboardOctave.store(juce::jlimit(-4,4,int(tree.getProperty("keyboardOctave",0))));
         restoreTapeEdits(edits);
         setScreenPage(int(tree.getProperty("screenPage",0)),bool(tree.getProperty("screenTape",false)));
     }

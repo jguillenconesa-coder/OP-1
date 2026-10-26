@@ -24,6 +24,10 @@ public:
         disconnect();selection=&enabled;engineSelection=&engine;guard.store(prerequisite);target.store(base);alternative.store(other);
         base->addListener(this);other->addListener(this);sendValueChangedMessageToListeners(getValue());
     }
+    void followSwitch(juce::RangedAudioParameter* base,juce::RangedAudioParameter* other,std::atomic<float>& enabled) {
+        disconnect();selection=&enabled;engineSelection=nullptr;guard=nullptr;target=base;alternative=other;
+        base->addListener(this);other->addListener(this);sendValueChangedMessageToListeners(getValue());
+    }
     void followNative(juce::RangedAudioParameter* base,juce::RangedAudioParameter* phase,juce::RangedAudioParameter* digital,
                       std::atomic<float>& phaseEnabled,std::atomic<float>& digitalEnabled,std::atomic<float>& engine,
                       std::atomic<float>* phaseGuard=nullptr,std::atomic<float>* digitalGuard=nullptr) {
@@ -62,7 +66,7 @@ private:
     std::atomic<bool> trackMode{false};
     juce::RangedAudioParameter* currentTarget() const {if(trackMode.load())return tracks[size_t(std::clamp(int(trackSelection->load()),0,3))];
         if(auto* p=digitalAlternative.load())if(digitalSelection.load()->load()>.5f&&int(engineSelection.load()->load())==0){auto* condition=digitalPrerequisite.load();if(!condition||condition->load()>.5f)return p;}
-        if(auto* p=alternative.load())if(selection.load()->load()>.5f&&int(engineSelection.load()->load())==1){auto* condition=guard.load();if(!condition||condition->load()>.5f)return p;}
+        if(auto* p=alternative.load())if(selection.load()->load()>.5f){auto* engine=engineSelection.load();if(!engine||int(engine->load())==1){auto* condition=guard.load();if(!condition||condition->load()>.5f)return p;}}
         return target.load();}
     std::atomic<float>* cursor=nullptr,*seek=nullptr,*tapeLength=nullptr;
     float duration() const {return tapeLength?float(4<<std::clamp(int(tapeLength->load()),0,2)):1.f;}

@@ -87,3 +87,13 @@ set 2 sigue sus cuatro controles. Nuevos presets CORE la activan; sesiones/slots
 salida; no elimina la cinta. Los cambios normales de preset conservan las colas
 master. FILTER LFO ya actúa en las rutas nativa y CLEAN cuando se selecciona.
 [Guía Phase](phase246-native.md) · [Motores](audio-engines.md).
+
+
+## Octavas y Punch (0.11.0)
+
+En modo synth/drum, las flechas del teclado alcanzan −4…+4 octavas. El extremo
+superior del teclado queda limitado a nota MIDI 127. La posición del teclado se
+guarda en sesión, slots editados y LIFT/DROP; no transpone notas MIDI externas
+ni equivale a aplicar aún el campo octave de todos los patches de fábrica.
+El botón PUNCH 246 activa el nuevo efecto mono y los cuatro mandos del set 3.
+STOP/CC120 cortan su cola; algunas configuraciones mantienen oscilación.

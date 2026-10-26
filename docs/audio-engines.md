@@ -1,4 +1,4 @@
-# Motores de audio y estado de fidelidad — 0.10.0
+# Motores de audio y estado de fidelidad — 0.11.0
 
 | Motor/función | Implementación actual | Verificación y límite |
 | --- | --- | --- |
@@ -10,7 +10,8 @@
 | SAMPLER | Reproducción mono interpolada, recorte, raíz y loop | CLEAN conserva la ruta sin filtro implícito/saturación seca. FILTER LFO explícito sí actúa. |
 | DRUM | Bombo/caja/ruido propios | No reproduce el motor de batería original. |
 | KIT | Hasta 24 pads, trim, gain, pitch, reverse y gate | Audio por pad, bancos, estado embebido, edición e importación. |
-| FX / EQ / LFO | Delay/drive, EQ de tres bandas y LFO propios | MIDI, automatización, FILTER en rutas limpias y colas; no se han portado los efectos originales. |
+| Punch 246 | Núcleo mono reconstruido, opcional para todos los motores | 131.072 muestras / 2.048 estados; conversión de tasa/DC e inserción propias, cola sostenida posible. No es todavía master FX original. |
+| FX / EQ / LFO | Delay/drive, EQ de tres bandas y LFO propios | MIDI, automatización, FILTER en rutas limpias y colas; los demás efectos originales siguen pendientes. |
 
 ## Cambios de String
 
@@ -47,8 +48,15 @@ segundos; no es una nota atascada. Pánico corta esa cola.
    firmware; afinación/controlador y mezclador originales.
 2. FM completo y otros motores originales, con pruebas por instrucciones antes
    de conectarlos. Las regiones L1 cifradas no se tratan como coeficientes válidos.
-3. Efectos originales y comparación acústica de presets completos con el aparato.
+3. Los demás efectos originales y comparación acústica de presets completos con el aparato.
 4. Ampliaciones de cinta/secuenciadores descritas en [botones](buttons-and-browser.md)
    y validación de arranque, Ableton 10.2.4, ASIO y dropouts en Windows real.
 
 [Guía Digital](digital246-native.md) · [Guía Phase](phase246-native.md) · [Método ADSR](envelope246-research.md) · [Rendimiento](realtime-audio.md)
+
+
+La [matriz del objetivo completo](original-op1-coverage.md) enumera los 15 IDs de
+motor del perfil, 8 rutas FX, LFO, envolventes y las dos recetas del manual.
+[Guía Punch](punch246-native.md). El inventario de 169 synth / 24 kits conserva
+sus nombres/campos numéricos; no convierte automáticamente todos en sonidos
+implementados.

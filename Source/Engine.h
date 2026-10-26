@@ -7,6 +7,7 @@
 #include <vector>
 #include "Phase246.h"
 #include "Digital246Voice.h"
+#include "Punch246Effect.h"
 #include "StringVoice.h"
 
 namespace pocket {
@@ -17,6 +18,7 @@ struct Parameters {
     int engine=0;
     bool phase246=false,phase246Envelope=false;std::array<int16_t,4> phase246Controls{{0,29491,0,0}},phase246Adsr{{64,8064,32767,8192}};
     bool digital246=false,digital246Envelope=false;std::array<int16_t,4> digital246Controls{{0,16384,0,0}},digital246Adsr{{64,8064,32767,8192}};
+    bool punch246=false;std::array<int16_t,4> punch246Controls{{6000,15000,20000,28000}};
     std::array<PadSettings,kitCapacity> pads{};
     float tone=.45f,color=.35f,envelope=.35f,effect=.2f,volume=.7f;
     float attack=.02f,decay=.2f,sustain=.8f,release=.3f;
@@ -29,8 +31,8 @@ using Kit=std::array<Sample,kitCapacity>;
 class Engine {
 public:
     static constexpr int polyphony=8;
-    void prepare(double rate) { sampleRate=std::max(8000.0,rate); smoothing=float(1-std::exp(-1.0/(sampleRate*.012))); cachedCutoff=-1;stringRetune=1-std::exp(-1/(sampleRate*.003));phaseConfig.prepare(sampleRate);reset(); }
-    void reset() { voices={}; delayValid=0; write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1;cleanMix=0;modulatedFilterMix=0;cleanInitialized=false;phaseControlsInitialized=false;digitalControlsInitialized=false;nativeEnvelopeActive=false;nativeDigitalActive=false; }
+    void prepare(double rate) { sampleRate=std::max(8000.0,rate); smoothing=float(1-std::exp(-1.0/(sampleRate*.012))); cachedCutoff=-1;stringRetune=1-std::exp(-1/(sampleRate*.003));phaseConfig.prepare(sampleRate);punchEffect.prepare(sampleRate);reset(); }
+    void reset() { voices={}; delayValid=0; write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1;cleanMix=0;modulatedFilterMix=0;cleanInitialized=false;phaseControlsInitialized=false;digitalControlsInitialized=false;nativeEnvelopeActive=false;nativeDigitalActive=false;punchEffect.reset();punchMix=0;punchActive=false; }
     void setSample(Sample data) { sample=std::move(data); voices={}; }
     void swapSample(Sample& data) {std::swap(sample,data);voices={};}
     void swapKit(Kit& data,int count=8) {kit.swap(data);kitCount=count==24?24:8;voices={};}
@@ -185,7 +187,13 @@ public:
         const float cleanInput=sum+(filter-sum)*modulatedFilterMix;
         const float legacyDriven=std::tanh(filter*(1+p.drive*12))/(1+p.drive*2);
         const float cleanDriven=p.drive<.000001f?cleanInput:std::tanh(cleanInput*(1+p.drive*12))/(1+p.drive*2);
-        const float driven=legacyDriven+(cleanDriven-legacyDriven)*cleanMix;
+        float driven=legacyDriven+(cleanDriven-legacyDriven)*cleanMix;
+        if(target.punch246||punchActive){
+            for(size_t i=0;i<4;++i){if(!punchActive)punchWords[i]=target.punch246Controls[i];else punchWords[i]+=smoothing*(target.punch246Controls[i]-punchWords[i]);punchRaw[i]=int16_t(std::lround(std::clamp(punchWords[i],0.f,32767.f)));}
+            punchActive=true;follow(punchMix,target.punch246?1.f:0.f);
+            const auto processed=punchEffect.next(driven,punchRaw,phaseConfig.table);driven+=punchMix*(processed-driven);
+            if(!target.punch246&&punchMix<.000001f){punchMix=0;punchActive=false;punchEffect.reset();}
+        }
         const auto lag=std::clamp(size_t(sampleRate*p.delayTime),size_t(1),delay.size()-1);
         const float echo=lag<=delayValid?delay[(write+delay.size()-lag)%delay.size()]:0;
         delay[write]=std::tanh(driven+echo*std::clamp(p.feedback,0.f,.85f)); write=(write+1)%delay.size();if(delayValid<delay.size())++delayValid;
@@ -203,6 +211,8 @@ private:
         double phase=0,modPhase=0,frequency=440,samplePosition=0,time=0,drumPhase=0;
     };
     Phase246Config phaseConfig;bool phaseControlsInitialized=false,digitalControlsInitialized=false,nativeEnvelopeActive=false,nativeDigitalActive=false;
+    Punch246Effect punchEffect;float punchMix=0;bool punchActive=false;
+    std::array<float,4> punchWords{};std::array<int16_t,4> punchRaw{};
     std::array<float,4> phaseWords{};std::array<int16_t,4> phaseRaw{};
     std::array<float,4> digitalWords{};std::array<int16_t,4> digitalRaw{};
     float noise() { random^=random<<13; random^=random>>17; random^=random<<5; return float(double(random)/4294967295.0*2-1); }

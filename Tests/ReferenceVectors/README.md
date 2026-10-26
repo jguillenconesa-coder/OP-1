@@ -129,3 +129,18 @@ original calls using the documented deferred D-register GNU model. Source/ELF
 remain private; see docs/firmware/digital246-validation.json and the reproduction
 script. The independently written Digital kernel is used by the optional plugin
 mode, unlike the earliest experimental-only probes described above.
+
+
+## Punch 246 (0.11.0)
+
+`punch246-input.bin`: 2,048 records of 348 bytes = 208-byte state + four int16
+controls + 64 int16 input samples + uint32 action (continue/load/reset).
+`punch246-output.bin`: 540-byte header (129 converted int32 coefficients and
+four min/max/scale int16 triples), then 2,048 records of 340 bytes: 64 int16
+audio values, 208 complete state bytes, uint32 containing the display word.
+All little endian. 512 independent arbitrary-state cases and three 512-block
+streams include stage automation, input cessation and reset. Valid parameter
+ranges only. GNU deferred D-register model; no hardware timing validation.
+The test also checks streaming parity at 44.1 kHz with integration DC removal
+disabled, all seven adapter rates, and post-panic silence. See reproduction and
+hashes in docs/punch246-native.md and docs/firmware/punch246-validation.json.

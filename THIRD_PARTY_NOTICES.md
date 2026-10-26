@@ -66,3 +66,11 @@ AGPL-3.0-only. Numeric control/state/output observations were obtained from the
 operator-supplied rev246 image using the separately documented GNU model. No
 original firmware instructions, DB image or simulator binary are packaged.
 See docs/digital246-research.md for attribution, scope and reproducibility.
+
+
+## Punch and factory parameter inventory (0.11.0)
+
+Punch's independent implementation and harness are AGPL-3.0-only project code.
+Numeric control/coefficient/state/output observations and named manual targets
+retain their documented provenance. No original firmware opcodes, DB image,
+manual illustrations, original recordings or GNU executable are included.
