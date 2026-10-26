@@ -1,8 +1,9 @@
-# Motores de audio y estado de fidelidad — 0.9.0
+# Motores de audio y estado de fidelidad — 0.10.0
 
 | Motor/función | Implementación actual | Verificación y límite |
 | --- | --- | --- |
 | FM | Síntesis propia con dos osciladores y modulación de fase | Audio, MIDI, bend, extremos y tiempo real. No es el FM completo original; campos de control investigados, tablas L1 pendientes. |
+| Digital 246 CORE | Reconstrucción del oscilador Digital y envolvente rev246 opcional | 262.144 muestras / 2.048 estados completos, siete tasas de host; 16 presets adicionales. NCO, asignador, salida, mezcla y LFO propios. |
 | PHASE anterior | Distorsión de fase propia | Se conserva para sesiones/presets existentes. |
 | Phase 246 CORE | Reconstrucción Pd + envolvente rev246 opcional, a 88,2 kHz internos | Oráculos de instrucciones/estado y siete tasas de host; NCO, salida, mezcla y LFO propios. No se valida el aparato completo. |
 | STRING | Karplus–Strong propio con retardo fraccional | Afinación y bend ±2 semitonos a 44,1/48/96 kHz, cuatro notas y reutilización segura del buffer. No es un port del String original. |
@@ -50,4 +51,4 @@ segundos; no es una nota atascada. Pánico corta esa cola.
 4. Ampliaciones de cinta/secuenciadores descritas en [botones](buttons-and-browser.md)
    y validación de arranque, Ableton 10.2.4, ASIO y dropouts en Windows real.
 
-[Guía Phase](phase246-native.md) · [Método ADSR](envelope246-research.md) · [Rendimiento](realtime-audio.md)
+[Guía Digital](digital246-native.md) · [Guía Phase](phase246-native.md) · [Método ADSR](envelope246-research.md) · [Rendimiento](realtime-audio.md)

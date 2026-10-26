@@ -112,3 +112,29 @@ sigue teniendo las restricciones de bloqueo descritas anteriormente.
 Las colas de la envolvente reconstruida pueden durar decenas de segundos. El host
 recibe una estimación conservadora de su release y delays en cascada, en lugar de
 usar únicamente el tiempo de la envolvente anterior. Esto no añade latencia de entrada.
+
+
+## 0.10.0: Digital y dos envolventes
+
+El benchmark incluye ahora los seis motores anteriores, Phase CORE con ambas
+envolventes y Digital CORE con ambas: **60 cargas / 30.720 callbacks por
+plataforma**, ocho voces y automatización de los cuatro controles raw y ADSR.
+Se midieron 48/96 kHz y bloques 64/128/256 sin compilación simultánea.
+No se observaron llamadas de heap monitorizadas. No se añade buffering por bloque
+al oscilador; notas/bend/pedal/CC120 conservan los offsets y la prueba entrega
+audio idéntico con las tres particiones del host.
+
+| Medición final | Linux | Windows bajo Wine |
+| --- | --- | --- |
+| Peor p99 como % del plazo | 21.71 % | 31.98 % |
+| Digital con envolvente rev246: peor p99 | 16.16 % | 29.23 % |
+| Callbacks fuera de plazo observados | 2 | 1 |
+| Llamadas de heap monitorizadas | 0 | 0 |
+| Latencia declarada | 0 muestras | 0 muestras |
+
+[Datos Linux 0.10.0](releases/v0.10.0-linux-realtime.json) ·
+[Datos Wine 0.10.0](releases/v0.10.0-windows-wine-realtime.json).
+Las tardanzas se conservan en el informe: no se certifican cero dropouts ni se
+mide la latencia de ida/vuelta ASIO. El usuario ha confirmado que el VST3 anterior
+funciona en Ableton en lo probado, sin especificar versión/buffer; esta nueva
+entrega requiere su propia comprobación en Windows real.

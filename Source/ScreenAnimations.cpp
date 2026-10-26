@@ -10,7 +10,7 @@ void dot(juce::Graphics& g,float x,float y,float radius) {g.fillEllipse(x-radius
 }
 void drawScreen(juce::Graphics& g,const ScreenFrame& f) {
     g.fillAll(juce::Colour(0xff070b10));
-    const auto title=f.page>=5?juce::StringArray{"MASTER EQ","MASTER FX","MASTER OUT"}[std::clamp(f.page-5,0,2)]:f.page==4?(f.mode==3?"MIX":"TAPE"):f.page==1?"ENVELOPE":f.page==2?"LFO":f.page==3?"ECHO / DRIVE":juce::StringArray{"FM / REACTOR",f.phase246?"PHASE 246 CORE":"PHASE","STRING","SAMPLER","DRUM","SAMPLE KIT"}[std::clamp(f.engine,0,5)];
+    const auto title=f.page>=5?juce::StringArray{"MASTER EQ","MASTER FX","MASTER OUT"}[std::clamp(f.page-5,0,2)]:f.page==4?(f.mode==3?"MIX":"TAPE"):f.page==1?"ENVELOPE":f.page==2?"LFO":f.page==3?"ECHO / DRIVE":juce::StringArray{f.digital246?"DIGITAL 246 CORE":"FM / REACTOR",f.phase246?"PHASE 246 CORE":"PHASE","STRING","SAMPLER","DRUM","SAMPLE KIT"}[std::clamp(f.engine,0,5)];
     label(g,title,{10,4,172,14},10,colors[2]);label(g,juce::String(f.voices)+" VOICES",{183,5,63,12},8,colors[0]);
     const float activity=std::clamp(f.level*6,0.f,1.f),phase=f.time*.7f;
     juce::Path curve;
@@ -58,6 +58,10 @@ void drawScreen(juce::Graphics& g,const ScreenFrame& f) {
         const double pivot=.08+f.tone*.84;
         for(int i=0;i<225;++i){const double p=double(i)/224,w=p<pivot?.5*p/pivot:.5+.5*(p-pivot)/(1-pivot);const float x=13.f+i,y=57-float(std::cos(2*pi*w))*(16+activity*9);if(i==0)curve.startNewSubPath(x,y);else curve.lineTo(x,y);}
         g.setColour(colors[1]);g.strokePath(curve,juce::PathStrokeType(1.5f));const float marker=std::fmod(phase*(.1f+f.color*.5f),1.f);g.setColour(colors[0]);g.drawVerticalLine(int(13+marker*224),27,86);
+    } else if(f.digital246) {
+        // Our feedback/XOR visualization, driven by note activity and raw controls.
+        for(int column=0;column<24;++column){const auto bits=unsigned(int(32767*std::sin(column*.3f+phase*(.2f+f.color))))^unsigned(f.tone*32767);
+            for(int bit=0;bit<8;++bit){g.setColour(colors[size_t(bit%4)].withAlpha(bits&(1u<<bit)?.35f+activity*.6f:.08f));g.fillRect(17+column*9,29+bit*7,7,5);}}
     } else {
         // Nuke-inspired scientific dial language, redrawn with original geometry.
         const float cx=61,cy=56;
@@ -66,6 +70,6 @@ void drawScreen(juce::Graphics& g,const ScreenFrame& f) {
         for(int i=0;i<126;++i){const double p=double(i)/125;const float x=109.f+i,y=57-float(std::sin(2*pi*p+f.tone*7*std::sin(2*pi*p*(1+std::round(f.color*7))+phase)))*(12+activity*8);if(i==0)curve.startNewSubPath(x,y);else curve.lineTo(x,y);}g.setColour(colors[0]);g.strokePath(curve,juce::PathStrokeType(1.2f));
     }
     if(f.page!=4)for(int step=0;step<16;++step){g.setColour(step==f.step?colors[3]:juce::Colour(0xff27394a));dot(g,14.f+step*14.7f,95,step==f.step?2.f:1.f);}
-    for(int i=0;i<4;++i){label(g,f.labels[size_t(i)].substring(0,5),{10+i*59,102,58,9},7,colors[size_t(i)]);label(g,juce::String(f.values[size_t(i)],(f.page==2&&i>=2)||(f.page==0&&f.phase246)||(f.page==1&&f.phaseEnvelope)?0:2),{10+i*59,111,58,11},9,colors[size_t(i)]);}
+    for(int i=0;i<4;++i){label(g,f.labels[size_t(i)].substring(0,5),{10+i*59,102,58,9},7,colors[size_t(i)]);label(g,juce::String(f.values[size_t(i)],(f.page==2&&i>=2)||(f.page==0&&(f.phase246||f.digital246))||(f.page==1&&f.phaseEnvelope)?0:2),{10+i*59,111,58,11},9,colors[size_t(i)]);}
 }
 }

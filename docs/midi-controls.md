@@ -79,3 +79,14 @@ Sustain / Release; set 1 remains oscillator controls, sets 3–4 FX/LFO. Turning
 with the editor closed. Five additional direct parameters follow all 0.8.0
 parameters without changing their IDs/indices. Old projects and edited slots
 without those fields default to the previous envelope, not the new one.
+
+
+## Digital 246 (0.10.0)
+
+El banco Digital 246 CORE reutiliza las cuatro identidades Screen: Knob. Set 1:
+azul Feedback, verde Ratio, blanco Detune/Sync (rango firmado −32768…32767),
+naranja XOR. Set 2 sigue su ADSR cuando está activo 246 ENVELOPE. Los destinos
+fijos del host se llaman **Digital 246: Blue Feedback / Green Ratio / White
+Detune and Sync / Orange XOR**, más los cuatro controles Envelope y los dos
+interruptores. Se añaden después de todos los parámetros de 0.9.0; la lista
+normalizada de motores conserva el mismo orden. [Guía](digital246-native.md).

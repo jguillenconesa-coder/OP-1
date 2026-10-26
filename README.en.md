@@ -1,10 +1,10 @@
-# Pocket One 0.9.0
+# Pocket One 0.10.0
 
 An OP-1-inspired **VST3 instrument and standalone application**, written in C++17 with JUCE 8. Independent of Teenage Engineering; no original firmware, factory samples, graphics or branding are included. The interface uses a grey enclosure, dark animated display, blue/green/white/orange encoders and two rows of button keys.
 
 ![Actual JUCE editor](docs/interface.png)
 
-Version 0.9.0 adds the optional reconstructed rev246 envelope to the 16 CORE patches, with set-2 MIDI controls and safe 0.8.0 project/slot defaults. String's fractional loop fixes tuning and bend, explicit FILTER LFO works on clean/native paths, and panic invalidates large delay histories without clearing buffers in the callback. FX/master tails survive normal patch changes. [Engine status and limits](docs/audio-engines.md).
+Version 0.10.0 adds **[Digital 246 CORE](docs/digital246-native.md)**: an independently reconstructed oscillator with feedback, ratio/fine, sync and XOR, plus **16 additional presets** using stored oscillator/ADSR words. The four MIDI knobs follow its pages. Existing sounds, host indices and old project defaults are preserved. FX/LFO/octave and complete original patch routing remain unverified. [Engine status and limits](docs/audio-engines.md).
 
 Version 0.8.0 added optional **[Phase 246 CORE](docs/phase246-native.md)**: a playable independent Pd reconstruction at a fixed 88.2 kHz internal clock with 16 additional raw-control patches. Its core is tested against original instructions in the GNU simulator; NCO, envelope, modulation and output filtering are ours. Existing Phase presets remain available.
 
@@ -54,7 +54,7 @@ This is a constrained loop recorder, not a full recreation of OP-1 tape. It now 
 
 See [Windows build/install instructions](docs/windows.md). Run `packaging\windows\build.cmd` on Windows with Visual Studio 2022 C++ tools, CMake, Git and NSIS 3.11+ installed. The installer is generated in `dist/`, installs the VST3 bundle to the standard Common Files folder, installs the standalone app/Start menu shortcut, and registers an uninstaller. The C++ runtime is statically linked.
 
-**Windows x64 installer:** `Pocket-One-0.9.0-Windows-x64-Setup.exe`. Thirteen Windows suites and installer/uninstaller checks pass under Wine, including actual VST3 loading and Common Controls manifest inspection. Eleven Linux suites pass. Native CI for the 0.4.0 SQLite fix also passed Windows/Linux/macOS, including Windows app startup and installer checks; this does not validate a native Ableton project. The installer remains unsigned. See [cross-build instructions](docs/windows-cross-build.md).
+**Windows x64 installer:** `Pocket-One-0.10.0-Windows-x64-Setup.exe`. Fourteen Windows suites and installer/uninstaller checks pass under Wine, including actual VST3 loading and Common Controls manifest inspection. Twelve Linux suites pass. Native CI for the 0.4.0 SQLite fix also passed Windows/Linux/macOS, including Windows app startup and installer checks; this does not validate a native Ableton project. The installer remains unsigned. See [cross-build instructions](docs/windows-cross-build.md).
 
 ## Build from source
 
@@ -80,7 +80,7 @@ Outputs: `build/PocketOne_artefacts/Release/VST3/Pocket One.vst3` and `Standalon
 
 ## Verification and licensing
 
-Eleven Linux CTest targets (thirteen on Windows) exercise the core engines, tape and plugin, including real audio, MIDI offsets, host seeks, embedded sample/tape state and four-channel export. For dependency-free core tests, configure with `-DPOCKET_BUILD_PLUGIN=OFF`. `engine_tests build/demo.wav` renders an audio demonstration. The smoke executable optionally captures both editor pages under a real/virtual display:
+Twelve Linux CTest targets (fourteen on Windows) exercise the core engines, tape and plugin, including real audio, MIDI offsets, host seeks, embedded sample/tape state and four-channel export. For dependency-free core tests, configure with `-DPOCKET_BUILD_PLUGIN=OFF`. `engine_tests build/demo.wav` renders an audio demonstration. The smoke executable optionally captures both editor pages under a real/virtual display:
 
 ```sh
 xvfb-run -a ./build/plugin_smoke_artefacts/Release/plugin_smoke "$PWD/docs/interface.png"
@@ -88,7 +88,7 @@ xvfb-run -a ./build/plugin_smoke_artefacts/Release/plugin_smoke "$PWD/docs/inter
 
 See [validation evidence and limitations](docs/validation.md) and [OTTO/TOP-1 design references](docs/references.md). No code or assets from those projects have been imported.
 
-Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.9.0`.
+Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.10.0`.
 
 ## Factory sounds
 

@@ -37,6 +37,9 @@ struct Phase246Voice {
     double position=0,cachedFrequency=-1;uint32_t increment=0;float first=0,second=0;bool started=false;
     float source(uint32_t increment,const reference::PdCoefficients& controls,const Phase246Config& config,const std::array<int16_t,4>* adsr=nullptr,bool released=false) noexcept {
         double sample=reference::pdSample(state,increment,controls,config.table)/32768.;
+        return shapeSample(sample,config,adsr,released);
+    }
+    float shapeSample(double sample,const Phase246Config& config,const std::array<int16_t,4>* adsr=nullptr,bool released=false) noexcept {
         if(adsr){
             if(!envelopeStarted){envelope.noteOn();envelopeStarted=true;envelopeReleased=false;}
             if(released&&!envelopeReleased){envelope.noteOff((*adsr)[2]);envelopeReleased=true;}

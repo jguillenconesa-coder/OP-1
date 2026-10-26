@@ -245,3 +245,13 @@ La integración añade una envolvente opcional al banco Phase, conserva el modo
 Normalización, mezcla, velocidad y flujo de dither siguen siendo propios.
 [Uso](phase246-native.md). String se corrige como modelo propio, sin presentarlo
 como un port original. [Estado de motores y funciones](audio-engines.md).
+
+
+## Digital aislado e integración (0.10.0)
+
+La función Digital, constructor y reset ya tienen una reconstrucción independiente
+contrastada con 262.144 muestras y 2.048 estados completos. Usa la tabla de seno
+verificada y el mismo modelo GNU documentado. Se integra como opción junto al
+FM propio con 16 presets adicionales, sin convertir FX/LFO/octave originales.
+[Contrato, oráculos y reproducción](digital246-research.md). Punch se investigó
+como candidato, pero todavía no se ha portado ni validado su ruta completa.

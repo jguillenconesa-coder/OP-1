@@ -71,3 +71,11 @@ El banco **Phase 246 Core Studies** anterior conserva su NCO externo a 44,1 kHz 
 su envolvente de sampler; no se describe retroactivamente como un render del aparato.
 
 [Estado de los motores](audio-engines.md) · [Rendimiento](realtime-audio.md)
+
+
+## Banco adicional Digital (0.10.0)
+
+Phase conserva sus sonidos y controles. La nueva versión añade por separado
+[Digital 246 CORE](digital246-native.md), con otros 16 presets y las mismas cuatro
+asignaciones Screen: Knob. No sustituye este banco ni activa Digital al cargar
+sesiones anteriores.

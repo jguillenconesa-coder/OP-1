@@ -69,7 +69,7 @@ struct PdCoefficients {
 };
 // Reconstructs the audio/state branch of the isolated Pd kernel. Inputs are raw
 // signed controls and caller-supplied phase increments, not mapped OP-1 presets.
-// Lookup is explicitly supplied: simulator LUT-copy timing remains unresolved.
+// Lookup is explicitly supplied; later probes verify the source sine separately.
 inline int16_t pdSample(PdState& state,uint32_t increment,const PdCoefficients& c,
                         const std::array<int16_t,8192>& table) noexcept {
     const auto primary=multiplyQ15(table[phaseIndex(state.phase)],c.primaryGain);

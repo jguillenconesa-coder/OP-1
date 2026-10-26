@@ -1,0 +1,91 @@
+{
+  "version": "0.10.0",
+  "date": "2026-10-26",
+  "linux_suites_passed": 12,
+  "windows_wine_suites_passed": 14,
+  "realtime_workloads_per_platform": 60,
+  "digital_samples_compared": 262144,
+  "digital_complete_states_compared": 2048,
+  "digital_private_reproductions": 2,
+  "digital_sanitizers": "ASan and UBSan passed",
+  "reference_model": "GNU 13.1 BF524 with documented local D-register deferred writeback patch; not hardware validation",
+  "legacy_audio_regression": {
+    "baseline": "2db992ce04d4c3852561cce9fb6d249d3b77ff79",
+    "configurations": 38,
+    "rates": [
+      44100,
+      48000,
+      96000
+    ],
+    "samples": 933888,
+    "bytes_each": 3735552,
+    "identical": true,
+    "sha256": "b4ef13e151d9be865062c81a15f7ef03d381995ac9a6468e34acc787e89de848",
+    "scope": "Local GCC -O2 differential Engine render with notes, bend, FILTER LFO and note off; not every possible saved session."
+  },
+  "prior_user_feedback": "VST3 works in Ableton for functions tried; installed/plugin/Live versions and buffer were not specified. Does not validate the new build.",
+  "native_ableton_asio_validated": false,
+  "standalone_main_window_confirmed_in_wine": false,
+  "installer_validation": "Isolated Wine install/hash/source/version/module/manifest/uninstall checks; main GUI startup is a separate pending check.",
+  "installer_sha256": "See downloads/v0.10.0/SHA256SUMS.txt; installer embeds this report so its own hash is external.",
+  "linux_realtime": {
+    "version": "0.10.0",
+    "platform": "linux x86_64 Release / shared cloud VM",
+    "workloads": 60,
+    "callbacks": 30720,
+    "reported_latency_samples": 0,
+    "tracked_heap_calls": 0,
+    "deadline_overruns": 2,
+    "worst_p99_budget_percent": 21.712650000000004,
+    "preset_legend": {
+      "-1": "Phase 246 + reconstructed envelope",
+      "-2": "Phase 246 + previous envelope",
+      "-3": "Digital 246 + reconstructed envelope",
+      "-4": "Digital 246 + previous envelope"
+    },
+    "scope": "Eight voices, oscillator/ADSR automation, MIDI/GUI/SysEx, tape/capture, FX/EQ/LFO and sequencers; no concurrent compilation. Shared VM/Wine timing does not certify native Windows/ASIO/Ableton or zero dropouts.",
+    "phase_original_envelope_p99_budget_percent": 21.712650000000004,
+    "phase_previous_envelope_p99_budget_percent": 18.344625,
+    "digital_original_envelope_p99_budget_percent": 16.163325,
+    "digital_previous_envelope_p99_budget_percent": 12.7758
+  },
+  "windows_wine_realtime": {
+    "version": "0.10.0",
+    "platform": "Windows x64 under Wine / shared cloud VM",
+    "workloads": 60,
+    "callbacks": 30720,
+    "reported_latency_samples": 0,
+    "tracked_heap_calls": 0,
+    "deadline_overruns": 1,
+    "preset_legend": {
+      "-1": "Phase 246 + reconstructed envelope",
+      "-2": "Phase 246 + previous envelope",
+      "-3": "Digital 246 + reconstructed envelope",
+      "-4": "Digital 246 + previous envelope"
+    },
+    "scope": "Eight voices, oscillator/ADSR automation, MIDI/GUI/SysEx, tape/capture, FX/EQ/LFO and sequencers; no concurrent compilation. Shared VM/Wine timing does not certify native Windows/ASIO/Ableton or zero dropouts.",
+    "worst_p99_budget_percent": 31.976250000000007,
+    "phase_original_envelope_p99_budget_percent": 27.082500000000003,
+    "phase_previous_envelope_p99_budget_percent": 31.976250000000007,
+    "digital_original_envelope_p99_budget_percent": 29.235,
+    "digital_previous_envelope_p99_budget_percent": 21.12
+  },
+  "binaries": {
+    "windows_standalone": {
+      "bytes": 10936832,
+      "sha256": "660f8d2167d19520a94bb4c64f492d9b8c4d6a22fd8a25e55d2be5205e53ad17"
+    },
+    "windows_vst3": {
+      "bytes": 11513344,
+      "sha256": "94b73d2ac6cf30703218e0902b67c5ed6de4f7484b0379369e3f71f38f9b5a44"
+    },
+    "linux_standalone": {
+      "bytes": 13810568,
+      "sha256": "ec7a64b2a4b7d3356790d22490d2ad4d18bc991ff659e03e829dc21b548a79ca"
+    },
+    "linux_vst3": {
+      "bytes": 14432032,
+      "sha256": "49dc287dbced9e9cb409b24af3794e8354742f8fd5b15457b2e8a2f47ae2041d"
+    }
+  }
+}

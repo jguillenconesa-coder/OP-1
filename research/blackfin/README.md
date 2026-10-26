@@ -39,3 +39,13 @@ Devices source); it is not linked into the plugin. The GNU binary is not shipped
 Keep the stock simulator and a separate patched build. This fixes the documented
 D-register writeback hazards only, not every ISA/timing behavior. See
 [the full method and reproduction](../../docs/envelope246-research.md).
+
+
+## Digital probes (0.10.0)
+
+`digital-stream.s.in` is an independently written isolated-call harness for the
+Digital render, constructor and reset. `scripts/verify-digital246.py` checks the
+operator's LDR hash and reproduces 262,144 numeric samples plus 2,048 complete
+states in a new private directory. `digital-controls.json` records 16 stored
+numeric control/envelope sets, not complete original patches. No firmware code
+or image is included. [Method and model limits](../../docs/digital246-research.md).

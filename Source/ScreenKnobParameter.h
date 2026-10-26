@@ -12,16 +12,24 @@ public:
     void disconnect() {
         if(trackMode.exchange(false))for(auto* p:tracks)p->removeListener(this);
         if(auto* p=alternative.exchange(nullptr))p->removeListener(this);
+        if(auto* p=digitalAlternative.exchange(nullptr))p->removeListener(this);
         if(auto* p=target.exchange(nullptr))p->removeListener(this);
     }
     void follow(juce::RangedAudioParameter* next) {
-        if(!trackMode.load()&&!alternative.load()&&currentTarget()==next)return;
+        if(!trackMode.load()&&!alternative.load()&&!digitalAlternative.load()&&currentTarget()==next)return;
         disconnect();target.store(next);
         if(next){next->addListener(this);sendValueChangedMessageToListeners(next->getValue());}
     }
     void followAlternative(juce::RangedAudioParameter* base,juce::RangedAudioParameter* other,std::atomic<float>& enabled,std::atomic<float>& engine,std::atomic<float>* prerequisite=nullptr) {
         disconnect();selection=&enabled;engineSelection=&engine;guard.store(prerequisite);target.store(base);alternative.store(other);
         base->addListener(this);other->addListener(this);sendValueChangedMessageToListeners(getValue());
+    }
+    void followNative(juce::RangedAudioParameter* base,juce::RangedAudioParameter* phase,juce::RangedAudioParameter* digital,
+                      std::atomic<float>& phaseEnabled,std::atomic<float>& digitalEnabled,std::atomic<float>& engine,
+                      std::atomic<float>* phaseGuard=nullptr,std::atomic<float>* digitalGuard=nullptr) {
+        followAlternative(base,phase,phaseEnabled,engine,phaseGuard);
+        digitalSelection=&digitalEnabled;digitalPrerequisite.store(digitalGuard);digitalAlternative.store(digital);
+        digital->addListener(this);sendValueChangedMessageToListeners(getValue());
     }
     void enableTapeTracks(const std::array<juce::RangedAudioParameter*,4>& parameters,std::atomic<float>& selection) {tracks=parameters;trackSelection=&selection;}
     void followTapeTrack() {
@@ -46,11 +54,14 @@ private:
     void parameterGestureChanged(int,bool) override {}
     std::atomic<juce::RangedAudioParameter*> target{nullptr};
     std::atomic<juce::RangedAudioParameter*> alternative{nullptr};
+    std::atomic<juce::RangedAudioParameter*> digitalAlternative{nullptr};
+    std::atomic<std::atomic<float>*> digitalSelection{nullptr},digitalPrerequisite{nullptr};
     std::atomic<std::atomic<float>*> selection{nullptr},engineSelection{nullptr},guard{nullptr};
     std::array<juce::RangedAudioParameter*,4> tracks{};
     std::atomic<float>* trackSelection=nullptr;
     std::atomic<bool> trackMode{false};
     juce::RangedAudioParameter* currentTarget() const {if(trackMode.load())return tracks[size_t(std::clamp(int(trackSelection->load()),0,3))];
+        if(auto* p=digitalAlternative.load())if(digitalSelection.load()->load()>.5f&&int(engineSelection.load()->load())==0){auto* condition=digitalPrerequisite.load();if(!condition||condition->load()>.5f)return p;}
         if(auto* p=alternative.load())if(selection.load()->load()>.5f&&int(engineSelection.load()->load())==1){auto* condition=guard.load();if(!condition||condition->load()>.5f)return p;}
         return target.load();}
     std::atomic<float>* cursor=nullptr,*seek=nullptr,*tapeLength=nullptr;

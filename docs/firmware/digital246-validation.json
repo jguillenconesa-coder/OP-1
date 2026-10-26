@@ -1,0 +1,38 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "model": "GNU 13.1 BF524 with documented local D-register writeback patch; not hardware validation",
+  "render": "0x01a51f7a",
+  "reset": "0x01a521e2",
+  "constructor": "0x01a51f28",
+  "sine_source": "0x018b6688",
+  "sine_runtime": "0x0101e5e8",
+  "input_pitch": "0xff801950",
+  "internal_rate_hz": 88200,
+  "random_blocks": 1024,
+  "stored_preset_streams": 16,
+  "blocks": 2048,
+  "samples": 262144,
+  "complete_states": 2048,
+  "artifacts": {
+    "digital246-input.bin": {
+      "bytes": 1138688,
+      "sha256": "178c9686948cf74df684692788e5e7fffb5d182f693b15164e506f2b1bc6fc4b",
+      "matches_committed_fixture": true
+    },
+    "digital246-output.bin": {
+      "bytes": 589824,
+      "sha256": "8da90fc78cb89c52ed5db06b73c9b8cf4c3d72e7661823126c5f4f4d0660f0f3",
+      "matches_committed_fixture": true
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "patch_sha256": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+  "limitations": [
+    "Isolated oscillator only; original full note preparation, FX, LFO, velocity, mixing and hardware timing are not validated.",
+    "Production rate conversion, filtering, gain and per-voice envelope integration are independently designed."
+  ]
+}

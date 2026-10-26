@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <vector>
 #include "Phase246.h"
+#include "Digital246Voice.h"
 #include "StringVoice.h"
 
 namespace pocket {
@@ -15,6 +16,7 @@ struct PadSettings {float start=0,end=1,gain=1,pitch=0;bool reverse=false,gated=
 struct Parameters {
     int engine=0;
     bool phase246=false,phase246Envelope=false;std::array<int16_t,4> phase246Controls{{0,29491,0,0}},phase246Adsr{{64,8064,32767,8192}};
+    bool digital246=false,digital246Envelope=false;std::array<int16_t,4> digital246Controls{{0,16384,0,0}},digital246Adsr{{64,8064,32767,8192}};
     std::array<PadSettings,kitCapacity> pads{};
     float tone=.45f,color=.35f,envelope=.35f,effect=.2f,volume=.7f;
     float attack=.02f,decay=.2f,sustain=.8f,release=.3f;
@@ -28,7 +30,7 @@ class Engine {
 public:
     static constexpr int polyphony=8;
     void prepare(double rate) { sampleRate=std::max(8000.0,rate); smoothing=float(1-std::exp(-1.0/(sampleRate*.012))); cachedCutoff=-1;stringRetune=1-std::exp(-1/(sampleRate*.003));phaseConfig.prepare(sampleRate);reset(); }
-    void reset() { voices={}; delayValid=0; write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1;cleanMix=0;modulatedFilterMix=0;cleanInitialized=false;phaseControlsInitialized=false;nativeEnvelopeActive=false; }
+    void reset() { voices={}; delayValid=0; write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1;cleanMix=0;modulatedFilterMix=0;cleanInitialized=false;phaseControlsInitialized=false;digitalControlsInitialized=false;nativeEnvelopeActive=false;nativeDigitalActive=false; }
     void setSample(Sample data) { sample=std::move(data); voices={}; }
     void swapSample(Sample& data) {std::swap(sample,data);voices={};}
     void swapKit(Kit& data,int count=8) {kit.swap(data);kitCount=count==24?24:8;voices={};}
@@ -67,7 +69,7 @@ public:
         VisualState out;out.trigger=age;out.lfo=float(lfoPhase);uint64_t latest=0;
         for(const auto& v:voices) if(v.active) {
             ++out.active;out.envelope=std::max(out.envelope,v.level);
-            if(v.age>=latest) {latest=v.age;out.stage=nativeEnvelopeActive?v.phase246.envelopeStage():v.released?4:v.stage==0?1:std::abs(v.level-currentSustain)>.005f?2:3;
+            if(v.age>=latest) {latest=v.age;out.stage=nativeEnvelopeActive?(nativeDigitalActive?v.digital246.output.envelopeStage():v.phase246.envelopeStage()):v.released?4:v.stage==0?1:std::abs(v.level-currentSustain)>.005f?2:3;
                 const size_t length=mode==5?kit[size_t(kitSlot(v.note,kitCount))].frames.size():sample.frames.size();
                 if(length) out.progress=std::clamp(float(v.samplePosition/double(length))+(mode==3?current.tone*.9f:0.f),0.f,1.f);
             }
@@ -76,13 +78,18 @@ public:
     }
     float next(const Parameters& target) {
         const bool nativePhase=target.engine==1&&target.phase246;
-        nativeEnvelopeActive=nativePhase&&target.phase246Envelope;
+        const bool nativeDigital=target.engine==0&&target.digital246;
+        const bool nativeCore=nativePhase||nativeDigital;
+        nativeDigitalActive=nativeDigital;nativeEnvelopeActive=(nativePhase&&target.phase246Envelope)||(nativeDigital&&target.digital246Envelope);
         if(nativePhase){for(size_t i=0;i<4;++i){if(!phaseControlsInitialized)phaseWords[i]=target.phase246Controls[i];else phaseWords[i]+=smoothing*(target.phase246Controls[i]-phaseWords[i]);phaseRaw[i]=int16_t(std::clamp(phaseWords[i],0.f,32767.f)+.5f);}phaseControlsInitialized=true;}
         else phaseControlsInitialized=false;
+        if(nativeDigital){for(size_t i=0;i<4;++i){if(!digitalControlsInitialized)digitalWords[i]=target.digital246Controls[i];else digitalWords[i]+=smoothing*(target.digital246Controls[i]-digitalWords[i]);digitalRaw[i]=int16_t(std::lround(std::clamp(digitalWords[i],i==2?-32768.f:0.f,32767.f)));}digitalControlsInitialized=true;}
+        else digitalControlsInitialized=false;
         const reference::PdCoefficients phaseCoefficients(phaseRaw);
-        if(!cleanInitialized){const bool clean=(target.sampleClean&&(target.engine==3||target.engine==5))||nativePhase;cleanMix=clean?1.f:0.f;if(clean)current=target;cleanInitialized=true;}
+        const reference::Digital246Coefficients digitalCoefficients(digitalRaw);
+        if(!cleanInitialized){const bool clean=(target.sampleClean&&(target.engine==3||target.engine==5))||nativeCore;cleanMix=clean?1.f:0.f;if(clean)current=target;cleanInitialized=true;}
         auto follow=[this,&target](float& v,float t){v+=smoothing*(t-v);if(target.sampleClean&&std::abs(v-t)<.00002f)v=t;};
-        follow(current.tone,target.tone); follow(current.color,target.color); follow(current.envelope,nativePhase?.5f:target.envelope);
+        follow(current.tone,target.tone); follow(current.color,target.color); follow(current.envelope,nativeCore?.5f:target.envelope);
         follow(current.effect,target.effect); follow(current.volume,target.volume); follow(current.drive,target.drive);
         follow(current.delayTime,target.delayTime); follow(current.feedback,target.feedback);
         const auto& p=current;currentSustain=target.sustain;
@@ -111,7 +118,11 @@ public:
             v.phase+=frequency/sampleRate; v.phase-=std::floor(v.phase);
             v.modPhase+=frequency*(1+std::round(p.color*7))/sampleRate; v.modPhase-=std::floor(v.modPhase);
             float s=0, amplitude=v.level;
-            if(target.engine==0) s=float(std::sin(2*pi*v.phase+p.tone*7*(.25+.75*v.level)*std::sin(2*pi*v.modPhase)));
+            if(nativeDigital){
+                s=v.digital246.next(frequency,digitalCoefficients,phaseConfig,nativeEnvelopeActive?&target.digital246Adsr:nullptr,v.released);
+                if(nativeEnvelopeActive){amplitude=1;v.level=v.digital246.output.envelopeLevel();if(v.digital246.output.envelopeDone())v.active=false;}
+            }
+            else if(target.engine==0) s=float(std::sin(2*pi*v.phase+p.tone*7*(.25+.75*v.level)*std::sin(2*pi*v.modPhase)));
             else if(nativePhase){
                 s=v.phase246.next(frequency,phaseCoefficients,phaseConfig,nativeEnvelopeActive?&target.phase246Adsr:nullptr,v.released);
                 if(nativeEnvelopeActive){amplitude=1;v.level=v.phase246.envelopeLevel();if(v.phase246.envelopeDone())v.active=false;}
@@ -167,7 +178,7 @@ public:
         if(cutoff!=cachedCutoff) {cachedCutoff=cutoff;filterCoefficient=float(1-std::exp(-2*pi*std::min(cutoff,sampleRate*.42)/sampleRate));}
         const float coefficient=filterCoefficient;
         filter+=coefficient*(sum-filter);
-        follow(cleanMix,((target.sampleClean&&(target.engine==3||target.engine==5))||nativePhase)?1.f:0.f);
+        follow(cleanMix,((target.sampleClean&&(target.engine==3||target.engine==5))||nativeCore)?1.f:0.f);
         // CLEAN bypasses the implicit tone filter, but an explicitly selected
         // FILTER LFO must still be audible. Ramp its insertion to avoid a jump.
         follow(modulatedFilterMix,target.lfoDestination==1&&target.lfoDepth>0?1.f:0.f);
@@ -187,11 +198,13 @@ private:
         bool active=false,released=false,keyDown=false; int note=0,channel=1,stage=0;
         StringVoice string;
         Phase246Voice phase246;
+        Digital246Voice digital246;
         uint64_t age=0; float velocity=0,level=0,lastNoise=0;
         double phase=0,modPhase=0,frequency=440,samplePosition=0,time=0,drumPhase=0;
     };
-    Phase246Config phaseConfig;bool phaseControlsInitialized=false,nativeEnvelopeActive=false;
+    Phase246Config phaseConfig;bool phaseControlsInitialized=false,digitalControlsInitialized=false,nativeEnvelopeActive=false,nativeDigitalActive=false;
     std::array<float,4> phaseWords{};std::array<int16_t,4> phaseRaw{};
+    std::array<float,4> digitalWords{};std::array<int16_t,4> digitalRaw{};
     float noise() { random^=random<<13; random^=random>>17; random^=random<<5; return float(double(random)/4294967295.0*2-1); }
     bool cleanInitialized=false;float cleanMix=0,modulatedFilterMix=0,currentSustain=.8f;
     float cachedAttack=-1,cachedDecay=-1,cachedRelease=-1,cachedMacro=-1,attackStep=0,decayFactor=0,releaseFactor=0;

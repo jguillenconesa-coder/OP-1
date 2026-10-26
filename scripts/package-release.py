@@ -85,7 +85,7 @@ with zipfile.ZipFile(output/f'Pocket-One-{version}-Windows-x64-portable.zip', 'w
             if item.is_file() and item.suffix.lower() not in ('.pdb', '.lib', '.exp'):
                 archive.write(item, f'Pocket-One-{version}/'+str(item.relative_to(win)))
     for item in source:
-        if item.suffix == '.md' or 'licenses' in item.parts or item.name == 'LICENSE':
+        if item.suffix == '.md' or 'docs' in item.relative_to(root).parts or 'licenses' in item.parts or item.name == 'LICENSE':
             archive.write(item, f'Pocket-One-{version}/'+str(item.relative_to(root)))
 with tarfile.open(output/f'Pocket-One-{version}-linux-x86_64.tar.gz', 'w:gz') as archive:
     native = root/'build/PocketOne_artefacts/Release'

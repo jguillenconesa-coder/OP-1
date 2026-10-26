@@ -1,0 +1,115 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P0.H = inputs;
+P0.L = inputs;
+P1.H = input_ptr;
+P1.L = input_ptr;
+[P1] = P0;
+P0.H = results;
+P0.L = results;
+P1.H = result_ptr;
+P1.L = result_ptr;
+[P1] = P0;
+// Use the already independently verified source sine, scalar setup only.
+imm32 P0, 0x018b6688
+imm32 P1, 0x0101e5e8
+P2 = 8192;
+LSETUP(copy_table,copy_table_end) LC0 = P2;
+copy_table:
+R0 = [P0++];
+copy_table_end: W[P1++] = R0;
+probe_loop:
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P4 = 552;
+P4 = P1 + P4;
+R0 = [P4];
+CC = R0 == 0;
+IF CC JUMP copy_increments;
+CC = R0 == 3;
+IF CC JUMP construct_state;
+CC = R0 == 2;
+IF CC JUMP reset_state;
+P2.H = state;
+P2.L = state;
+P3 = 8;
+LSETUP(copy_state,copy_state_end) LC0 = P3;
+copy_state:
+R0 = [P1++];
+copy_state_end: [P2++] = R0;
+JUMP copy_increments;
+construct_state:
+R0.H = state;
+R0.L = state;
+imm32 P0, 0x01a51f28
+CALL (P0);
+JUMP copy_increments;
+reset_state:
+R0.H = state;
+R0.L = state;
+imm32 P0, 0x01a521e2
+CALL (P0);
+copy_increments:
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P1 += 40;
+imm32 P2, 0xff801950
+P3 = 128;
+LSETUP(copy_pitch,copy_pitch_end) LC0 = P3;
+copy_pitch:
+R0 = [P1++];
+copy_pitch_end: [P2++] = R0;
+R0.H = state;
+R0.L = state;
+P0.H = result_ptr;
+P0.L = result_ptr;
+R1 = [P0];
+P0.H = input_ptr;
+P0.L = input_ptr;
+R2 = [P0];
+R2 += 32;
+imm32 P0, 0x01a51f7a
+CALL (P0);
+P0.H = result_ptr;
+P0.L = result_ptr;
+P1 = [P0];
+P4 = 256;
+P2 = P1 + P4;
+P3.H = state;
+P3.L = state;
+P4 = 8;
+LSETUP(save_state,save_state_end) LC0 = P4;
+save_state:
+R0 = [P3++];
+save_state_end: [P2++] = R0;
+[P0] = P2;
+P0.H = input_ptr;
+P0.L = input_ptr;
+R0 = [P0];
+R1 = 556;
+R0 = R0 + R1;
+[P0] = R0;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF !CC JUMP probe_loop;
+R0.H = io_args;
+R0.L = io_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+io_args: .long 1,results,@BYTES@
+input_ptr: .long 0
+result_ptr: .long 0
+state: .space 32
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

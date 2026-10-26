@@ -1,7 +1,10 @@
-# Validation log — Pocket One 0.9.0
+# Validation log — Pocket One 0.10.0
 
-Current release: 11 Linux suites and 13 Windows suites under Wine passed.
-[0.9.0 evidence and binary hashes](releases/v0.9.0-validation.json). Native Windows/Ableton/ASIO validation is pending. Historical records follow.
+Current release: 0.10.0 adds independently reconstructed Digital 246 with 16
+additional CORE presets. [Evidence and binary hashes](releases/v0.10.0-validation.json).
+The user reported the prior VST3 working in Ableton for the functions tried;
+installed version, Live version and buffer were not specified. This is a limited
+firsthand report and does not validate 0.10.0 or ASIO timing. Historical records follow.
 
 Native environment: Debian 13 x86_64, GCC 14.2, CMake 4.4.4, JUCE 8.0.6.
 
@@ -221,3 +224,39 @@ main window was not confirmed under headless Wine in the previous baseline;
 passing the processor/editor or manifest suites is not proof of native app startup.
 No original firmware images/instructions or GNU simulator binary are distributed;
 coefficient observations, numerical fixtures and the separately licensed patch are included.
+
+
+## 0.10.0: Digital oscillator and additional CORE bank
+
+- 262,144 original-instruction sample outputs and 2,048 complete 32-byte states
+  match the independent kernel under the separately documented GNU D-register
+  writeback model. Constructor/reset behavior, preserved fields, signed/random
+  increments, control boundaries and 16 continuous preset/automation streams are
+  included. A second fresh private reproduction matches both committed fixtures.
+- Original range-initializer output confirms all four min/max pairs. The causal
+  adapter is checked at seven host rates. All 16 patches with both envelope modes
+  pass at 44.1/48/96 kHz, including pedal and release. ASan/UBSan pass for the
+  expanded Digital tests; this is not hardware validation.
+- Four stable screen parameters forward signed Digital controls and ADSR with
+  editor open/closed. GUI Configure, fixed host-index append, edited slots,
+  clipboard, state roundtrips and safe pre-0.10 defaults are tested. Sample-offset
+  notes and exact audio partitioning across 64/128/256 host blocks remain passing
+  for Phase and Digital, with bend/pedal/FX and CC120 panic.
+- A separate local differential render compared 0.9.0 Engine headers against
+  current headers: 38 legacy/native-Phase configurations × three sample rates ×
+  8,192 samples = **933,888 identical float samples**. Both 3,735,552-byte streams
+  have SHA256 `b4ef13e151d9be865062c81a15f7ef03d381995ac9a6468e34acc787e89de848`.
+  This covers the tested trajectories, not every possible old project.
+- The bank is built in: 25 Factory + 16 Phase + 16 Digital = 57 entries before
+  imported banks. The screenshot in the Digital guide is rendered by the actual
+  JUCE editor, with signed white control visible.
+
+**12 Linux and 14 Windows suites under Wine passed.** Sixty workloads per
+platform completed with zero monitored callback heap calls.
+
+Full suite, realtime and installer results are recorded in the versioned
+[release evidence](releases/v0.10.0-validation.json) and
+[realtime section](realtime-audio.md). Original full preset routing, voice
+allocation/retrigger policy, effects including Punch, FM tables, device latency
+and complete acoustic equivalence remain pending. No original firmware/image/code
+or GNU simulator binary is bundled.

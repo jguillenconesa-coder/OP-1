@@ -64,3 +64,14 @@ envelope is an independent reconstruction, with numerical coefficient observatio
 and test traces from the user-supplied firmware. No firmware images/instruction
 snippets are packaged. The local patch is not claimed to be upstream-approved or
 hardware validated. See [evidence](docs/envelope246-research.md).
+
+
+## Digital research (0.10.0)
+
+The Digital voice identification was informed by the same pinned MIT op1-sdk
+reference credited above and independently tested through isolated original
+render/constructor/reset calls. The C++ oscillator, causal adapter, GUI, harness
+and tests are independently written. Stored numeric fields and numeric oracle
+traces are documented research observations, not a distributed firmware image.
+GNU model limitations and original-preset omissions remain explicit in
+[the Digital method](docs/digital246-research.md).

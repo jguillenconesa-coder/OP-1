@@ -51,6 +51,29 @@ int main(int argc,char** argv) {
    mapped->screenKnob(0).setValueNotifyingHost(.5f);juce::AudioBuffer<float> audio(2,256);juce::MidiBuffer events;mapped->processBlock(audio,events);
    check(std::abs(mapped->tapePosition.load()-4.f)<.01f,"Mapped tape position did not seek");
   }
+  // Digital is appended after 0.9.0, with signed raw controls and the same proxies.
+  {
+   auto native=std::make_unique<PocketProcessor>();juce::String error;auto& raw=native->phaseParameters();
+   check(raw.getParameter("digital246Enabled")->getParameterIndex()==raw.getParameter("phase246Release")->getParameterIndex()+1,"Digital shifted the existing host parameters");
+   check(native->loadSound("digital246:0",error)&&native->digital246Enabled()&&native->digital246EnvelopeEnabled(),"Digital catalog entry failed");
+   native->setScreenPage(0);
+   for(int i=0;i<4;++i){auto* target=raw.getParameter(pocket::digital246Ids[size_t(i)]);check(native->screenKnob(i).followedParameter()==target,"Digital set 1 mapping failed with editor closed");native->screenKnob(i).setValueNotifyingHost(.2f+i*.1f);check(std::abs(target->getValue()-native->screenKnob(i).getValue())<.0001,"Digital proxy write failed");}
+   check(raw.getRawParameterValue("digital246White")->load()<0,"Signed Digital detune lost negative values");
+   {std::unique_ptr<juce::AudioProcessorEditor> ui(native->createEditor());bool touched=false;for(auto* child:ui->getChildren())if(child->getComponentID()=="screen-knob-3")if(auto* slider=dynamic_cast<juce::Slider*>(child)){check(slider->getMinimum()==-32768&&slider->getMaximum()==32767,"Digital GUI signed range failed");slider->setValue(-12345,juce::sendNotificationSync);check(ui->getControlParameterIndex(*slider)==native->screenKnob(2).getParameterIndex(),"Digital Configure mapping changed identity");touched=true;}check(touched&&raw.getRawParameterValue("digital246White")->load()==-12345,"Digital GUI control failed");
+    if(argc>1){juce::PNGImageFormat png;const auto shot=ui->createComponentSnapshot(ui->getLocalBounds(),true,1.5f);juce::FileOutputStream stream(juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("digital246-native.png"));stream.setPosition(0);stream.truncate();check(png.writeImageToStream(shot,stream),"Digital screenshot failed");}
+   }
+   native->setScreenPage(1);for(size_t i=0;i<4;++i)check(native->screenKnob(int(i)).followedParameter()==raw.getParameter(pocket::digital246EnvelopeIds[i]),"Digital set 2 ADSR mapping failed");
+   raw.getParameter("digital246Release")->setValueNotifyingHost(0);check(native->getTailLengthSeconds()>60,"Digital release tail truncated");
+   check(native->assignSoundSlot(false,0)&&native->copySound(error),"Digital slot/copy failed");juce::MemoryBlock saved;native->getStateInformation(saved);
+   native->applyPreset(0);check(!native->digital246Enabled(),"Old FM inherited Digital");check(native->recallSoundSlot(false,0,error)&&native->digital246EnvelopeEnabled()&&raw.getRawParameterValue("digital246White")->load()==-12345,"Digital slot did not restore edited controls");
+   native->applyPhase246Preset(0);check(native->pasteSound(error)&&native->digital246Enabled(),"Digital clipboard failed");
+   auto restored=std::make_unique<PocketProcessor>();restored->setStateInformation(saved.getData(),int(saved.getSize()));check(restored->digital246Enabled()&&restored->digital246EnvelopeEnabled()&&restored->screenPage()==1&&restored->selectedSound()=="digital246:0","Digital project roundtrip failed");
+   auto old=juce::ValueTree::fromXml(*juce::AudioProcessor::getXmlFromBinary(saved.getData(),int(saved.getSize())));
+   auto strip=[](juce::ValueTree tree){for(int i=tree.getNumChildren();--i>=0;)if(tree.getChild(i).getProperty("id").toString().startsWith("digital246"))tree.removeChild(i,nullptr);};
+   strip(old.getChildWithName("Phase246"));for(const auto& slot:old.getChildWithName("SoundLibrary"))strip(slot.getChildWithName("Settings").getChildWithName("Phase246"));
+   juce::MemoryBlock legacy;juce::AudioProcessor::copyXmlToBinary(*old.createXml(),legacy);restored->setStateInformation(legacy.getData(),int(legacy.getSize()));check(!restored->digital246Enabled(),"0.9 project inherited Digital");check(restored->recallSoundSlot(false,0,error)&&!restored->digital246Enabled(),"0.9 slot inherited new Digital controls");
+   native->applyDigital246Preset(0);native->prepareToPlay(48000,256);juce::AudioBuffer<float> audio(2,256);audio.clear();juce::MidiBuffer midi;midi.addEvent(juce::MidiMessage::noteOn(1,60,.8f),128);native->processBlock(audio,midi);for(int i=0;i<128;++i)check(audio.getSample(0,i)==0,"Digital onset early");check(audio.getMagnitude(0,128,128)>.000001,"Digital note silent");
+  }
   // Native Phase keeps every old host index and survives slots, clipboard and old sessions.
   {
    auto native=std::make_unique<PocketProcessor>();juce::String error;
@@ -100,7 +123,7 @@ int main(int argc,char** argv) {
     check(touched&&parameters.getRawParameterValue("phase246Attack")->load()==640,"GUI original envelope control did not forward");
     if(argc>1){juce::PNGImageFormat png;const auto shot=ui->createComponentSnapshot(ui->getLocalBounds(),true,1.5f);juce::FileOutputStream stream(juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("phase246-envelope.png"));stream.setPosition(0);stream.truncate();check(png.writeImageToStream(shot,stream),"Envelope screenshot failed");}
    }
-   auto render=[&](int block){auto processor=std::make_unique<PocketProcessor>();processor->applyPhase246Preset(0);processor->phaseParameters().getParameter("phase246Attack")->setValueNotifyingHost(0);
+   auto render=[&](int block,bool digital){auto processor=std::make_unique<PocketProcessor>();if(digital)processor->applyDigital246Preset(0);else processor->applyPhase246Preset(0);processor->phaseParameters().getParameter(digital?"digital246Attack":"phase246Attack")->setValueNotifyingHost(0);
     for(auto item:{std::pair{"effect",.7f},{"delayTime",.05f},{"delayFeedback",.75f},{"masterEcho",.5f},{"masterDelayTime",.05f},{"masterDrive",.3f},{"eqLow",6.f}}){auto* p=processor->state.getParameter(item.first);p->setValueNotifyingHost(p->convertTo0to1(item.second));}
     processor->prepareToPlay(48000,block);std::vector<float> output;output.reserve(16384);
     for(int start=0;start<16384;start+=block){juce::AudioBuffer<float> audio(2,block);audio.clear();juce::MidiBuffer midi;
@@ -113,7 +136,7 @@ int main(int argc,char** argv) {
     juce::AudioBuffer<float> sound(2,256);juce::MidiBuffer notes;notes.addEvent(juce::MidiMessage::noteOn(1,60,.8f),0);for(int i=0;i<30;++i)fx->processBlock(sound,notes);
     fx->applyPreset(1);fx->processBlock(sound,notes);check(sound.getMagnitude(0,0,256)>.00001,"Preset change erased global effect history");fx->requestPanic();fx->processBlock(sound,notes);check(sound.getMagnitude(0,0,256)==0,"Panic did not clear output FX history");
    }
-   const auto a=render(64),b=render(128),c=render(256);for(size_t i=0;i<a.size();++i){check(a[i]==b[i]&&a[i]==c[i],"Native envelope audio depends on DAW block boundaries");if((i<33||i>=7000)&&a[i]!=0)throw std::runtime_error("Original-envelope note timing or panic mute failed at sample "+std::to_string(i)+" value "+std::to_string(a[i]));}
+   for(bool digital:{false,true}){const auto a=render(64,digital),b=render(128,digital),c=render(256,digital);for(size_t i=0;i<a.size();++i){check(a[i]==b[i]&&a[i]==c[i],"Native envelope audio depends on DAW block boundaries");if((i<33||i>=7000)&&a[i]!=0)throw std::runtime_error("Original-envelope note timing or panic mute failed at sample "+std::to_string(i)+" value "+std::to_string(a[i]));}}
   }
   juce::AudioBuffer<float> buffer(2,256); juce::MidiBuffer midi;
   // A timestamped note must not sound before its sample offset.
@@ -289,7 +312,7 @@ int main(int argc,char** argv) {
    check(installed.findChildFiles(juce::File::findFilesAndDirectories,true).isEmpty(),"Purge left bank files on disk");
    check(bankProcessor->userPresetNames().isEmpty()&&!bankProcessor->isFavorite(purgedId)&&bankProcessor->selectedSound().isEmpty(),"Purge left stale browser entries");
    check(bankProcessor->soundSlot(false,0)=="factory:0"&&bankProcessor->clipboardKind.load()==0&&bankProcessor->sampleFrames.load()==0,"Purge retained loaded audio or sound references");
-   check(valid.existsAsFile()&&bankProcessor->soundCatalog().size()==41,"Purge deleted source files or factory sounds");
+   check(valid.existsAsFile()&&bankProcessor->soundCatalog().size()==57,"Purge deleted source files or factory sounds");
    bankProcessor->getStateInformation(saved);auto purgedTree=juce::ValueTree::fromXml(*juce::AudioProcessor::getXmlFromBinary(saved.getData(),int(saved.getSize())));
    check(!purgedTree.hasProperty("sampleAudio")&&!purgedTree.hasProperty("kitAudio0"),"Purged audio still embedded in a new project snapshot");
    check(bankProcessor->importUserBank(valid,error)&&bankProcessor->importUserBank(valid,error),"Import after purge failed");
@@ -300,7 +323,7 @@ int main(int argc,char** argv) {
   }
   // Browser metadata and independent edited sound slots survive project state.
   auto libraryProcessor=std::make_unique<PocketProcessor>(library.getChildFile("Catalog"));
-  check(libraryProcessor->soundCatalog().size()==41,"Factory catalog incomplete");
+  check(libraryProcessor->soundCatalog().size()==57,"Factory catalog incomplete");
   libraryProcessor->applyPreset(0);libraryProcessor->state.getParameter("tone")->setValueNotifyingHost(.83f);
   libraryProcessor->state.getParameter("seqMode")->setValueNotifyingHost(1);
   libraryProcessor->toggleFavorite("factory:0");check(libraryProcessor->assignSoundSlot(false,0),"Could not store edited synth slot");

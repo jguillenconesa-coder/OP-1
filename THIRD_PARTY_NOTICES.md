@@ -57,3 +57,12 @@ The local Blackfin research patch retains GNU GDB 13.1's GPL-3.0-or-later terms
 shipped simulator binary. Coefficient values and oracle traces are numeric
 research observations; the implementation is independently written. Original
 firmware images/instructions and decryption keys are not included. See CREDITS.md.
+
+
+## Digital reconstruction (0.10.0)
+
+Digital246.h and its adapter are independently written project code under
+AGPL-3.0-only. Numeric control/state/output observations were obtained from the
+operator-supplied rev246 image using the separately documented GNU model. No
+original firmware instructions, DB image or simulator binary are packaged.
+See docs/digital246-research.md for attribution, scope and reproducibility.

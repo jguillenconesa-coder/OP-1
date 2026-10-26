@@ -4,6 +4,7 @@
 #include "Engine.h"
 #include "Phase246Presets.h"
 #include "Phase246Envelopes.h"
+#include "Digital246Presets.h"
 #include "Tape.h"
 #include "NoteQueue.h"
 #include "SoundLibrary.h"
@@ -39,9 +40,12 @@ public:
     void applyPreset(int index);
     static juce::StringArray factoryPresetNames();
     void applyPhase246Preset(int index);
+    void applyDigital246Preset(int index);
     juce::AudioProcessorValueTreeState& phaseParameters() {return *phaseState;}
     bool phase246Enabled() const {return phaseAudio[0]->load()>.5f&&int(audioParameters[size_t(Param::engine)]->load())==1;}
     bool phase246EnvelopeEnabled() const {return phase246Enabled()&&phaseAudio[5]->load()>.5f;}
+    bool digital246Enabled() const {return phaseAudio[10]->load()>.5f&&int(audioParameters[size_t(Param::engine)]->load())==0;}
+    bool digital246EnvelopeEnabled() const {return digital246Enabled()&&phaseAudio[15]->load()>.5f;}
     std::atomic<int> currentFactoryPreset{-1},currentUserPreset{-1};
     juce::StringArray userPresetNames() const;
     std::vector<SoundInfo> soundCatalog() const;
@@ -97,7 +101,7 @@ public:
 private:
     static juce::AudioProcessorValueTreeState::ParameterLayout layout();
     std::unique_ptr<juce::AudioProcessorValueTreeState> phaseState;
-    std::array<std::atomic<float>*,10> phaseAudio{};
+    std::array<std::atomic<float>*,20> phaseAudio{};
     juce::ValueTree normalizedPhaseState(juce::ValueTree) const;
     enum class Param {engine,tone,color,envelope,effect,attack,decay,sustain,release,lfoRate,lfoDepth,lfoDestination,lfoShape,delayTime,delayFeedback,drive,sampleLoop,sampleRoot,volume,sequencer,tempo,track1,track2,track3,track4,tapePlay,tapeRecord,tapeOverdub,tapeTrack,tapeSpeed,tapeLength,tapeLoop,tapeLoopIn,tapeLoopOut,metronome,inputMonitor,inputGain,tapeRecordGain,eqLow,eqMid,eqHigh,eqMix,masterDrive,masterEcho,masterDelayTime,masterFeedback,clickVolume,seqMode,seqLength,seqRate,seqGate,seqSwing,arpOctaves,seqVelocity,seqEuclidean,seqPulses,seqRotation,sampleClean,Count};
     std::array<std::atomic<float>*,size_t(Param::Count)> audioParameters{};
