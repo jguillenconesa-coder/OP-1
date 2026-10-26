@@ -32,7 +32,7 @@ bool decodeAudio(const juce::String& encoded,juce::AudioBuffer<float>& audio,dou
 }
 PocketProcessor::PocketProcessor(juce::File soundsDirectory) : AudioProcessor(BusesProperties().withInput("Input",juce::AudioChannelSet::stereo(),true).withOutput("Output",juce::AudioChannelSet::stereo(),true)),state(*this,nullptr,"PocketOne",layout()) {
     libraryDirectory=soundsDirectory==juce::File{}?juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory).getChildFile("Pocket Instruments/Pocket One/Banks"):soundsDirectory;
-    const char* audioIds[]={"engine","tone","color","envelope","effect","attack","decay","sustain","release","lfoRate","lfoDepth","lfoDestination","lfoShape","delayTime","delayFeedback","drive","sampleLoop","sampleRoot","volume","sequencer","tempo","track1","track2","track3","track4","tapePlay","tapeRecord","tapeOverdub","tapeTrack","tapeSpeed","tapeLength","tapeLoop","tapeLoopIn","tapeLoopOut","metronome","inputMonitor","inputGain","tapeRecordGain","eqLow","eqMid","eqHigh","eqMix","masterDrive","masterEcho","masterDelayTime","masterFeedback","clickVolume"};
+    const char* audioIds[]={"engine","tone","color","envelope","effect","attack","decay","sustain","release","lfoRate","lfoDepth","lfoDestination","lfoShape","delayTime","delayFeedback","drive","sampleLoop","sampleRoot","volume","sequencer","tempo","track1","track2","track3","track4","tapePlay","tapeRecord","tapeOverdub","tapeTrack","tapeSpeed","tapeLength","tapeLoop","tapeLoopIn","tapeLoopOut","metronome","inputMonitor","inputGain","tapeRecordGain","eqLow","eqMid","eqHigh","eqMix","masterDrive","masterEcho","masterDelayTime","masterFeedback","clickVolume","seqMode","seqLength","seqRate","seqGate","seqSwing","arpOctaves","seqVelocity","seqEuclidean","seqPulses","seqRotation"};
     for(size_t i=0;i<audioParameters.size();++i) audioParameters[i]=state.getRawParameterValue(audioIds[i]);
     keyboard.addListener(this);
     initializeSoundSlots();
@@ -72,6 +72,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout PocketProcessor::layout() {
     number("tempo",40,240,110); number("tapeSpeed",-2,2,1);
     p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"tapeTrack",1},"Tape track",juce::StringArray{"1","2","3","4"},0));
     p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"tapeLength",1},"Tape loop",juce::StringArray{"4 seconds","8 seconds","16 seconds"},1));
+    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"seqMode",1},"Sequence mode",juce::StringArray{"FORWARD","REVERSE","PENDULUM","RANDOM","ARP UP","ARP DOWN","ARP UP/DOWN"},0));
+    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"seqRate",1},"Sequence rate",juce::StringArray{"1/4","1/8","1/16","1/32"},2));
+    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"seqLength",1},"Pattern length",1,16,16));
+    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"arpOctaves",1},"Arpeggio octaves",1,3,1));
+    flag("seqEuclidean");
+    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"seqPulses",1},"Euclidean pulses",0,16,8));
+    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"seqRotation",1},"Euclidean rotation",0,15,0));
+    number("seqGate",.1f,1,1);number("seqSwing",0,.45f,0);number("seqVelocity",.1f,1,.8f);
     return p;
 }
 void PocketProcessor::prepareToPlay(double sr,int) {
@@ -79,7 +87,7 @@ void PocketProcessor::prepareToPlay(double sr,int) {
     eqLowCoefficient=float(1-std::exp(-2*pocket::pi*350/sr));eqHighCoefficient=float(1-std::exp(-2*pocket::pi*3500/sr));eqLowState=eqHighState=0;masterDelay.fill(0);masterDelayWrite=0;
     masterDriveSmooth=state.getRawParameterValue("masterDrive")->load();masterEchoSmooth=state.getRawParameterValue("masterEcho")->load();masterTimeSmooth=state.getRawParameterValue("masterDelayTime")->load();eqMixSmooth=state.getRawParameterValue("eqMix")->load();
     clickDecay=float(std::exp(-1/(sr*.012)));inputCapturing.store(false);
-    keyboardDisplayReset.store(true);rate=sr; engine.prepare(sr); tape.prepare(sr); clock=0; step=0; seqNote=-1; wasSequencing=false; lastHostStep=-1;
+    keyboardDisplayReset.store(true);rate=sr; engine.prepare(sr); tape.prepare(sr); clock=0; step=0; seqNote=-1; sequenceNote.store(-1);heldNotes.clear();previousSeqMode=-1;wasSequencing=false;lastHostStep=INT64_MIN;
 }
 double PocketProcessor::getTailLengthSeconds() const {
     const double feedback=std::clamp(double(state.getRawParameterValue("delayFeedback")->load()),.01,.85);
@@ -92,11 +100,14 @@ double PocketProcessor::getTailLengthSeconds() const {
 bool PocketProcessor::isBusesLayoutSupported(const BusesLayout& b) const {return b.getMainOutputChannelSet()==juce::AudioChannelSet::stereo()&&(b.getMainInputChannelSet().isDisabled()||b.getMainInputChannelSet()==juce::AudioChannelSet::mono()||b.getMainInputChannelSet()==juce::AudioChannelSet::stereo());}
 void PocketProcessor::processBlock(juce::AudioBuffer<float>& buffer,juce::MidiBuffer& midi) {
     juce::ScopedNoDenormals noDenormals;
-    if(panicRequested.exchange(false)) { engine.reset(); seqNote=-1; }
-    pocket::NoteEvent key;
-    if(keyboardOverflow.exchange(false)) {engine.allNotesOff();for(int i=0;i<1024&&uiToAudio.pop(key);++i) {}keyboardDisplayReset.store(true);}
-    for(int i=0;i<1024&&uiToAudio.pop(key);++i) {if(key.on) {engine.noteOn(key.note,key.velocity,key.channel);lastNote.store(key.note);}else engine.noteOff(key.note,key.channel);}
     auto get=[this](Param id){return audioParameters[size_t(id)]->load(std::memory_order_relaxed);};
+    const int seqMode=int(get(Param::seqMode));
+    const bool arp=get(Param::sequencer)>.5f&&seqMode>=4;
+    if(previousSeqMode!=seqMode){engine.allNotesOff();seqNote=-1;sequenceNote.store(-1);lastHostStep=INT64_MIN;previousSeqMode=seqMode;}
+    if(panicRequested.exchange(false)) {engine.reset();heldNotes.clear();seqNote=-1;sequenceNote.store(-1);}
+    pocket::NoteEvent key;
+    if(keyboardOverflow.exchange(false)) {engine.allNotesOff();heldNotes.clear();seqNote=-1;sequenceNote.store(-1);for(int i=0;i<1024&&uiToAudio.pop(key);++i) {}keyboardDisplayReset.store(true);}
+    for(int i=0;i<1024&&uiToAudio.pop(key);++i) {heldNotes.set(key.channel,key.note,key.on);if(key.on){if(!arp)engine.noteOn(key.note,key.velocity,key.channel);lastNote.store(key.note);}else if(!arp)engine.noteOff(key.note,key.channel);}
     pocket::Parameters p;
     p.engine=int(get(Param::engine)); p.tone=get(Param::tone); p.color=get(Param::color); p.envelope=get(Param::envelope); p.effect=get(Param::effect); p.volume=1;
     p.attack=get(Param::attack); p.decay=get(Param::decay); p.sustain=get(Param::sustain); p.release=get(Param::release);
@@ -111,9 +122,14 @@ void PocketProcessor::processBlock(juce::AudioBuffer<float>& buffer,juce::MidiBu
         if(auto beat=pos->getPpqPosition()) {ppq=*beat; hostPosition=true;}
     }
     bpm=std::isfinite(bpm)?std::clamp(bpm,40.0,300.0):110;effectiveTempo.store(float(bpm),std::memory_order_relaxed);
-    if(running&&!wasSequencing) {clock=0; step=0; lastHostStep=-1;}
-    if(!running&&wasSequencing) {if(seqNote>=0) engine.noteOff(seqNote,17); seqNote=-1; playhead.store(-1); lastHostStep=-1;}
+    if(running&&!wasSequencing) {clock=0;step=0;lastHostStep=INT64_MIN;if(arp)engine.allNotesOff();}
+    if(!running&&wasSequencing) {if(seqNote>=0) engine.noteOff(seqNote,17); seqNote=-1;sequenceNote.store(-1);playhead.store(-1);lastHostStep=INT64_MIN;}
     wasSequencing=running;
+    const int seqLength=std::clamp(int(get(Param::seqLength)),1,16),arpOctaves=int(get(Param::arpOctaves));
+    const double seqDivision=double(1<<std::clamp(int(get(Param::seqRate)),0,3)),seqSwing=get(Param::seqSwing),seqGate=get(Param::seqGate);
+    const float seqVelocity=get(Param::seqVelocity);
+    const bool euclidean=get(Param::seqEuclidean)>.5f;const int seqPulses=int(get(Param::seqPulses)),seqRotation=int(get(Param::seqRotation));
+    hostPosition=hostPosition&&std::isfinite(ppq)&&std::abs(ppq)<1e10;
     const std::array<float,4> gains{get(Param::track1),get(Param::track2),get(Param::track3),get(Param::track4)};
     const bool tapePlaying=get(Param::tapePlay)>.5f&&hostPlaying,tapeRecording=get(Param::tapeRecord)>.5f;
     const bool overdub=get(Param::tapeOverdub)>.5f; const int selectedTrack=int(get(Param::tapeTrack)); const float speed=get(Param::tapeSpeed);
@@ -132,26 +148,27 @@ void PocketProcessor::processBlock(juce::AudioBuffer<float>& buffer,juce::MidiBu
     for(int i=0;i<buffer.getNumSamples();++i) {
         while(it!=midi.cend()&&(*it).samplePosition<=i) {
             const auto metadata=*it;if(metadata.numBytes>3){++it;continue;}const auto m=metadata.getMessage(); const int ch=m.getChannel();
-            if(m.isNoteOn()) {engine.noteOn(m.getNoteNumber(),m.getFloatVelocity(),ch); lastNote.store(m.getNoteNumber());if(!audioToUi.push({ch,m.getNoteNumber(),m.getFloatVelocity(),true}))keyboardDisplayReset.store(true);}
-            else if(m.isNoteOff()) {engine.noteOff(m.getNoteNumber(),ch);if(!audioToUi.push({ch,m.getNoteNumber(),0,false}))keyboardDisplayReset.store(true);}
+            if(m.isNoteOn()) {heldNotes.set(ch,m.getNoteNumber(),true);if(!arp)engine.noteOn(m.getNoteNumber(),m.getFloatVelocity(),ch); lastNote.store(m.getNoteNumber());if(!audioToUi.push({ch,m.getNoteNumber(),m.getFloatVelocity(),true}))keyboardDisplayReset.store(true);}
+            else if(m.isNoteOff()) {heldNotes.set(ch,m.getNoteNumber(),false);if(!arp)engine.noteOff(m.getNoteNumber(),ch);if(!audioToUi.push({ch,m.getNoteNumber(),0,false}))keyboardDisplayReset.store(true);}
             else if(m.isPitchWheel()) engine.pitchBend(ch,float(m.getPitchWheelValue()-8192)/8192.f*2);
             else if(m.isController()&&m.getControllerNumber()==64) engine.sustainPedal(ch,m.getControllerValue()>=64);
-            else if(m.isAllSoundOff()) {engine.reset();keyboardDisplayReset.store(true);}
-            else if(m.isAllNotesOff()) {engine.allNotesOff(ch);keyboardDisplayReset.store(true);}
+            else if(m.isAllSoundOff()) {engine.reset();heldNotes.clear();seqNote=-1;sequenceNote.store(-1);keyboardDisplayReset.store(true);}
+            else if(m.isAllNotesOff()) {engine.allNotesOff(ch);heldNotes.clear(ch);if(arp&&seqNote>=0){engine.noteOff(seqNote,17);seqNote=-1;sequenceNote.store(-1);}keyboardDisplayReset.store(true);}
             ++it;
         }
         if(running) {
-            int hostStep=-1;
-            if(hostPosition) { const double beat=ppq+double(i)*bpm/(60*rate); hostStep=int(std::floor(beat*4)); }
-            const bool trigger=hostPosition?hostStep!=lastHostStep:clock<=0;
-            if(trigger) {
-                if(seqNote>=0) engine.noteOff(seqNote,17);
-                const int index=hostPosition?((hostStep%16)+16)%16:step;
-                seqNote=steps[size_t(index)].load(); if(seqNote>=0) engine.noteOn(seqNote,.8f,17);
-                playhead.store(index); step=(index+1)%16; lastHostStep=hostStep;
-                if(!hostPosition) clock+=rate*60.0/std::clamp(bpm,40.0,300.0)/4;
+            const double beat=hostPosition?ppq+double(i)*bpm/(60*rate):clock;
+            const auto timing=pocket::sequenceTiming(beat,seqDivision,seqSwing);
+            if(timing.tick!=lastHostStep) {
+                if(seqNote>=0)engine.noteOff(seqNote,17);
+                const int index=pocket::sequenceIndex(timing.tick,seqLength,seqMode);
+                seqNote=arp?heldNotes.note(timing.tick,seqMode-4,arpOctaves):steps[size_t(index)].load();
+                if(euclidean&&!pocket::euclideanPulse(timing.tick,seqLength,seqPulses,seqRotation))seqNote=-1;
+                if(seqNote>=0)engine.noteOn(seqNote,seqVelocity,17);
+                sequenceNote.store(seqNote);playhead.store(index);lastHostStep=timing.tick;
             }
-            if(!hostPosition) --clock;
+            if(seqNote>=0&&(timing.phase>=seqGate||(arp&&heldNotes.empty()))){engine.noteOff(seqNote,17);seqNote=-1;sequenceNote.store(-1);}
+            if(!hostPosition)clock+=bpm/(60*rate);
         }
         float external=0;if((monitor||capture)&&inputChannels>0){external=buffer.getSample(0,i);if(inputChannels>1)external=(external+buffer.getSample(1,i))*.5f;external*=inputGain;}
         if(capture&&captureWrite<int(inputCapture.size()))inputCapture[size_t(captureWrite++)]=std::clamp(external,-1.f,1.f);
@@ -292,6 +309,8 @@ void PocketProcessor::setStateInformation(const void* data,int size) {
             }
             tree.removeProperty(key,nullptr);
         }
+        for(const char* id:{"seqMode","seqLength","seqRate","seqGate","seqSwing","arpOctaves","seqVelocity","seqEuclidean","seqPulses","seqRotation"})
+            if(!tree.getChildWithProperty("id",id).isValid()){juce::ValueTree parameter("PARAM");parameter.setProperty("id",id,nullptr);auto* p=state.getParameter(id);parameter.setProperty("value",p->convertFrom0to1(p->getDefaultValue()),nullptr);tree.addChild(parameter,-1,nullptr);}
         const int selected=int(tree.getProperty("factoryPreset",-1));
         currentFactoryPreset.store(selected>=0&&selected<int(pocket::factoryPresets.size())?selected:-1);
         tree.removeProperty("factoryPreset",nullptr);
@@ -304,7 +323,7 @@ void PocketProcessor::setStateInformation(const void* data,int size) {
         {const juce::ScopedLock lock(getCallbackLock()); if(hasKit) engine.swapKit(restoredKit);engine.swapSample(sample); sampleFrames.store(hasSample?sampleAudio.getNumSamples():0);
             if(hasTape) {tape.restore(std::move(tracks),tapeRate); tape.prepare(rate);} else {tape.prepare(rate); for(int c=0;c<4;++c) tape.clear(c);}
             for(int i=0;i<16;++i) steps[size_t(i)].store(juce::jlimit(-1,127,int(tree.getProperty("step"+juce::String(i),-1))));
-            state.replaceState(tree);
+            state.replaceState(tree);engine.allNotesOff();heldNotes.clear();seqNote=-1;sequenceNote.store(-1);wasSequencing=false;lastHostStep=INT64_MIN;
         }
         restoreTapeEdits(edits);
     }

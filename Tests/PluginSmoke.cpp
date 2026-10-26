@@ -28,6 +28,35 @@ int main(int argc,char** argv) {
   check(buffer.getMagnitude(0,0,256)>0,"Sequencer produced no audio");
   restored->state.getParameter("sequencer")->setValueNotifyingHost(0); restored->processBlock(buffer,midi);
   check(restored->playhead.load()==-1,"Sequencer failed to stop");
+  // New sequencers retain sample-accurate host sync and release held arpeggios.
+  {
+   auto seq=std::make_unique<PocketProcessor>();seq->prepareToPlay(48000,256);
+   auto set=[&](const char* id,float value){auto* parameter=seq->state.getParameter(id);parameter->setValueNotifyingHost(parameter->convertTo0to1(value));};
+   set("sequencer",1);set("seqMode",4);set("tempo",120);set("seqRate",2);set("seqGate",.5f);set("seqSwing",.2f);set("arpOctaves",2);
+   juce::AudioBuffer<float> sample(2,1);juce::MidiBuffer events;
+   events.addEvent(juce::MidiMessage::noteOn(1,60,.8f),0);events.addEvent(juce::MidiMessage::noteOn(1,64,.8f),0);events.addEvent(juce::MidiMessage::noteOn(1,67,.8f),0);
+   seq->processBlock(sample,events);events.clear();check(seq->sequenceNote.load()==60,"Arpeggio did not start on lowest held key");
+   for(int i=1;i<3601;++i)seq->processBlock(sample,events);
+   check(seq->sequenceNote.load()==-1,"Gate did not release halfway through swung step");
+   for(int i=3601;i<7201;++i)seq->processBlock(sample,events);
+   check(seq->sequenceNote.load()==64,"Swung arpeggio step did not advance at exact beat");
+   events.addEvent(juce::MidiMessage::allNotesOff(1),0);seq->processBlock(sample,events);events.clear();check(seq->sequenceNote.load()==-1,"Arpeggio notes stuck after all notes off");
+   for(int i=0;i<15000;++i)seq->processBlock(sample,events);check(seq->sequenceNote.load()==-1,"Empty arpeggio retriggered");
+   juce::MemoryBlock sequenceState;seq->getStateInformation(sequenceState);auto roundtrip=std::make_unique<PocketProcessor>();roundtrip->setStateInformation(sequenceState.getData(),int(sequenceState.getSize()));
+   for(const char* id:{"seqMode","seqLength","seqRate","seqGate","seqSwing","arpOctaves","seqVelocity","seqEuclidean","seqPulses","seqRotation"})check(std::abs(seq->state.getRawParameterValue(id)->load()-roundtrip->state.getRawParameterValue(id)->load())<.0001,"Sequence settings not portable");
+   // Loading an older project must not inherit new controls from the last project.
+   auto oldTree=juce::ValueTree::fromXml(*juce::AudioProcessor::getXmlFromBinary(sequenceState.getData(),int(sequenceState.getSize())));
+   for(const char* id:{"seqMode","seqLength","seqRate","seqGate","seqSwing","arpOctaves","seqVelocity","seqEuclidean","seqPulses","seqRotation"})oldTree.removeChild(oldTree.getChildWithProperty("id",id),nullptr);
+   juce::MemoryBlock oldState;juce::AudioProcessor::copyXmlToBinary(*oldTree.createXml(),oldState);roundtrip->setStateInformation(oldState.getData(),int(oldState.getSize()));
+   check(roundtrip->state.getRawParameterValue("seqMode")->load()==0&&roundtrip->state.getRawParameterValue("seqGate")->load()==1&&roundtrip->state.getRawParameterValue("seqSwing")->load()==0,"Older project inherited sequencer settings");
+   struct Host:juce::AudioPlayHead {double beat=0;bool playing=true;juce::Optional<PositionInfo> getPosition()const override {PositionInfo p;p.setBpm(120);p.setPpqPosition(beat);p.setIsPlaying(playing);return p;}} host;
+   seq->setPlayHead(&host);set("seqMode",1);set("seqLength",4);set("seqSwing",0);set("seqGate",1);
+   seq->steps[0].store(60);seq->steps[1].store(62);seq->steps[2].store(64);seq->steps[3].store(65);
+   host.beat=0;seq->processBlock(sample,events);check(seq->sequenceNote.load()==65,"Reverse sequence does not start at final active step");
+   host.beat=.75;seq->processBlock(sample,events);check(seq->sequenceNote.load()==60,"Host seek did not relocate sequence immediately");
+   host.beat=-.25;seq->processBlock(sample,events);check(seq->sequenceNote.load()==60,"Negative host beat fails");
+   host.playing=false;seq->processBlock(sample,events);check(seq->sequenceNote.load()==-1,"Host stop left sequence voice active");seq->setPlayHead(nullptr);
+  }
   // Generate a short sample, import it, then remove its file. The saved state
   // must remain portable without referring to the original disk location.
   auto sampleFile=juce::File::getSpecialLocation(juce::File::tempDirectory).getNonexistentChildFile("pocket-sample",".wav",false);
@@ -137,12 +166,15 @@ int main(int argc,char** argv) {
   auto libraryProcessor=std::make_unique<PocketProcessor>(library.getChildFile("Catalog"));
   check(libraryProcessor->soundCatalog().size()==25,"Factory catalog incomplete");
   libraryProcessor->applyPreset(0);libraryProcessor->state.getParameter("tone")->setValueNotifyingHost(.83f);
+  libraryProcessor->state.getParameter("seqMode")->setValueNotifyingHost(1);
   libraryProcessor->toggleFavorite("factory:0");check(libraryProcessor->assignSoundSlot(false,0),"Could not store edited synth slot");
   check(libraryProcessor->soundSlot(true,0)=="factory:22","Synth assignment changed drum slots");
   libraryProcessor->applyPreset(22);libraryProcessor->getStateInformation(saved);
   auto slotsRestored=std::make_unique<PocketProcessor>(library.getChildFile("Catalog"));slotsRestored->setStateInformation(saved.getData(),int(saved.getSize()));
+  slotsRestored->state.getParameter("seqMode")->setValueNotifyingHost(0);
   check(slotsRestored->isFavorite("factory:0"),"Favorite was not restored");check(slotsRestored->recallSoundSlot(false,0,error),"Stored synth slot did not recall");
   check(std::abs(slotsRestored->state.getRawParameterValue("tone")->load()-.83f)<.001,"Slot lost edited sound parameters");
+  check(slotsRestored->state.getRawParameterValue("seqMode")->load()==0,"Sound slot changed sequence mode");
   check(slotsRestored->copySound(error),"Sound lift failed");slotsRestored->state.getParameter("tone")->setValueNotifyingHost(.12f);slotsRestored->state.getParameter("masterDrive")->setValueNotifyingHost(.2f);
   check(slotsRestored->pasteSound(error),"Sound drop failed");check(std::abs(slotsRestored->state.getRawParameterValue("tone")->load()-.83f)<.001,"Sound clipboard lost parameters");check(std::abs(slotsRestored->state.getRawParameterValue("masterDrive")->load()-.2f)<.001,"Pasting sound overwrote master settings");
   // Capture actual input into a sampler without leaking monitored audio by default.

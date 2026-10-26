@@ -1,0 +1,601 @@
+{
+  "evidence_id": "ev_5401d7e519d36a2a8cf2ab580d38867748a030c32ec665f5b0e0235cf7f24a64",
+  "subject": {
+    "name": "op1_246.op1",
+    "digest": {
+      "sha256": "c5315218f825f143b415ca554516541898abee843d3a236df0b54c04e1fb13a9"
+    },
+    "format": "file",
+    "architecture": null
+  },
+  "provider": {
+    "id": "unblob",
+    "name": "Unblob",
+    "version": "26.6.4"
+  },
+  "operation": "extract_firmware",
+  "limitations": [
+    "Signature matches and reported sizes do not establish partition validity, encryption or runtime mappings. Binwalk may infer unknown lengths before emitting its report.",
+    "Only Linux is supported by this integration. One worker, inherited per-process address-space/file-size/CPU limits and a deadline constrain execution; staging byte and entry budgets are polled and may transiently overshoot. Limits are not aggregate process-memory or filesystem quotas.",
+    "Unblob's default sandbox and skip rules remain enabled. Missing external extractors, unknown chunks, encrypted chunks and depth limits yield partial coverage. Extracted code is never executed; only regular files are published, without executable permission bits.",
+    "extraction_gaps lists regions that were carved or left unextracted and names extractor dependencies the producer reported as missing. A listed gap does not mean the target is corrupt or that a retained region is empty.",
+    "The actual launcher executable is hashed. Interpreter, shared libraries and installed Python package dependencies are not independently attested; source revision remains unknown for caller-supplied builds."
+  ],
+  "summary_only": true,
+  "result": {
+    "coverage": "partial",
+    "selection": {
+      "offset": 0,
+      "length": 13039128,
+      "sha256": "c5315218f825f143b415ca554516541898abee843d3a236df0b54c04e1fb13a9"
+    },
+    "published_bytes": 52641238,
+    "diagnostics": [],
+    "extraction_gaps": [
+      {
+        "kind": "unknown-chunk-handler",
+        "input_path": "$input",
+        "relative_path": null,
+        "handler": null,
+        "provider_id": "44839:2",
+        "range": {
+          "offset": 0,
+          "length": 4
+        },
+        "root_file_range": {
+          "offset": 0,
+          "length": 4
+        },
+        "dependencies": [],
+        "continuation_id": "cec4cce50f5e4fd2756ad40d33259313c106a8a5e6e23e40816f210e9fda0430"
+      }
+    ]
+  },
+  "files": [
+    {
+      "relative_path": "firmware.bin_extract/0-4.unknown",
+      "size": 4,
+      "sha256": "f72329480ce86ae3fd69ce8609354ff479bf1cb7dbe3e5d26f7391a0df874eba"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed",
+      "size": 26368000,
+      "sha256": "ee96790ae90e4bb1e21174f08b6d1c0e4c222b7075c1806ddd7221b4059e8171"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/OP1_vdk.ldr",
+      "size": 2171624,
+      "sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/drum/drum_0.raw",
+      "size": 735232,
+      "sha256": "64291b5ff80316ebcfc5a32ff016cb524390805278eb419b6b42cef51c89af92"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/drum/drum_1.raw",
+      "size": 1058400,
+      "sha256": "9c6156d00fa31d7c98b2a1d9cfa4fb94b1511185205222f8a7b4983867a2d5b8"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/drum/drum_2.raw",
+      "size": 958298,
+      "sha256": "640a7e36582088157616499862f19322bc56c7060376dcb88411856d0cca634e"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/drum/drum_3.raw",
+      "size": 1058400,
+      "sha256": "176ad73855a55f3d45b10eb4df1332d7cde94835d6135120db84c94dc92cd0ce"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/drum/drum_4.raw",
+      "size": 507098,
+      "sha256": "8aca2253b005083668a62af678d46db0041974a0c95c818831ea351be8643c31"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/drum/drum_5.raw",
+      "size": 939440,
+      "sha256": "548995aacb7978ae337bd94b3f3659f53aa3ef0190e1126f6ce16e50c5d64f6b"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/drum/drum_6.raw",
+      "size": 953268,
+      "sha256": "e25305a9d05177b283823d54407b19f26b87fdd493d392f87bd20eb2354722d9"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/drum/drum_7.raw",
+      "size": 20704,
+      "sha256": "8d711b04b3974824aa3d0bf474ab3abd37f877530647e60fcd4cbabd706b65fa"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/acetate.raw",
+      "size": 939440,
+      "sha256": "548995aacb7978ae337bd94b3f3659f53aa3ef0190e1126f6ce16e50c5d64f6b"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/allspice.raw",
+      "size": 844354,
+      "sha256": "bc546cf6a02562f44b8408d8d8f4cddd53d5973ff4a6f80392ef030fd00c3e06"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/awa beef.raw",
+      "size": 958298,
+      "sha256": "640a7e36582088157616499862f19322bc56c7060376dcb88411856d0cca634e"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/bronze.raw",
+      "size": 957776,
+      "sha256": "0466b13edacfbc0905f43984f743cf4bbd8c3fab288b765cffff1d2cf228240d"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/cork.raw",
+      "size": 959552,
+      "sha256": "abd2c557f79b9dca87d1ff63aab7ef41d76b232ac5cdf47e9ac88e057e7c1ff7"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/electret.raw",
+      "size": 1010838,
+      "sha256": "7b9c2209f34dd84e32787b57f79197c6b7c22b078cc051c05d6d8f65fa5a27ce"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/gallium.raw",
+      "size": 544964,
+      "sha256": "d138663c4fca18d6d7b314b33e918f35e888d0b90a376184071fccf1a805c09c"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/ghee.raw",
+      "size": 976292,
+      "sha256": "055c61749af9cd4d9ca07ebf494a5680d449e47ea639a274cd2f1df540865550"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/neoprene.raw",
+      "size": 507098,
+      "sha256": "8aca2253b005083668a62af678d46db0041974a0c95c818831ea351be8643c31"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/peek.raw",
+      "size": 735232,
+      "sha256": "64291b5ff80316ebcfc5a32ff016cb524390805278eb419b6b42cef51c89af92"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/polyimide.raw",
+      "size": 854764,
+      "sha256": "e2bb9f9ffaf9ff4f0821a440849b8aaf56b0edd3d5a757e06172e4d0036c26bc"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/red maple.raw",
+      "size": 953268,
+      "sha256": "e25305a9d05177b283823d54407b19f26b87fdd493d392f87bd20eb2354722d9"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/smartphone.raw",
+      "size": 584944,
+      "sha256": "ae6c3d5c5bd422cfcf639ffd7ae90c8d6d243363fd5537982d33d73c6e9e6e95"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_drum/tantalum.raw",
+      "size": 901246,
+      "sha256": "b0a79bc99a40116cd92ed77c325bfbb316a80d8e5712b55b4de870583064909e"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_synth/acidrone.raw",
+      "size": 41172,
+      "sha256": "b3f612df2af0f29d1dc459be6a97e32022f5d1d10359142e4ad4e541ccbdbce5"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_synth/designadrum.raw",
+      "size": 529200,
+      "sha256": "798d525a95655401098b38aba074ef71eb500e3973e5ff89d2c303c6dc59611a"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_synth/dist a log.raw",
+      "size": 529200,
+      "sha256": "9319def17c8d926c2cca6b2636b9aa0bd0f47a99d7ba0c87bc6a5137dddfc200"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_synth/knorr.raw",
+      "size": 529200,
+      "sha256": "91afefb477e8e199b0fd2adb16793cb9fecac61aaa58e5ed71bb72bf7ed0f9a3"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_synth/leader.raw",
+      "size": 435994,
+      "sha256": "2438edfbdc32625af3746b8d38407c4362f274703a025e51adf1d2d6a051a205"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_synth/m-glide.raw",
+      "size": 399092,
+      "sha256": "17be4454bb3a3fe28c262098346d7f969354a64db70df4e79ace14fa77527d6c"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_synth/piano mid.raw",
+      "size": 342578,
+      "sha256": "c02bec274405b6651099166c02bffba58873d8f77e99a34093cdbc9164e684e1"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_synth/punchsub.raw",
+      "size": 154302,
+      "sha256": "2c738e6b0e449b7d85b63ff2c3ff390e074cb2afbe303e8c88b29e856577c8a6"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/factory_synth/suitcase.raw",
+      "size": 529200,
+      "sha256": "b5ce88b9ecd9f5626d2455cd294cfe491d1fa2c456a6c88e896cdbdb90d25309"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/speech/op1patch.raw",
+      "size": 57792,
+      "sha256": "9488ac94a764df8cfaaa703ccc3bcddbf938089c99307374e0d3012c964c5cc7"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/synth/synth_0.raw",
+      "size": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/synth/synth_1.raw",
+      "size": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/synth/synth_2.raw",
+      "size": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/synth/synth_3.raw",
+      "size": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/synth/synth_4.raw",
+      "size": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/synth/synth_5.raw",
+      "size": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/synth/synth_6.raw",
+      "size": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/audio/synth/synth_7.raw",
+      "size": 529200,
+      "sha256": "b5ce88b9ecd9f5626d2455cd294cfe491d1fa2c456a6c88e896cdbdb90d25309"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/adsr.svg",
+      "size": 2262,
+      "sha256": "72b4aaa1375216ea3e8649f66bcba959d1eccf4a3b93ed6ce567e29e25d7cd7d"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/album.svg",
+      "size": 29591,
+      "sha256": "6f463292c0d843957bc3b84d39357a5d131c7ab311737e5318679a1c53c1faed"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/bendlfo.svg",
+      "size": 5655,
+      "sha256": "898e981c07680b9a338dbe3920789a4399185b92281c6a39279046977172a795"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/bode.svg",
+      "size": 29447,
+      "sha256": "a1a453067af6223514dcedd246c1bb23c1b79c21b5063e4265065beaf8e9196b"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/clock.svg",
+      "size": 4027,
+      "sha256": "fd5ebc08a78c35c16b6c6594b0602e4b5b38f9c9c364661e62ebe55c14dc616a"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/cls.svg",
+      "size": 6244,
+      "sha256": "be93f207cfc5dcf6498609125246b31201de9c6f46d331a43647f51f4a4856a3"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/colors.svg",
+      "size": 2324,
+      "sha256": "f76b8b66cbb37eb141fbb7d14d8a624e373df8a080f2d51dc769c16881f9c1e5"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/com.svg",
+      "size": 126510,
+      "sha256": "d0fe84075e6b72d87d2c3c8734fbf144411272ae2c2eb0bb685cb97f7cedfc36"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/cranklfo.svg",
+      "size": 6381,
+      "sha256": "fb492a443230edd406d84b1b6f911574166e136ebfc5cc62b1310053673c2fb6"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/dbox.svg",
+      "size": 48655,
+      "sha256": "167121f12117206c19f15a48cbc2d961b25469118e62822c33ace5a8d58e6907"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/delay.svg",
+      "size": 8706,
+      "sha256": "59864520c678dcf9543f97c568684cc4f5992d7479f5ccb2512b427c5642723f"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/drum2.svg",
+      "size": 14835,
+      "sha256": "ea5f8271e02dcf55950d458050fcd086e390ad55cb93b2d0fbc48f261a33c97d"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/drw.svg",
+      "size": 497,
+      "sha256": "b18461084656a41a1816bf26892a31d6c104df9a047d10be7cd9525baacc5c77"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/dsynth.svg",
+      "size": 43767,
+      "sha256": "c6f76c7747a89d3fb7489b3968c668d7442b57d0b673d4a38b6940d7e6e5e5bc"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/duallfo.svg",
+      "size": 13398,
+      "sha256": "b9d3b535717f084be8cc4be7e5d7ff2bbc5c7b2350c80a38b6b081b53e960705"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/dynaenv.svg",
+      "size": 5190,
+      "sha256": "d25e79d25cdfdb38fdfaf0162eca03765a81d36f254d2636697362bd7817af06"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/endless.svg",
+      "size": 28998,
+      "sha256": "94b815b457da55633a98eb344a376ea7dc18d31497f8ab48ccf10d777923b1e8"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/eq.svg",
+      "size": 8935,
+      "sha256": "aef135d0b59f0aee82a6280b90373122cae9bdd3b3ec726dca53cc490a51b12e"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/etchasketch.svg",
+      "size": 1605,
+      "sha256": "e65a6d12a6cddd71546dc0798209d6d6da230ab3d12d6b34d95c66ed0081ebe4"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/fm.svg",
+      "size": 48635,
+      "sha256": "e3a055277aced61830f27e2ed1f01712ec98fee8ede80d23fa7752b74623daa2"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/fmpopup.svg",
+      "size": 25502,
+      "sha256": "6d8648a83ddca0bda1d45a511e00798295067df9208688d60410a190b213a596"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/ftwo.svg",
+      "size": 65531,
+      "sha256": "70ddea16350ca6ea3764a065723aa83c07e2b4b7285bf8269a3a2a712dbc4493"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/grid.svg",
+      "size": 14161,
+      "sha256": "ad75d4fe90c02e2433c6b8588fbe023ebff0c43d850edd4313768c24efad2223"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/help.svg",
+      "size": 116352,
+      "sha256": "728752a08dc7793e4748071288b4af2dc7d41698d7c60c731201269f3c213ca5"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/id.svg",
+      "size": 16187,
+      "sha256": "b45d368f4cb4bfa3bedd08e81e1a058fa575729b3abbef7d5b703c49f9671626"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/in.svg",
+      "size": 4379,
+      "sha256": "8463fa05018a4104d27d2b88d48a7000471f198b0e304cd83b2a3159481786fe"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/iter.svg",
+      "size": 3990,
+      "sha256": "d7716e5fd399c7462c5990379074fcffc1c2a5f702f8b76341d141310f192d37"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/lander.svg",
+      "size": 171038,
+      "sha256": "ace5c15b281828085e2aac806deca577e5747d7fb3bb3874734745ae656acade"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/master.svg",
+      "size": 19017,
+      "sha256": "598aa647ca9d228afe7839902b9ac1b0667b06619c19c066a3a403eb91692153"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/micline.svg",
+      "size": 25628,
+      "sha256": "e761fef879ea3083ea4cae28961fbea4495faf536b74a6626ce369992338f8e1"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/midilfo.svg",
+      "size": 20907,
+      "sha256": "3bf20c0bfb44fcd89c3612c01e3d5f7307f39b45bd36a2ae4863395a9736a490"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/mixer.svg",
+      "size": 9166,
+      "sha256": "9a91b1f37e7da18a5e0a63337c33b070183a4067bb70004bb732c32c421cc560"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/mllp.svg",
+      "size": 19328,
+      "sha256": "c2c9afda04462ff27415895e572cf8eab6f613ff37c04ae831b5403f38786d9a"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/mmmf.svg",
+      "size": 11456,
+      "sha256": "ea305e69a69cd91ea4921f73e9db5f2ddc6d1f77df4c7340ab44deb6e4a6cf3b"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/octave.svg",
+      "size": 2106,
+      "sha256": "40c0c3930f30ab1aa8955080603c5ee006e78ab25b0308eab2343ddb351ea6ba"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/ok.svg",
+      "size": 157400,
+      "sha256": "c12685651a394d22696ec7f4db7acc13f18e752dea111cf898f1a92e9cf39247"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/opfont.svg",
+      "size": 67788,
+      "sha256": "6969944280492f8a6f35ac1f19c9d011ee858768838b6f71b832c6a6dbd214f2"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/pattern.svg",
+      "size": 35293,
+      "sha256": "cf1004473e38e299331d5f791c663d7336c13325e01f1abbfc4ac68df19e902e"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/pd.svg",
+      "size": 12133,
+      "sha256": "48750725d87319b26149fff185b734a4d64749c561c2fc1cbd70c422f9cf0467"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/playmode.svg",
+      "size": 11470,
+      "sha256": "0271bdac6bb6e9fda0ea90530788feda885eb6ed5200bb1229dac9a40b86a912"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/pls.svg",
+      "size": 7736,
+      "sha256": "e4d87d62b4256ee4d0c02673148e4e568c38e1d41ca8d873d23ca3fdb4e8ea77"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/presetbrowser.svg",
+      "size": 15932,
+      "sha256": "a39f8c984e01a5a2d32bfaada117eb1d424c35474200da525648da8ac751ccd0"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/ptch.svg",
+      "size": 69866,
+      "sha256": "3f9e4a1a32125979982b6a1f69854b9eaf9555c08bd334cfd9dd1972169be7e4"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/reroutelfo.svg",
+      "size": 15668,
+      "sha256": "fe7a7f078f9c49832fb77bb983d3588a95ab96087561809e49769ae34be6168e"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/rndlfo.svg",
+      "size": 11971,
+      "sha256": "d1b50aabd3ccab9396126aa65f7441522d84e6198a0dd24687f65f93151646f3"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/rymd.svg",
+      "size": 4777,
+      "sha256": "56c8245958cfeaf20b98ab35c0e9713ead52643fc3b502660afd0cb1a1d4aa58"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/sampler.svg",
+      "size": 12789,
+      "sha256": "f362e7421f7383723d78de474386c54221d3acad4d071c2d09c698180c3fab04"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/save.svg",
+      "size": 5145,
+      "sha256": "71a077f7416153b6f9c41ea9ac07d5e15981ad77ee02147d02c97e2e70ae8f96"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/signalflow.svg",
+      "size": 22619,
+      "sha256": "dc0609e8203116aeed52a9a47fb7533f40f213e1f8b48bb4b6859dc0abe78ec4"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/simple.svg",
+      "size": 40362,
+      "sha256": "638d6e49aa116de568419d34ad2e1a699b47b6f2c5d2eb7212346c5a2b44061c"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/singlelfo.svg",
+      "size": 18910,
+      "sha256": "6e67611dabb3b5d8df955d4515be01a4dad23c369a708dfe0a2e5764ec28229c"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/sketch.svg",
+      "size": 45977,
+      "sha256": "d68b626aa70245d03bc45e19bc83d984d2a418e321687010716ce640e49ea927"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/slump.svg",
+      "size": 2984,
+      "sha256": "fb47e2d08d68664cb50ec6669213a51e62067ebd2e60840e2aa482021866479e"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/st.svg",
+      "size": 14842,
+      "sha256": "f7c608c91f0f4d41c9ad5340d8589b30c2c5ea2db4bd389f54b938973b1084ff"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/subscreenhand.svg",
+      "size": 2786,
+      "sha256": "b06e8b5301554673c25b436f5642b86ebd3fadda9b673043418aaa93fe8ec828"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/t10.svg",
+      "size": 1762,
+      "sha256": "9849ac185b726cdb9900e37cb96d1436460dfe320bfb3d530166038bf8d70e9f"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/tape.svg",
+      "size": 19177,
+      "sha256": "791458f50142ee8f83d6bc4844fb09528ac87e9ca060549728b671c956e93da5"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/tapeconfig.svg",
+      "size": 35908,
+      "sha256": "6625803f9148830fbe68c5db7c9eeff48fc9556676b64e53dc5851814bfe27cb"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/tempo.svg",
+      "size": 29293,
+      "sha256": "60b00ee3c602fe9c2ac38b67d3d156978adf696816f4a78d469b6e3e6a8f9855"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/tombola.svg",
+      "size": 17685,
+      "sha256": "a9fcfe9128176b862162fb6d9d956707629f7eb6d1ee32af2b611124d6a3518b"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/display/tune.svg",
+      "size": 9880,
+      "sha256": "c011168c702ed9b81000fb23aa6306b5f1abb3550766b7283c5d36805d42fed5"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/kerntable.db",
+      "size": 4096,
+      "sha256": "27f625e4b7bd710a5e51a104499ff8d6f9952fd8e61f0051efbf934bbbedb6f4"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/op1.db",
+      "size": 37888,
+      "sha256": "cb0d459daf345ebd8231ad7ff9ad09abdf778a2e16a84a62a4235df78a847e17"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/op1_factory.db",
+      "size": 107520,
+      "sha256": "be4572298fe9dc83b106d5c4eaf1cc972280d97f028f3eaebc0c76dc68ac9cf0"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/content/tape.db",
+      "size": 4096,
+      "sha256": "38e2c4af6ee654d93339ea9012e55c1e06c864cb0e0b43bec5d16aee2e6254b4"
+    },
+    {
+      "relative_path": "firmware.bin_extract/4-13039128.lzma_extract/lzma.uncompressed_extract/te-boot.ldr",
+      "size": 261604,
+      "sha256": "f6233b974bdb6c92f39e73401f206721924ef3ce52abd66b642a5350cebcad93"
+    }
+  ]
+}

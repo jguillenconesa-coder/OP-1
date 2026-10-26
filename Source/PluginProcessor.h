@@ -5,6 +5,7 @@
 #include "Tape.h"
 #include "NoteQueue.h"
 #include "SoundLibrary.h"
+#include "Sequencer.h"
 class PocketProcessor : public juce::AudioProcessor,private juce::MidiKeyboardStateListener {
 public:
     explicit PocketProcessor(juce::File libraryDirectory={});
@@ -67,7 +68,7 @@ public:
     juce::MidiKeyboardState keyboard;
     std::array<std::atomic<float>,256> scope{};
     std::atomic<float> effectiveTempo{110};
-    std::atomic<int> playhead{-1},lastNote{60};
+    std::atomic<int> playhead{-1},lastNote{60},sequenceNote{-1};
     std::atomic<float> tapePosition{0};
     std::atomic<int> sampleFrames{0};
     std::array<std::atomic<float>,128> samplePreview{};
@@ -77,7 +78,7 @@ public:
     std::array<std::atomic<int>,16> steps{};
 private:
     static juce::AudioProcessorValueTreeState::ParameterLayout layout();
-    enum class Param {engine,tone,color,envelope,effect,attack,decay,sustain,release,lfoRate,lfoDepth,lfoDestination,lfoShape,delayTime,delayFeedback,drive,sampleLoop,sampleRoot,volume,sequencer,tempo,track1,track2,track3,track4,tapePlay,tapeRecord,tapeOverdub,tapeTrack,tapeSpeed,tapeLength,tapeLoop,tapeLoopIn,tapeLoopOut,metronome,inputMonitor,inputGain,tapeRecordGain,eqLow,eqMid,eqHigh,eqMix,masterDrive,masterEcho,masterDelayTime,masterFeedback,clickVolume,Count};
+    enum class Param {engine,tone,color,envelope,effect,attack,decay,sustain,release,lfoRate,lfoDepth,lfoDestination,lfoShape,delayTime,delayFeedback,drive,sampleLoop,sampleRoot,volume,sequencer,tempo,track1,track2,track3,track4,tapePlay,tapeRecord,tapeOverdub,tapeTrack,tapeSpeed,tapeLength,tapeLoop,tapeLoopIn,tapeLoopOut,metronome,inputMonitor,inputGain,tapeRecordGain,eqLow,eqMid,eqHigh,eqMix,masterDrive,masterEcho,masterDelayTime,masterFeedback,clickVolume,seqMode,seqLength,seqRate,seqGate,seqSwing,arpOctaves,seqVelocity,seqEuclidean,seqPulses,seqRotation,Count};
     std::array<std::atomic<float>*,size_t(Param::Count)> audioParameters{};
     void handleNoteOn(juce::MidiKeyboardState*,int,int,float) override;
     void handleNoteOff(juce::MidiKeyboardState*,int,int,float) override;
@@ -111,10 +112,12 @@ private:
     pocket::Engine engine;
     pocket::Tape tape;
     std::atomic<bool> panicRequested{false};
+    pocket::HeldNotes heldNotes;
     double rate=48000, clock=0;
+    int previousSeqMode=-1;
     int step=0, seqNote=-1, scopeCounter=0, scopeIndex=0;
     bool wasSequencing=false;
-    int lastHostStep=-1;
+    int64_t lastHostStep=INT64_MIN;
     float outputGain=.7f,outputSmoothing=.002f;
     std::vector<float> inputCapture;
     int captureWrite=0;

@@ -32,6 +32,7 @@ private:
     void showError(const juce::String&);
     void doTapeEdit(const juce::String&);
     void showComMenu();
+    void showSequenceMenu();
     void applyTapeTrick(int);
     bool shifted() const;
     void setParameter(const char*,float);
@@ -54,6 +55,7 @@ private:
     std::array<juce::TextButton,8> slotButtons;
     juce::TextButton browseKey{"BROWSE"},splitKey{"SPLIT"},liftKey{"LIFT"},dropKey{"DROP"},undoKey{"UNDO"},sequencerKey{"SEQ"},comKey{"COM"},micKey{"IN"},metroKey{"CLICK"};
     juce::Label status;
+    juce::TextButton sequenceSettings{"SEQ SETTINGS"};
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> metroAttachment;
     juce::TextButton shiftKey{"shift"},helpKey{"?"},tapTempoKey{"TAP"};
     double lastTempoTap=0,scrubStart=0;bool slidingTake=false;

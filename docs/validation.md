@@ -54,3 +54,11 @@ Cuatro suites Linux y seis Windows bajo Wine pasaron, además del instalador/des
 La prueba de tiempo real incorpora EQ/master FX, metronomo, captura y SysEx. No encontró heap monitorizado en los callbacks; los tiempos/overruns se reportan completos en realtime-metrics-linux.json. El CI nativo de la implementación inicial 0.3.0 (1ee41cc, ejecución 40247180378) terminó correctamente en Windows, Linux y macOS. No sustituye una prueba en el Live del usuario ni valida una entrada física o su controlador.
 
 El CI nativo con el navegador y controles pulidos (b641afe, ejecución 40248233852) también terminó correctamente en Windows, Linux y macOS. Se verificó además el render COM a WAV con dos canales, duración correcta y audio no silencioso. Se corrigió la regeneración de previews para truncar archivos PNG anteriores en vez de concatenarlos.
+
+## 0.4.0: secuenciadores y firmware
+
+Linux: seis suites pasan (`engine`, `tape`, `sequencer`, `firmware_inventory`, `plugin_smoke`, `realtime`). Se comprueban direcciones, aleatoriedad reproducible, swing con duración de pareja constante, PPQ negativo, arpegiador con canales/octavas y límites MIDI, liberación de gate, stop/seek del host, portabilidad de parámetros y valores por defecto de proyectos antiguos. Los slots de sonido no restauran los ajustes del secuenciador. El inventario de firmware se prueba con contenedores sintéticos y rechaza CRC incorrecto, rutas inseguras y enlaces.
+
+Las 36 cargas de callback recorren ahora los siete modos, gate/swing y máscara euclídea junto con las cargas previas. En 18.432 callbacks se observaron cero llamadas de heap monitorizadas y cero muestras de latencia declarada. El peor p99 ocupó el 20,47 % del presupuesto y hubo dos callbacks por encima del plazo en esta VM compartida durante compilación concurrente. El temporizado es diagnóstico y no certifica un DAW/driver real; [datos](realtime-metrics-linux.json).
+
+Firmware 246: REA 6.8.0/Unblob 26.6.4 extrajo 107 archivos regulares que coinciden por SHA256 con la lectura independiente. La cobertura REA sigue marcada parcial por cuatro bytes iniciales; el lector independiente comprueba que son el CRC del contenedor. No se han validado algoritmos DSP ni equivalencia sonora. [Registro y límites](firmware-analysis.md).

@@ -85,7 +85,7 @@ PocketEditor::PocketEditor(PocketProcessor& p) : AudioProcessorEditor(p),process
     look.setColour(juce::TextButton::textColourOnId,juce::Colour(0xff253947));
     for(int i=0;i<4;++i) {auto& button=modeButtons[size_t(i)];addAndMakeVisible(button);button.setButtonText(juce::StringArray{"SYNTH","DRUM","TAPE","MIX"}[i]);button.getProperties().set("modeIcon",i);button.setTooltip(juce::StringArray{"Synthesizer","Drums and sample kits","Four-track tape","Four-track mixer"}[i]);button.onClick=[this,i]{selectMode(i);};}
     for(int i=0;i<8;++i) {auto& button=slotButtons[size_t(i)];addAndMakeVisible(button);button.setButtonText(juce::String(i+1));button.onClick=[this,i]{applySoundSlot(i);};button.setTooltip("Sound slot "+juce::String(i+1)+". Shift-click to assign the selected sound.");}
-    addAndMakeVisible(helpKey);helpKey.setTooltip("Show control guide");helpKey.onClick=[] {juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::InfoIcon,"Pocket One controls","Modes: synth, drums, tape and mixer. T1 motor / T2 envelope / T3 FX / T4 LFO. In tape mode T1-T4 select the recording track. Shift shows sequence steps and assigns sound slots. BANK imports a user sound bank ZIP. Shift + SYNTH/DRUM opens the filtered browser. Tape keys 1-8: IN / OUT / LOOP / BREAK / REVERSE / CHOP / MEM1 / MEM2. Shift stores a memory. SPLIT/LIFT/DROP edit stopped tape; Shift+SPLIT joins, Shift+LIFT lifts four tracks. Shift+IN records an input sample. Stop transport before saving/loading or tape edits.");};
+    addAndMakeVisible(helpKey);helpKey.setTooltip("Show control guide");helpKey.onClick=[] {juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::InfoIcon,"Pocket One controls","Modes: synth, drums, tape and mixer. T1 motor / T2 envelope / T3 FX / T4 LFO. In tape mode T1-T4 select the recording track. Shift shows sequence steps and assigns sound slots. BROWSE > IMPORT BANK imports a user sound bank ZIP. Shift + SEQ or SEQ SETTINGS opens pattern/arpeggio controls. Shift + SYNTH/DRUM opens the filtered browser. Tape keys 1-8: IN / OUT / LOOP / BREAK / REVERSE / CHOP / MEM1 / MEM2. Shift stores a memory. SPLIT/LIFT/DROP edit stopped tape; Shift+SPLIT joins, Shift+LIFT lifts four tracks. Shift+IN records an input sample. Stop transport before saving/loading or tape edits.");};
     addAndMakeVisible(tapTempoKey);tapTempoKey.setTooltip("Tap tempo twice or more. Shift-click toggles metronome. The DAW tempo takes precedence when supplied.");tapTempoKey.onClick=[this] {if(shifted()){setParameter("metronome",processor.state.getRawParameterValue("metronome")->load()>.5f?0:1);return;}const double now=juce::Time::getMillisecondCounterHiRes()/1000,interval=now-lastTempoTap;if(interval>=.25&&interval<=1.5){auto* p=processor.state.getParameter("tempo");p->setValueNotifyingHost(p->convertTo0to1(float(60/interval)));}lastTempoTap=now;};
     addAndMakeVisible(shiftKey);shiftKey.setClickingTogglesState(true);shiftKey.setTooltip("Latch Shift to assign a sound slot or write a sequence note.");
     for(size_t i=0;i<4;++i) {
@@ -100,7 +100,8 @@ PocketEditor::PocketEditor(PocketProcessor& p) : AudioProcessorEditor(p),process
     addAndMakeVisible(browseKey);browseKey.onClick=[this]{browserOpen=!browserOpen;browser.setVisible(browserOpen);setSize(1200,browserOpen?790:540);};
     for(auto* button:{&splitKey,&liftKey,&dropKey,&undoKey,&sequencerKey,&comKey,&micKey,&metroKey})addAndMakeVisible(*button);
     splitKey.onClick=[this]{doTapeEdit("split");};liftKey.onClick=[this]{doTapeEdit(mainMode>=2?"lift":"copySound");};dropKey.onClick=[this]{doTapeEdit(mainMode>=2?"drop":processor.clipboardKind.load()==2?"pasteSound":"sampler");};undoKey.onClick=[this]{doTapeEdit("undo");};
-    sequencerKey.onClick=[this]{showSequence=!showSequence;timerCallback();};sequencerKey.setTooltip("Show or hide the 16-step sequencer. Shift + step writes the last played note.");
+    sequencerKey.onClick=[this]{if(shifted()){showSequenceMenu();shiftKey.setToggleState(false,juce::dontSendNotification);}else {showSequence=!showSequence;timerCallback();}};sequencerKey.setTooltip("Show sequence steps. Shift + SEQ opens mode, timing and arpeggio settings.");
+    addAndMakeVisible(sequenceSettings);sequenceSettings.onClick=[this]{showSequenceMenu();};sequenceSettings.setTooltip("Pattern direction, held-note arpeggiator, rate, length, gate, swing and velocity");
     comKey.onClick=[this]{showComMenu();};comKey.setTooltip("Album / COM: export stereo mix, tracks and sessions.");
     micKey.onClick=[this]{if(shifted()){juce::String error;if(processor.inputCapturing.load()){if(!processor.finishInputCapture(error))showError(error);else {mainMode=0;selectPage(0);status.setText("Captured input loaded into sampler",juce::dontSendNotification);}}else if(!processor.startInputCapture(error))showError(error);else status.setText("Capturing input (up to 16 seconds). Shift + IN again to finish.",juce::dontSendNotification);}else setParameter("inputMonitor",processor.state.getRawParameterValue("inputMonitor")->load()>.5f?0:1);};micKey.setTooltip("Input monitor / record source. Shift + IN starts or finishes a 16-second sampler recording. Configure input in your host.");
     metroAttachment=std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(p.state,"metronome",metroKey);metroKey.setClickingTogglesState(true);metroKey.setTooltip("Toggle metronome at internal/host tempo.");
@@ -184,7 +185,7 @@ void PocketEditor::resized() {
     engine.setBounds(600,452,169,27);tempo.setBounds(785,452,178,27);loadSample.setBounds(980,452,77,27);loopSample.setBounds(1066,452,80,27);
     tapeTrack.setBounds(602,452,80,27);tapeLength.setBounds(686,452,75,27);tapeSpeed.setBounds(769,452,135,27);
     tapePlay.setBounds(912,452,45,27);overdub.setBounds(963,452,49,27);clear.setBounds(1018,452,55,27);exportTape.setBounds(1079,452,67,27);
-    rewind.setVisible(false);browser.setBounds(18,516,1164,262);status.setBounds(35,490,1115,23);
+    rewind.setVisible(false);browser.setBounds(18,516,1164,262);status.setBounds(35,490,950,23);sequenceSettings.setBounds(1000,487,146,26);
 }
 void PocketEditor::selectMode(int mode) {
     if(shifted()&&mode<2){showBrowser(mode==0?2:4);shiftKey.setToggleState(false,juce::dontSendNotification);return;}
@@ -252,10 +253,12 @@ void PocketEditor::timerCallback() {
     for(int i=0;i<4;++i) modeButtons[size_t(i)].setColour(juce::TextButton::buttonColourId,i==activeMode?juce::Colour(0xffbed0dc):juce::Colour(0xffdbe1e9));
     for(size_t i=0;i<16;++i) {
         stepButtons[i].setVisible(showSequence||shifted());
+        stepButtons[i].setEnabled(processor.state.getRawParameterValue("seqMode")->load()<4&&int(i)<int(processor.state.getRawParameterValue("seqLength")->load()));
         const int n=processor.steps[i].load(); const bool current=processor.playhead.load()==int(i);
         stepButtons[i].setColour(juce::TextButton::buttonColourId,current?hardwareColours[0]:n>=0?juce::Colour(0xffc3d5dd):juce::Colour(0xffdbe1e9));
         stepButtons[i].setTooltip("Step "+juce::String(int(i+1))+": "+(n<0?"rest":juce::MidiMessage::getMidiNoteName(n,true,true,4))+". Shift-click writes last played note.");
     }
+    sequenceSettings.setButtonText("SEQ: "+processor.state.getParameter("seqMode")->getCurrentValueAsText());
     repaint(279,33,263,135);repaint(1142,100,16,72);
 }
 void PocketEditor::refreshPresetMenu() {
@@ -326,4 +329,37 @@ void PocketEditor::paint(juce::Graphics& g) {
     for(int i=0;i<8;++i){g.setColour(i<int(level*8)?hardwareColours[1]:juce::Colour(0xffb4c0cb));g.fillRoundedRectangle(1164,241.f+i*8,5,4,1);}
     g.setColour(juce::Colour(0xffe2e7ed));g.fillRoundedRectangle(18,439,1164,49,10);
     for(auto point:{juce::Point<float>{28,29},{1172,29},{28,414},{1172,414}}) {g.setColour(line);g.fillEllipse(point.x-2,point.y-2,4,4);}
+}
+
+void PocketEditor::showSequenceMenu() {
+    juce::PopupMenu menu;
+    const auto value=[this](const char* id){return processor.state.getRawParameterValue(id)->load();};
+    juce::PopupMenu modes,rates,lengths,gates,swings,octaves,velocities,pulses,rotations;
+    const juce::StringArray names{"Forward steps","Reverse steps","Pendulum steps","Random steps","Arpeggio UP","Arpeggio DOWN","Arpeggio UP/DOWN"};
+    for(int i=0;i<names.size();++i)modes.addItem(100+i,names[i],true,int(value("seqMode"))==i);
+    for(int i=0;i<4;++i)rates.addItem(200+i,juce::StringArray{"1/4","1/8","1/16","1/32"}[i],true,int(value("seqRate"))==i);
+    for(int i=1;i<=16;++i)lengths.addItem(300+i,juce::String(i)+" steps",true,int(value("seqLength"))==i);
+    for(int i=1;i<=10;++i)gates.addItem(400+i,juce::String(i*10)+"%",true,std::abs(value("seqGate")-i*.1f)<.025f);
+    for(int i=0;i<=9;++i)swings.addItem(500+i,juce::String(i*5)+"%",true,std::abs(value("seqSwing")-i*.05f)<.012f);
+    for(int i=1;i<=3;++i)octaves.addItem(600+i,juce::String(i),true,int(value("arpOctaves"))==i);
+    for(int i=1;i<=10;++i)velocities.addItem(700+i,juce::String(i*10)+"%",true,std::abs(value("seqVelocity")-i*.1f)<.025f);
+    for(int i=0;i<=16;++i)pulses.addItem(800+i,juce::String(i)+" pulses",true,int(value("seqPulses"))==i);
+    for(int i=0;i<16;++i)rotations.addItem(900+i,juce::String(i)+" steps",true,int(value("seqRotation"))==i);
+    menu.addSectionHeader("Sequence / held-note arpeggio");
+    menu.addSubMenu("Mode",modes);menu.addSubMenu("Rate",rates);menu.addSubMenu("Pattern length",lengths);menu.addSubMenu("Gate",gates);menu.addSubMenu("Swing",swings);menu.addSubMenu("Arpeggio octaves",octaves);menu.addSubMenu("Velocity",velocities);menu.addSeparator();menu.addItem(1000,"Euclidean rhythm mask",true,value("seqEuclidean")>.5f);menu.addSubMenu("Euclidean pulses",pulses);menu.addSubMenu("Euclidean rotation",rotations);
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(&sequenceSettings),[safe=juce::Component::SafePointer<PocketEditor>(this)](int result){
+        if(!safe||result==0)return;
+        const char* id=nullptr;float value=0;
+        if(result>=100&&result<=106){id="seqMode";value=float(result-100);}
+        else if(result>=200&&result<=203){id="seqRate";value=float(result-200);}
+        else if(result>=301&&result<=316){id="seqLength";value=float(result-300);}
+        else if(result>=401&&result<=410){id="seqGate";value=(result-400)*.1f;}
+        else if(result>=500&&result<=509){id="seqSwing";value=(result-500)*.05f;}
+        else if(result>=601&&result<=603){id="arpOctaves";value=float(result-600);}
+        else if(result>=701&&result<=710){id="seqVelocity";value=(result-700)*.1f;}
+        else if(result>=800&&result<=816){id="seqPulses";value=float(result-800);}
+        else if(result>=900&&result<=915){id="seqRotation";value=float(result-900);}
+        else if(result==1000){id="seqEuclidean";value=safe->processor.state.getRawParameterValue(id)->load()>.5f?0.f:1.f;}
+        if(id){safe->setParameter(id,value);safe->showSequence=true;safe->timerCallback();safe->status.setText("Sequence: "+safe->processor.state.getParameter("seqMode")->getCurrentValueAsText()+" | "+safe->processor.state.getParameter("seqRate")->getCurrentValueAsText()+" | hold keys for ARP; PLAY starts",juce::dontSendNotification);}
+    });
 }

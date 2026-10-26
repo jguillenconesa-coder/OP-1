@@ -1,4 +1,4 @@
-# Navegador y botones — Pocket One 0.3.0
+# Navegador y botones — Pocket One 0.4.0
 
 ## Seleccionar sonidos sin confundir muestras y presets
 
@@ -69,3 +69,7 @@ Las memorias guardan velocidad, niveles, loop, EQ, master FX y ganancias. Aquí 
 En standalone selecciona entrada en las opciones Audio/MIDI y desmarca **Mute audio input** si está activado por JUCE. En un DAW configura la entrada del plugin si el host la permite; algunos hosts no ofrecen entrada de audio para instrumentos, en cuyo caso usa standalone u otro enrutamiento compatible. La captura estéreo se mezcla a mono. Capturas y cargas directas se guardan con la sesión; para favoritos y slots de una muestra de archivo, regístrala con ADD SAMPLES.
 
 La cinta sigue limitada a 4/8/16 segundos, grabación a x1 y cuatro pistas mono. No hay cinta de seis minutos, disco continuo, data takes de parámetros del OP-1, radio FM, accesorios físicos, USB de dispositivo ni todos los secuenciadores originales (Endless/Tombola/Finger/Sketch). COM hace un render offline de la cinta; no captura una interpretación en directo como el álbum físico. Los efectos/EQ son algoritmos propios y la mezcla exportada es dual mono. Estas limitaciones no se ocultan detrás de controles decorativos.
+
+## Secuenciadores ampliados (0.4.0)
+
+**SEQ SETTINGS / SEQ: …** o **Shift + SEQ** permite elegir dirección, arpegiador, longitud, velocidad, swing, gate y máscara euclídea. **SEQ** muestra/oculta pasos. PLAY en SYNTH/DRUM inicia el secuenciador; en ARP mantén notas MIDI o del teclado en pantalla. [Guía con los valores y límites](sequencers.md). Los modos nuevos son implementaciones propias; no ejecutan código del OP-1.

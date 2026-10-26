@@ -36,3 +36,7 @@ La prueba Release completó 18.432 bloques en las 36 cargas, sin llamadas de hea
 La prueba incluye ahora captura de entrada, EQ/master FX, metronomo y SysEx además de la carga anterior. Se procesaron 18.432 bloques sin llamadas de heap monitorizadas; el peor p99 consumió el 7.61% del presupuesto. Se observaron 1 bloques fuera de plazo en esta ejecución compartida. Son interrupciones/tardanzas observadas, no se presentan como una garantía de cero dropouts ni como una medida dentro de Ableton. Los [datos completos actuales](realtime-metrics-linux.json) identifican 0.3.0; las cifras anteriores corresponden a 0.2.2.
 
 Las divisiones de tomas usan almacenamiento reservado antes del procesamiento, incluido el marcado de inicio/final de grabación. Las ediciones destructivas y el undo copian audio fuera del callback, con la cinta parada. Se ignoran SysEx no soportados sin construir mensajes largos dentro del callback.
+
+## Secuenciadores de 0.4.0
+
+El motor de pasos/arpegiador usa almacenamiento fijo para las teclas de 16 canales y los candidatos de hasta tres octavas. El recorrido pseudoaleatorio se deriva del tick del host, sin RNG compartido ni asignaciones. Gate y swing se calculan por muestra. Las 36 cargas de pruebas recorren los siete modos e incluyen la máscara euclídea; no se observaron llamadas de heap monitorizadas. La ejecución Linux registrada tuvo dos overruns y un peor p99 del 20,47 % del presupuesto en la VM compartida: [medidas](realtime-metrics-linux.json). No sustituye una medición de round-trip ASIO en Live.
