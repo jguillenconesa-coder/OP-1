@@ -4,7 +4,7 @@
 #include <array>
 #include <cstdint>
 namespace pocket::reference {
-// Experimental functional reconstructions. Not connected to production engines.
+// Functional reconstructions. Pd is used by the optional experimental Phase 246 mode.
 // Oracle: isolated OP-1 rev246 instruction sequences on GNU Blackfin simulator.
 struct FmFields {
     std::array<int,3> tableIndices{};

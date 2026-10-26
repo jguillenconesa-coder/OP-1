@@ -51,6 +51,33 @@ int main(int argc,char** argv) {
    mapped->screenKnob(0).setValueNotifyingHost(.5f);juce::AudioBuffer<float> audio(2,256);juce::MidiBuffer events;mapped->processBlock(audio,events);
    check(std::abs(mapped->tapePosition.load()-4.f)<.01f,"Mapped tape position did not seek");
   }
+  // Native Phase keeps every old host index and survives slots, clipboard and old sessions.
+  {
+   auto native=std::make_unique<PocketProcessor>();juce::String error;
+   auto& raw=native->phaseParameters();
+   check(raw.getParameter("phase246Enabled")->getParameterIndex()==native->screenKnob(3).getParameterIndex()+1,"New Phase parameters shifted legacy host indices");
+   check(native->loadSound("phase246:0",error)&&native->phase246Enabled(),"Native Phase catalog entry did not load");
+   native->setScreenPage(0);
+   for(int i=0;i<4;++i){auto* control=raw.getParameter(pocket::phase246Ids[size_t(i)]);check(native->screenKnob(i).followedParameter()==control,"Closed-editor mapping ignores native Phase");native->screenKnob(i).setValueNotifyingHost(.37f+i*.1f);check(std::abs(control->getValue()-native->screenKnob(i).getValue())<.0001,"Native Phase mapping did not forward");}
+   check(raw.getParameter("phase246Green")->getNormalisableRange().end==29491,"Original green range not honored");
+   {std::unique_ptr<juce::AudioProcessorEditor> ui(native->createEditor());bool found=false;for(auto* child:ui->getChildren())if(child->getComponentID()=="screen-knob-2")if(auto* slider=dynamic_cast<juce::Slider*>(child)){check(slider->getMaximum()==29491,"GUI native control range incorrect");slider->setValue(12000,juce::sendNotificationSync);found=true;}check(found&&raw.getRawParameterValue("phase246Green")->load()==12000,"GUI native Phase knob failed");
+    if(argc>1){juce::PNGImageFormat png;auto image=ui->createComponentSnapshot(ui->getLocalBounds(),true,1.5f);juce::FileOutputStream stream(juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("phase246-native.png"));stream.setPosition(0);stream.truncate();check(png.writeImageToStream(image,stream),"Native Phase screenshot failed");}
+   }
+   juce::MemoryBlock snapshot;native->getStateInformation(snapshot);const float blue=raw.getRawParameterValue("phase246Blue")->load();
+   auto roundtrip=std::make_unique<PocketProcessor>();roundtrip->setStateInformation(snapshot.getData(),int(snapshot.getSize()));
+   check(roundtrip->phase246Enabled()&&roundtrip->selectedSound()=="phase246:0"&&roundtrip->phaseParameters().getRawParameterValue("phase246Blue")->load()==blue,"Native Phase project restore failed");
+   check(roundtrip->assignSoundSlot(false,0)&&roundtrip->copySound(error),"Native Phase slot/copy failed");roundtrip->applyPreset(0);check(!roundtrip->phase246Enabled(),"Legacy sound inherited native Phase");
+   check(roundtrip->recallSoundSlot(false,0,error)&&roundtrip->phaseParameters().getRawParameterValue("phase246Blue")->load()==blue,"Slot lost edited raw Phase controls");roundtrip->applyPreset(1);
+   check(roundtrip->pasteSound(error)&&roundtrip->phase246Enabled()&&roundtrip->phaseParameters().getRawParameterValue("phase246Blue")->load()==blue,"Clipboard lost native Phase controls");
+   roundtrip->prepareToPlay(48000,256);juce::AudioBuffer<float> audio(2,256);juce::MidiBuffer events;events.addEvent(juce::MidiMessage::noteOn(1,60,.8f),128);roundtrip->processBlock(audio,events);
+   for(int i=0;i<128;++i)check(audio.getSample(0,i)==0,"Native Phase MIDI onset is early");check(audio.getMagnitude(0,128,128)>.00001,"Native Phase note is silent");
+   auto legacy=juce::ValueTree::fromXml(*juce::AudioProcessor::getXmlFromBinary(snapshot.getData(),int(snapshot.getSize())));legacy.removeChild(legacy.getChildWithName("Phase246"),nullptr);
+   juce::MemoryBlock old;juce::AudioProcessor::copyXmlToBinary(*legacy.createXml(),old);roundtrip->setStateInformation(old.getData(),int(old.getSize()));check(!roundtrip->phase246Enabled(),"Old project inherited native Phase mode");
+   roundtrip->setScreenPage(0);check(roundtrip->screenKnob(0).followedParameter()==roundtrip->state.getParameter("tone"),"Old session did not restore legacy mapping");
+   // Toggle via automation with no editor: proxies follow mode and engine atomically.
+   roundtrip->phaseParameters().getParameter("phase246Enabled")->setValueNotifyingHost(1);check(roundtrip->screenKnob(0).followedParameter()==roundtrip->phaseParameters().getParameter("phase246Blue"),"Mode automation did not reroute the proxy");
+   roundtrip->state.getParameter("engine")->setValueNotifyingHost(0);check(roundtrip->screenKnob(0).followedParameter()==roundtrip->state.getParameter("tone"),"Engine automation left the proxy on Phase");
+  }
   juce::AudioBuffer<float> buffer(2,256); juce::MidiBuffer midi;
   // A timestamped note must not sound before its sample offset.
   midi.addEvent(juce::MidiMessage::noteOn(1,69,.8f),128); p->processBlock(buffer,midi);
@@ -225,7 +252,7 @@ int main(int argc,char** argv) {
    check(installed.findChildFiles(juce::File::findFilesAndDirectories,true).isEmpty(),"Purge left bank files on disk");
    check(bankProcessor->userPresetNames().isEmpty()&&!bankProcessor->isFavorite(purgedId)&&bankProcessor->selectedSound().isEmpty(),"Purge left stale browser entries");
    check(bankProcessor->soundSlot(false,0)=="factory:0"&&bankProcessor->clipboardKind.load()==0&&bankProcessor->sampleFrames.load()==0,"Purge retained loaded audio or sound references");
-   check(valid.existsAsFile()&&bankProcessor->soundCatalog().size()==25,"Purge deleted source files or factory sounds");
+   check(valid.existsAsFile()&&bankProcessor->soundCatalog().size()==41,"Purge deleted source files or factory sounds");
    bankProcessor->getStateInformation(saved);auto purgedTree=juce::ValueTree::fromXml(*juce::AudioProcessor::getXmlFromBinary(saved.getData(),int(saved.getSize())));
    check(!purgedTree.hasProperty("sampleAudio")&&!purgedTree.hasProperty("kitAudio0"),"Purged audio still embedded in a new project snapshot");
    check(bankProcessor->importUserBank(valid,error)&&bankProcessor->importUserBank(valid,error),"Import after purge failed");
@@ -236,7 +263,7 @@ int main(int argc,char** argv) {
   }
   // Browser metadata and independent edited sound slots survive project state.
   auto libraryProcessor=std::make_unique<PocketProcessor>(library.getChildFile("Catalog"));
-  check(libraryProcessor->soundCatalog().size()==25,"Factory catalog incomplete");
+  check(libraryProcessor->soundCatalog().size()==41,"Factory catalog incomplete");
   libraryProcessor->applyPreset(0);libraryProcessor->state.getParameter("tone")->setValueNotifyingHost(.83f);
   libraryProcessor->state.getParameter("seqMode")->setValueNotifyingHost(1);
   libraryProcessor->toggleFavorite("factory:0");check(libraryProcessor->assignSoundSlot(false,0),"Could not store edited synth slot");

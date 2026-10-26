@@ -42,7 +42,9 @@ the mathematical sine exactly. GNU's original parallel copy emits a one-entry
 shift, repeating the last zero. This apparent parallel load/store timing issue
 is recorded separately and remains unresolved against actual hardware. The
 transient suite loads the verified **source** table explicitly, not the shifted
-simulator initializer output. Do not silently substitute either into production.
+simulator initializer output. The optional 0.8.0 native mode explicitly uses the
+verified source table, not the shifted result; it does not claim that the original
+hardware initializer has been resolved.
 
 **This does not validate full instruments, original preset mappings or audio
 against real OP-1 hardware.**
@@ -79,3 +81,15 @@ against 98,304 samples from the steady segments (all 16 records × three rates �
 raw control binding, reset, PCM byte order and overwrite protection. The tests
 pass with native Linux and cross-built Windows executables under Wine.
 The simulator reproduction command above now verifies **twelve** fixture files.
+
+## Phase clock and control contract (0.8.0)
+
+`voice-contract.bin` has seven little-endian uint32 setter results for input Hz
+55,110,220,261.625565,440,880,1760, followed by 120 records of four little-endian
+int16 values from the original range initializer. The Phase row is type 7,
+eight records per type. These are numerical observations, no original opcodes.
+`pd-clock-input.bin` / `pd-clock-output.bin` use the existing continuous-stream
+format: 16 raw presets × three pitch trajectories × 16 blocks of 128 samples,
+now with external NCO increments at 88200 Hz. They contain 98,304 sample outputs
+and 768 final states. `verify-phase-contract.py` reproduces all three byte-for-byte.
+Original pitch preparation, output filtering and envelope remain outside the oracle.

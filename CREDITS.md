@@ -39,3 +39,15 @@ The user-supplied OP-1 revision 246 was inspected with [REA 6.8.0](https://githu
 
 
 GNU Binutils 2.44 (bfin-elf) and the GNU GDB 13.1 Blackfin simulator are external research tools, credited to the GNU projects and contributors. They are not included in the plugin or installer. Own probe harnesses use caller-supplied GDB test helpers only in private generated research programs; [scope and reproducibility](research/blackfin/README.md).
+
+
+## Phase 246 integration research (0.8.0)
+
+[BertBrandstifter/op1-sdk](https://github.com/BertBrandstifter/op1-sdk/tree/ae1945a9c61468f0e0d7cfdd5dd60c2cf9731ff1)
+(MIT) supplied community documentation of the rev246 voice clock, range-table
+addresses and control/pitch contracts. We independently tested isolated original
+range initialization and frequency conversion. [U-Boot's Blackfin bootrom.h](https://github.com/u-boot/u-boot/blob/v2013.10/arch/blackfin/include/asm/mach-common/bits/bootrom.h)
+supplied flag definitions; [sualk/op1-decryptor](https://github.com/sualk/op1-decryptor/tree/20f86baa116b4c7b1da7e0d4e3a24f171c76767b)
+was consulted for the encryption layout only (no declared license; no code copied).
+None is linked or bundled. Pocket One's reconstruction, adapter, GUI and tests
+are independently written. Original firmware/decryption keys are not distributed.

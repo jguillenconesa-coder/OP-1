@@ -1,0 +1,109 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P0.H = state;
+P0.L = state;
+R0 = P0;
+imm32 R1, 1113325568
+imm32 P0, 0x01a51a08
+CALL (P0);
+P0.H = state;
+P0.L = state;
+R0 = [P0+4];
+P1.H = results;
+P1.L = results;
+[P1+0] = R0;
+P0.H = state;
+P0.L = state;
+R0 = P0;
+imm32 R1, 1121714176
+imm32 P0, 0x01a51a08
+CALL (P0);
+P0.H = state;
+P0.L = state;
+R0 = [P0+4];
+P1.H = results;
+P1.L = results;
+[P1+4] = R0;
+P0.H = state;
+P0.L = state;
+R0 = P0;
+imm32 R1, 1130102784
+imm32 P0, 0x01a51a08
+CALL (P0);
+P0.H = state;
+P0.L = state;
+R0 = [P0+4];
+P1.H = results;
+P1.L = results;
+[P1+8] = R0;
+P0.H = state;
+P0.L = state;
+R0 = P0;
+imm32 R1, 1132646419
+imm32 P0, 0x01a51a08
+CALL (P0);
+P0.H = state;
+P0.L = state;
+R0 = [P0+4];
+P1.H = results;
+P1.L = results;
+[P1+12] = R0;
+P0.H = state;
+P0.L = state;
+R0 = P0;
+imm32 R1, 1138491392
+imm32 P0, 0x01a51a08
+CALL (P0);
+P0.H = state;
+P0.L = state;
+R0 = [P0+4];
+P1.H = results;
+P1.L = results;
+[P1+16] = R0;
+P0.H = state;
+P0.L = state;
+R0 = P0;
+imm32 R1, 1146880000
+imm32 P0, 0x01a51a08
+CALL (P0);
+P0.H = state;
+P0.L = state;
+R0 = [P0+4];
+P1.H = results;
+P1.L = results;
+[P1+20] = R0;
+P0.H = state;
+P0.L = state;
+R0 = P0;
+imm32 R1, 1155268608
+imm32 P0, 0x01a51a08
+CALL (P0);
+P0.H = state;
+P0.L = state;
+R0 = [P0+4];
+P1.H = results;
+P1.L = results;
+[P1+24] = R0;
+imm32 P0, 0x01a1e914
+CALL (P0);
+P0.H = io_args;
+P0.L = io_args;
+R0 = P0;
+P0 = 5;
+EXCPT 0;
+P0.H = range_args;
+P0.L = range_args;
+R0 = P0;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+io_args: .long 1,results,28
+range_args: .long 1,0x01de5890,960
+state: .space 64
+results: .space 28
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

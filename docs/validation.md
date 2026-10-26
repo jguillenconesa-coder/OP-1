@@ -1,4 +1,7 @@
-# Validation of Pocket One 0.2 in the cloud
+# Validation log — Pocket One 0.8.0
+
+Current release: 9 Linux suites and 11 Windows suites under Wine passed.
+[0.8.0 evidence and binary hashes](releases/v0.8.0-validation.json). Native Windows/Ableton/ASIO validation is pending. Historical records follow.
 
 Native environment: Debian 13 x86_64, GCC 14.2, CMake 4.4.4, JUCE 8.0.6.
 
@@ -142,3 +145,41 @@ generaciones del ZIP son idénticas. [Informe](firmware/phase-core-studies-valid
 Estos cambios añaden herramientas/datos de investigación y un banco compatible
 con el instalador 0.7.0 existente. No modifican el motor de producción ni los
 binarios publicados; no se presenta una nueva medición de latencia o dropouts.
+
+
+## 0.8.0 — native Phase 246 CORE
+
+- Release Linux and Windows x64 builds completed; VST3 identity and all prior
+  host parameter IDs/indices preserved. Five new controls follow the four proxies.
+- **9 Linux / 11 Windows suites under Wine passed**, including native runtime LUT
+  versus verified firmware source table, tuning at 7 host rates, 16 presets at
+  3 rates, release, bend, sample-offset MIDI, integer ranges, editor controls,
+  closed-editor mapping, automation rerouting, legacy-project defaults,
+  project/slot/clipboard roundtrips, existing engines, tape, banks and purge.
+- Original isolated range initialization and seven frequency conversions were
+  independently reproduced. Another 98,304 original Pd sample outputs at 88200 Hz
+  and 768 block states match the reconstruction. Total Pd sample comparisons:
+  1,572,864. The three new fixtures reproduce byte-for-byte with the checked-in
+  harness/script and operator-supplied original LDR/GNU tools outside the repo.
+- 42 callback workloads per platform / 21,504 callbacks each, no monitored heap
+  calls, reported latency 0 samples. Linux: 4 deadline overruns, worst p99
+  22.42% (native Phase 22.42%). Wine: 4 overruns, worst p99
+  43.74% (Phase 43.74%). Timings are VM diagnostics;
+  [full metrics and earlier measurement](realtime-audio.md) remain available.
+- NSIS amd64 installer 0.8.0 installs binaries with matching SHA256 hashes,
+  registers DisplayVersion 0.8.0, embeds Common Controls v6 manifests, loads the
+  installed VST3 factory (3 classes), then removes product files and registration
+  on uninstall in the isolated Wine prefix. Existing user's Windows is untouched.
+- Windows standalone remained running for 30 seconds under Wine, but X11 showed
+  only auxiliary/hidden windows; its main GUI is **not confirmed** in this
+  headless environment. Baseline 0.7.0 likewise remains alive without a main-size
+  window in the same setup. This does not establish a new startup regression or
+  prove native startup. Processor/editor construction and rendering are covered
+  by smoke tests; native Windows/Ableton/ASIO validation remains pending.
+- [Real GUI capture](phase246-native.png), source, installer and portable assets
+  accompany the version. No original firmware/code/decryption keys are packaged.
+
+The NCO, fixed-rate adapter, smoothing, output filter, envelope, LFO and FX are our
+integration. Original full note preparation, encrypted L1 routines, full preset
+behavior, aliasing limits and acoustic fidelity are not validated. This does not
+certify zero dropouts or an exact OP-1 replica. [Scope](phase246-native.md).

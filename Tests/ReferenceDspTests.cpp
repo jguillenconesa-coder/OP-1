@@ -34,16 +34,24 @@ int main(int argc,char** argv){try{
         check(state.phase==u32(rendered,out+256)&&state.secondaryPhase==u32(rendered,out+260)&&state.counter==u32(rendered,out+264)&&state.secondaryActive==(u32(rendered,out+268)!=0),"Pd final state differs from original kernel");
     }
     check(resets>2000&&activeFrames>100000,"Pd transient cases did not exercise reset/secondary states");
-    const auto stream=read(root+"pd-stream-input.bin"),continuous=read(root+"pd-stream-output.bin");
-    check(stream.size()==2304*648&&continuous.size()==2304*272,"Wrong Pd stream oracle size");
+    for(const auto* prefix:{"pd-stream","pd-clock"}){
+    const size_t blocks=std::string(prefix)=="pd-stream"?2304:768;
+    const auto stream=read(root+prefix+"-input.bin"),continuous=read(root+prefix+"-output.bin");
+    check(stream.size()==blocks*648&&continuous.size()==blocks*272,"Wrong Pd stream oracle size");
     pocket::reference::PdState carried;size_t sequences=0;
-    for(size_t block=0;block<2304;++block){const auto in=block*648,out=block*272;
+    for(size_t block=0;block<blocks;++block){const auto in=block*648,out=block*272;
         if(u32(stream,in+644)!=0){carried.reset();++sequences;}
         const pocket::reference::PdCoefficients controls({s16(stream,in),s16(stream,in+2),s16(stream,in+4),s16(stream,in+6)});
         for(size_t frame=0;frame<128;++frame)check(pocket::reference::pdSample(carried,u32(stream,in+132+frame*4),controls,table)==s16(continuous,out+frame*2),"Pd continuous/glide/vibrato sample differs from original kernel");
         check(carried.phase==u32(continuous,out+256)&&carried.secondaryPhase==u32(continuous,out+260)&&carried.counter==u32(continuous,out+264)&&carried.secondaryActive==(u32(continuous,out+268)!=0),"Pd stream lost state across blocks");
     }
-    check(sequences==144,"Pd stream sequence count wrong");
+    check(sequences==blocks/16,"Pd stream sequence count wrong");
+    }
+    const auto contract=read(root+"voice-contract.bin");check(contract.size()==988,"Wrong voice contract oracle size");
+    const uint32_t tuning[]={210191824,105095912,52547956,44187384,26273978,13136989,6568494};
+    for(size_t i=0;i<7;++i)check(u32(contract,i*4)==tuning[i],"Sampler frequency reference changed");
+    for(size_t i=0;i<4;++i){const auto offset=28+(7*8+i)*8;check(s16(contract,offset)==0&&s16(contract,offset+2)==(i==1?29491:32767)&&s16(contract,offset+4)==32767&&s16(contract,offset+6)==0,"Original Phase control range changed");}
     std::cout<<"PASS: original Blackfin simulator oracles: 65536 FM fields, 65536 Q15 pairs, 131072 steady + 1048576 transient Pd samples and 8192 final states; no mismatches\n";
+    std::cout<<"PASS: 98304 further Pd samples at 88200 Hz / 768 final states; original ranges and frequency setter captured\n";
     std::cout<<"PASS: 294912 additional stream samples / 2304 blocks, 16 raw preset control sets, 3 rates and steady/glide/vibrato increments; no mismatches\n";
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

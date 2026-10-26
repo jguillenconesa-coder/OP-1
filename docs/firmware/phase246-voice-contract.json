@@ -1,0 +1,79 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "model": "GNU BF524 simulator; isolated calls, no original boot/hardware validation",
+  "frequency_setter": "0x01a51a08",
+  "range_initializer": "0x01a1e914",
+  "range_table": "0x01de5890",
+  "phase_engine_type": 7,
+  "frequencies_hz": [
+    55,
+    110,
+    220,
+    261.625565,
+    440,
+    880,
+    1760
+  ],
+  "sampler_fixed_point": [
+    210191824,
+    105095912,
+    52547956,
+    44187384,
+    26273978,
+    13136989,
+    6568494
+  ],
+  "sampler_formula": "trunc(float32(88200 / float32(float32(hz) * 16384)) * 2^31)",
+  "phase_ranges_min_max_scale_kind": [
+    [
+      0,
+      32767,
+      32767,
+      0
+    ],
+    [
+      0,
+      29491,
+      32767,
+      0
+    ],
+    [
+      0,
+      32767,
+      32767,
+      0
+    ],
+    [
+      0,
+      32767,
+      32767,
+      0
+    ]
+  ],
+  "pd_clock_hz": 88200,
+  "pd_samples_compared": 98304,
+  "pd_block_states_compared": 768,
+  "clock_scope": "88200 literal verified in sampler setter; common voice clock additionally supported by external op1-sdk analysis, not full original note preparation",
+  "artifacts": {
+    "voice-contract.bin": {
+      "bytes": 988,
+      "sha256": "bc912d6527621ea72eb002726cf5fb350f94c282c33e1707335cfbccaf316951",
+      "matches_committed_fixture": true
+    },
+    "pd-clock-input.bin": {
+      "bytes": 497664,
+      "sha256": "891307de163c29d6f1c8535fb11839a05e2e15c57121e67855c9a7c7a38091fb",
+      "matches_committed_fixture": true
+    },
+    "pd-clock-output.bin": {
+      "bytes": 208896,
+      "sha256": "0c9d644c6dff8ec70ea6d1638f9f2fdb9b1a2932fa247fb37f7fa2b3b327481c",
+      "matches_committed_fixture": true
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/build/sim/bfin/run": "b5787384c0def3bbaab7a7aa432064fd8db1ec615400f29feab0717d657b7968"
+  }
+}

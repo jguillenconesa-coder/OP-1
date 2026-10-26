@@ -20,7 +20,7 @@ Target amd64-unicode
   !define OUTPUT_DIR "."
 !endif
 !ifndef VERSION
-  !define VERSION "0.7.0"
+  !define VERSION "0.8.0"
 !endif
 Name "Pocket One"
 OutFile "${OUTPUT_DIR}${PATH_SEP}Pocket-One-${VERSION}-Windows-x64-Setup.exe"
@@ -28,7 +28,7 @@ InstallDir "$PROGRAMFILES64\Pocket Instruments\Pocket One"
 RequestExecutionLevel admin
 SetCompressor /SOLID lzma
 SetCompressorDictSize 32
-VIProductVersion "0.7.0.0"
+VIProductVersion "${VERSION}.0"
 VIAddVersionKey /LANG=1033 "ProductName" "Pocket One"
 VIAddVersionKey /LANG=1033 "FileDescription" "Pocket One VST3 and standalone installer"
 VIAddVersionKey /LANG=1033 "FileVersion" "${VERSION}"
@@ -87,7 +87,23 @@ Section "Documentation and uninstaller" Required
   File /r "${SOURCE_DIR}${PATH_SEP}docs${PATH_SEP}*.*"
   SetOutPath "$INSTDIR\Source"
   File "${SOURCE_DIR}${PATH_SEP}CMakeLists.txt"
-  File /r "${SOURCE_DIR}${PATH_SEP}Source" "${SOURCE_DIR}${PATH_SEP}Tests" "${SOURCE_DIR}${PATH_SEP}cmake"
+  File "${SOURCE_DIR}${PATH_SEP}README.md" "${SOURCE_DIR}${PATH_SEP}README.en.md" "${SOURCE_DIR}${PATH_SEP}LICENSE" "${SOURCE_DIR}${PATH_SEP}CREDITS.md" "${SOURCE_DIR}${PATH_SEP}THIRD_PARTY_NOTICES.md"
+  ; Anchor each recursive wildcard inside its source directory. A bare /r
+  ; directory name also matches nested build directories with that name.
+  !macro PocketSourceFolder folder
+    SetOutPath "$INSTDIR\Source\${folder}"
+    File /r /x __pycache__ /x *.pyc "${SOURCE_DIR}${PATH_SEP}${folder}${PATH_SEP}*.*"
+  !macroend
+  !insertmacro PocketSourceFolder Source
+  !insertmacro PocketSourceFolder Tests
+  !insertmacro PocketSourceFolder Tools
+  !insertmacro PocketSourceFolder cmake
+  !insertmacro PocketSourceFolder scripts
+  !insertmacro PocketSourceFolder docs
+  !insertmacro PocketSourceFolder licenses
+  !insertmacro PocketSourceFolder packaging
+  SetOutPath "$INSTDIR\Source\research\blackfin"
+  File /r "${SOURCE_DIR}${PATH_SEP}research${PATH_SEP}blackfin${PATH_SEP}*.*"
   SetOutPath "$INSTDIR"
   SetOutPath "$INSTDIR\Source\Assets\Factory"
   File /r "${SOURCE_DIR}${PATH_SEP}Assets${PATH_SEP}Factory${PATH_SEP}*.*"

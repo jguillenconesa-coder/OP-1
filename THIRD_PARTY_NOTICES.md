@@ -39,3 +39,12 @@ The `Pocket-One-0.2.0-corresponding-source.tar.gz` download contains this projec
 ## Original factory samples
 
 The 28 WAVs in `Assets/Factory` were procedurally generated for Pocket One and are dedicated under CC0-1.0. They contain no OP-1 factory recordings. The generator is project code under AGPL-3.0-only. See `Assets/Factory/README.md`.
+
+
+## Additional analysis references (0.8.0)
+
+op1-sdk (MIT), U-Boot Blackfin loader definitions and op1-decryptor (no license
+declared) were consulted as research references only. No source from them is
+copied or linked into the product. Revisions and scope are in CREDITS.md and
+docs/dsp-research.md. Numeric control/range observations do not include firmware
+instructions, and the native mode contains independently written code.

@@ -1,6 +1,6 @@
 # Investigación DSP — OP-1 revisión 246
 
-Este registro continúa el [inventario con REA](firmware-analysis.md). No hay todavía un port de los motores originales ni una equivalencia sonora validada. La versión 0.7.0 distribuye los motores propios existentes.
+Este registro continúa el [inventario con REA](firmware-analysis.md). La versión 0.8.0 conecta una reconstrucción independiente del núcleo Pd al modo opcional [Phase 246 CORE](phase246-native.md). No hay una equivalencia sonora validada del instrumento completo. Las secciones siguientes conservan la cronología y las limitaciones de cada etapa.
 
 ## Avance de análisis nativo
 
@@ -168,3 +168,62 @@ Los 16 comienzos de WAV coinciden con los oráculos de nota fija; solo se añade
 un cierre de 10 ms al final. Dos ejecuciones del generador
 dan un ZIP con bytes idénticos con el mismo renderizador.
 [Validación y límites](firmware/phase-core-studies-validation.json).
+
+
+## 0.8.0: rangos originales, reloj y modo nativo
+
+El nuevo harness llama al inicializador `0x01a1e914` sobre SDRAM, sin arrancar el
+sistema. En `0x01de5890 + 7*64` produce cuatro entradas `min/max/scale/kind`:
+`0/32767/32767/0`, `0/29491/32767/0`, `0/32767/32767/0`, `0/32767/32767/0`.
+Son límites/formatos del motor tipo 7 según el perfil rev246 contrastado; no
+prueban que la ruta original entregue directamente las palabras JSON al render.
+
+La llamada aislada a `0x01a51a08`, setter de frecuencia del sampler, coincide con
+`trunc(float32(88200 / float32(float32(hz) * 16384)) * 2^31)` para siete entradas.
+Se observa el literal 88.200, las operaciones y la conversión fraccional en esa
+ruta. La documentación comunitaria de **op1-sdk**, revisión
+`ae1945a9c61468f0e0d7cfdd5dd60c2cf9731ff1`, describe voces de 128 muestras por
+64 frames de salida a 44,1 kHz y el buffer de incrementos en `0xff801950`.
+Eso guía nuestro reloj fijo a 88,2 kHz; todavía no sustituye la validación de
+la preparación completa de pitch ni una captura del hardware.
+
+Se añaden 98.304 comparaciones Pd a ese reloj con 16 juegos de controles,
+trayectorias constantes/glide/vibrato y 768 estados finales, sin diferencias
+con el simulador. El total acumulado de muestras de audio Pd es 1.572.864.
+La nueva integración conserva el núcleo probado y añade NCO, filtro y adaptador
+propios. [Detalle práctico y límites](phase246-native.md).
+
+[Metadatos reproducidos](firmware/phase246-voice-contract.json).
+
+```sh
+python scripts/verify-phase-contract.py \
+  --ldr /ruta/OP1_vdk.ldr --assembler /ruta/bfin-elf-as \
+  --linker /ruta/bfin-elf-ld --simulator /ruta/sim/bfin/run \
+  --testutils /ruta/gdb-13.1/sim/testsuite/bfin \
+  --output /ruta/nueva-carpeta-privada-fuera-del-repositorio
+```
+
+La imagen con fills, ELF y código original quedan exclusivamente en esa carpeta
+privada. El repositorio contiene nuestros harnesses y resultados numéricos.
+
+### Cargador y contenido L1
+
+Las cabeceras públicas de U-Boot/Blackfin identifican `0x400` como CALLBACK y
+`0x2000` como INDIRECT; el `0x2400` observado deja de ser un flag desconocido.
+La referencia pública **sualk/op1-decryptor**, revisión
+`20f86baa116b4c7b1da7e0d4e3a24f171c76767b`, describe XTEA con una clave externa:
+los primeros ocho bytes de cada grupo de 24 en los bloques CALLBACK. Se consultó
+como referencia, sin copiar su código, que carece de licencia declarada.
+No se dispone aquí de la clave ni de una imagen L1 descifrada validada.
+
+También se inspeccionó `te-boot.ldr`: contiene una rutina XTEA, pero su llamada
+observada pertenece a una ruta de datos de licencia/clave. No se ha probado que
+proporcione la clave de los bloques de aplicación. No se ejecuta el arranque ni
+se genera firmware para flashear. FM, las tablas de coeficientes en L1 y el
+controlador original siguen pendientes; no se interpretan bytes cifrados como
+coeficientes musicales.
+
+Referencias externas consultadas (no dependencias del producto):
+- [op1-sdk / internals](https://github.com/BertBrandstifter/op1-sdk/blob/ae1945a9c61468f0e0d7cfdd5dd60c2cf9731ff1/docs/internals.md), MIT.
+- [bootrom.h de U-Boot v2013.10](https://github.com/u-boot/u-boot/blob/v2013.10/arch/blackfin/include/asm/mach-common/bits/bootrom.h).
+- [op1-decryptor](https://github.com/sualk/op1-decryptor/tree/20f86baa116b4c7b1da7e0d4e3a24f171c76767b), solo referencia de formato.

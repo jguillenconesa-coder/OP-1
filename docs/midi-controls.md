@@ -57,3 +57,14 @@ escribir automatización de un destino fijo usa el parámetro descriptivo
 original: la automatización de `Screen: Knob…` actúa sobre la página activa.
 Los IDs y el orden de todos los parámetros existentes permanecen iguales;
 los cuatro nuevos se añaden al final.
+
+
+## Phase 246 CORE (0.8.0)
+
+With the optional native core enabled in PHASE, set 1 routes the four existing
+Screen knobs to Blue Shape / Green Primary Gain / White Contour / Orange Cycles.
+The same mappings follow envelope/FX/LFO in sets 2–4. This also works without an
+open editor. Five additional direct host parameters are appended after the old
+parameters, preserving all previous IDs and indices; integer ranges follow the
+original initializer (green 0–29491, others 0–32767). Edited values survive sessions,
+slots and sound lift/drop. [Usage and fidelity limits](phase246-native.md).

@@ -1,0 +1,62 @@
+{
+  "version": "0.8.0",
+  "date": "2026-10-26",
+  "linux_suites_passed": 9,
+  "windows_wine_suites_passed": 11,
+  "installer_install_module_uninstall_passed": true,
+  "native_ableton_asio_validated": false,
+  "pd_sample_comparisons_total": 1572864,
+  "new_pd_sample_comparisons": 98304,
+  "linux_realtime": {
+    "version": "0.8.0",
+    "platform": "linux x86_64 Release / shared cloud VM",
+    "workloads": 42,
+    "callbacks": 21504,
+    "reported_latency_samples": 0,
+    "tracked_heap_calls": 0,
+    "deadline_overruns": 4,
+    "worst_p99_budget_percent": 22.416450000000005,
+    "native_phase_worst_p99_budget_percent": 22.416450000000005,
+    "native_phase_deadline_overruns": 3,
+    "scope": "Synthetic callback benchmark, eight voices, native raw-control automation plus existing workload. Timing diagnostic only; no native Ableton/ASIO or zero-dropout certification. No concurrent compilation."
+  },
+  "windows_wine_realtime": {
+    "version": "0.8.0",
+    "platform": "windows-wine x86_64 Release / shared cloud VM",
+    "workloads": 42,
+    "callbacks": 21504,
+    "reported_latency_samples": 0,
+    "tracked_heap_calls": 0,
+    "deadline_overruns": 4,
+    "worst_p99_budget_percent": 43.74000000000001,
+    "native_phase_worst_p99_budget_percent": 43.74000000000001,
+    "native_phase_deadline_overruns": 0,
+    "scope": "Synthetic callback benchmark, eight voices, native raw-control automation plus existing workload. Timing diagnostic only; no native Ableton/ASIO or zero-dropout certification. No concurrent compilation."
+  },
+  "binaries": {
+    "windows_standalone": {
+      "bytes": 10919424,
+      "sha256": "724823e256fbc5511f47a03eb026e4b2606c21518fcd6b1dd5a354cfe5e84d9a"
+    },
+    "windows_vst3": {
+      "bytes": 11495936,
+      "sha256": "4061abc36c1fe74d7e0b8f332b894de2620a78386b0087cd02de942ba4fcfb14"
+    },
+    "linux_standalone": {
+      "bytes": 13760048,
+      "sha256": "2620c662781ea3847220717f21d6444845d64c6ac52d85584e4bf532369e5b47"
+    },
+    "linux_vst3": {
+      "bytes": 14377416,
+      "sha256": "13d32fa649134b36af5c9dfd8f985ae429c82dcb1c920601953b9d236786d200"
+    }
+  },
+  "windows_standalone_startup": {
+    "process_remains_alive_seconds": 30,
+    "auxiliary_windows_seen": true,
+    "main_window_confirmed": false,
+    "baseline_0_7_same_environment_main_window_confirmed": false,
+    "scope": "Headless Wine with no physical audio device; baseline 0.7.0 also has no main-size window. Native Windows startup and Ableton/ASIO remain unvalidated."
+  },
+  "installer_sha256": "See downloads/v0.8.0/SHA256SUMS.txt; installer embeds this report, so its own hash is intentionally external."
+}

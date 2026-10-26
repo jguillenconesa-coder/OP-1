@@ -3,6 +3,7 @@
 set -euo pipefail
 cd /workspace/OP-1
 source scripts/windows-env.sh
+pocket_version=$(python3 -c 'import re;from pathlib import Path;print(re.search(r"project\(PocketOne VERSION ([0-9.]+)",Path("CMakeLists.txt").read_text()).group(1))')
 export DISPLAY=:77
 if [[ ! -S /tmp/.X11-unix/X77 ]]; then
  /workspace/op1-system/root/usr/bin/Xvfb :77 -screen 0 1650x900x24 -nolisten tcp > build/wine-display.log 2>&1 &
@@ -22,7 +23,7 @@ ctest --test-dir build-win-msvc --output-on-failure
 install='/workspace/windows-tools/wine-prefix/drive_c/Program Files/Pocket Instruments/Pocket One'
 plugin='/workspace/windows-tools/wine-prefix/drive_c/Program Files/Common Files/VST3/Pocket One.vst3'
 if [[ -e "$install" || -e "$plugin" ]]; then echo 'Refusing to overwrite an existing isolated test installation'; exit 1; fi
-scripts/run-wine.sh /workspace/OP-1/dist/Pocket-One-0.7.0-Windows-x64-Setup.exe /S > build/installer-install.log 2>&1
+scripts/run-wine.sh /workspace/OP-1/dist/Pocket-One-${pocket_version}-Windows-x64-Setup.exe /S > build/installer-install.log 2>&1
 python3 - <<'PY'
 from pathlib import Path
 import hashlib,time
@@ -34,7 +35,12 @@ for source,dest in pairs:
         time.sleep(.05)
     assert dest.exists(),f'Missing installed file: {dest}'
     assert hashlib.sha256(source.read_bytes()).digest()==hashlib.sha256(dest.read_bytes()).digest(),'Installed file hash mismatch'
-print('PASS: installed standalone and VST3 hashes match build outputs')
+project=Path('/workspace/OP-1');installed=base/'Pocket Instruments/Pocket One/Source'
+for relative in ['CMakeLists.txt','Tools/PdReferenceRender.cpp','scripts/analyze-op1-firmware.py','research/blackfin/phase-controls.json','docs/firmware/op1-246-ldr-map.json','Tests/ReferenceVectors/pd-clock-output.bin']:
+    assert (installed/relative).read_bytes()==(project/relative).read_bytes(),'Installed source incomplete or different: '+relative
+for forbidden in ['build','build-win-msvc','.git','downloads','__pycache__']:
+    assert not (installed/forbidden).exists(),'Build/cache content leaked into installed source: '+forbidden
+print('PASS: installed standalone/VST3 hashes and rebuild source files match build inputs; no nested build/cache trees')
 PY
 scripts/run-wine.sh /workspace/OP-1/build-win-msvc/windows_module_probe.exe 'C:\Program Files\Common Files\VST3\Pocket One.vst3\Contents\x86_64-win\Pocket One.vst3'
 scripts/run-wine.sh reg.exe query 'HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\PocketOne' /v DisplayVersion > build/installer-registry.log

@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cstdint>
 #include <vector>
+#include "Phase246.h"
 
 namespace pocket {
 constexpr double pi = 3.14159265358979323846;
@@ -12,6 +13,7 @@ constexpr int kitCapacity=24;
 struct PadSettings {float start=0,end=1,gain=1,pitch=0;bool reverse=false,gated=false;};
 struct Parameters {
     int engine=0;
+    bool phase246=false;std::array<int16_t,4> phase246Controls{{0,29491,0,0}};
     std::array<PadSettings,kitCapacity> pads{};
     float tone=.45f,color=.35f,envelope=.35f,effect=.2f,volume=.7f;
     float attack=.02f,decay=.2f,sustain=.8f,release=.3f;
@@ -24,8 +26,8 @@ using Kit=std::array<Sample,kitCapacity>;
 class Engine {
 public:
     static constexpr int polyphony=8;
-    void prepare(double rate) { sampleRate=std::max(8000.0,rate); smoothing=float(1-std::exp(-1.0/(sampleRate*.012))); cachedCutoff=-1;reset(); }
-    void reset() { voices={}; delay.fill(0); write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1;cleanMix=0;cleanInitialized=false; }
+    void prepare(double rate) { sampleRate=std::max(8000.0,rate); smoothing=float(1-std::exp(-1.0/(sampleRate*.012))); cachedCutoff=-1;phaseConfig.prepare(sampleRate);reset(); }
+    void reset() { voices={}; delay.fill(0); write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1;cleanMix=0;cleanInitialized=false;phaseControlsInitialized=false; }
     void setSample(Sample data) { sample=std::move(data); voices={}; }
     void swapSample(Sample& data) {std::swap(sample,data);voices={};}
     void swapKit(Kit& data,int count=8) {kit.swap(data);kitCount=count==24?24:8;voices={};}
@@ -72,9 +74,13 @@ public:
         return out;
     }
     float next(const Parameters& target) {
-        if(!cleanInitialized){const bool clean=target.sampleClean&&(target.engine==3||target.engine==5);cleanMix=clean?1.f:0.f;if(clean)current=target;cleanInitialized=true;}
+        const bool nativePhase=target.engine==1&&target.phase246;
+        if(nativePhase){for(size_t i=0;i<4;++i){if(!phaseControlsInitialized)phaseWords[i]=target.phase246Controls[i];else phaseWords[i]+=smoothing*(target.phase246Controls[i]-phaseWords[i]);phaseRaw[i]=int16_t(std::clamp(phaseWords[i],0.f,32767.f)+.5f);}phaseControlsInitialized=true;}
+        else phaseControlsInitialized=false;
+        const reference::PdCoefficients phaseCoefficients(phaseRaw);
+        if(!cleanInitialized){const bool clean=(target.sampleClean&&(target.engine==3||target.engine==5))||nativePhase;cleanMix=clean?1.f:0.f;if(clean)current=target;cleanInitialized=true;}
         auto follow=[this,&target](float& v,float t){v+=smoothing*(t-v);if(target.sampleClean&&std::abs(v-t)<.00002f)v=t;};
-        follow(current.tone,target.tone); follow(current.color,target.color); follow(current.envelope,target.envelope);
+        follow(current.tone,target.tone); follow(current.color,target.color); follow(current.envelope,nativePhase?.5f:target.envelope);
         follow(current.effect,target.effect); follow(current.volume,target.volume); follow(current.drive,target.drive);
         follow(current.delayTime,target.delayTime); follow(current.feedback,target.feedback);
         const auto& p=current;currentSustain=target.sustain;
@@ -103,6 +109,7 @@ public:
             v.modPhase+=frequency*(1+std::round(p.color*7))/sampleRate; v.modPhase-=std::floor(v.modPhase);
             float s=0, amplitude=v.level;
             if(target.engine==0) s=float(std::sin(2*pi*v.phase+p.tone*7*(.25+.75*v.level)*std::sin(2*pi*v.modPhase)));
+            else if(nativePhase) s=v.phase246.next(frequency,phaseCoefficients,phaseConfig);
             else if(target.engine==1) {
                 const double bendPoint=.08+p.tone*.84;
                 const double phase=v.phase<bendPoint?.5*v.phase/bendPoint:.5+.5*(v.phase-bendPoint)/(1-bendPoint);
@@ -156,7 +163,7 @@ public:
         if(cutoff!=cachedCutoff) {cachedCutoff=cutoff;filterCoefficient=float(1-std::exp(-2*pi*std::min(cutoff,sampleRate*.42)/sampleRate));}
         const float coefficient=filterCoefficient;
         filter+=coefficient*(sum-filter);
-        follow(cleanMix,target.sampleClean&&(target.engine==3||target.engine==5)?1.f:0.f);
+        follow(cleanMix,((target.sampleClean&&(target.engine==3||target.engine==5))||nativePhase)?1.f:0.f);
         const float legacyDriven=std::tanh(filter*(1+p.drive*12))/(1+p.drive*2);
         const float cleanDriven=p.drive<.000001f?sum:std::tanh(sum*(1+p.drive*12))/(1+p.drive*2);
         const float driven=legacyDriven+(cleanDriven-legacyDriven)*cleanMix;
@@ -170,9 +177,12 @@ private:
     static size_t channelIndex(int ch) { return size_t(std::clamp(ch,1,17)-1); }
     struct Voice {
         bool active=false,released=false,keyDown=false,stringReady=false; int note=0,channel=1,stage=0,stringLength=2,stringIndex=0;
+        Phase246Voice phase246;
         uint64_t age=0; float velocity=0,level=0,lastNoise=0;
         double phase=0,modPhase=0,frequency=440,samplePosition=0,time=0,drumPhase=0;
     };
+    Phase246Config phaseConfig;bool phaseControlsInitialized=false;
+    std::array<float,4> phaseWords{};std::array<int16_t,4> phaseRaw{};
     float noise() { random^=random<<13; random^=random>>17; random^=random<<5; return float(double(random)/4294967295.0*2-1); }
     bool cleanInitialized=false;float cleanMix=0,currentSustain=.8f;
     float cachedAttack=-1,cachedDecay=-1,cachedRelease=-1,cachedMacro=-1,attackStep=0,decayFactor=0,releaseFactor=0;

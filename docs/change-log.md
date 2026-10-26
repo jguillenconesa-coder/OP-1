@@ -40,3 +40,11 @@ Cuatro parámetros de knobs que siguen la página activa, estado de página pers
 ## Investigación y banco adicional tras 0.7.0
 
 Se añaden streams Pd verificados con incrementos variables y estado entre bloques, renderizador offline contrastado, verificación de controles con REA y un banco de 16 estudios Phase con 13 WAV únicos. Funciona en el sampler de 0.7.0; los presets/bancos e instaladores anteriores se conservan. [Guía y límites](phase-core-studies.md).
+
+
+## 0.8.0
+
+Optional native Phase 246 CORE, 16 additional experimental raw-control patches,
+fixed 88.2 kHz internal clock, original control ranges, MIDI/slot/session integration
+and 98,304 new isolated original-kernel sample comparisons. See
+[release notes](releases/v0.8.0.md) and [scope](phase246-native.md).

@@ -13,7 +13,7 @@ El procesador informa **0 muestras de latencia añadida**. No utiliza look-ahead
 
 ## Prueba reproducible
 
-`realtime_tests` forma parte de CTest. Mide 36 combinaciones: seis motores, 48/96 kHz y bloques de 64/128/256 muestras, con ocho voces, nuevas notas/bend, teclado GUI, cinta de cuatro pistas con overdub y FX/LFO. Comprueba audio finito/no silencioso, latencia declarada y ausencia de asignaciones/liberaciones C++ `new/delete` durante los bloques. En Linux también intercepta `malloc/calloc/realloc/free` enlazados desde el código del ejecutable. No es un interceptor universal de cada posible allocator del sistema.
+`realtime_tests` forma parte de CTest. Mide 42 combinaciones: seis motores más Phase 246 CORE nativo, 48/96 kHz y bloques de 64/128/256 muestras, con ocho voces, nuevas notas/bend, teclado GUI, cinta de cuatro pistas con overdub y FX/LFO. Comprueba audio finito/no silencioso, latencia declarada y ausencia de asignaciones/liberaciones C++ `new/delete` durante los bloques. En Linux también intercepta `malloc/calloc/realloc/free` enlazados desde el código del ejecutable. No es un interceptor universal de cada posible allocator del sistema.
 
 Los tiempos mediana, p99, máximo y bloques que exceden su presupuesto se guardan en `build/realtime-metrics.json`. Las métricas se adjuntan a los artefactos CI. Las aserciones funcionales y de heap sí fallan el test; los tiempos se reportan como diagnóstico, porque el planificador de una máquina compartida puede interrumpir el proceso.
 
@@ -49,3 +49,29 @@ Las 36 cargas actuales añaden ajustes por pad y notas hasta MIDI 83. En los 18.
 ## 0.7.0
 
 Los cuatro parámetros contextuales reutilizan los destinos existentes; la purga/importación hace E/S en el hilo de interfaz y solo intercambia buffers bajo el bloqueo breve del callback. La medición sintética final cubre 18.432 callbacks: cero llamadas de heap monitorizadas, latencia declarada de cero muestras, cuatro overruns observados y peor p99 de 21,21 % del presupuesto en esta VM compartida. [Datos de esta versión](realtime-metrics-linux.json). No certifica un controlador ASIO o una sesión de Live reales. El núcleo Pd experimental permanece fuera del audio de producción.
+
+
+## Phase 246 CORE de 0.8.0
+
+El modo opcional calcula el núcleo Pd a 88,2 kHz internos fijos por voz y adapta
+al host con interpolación y un filtro causal propio. No reserva memoria ni
+prepara tablas/coeficientes de filtro dentro del callback: se preparan en
+`prepareToPlay`. Los coeficientes de controles sí se actualizan durante el audio
+con suavizado propio de 12 ms. El filtro añade desfase/retardo de grupo dependiente
+de frecuencia; no hay look-ahead ni nueva latencia declarada al host.
+
+Las 42 cargas añaden ocho voces de Phase 246, automatización de sus cuatro
+controles y pitch bend al conjunto existente. La ejecución Linux final completó
+**21.504 callbacks**, con **0 llamadas de heap monitorizadas**, **4 callbacks
+fuera de plazo** y un peor p99 del **22.42 %** del plazo. Para Phase 246,
+el peor p99 fue **22.42 %**, con **3** tardanzas. [Datos Linux](realtime-metrics-linux.json).
+La medición previa después de compilar tuvo seis tardanzas y un peor p99 del
+31,09 % (Phase 17,07 %); se conserva [también su registro](firmware/phase246-linux-initial-metrics.json).
+Una prueba inicial mientras se compilaba Windows mostró más tardanzas y no se
+interpreta como una medición aislada del motor.
+
+Windows bajo Wine completó los mismos **21.504 callbacks** sin llamadas de heap
+monitorizadas: **4** tardanzas, peor p99 global **43.74 %** y Phase
+**43.74 %**. [Datos Wine](realtime-metrics-windows-wine.json).
+La variación entre ejecuciones refleja que se trata de una máquina compartida.
+Estas pruebas no certifican cero dropouts ni miden ASIO/Live 10.2.4 en Windows real.

@@ -18,3 +18,9 @@ boundaries. `phase-controls.json` records raw knob words and provenance from the
 operator-supplied firmware. The musical control path is not inferred from their
 presence. The independently generated study bank is documented in
 [phase-core-studies.md](../../docs/phase-core-studies.md).
+
+`voice-contract.s.in` calls the original SDRAM control-range initializer and
+sampler frequency setter. `scripts/verify-phase-contract.py` reproduces these
+results and a separate 88.2 kHz Pd stream oracle; it keeps the full private SDRAM
+image outside this repository. The optional 0.8.0 native integration is described
+in [phase246-native.md](../../docs/phase246-native.md).
