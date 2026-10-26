@@ -24,6 +24,7 @@ public:
     void paint(juce::Graphics&) override;
     void resized() override;
     bool keyPressed(const juce::KeyPress&) override;
+    int getControlParameterIndex(juce::Component&) override;
 private:
     void timerCallback() override;
     void selectPage(int);
@@ -77,7 +78,7 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> trackAttachment,lengthAttachment;
     std::unique_ptr<juce::FileChooser> chooser;
     std::array<juce::Slider,4> knobs;
-    std::array<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>,4> attachments;
+    std::array<std::unique_ptr<juce::SliderParameterAttachment>,4> attachments;
     juce::Slider volume, tempo;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> volumeAttachment, tempoAttachment;
     juce::ComboBox engine;

@@ -6,6 +6,7 @@
 #include "NoteQueue.h"
 #include "SoundLibrary.h"
 #include "Sequencer.h"
+#include "ScreenKnobParameter.h"
 class PocketProcessor : public juce::AudioProcessor,private juce::MidiKeyboardStateListener {
 public:
     explicit PocketProcessor(juce::File libraryDirectory={});
@@ -68,6 +69,12 @@ public:
     juce::String kitPadName(int) const;
     static juce::String padParameterId(int,const char*);
     bool importUserBank(const juce::File&,juce::String& error);
+    bool purgeUserBanks(const juce::String& bank,juce::String& error);
+    void setScreenPage(int page,bool tape=false);
+    int screenPage() const {return visiblePage.load();}
+    bool screenTapeMode() const {return visibleTape.load();}
+    ScreenKnobParameter& screenKnob(int index) {return *screenKnobs[size_t(index)];}
+    juce::String screenParameterId(int index) const;
     bool applyUserPreset(int index,juce::String& error);
     juce::AudioProcessorValueTreeState state;
     juce::MidiKeyboardState keyboard;
@@ -110,6 +117,9 @@ private:
     std::array<bool,2> memoSaved{};
     juce::File libraryDirectory;
     std::vector<UserPreset> userPresets;
+    std::array<ScreenKnobParameter*,4> screenKnobs{};
+    std::atomic<int> visiblePage{0};
+    std::atomic<bool> visibleTape{false};
     void refreshUserPresets();
     std::array<std::array<std::atomic<float>,128>,pocket::kitCapacity> padPreviews{};
     void publishPadPreview(int,const pocket::Sample&);

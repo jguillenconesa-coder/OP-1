@@ -1,0 +1,76 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P0.H = inputs;
+P0.L = inputs;
+P1.H = control_ptr;
+P1.L = control_ptr;
+[P1] = P0;
+P0.H = results;
+P0.L = results;
+P1.H = output_ptr;
+P1.L = output_ptr;
+[P1] = P0;
+probe_loop:
+P0.H = control_ptr;
+P0.L = control_ptr;
+P1 = [P0];
+R0 = [P1+132];
+P2.H = state;
+P2.L = state;
+[P2+4] = R0;
+R0 = 0;
+B[P2+20] = R0;
+[P2+24] = R0;
+R0 = [P1+136];
+imm32 P3, 0xff801950
+P4 = 128;
+LSETUP(fill_start,fill_end) LC0 = P4;
+fill_start:
+fill_end: [P3++] = R0;
+P0.H = output_ptr;
+P0.L = output_ptr;
+R0 = [P0];
+R1 = R0;
+R0 = P2;
+R2 = P1;
+P0.H = render;
+P0.L = render;
+CALL (P0);
+P0.H = output_ptr;
+P0.L = output_ptr;
+R0 = [P0];
+R1 = 256 (X);
+R0 = R0 + R1;
+[P0] = R0;
+P0.H = control_ptr;
+P0.L = control_ptr;
+R0 = [P0];
+R1 = 140 (X);
+R0 = R0 + R1;
+[P0] = R0;
+P1.H = inputs_end;
+P1.L = inputs_end;
+R1 = P1;
+CC = R0 == R1;
+IF !CC JUMP probe_loop;
+P0.H = io_args;
+P0.L = io_args;
+R0 = P0;
+P0 = 5;
+EXCPT 0;
+exit 0
+render:
+.incbin "@WORK@/pd-probe/kernel.bin"
+.data
+.align 4
+io_args: .long 1,results,262144
+control_ptr: .long 0
+output_ptr: .long 0
+state: .space 28
+inputs: .incbin "@WORK@/pd-probe/inputs.bin"
+inputs_end:
+results: .space 262144
+.section .table,"a"
+.incbin "@WORK@/pd-probe/table.bin"

@@ -89,7 +89,7 @@ PocketEditor::PocketEditor(PocketProcessor& p) : AudioProcessorEditor(p),process
     addAndMakeVisible(tapTempoKey);tapTempoKey.setTooltip("Tap tempo twice or more. Shift-click toggles metronome. The DAW tempo takes precedence when supplied.");tapTempoKey.onClick=[this] {if(shifted()){setParameter("metronome",processor.state.getRawParameterValue("metronome")->load()>.5f?0:1);return;}const double now=juce::Time::getMillisecondCounterHiRes()/1000,interval=now-lastTempoTap;if(interval>=.25&&interval<=1.5){auto* p=processor.state.getParameter("tempo");p->setValueNotifyingHost(p->convertTo0to1(float(60/interval)));}lastTempoTap=now;};
     addAndMakeVisible(shiftKey);shiftKey.setClickingTogglesState(true);shiftKey.setTooltip("Latch Shift to assign a sound slot or write a sequence note.");
     for(size_t i=0;i<4;++i) {
-        auto& s=knobs[i]; addAndMakeVisible(s); s.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
+        auto& s=knobs[i]; addAndMakeVisible(s);s.setComponentID("screen-knob-"+juce::String(int(i+1)));s.setName(p.screenKnob(int(i)).getName(100)); s.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
         s.setTextBoxStyle(juce::Slider::NoTextBox,false,0,0); s.setColour(juce::Slider::rotarySliderFillColourId,hardwareColours[i]);
     }
     for(size_t i=0;i<5;++i) {
@@ -168,7 +168,7 @@ PocketEditor::PocketEditor(PocketProcessor& p) : AudioProcessorEditor(p),process
     for(auto& button:slotButtons)button.getProperties().set("hardware",true);
     for(auto& button:pageButtons)button.getProperties().set("hardware",true);
     for(auto* button:{&tapeRecord,&sequence,&panic,&octaveDown,&octaveUp,&shiftKey,&helpKey,&tapTempoKey,&splitKey,&liftKey,&dropKey,&sequencerKey,&comKey,&micKey})button->getProperties().set("hardware",true);
-    setOctave(0); selectPage(0); startTimerHz(30);
+    setOctave(0);mainMode=processor.screenTapeMode()?2:processor.screenPage()>=4?3:processor.state.getRawParameterValue("engine")->load()>=4?1:0;selectPage(processor.screenPage()); startTimerHz(30);
 }
 PocketEditor::~PocketEditor() { processor.tapeSpool.store(0);processor.tapeBreak.store(false);processor.tapeChop.store(false);stopTimer(); setLookAndFeel(nullptr); }
 void PocketEditor::resized() {
@@ -199,6 +199,7 @@ void PocketEditor::selectMode(int mode) {
     }
 }
 bool PocketEditor::shifted() const {return shiftKey.getToggleState()||juce::ModifierKeys::getCurrentModifiers().isShiftDown();}
+int PocketEditor::getControlParameterIndex(juce::Component& control){for(int i=0;i<4;++i)if(&control==&knobs[size_t(i)])return processor.screenKnob(i).getParameterIndex();return -1;}
 void PocketEditor::setParameter(const char* id,float value){auto* p=processor.state.getParameter(id);p->beginChangeGesture();p->setValueNotifyingHost(p->convertTo0to1(value));p->endChangeGesture();}
 void PocketEditor::showError(const juce::String& message){status.setText(message,juce::dontSendNotification);}
 void PocketEditor::showBrowser(int kind){kitOpen=false;kitEditor.setVisible(false);browserOpen=true;browser.setVisible(true);setSize(1200,790);browser.showKind(kind);browser.syncSelection();}
@@ -225,13 +226,14 @@ void PocketEditor::setOctave(int value) {
 }
 void PocketEditor::selectPage(int selected) {
     page=selected;if(page<4&&mainMode>=2)mainMode=processor.state.getRawParameterValue("engine")->load()>=4?1:0;
-    const std::array<std::array<juce::String,4>,8> ids{{{"tone","color","envelope","effect"},{"attack","decay","sustain","release"},{"lfoRate","lfoDepth","lfoDestination","lfoShape"},{"delayTime","delayFeedback","effect","drive"},{"track1","track2","track3","track4"},{"eqLow","eqMid","eqHigh","eqMix"},{"masterDrive","masterEcho","masterDelayTime","masterFeedback"},{"volume","inputGain","tapeRecordGain","clickVolume"}}};
+    for(auto& attachment:attachments)attachment.reset();
+    processor.setScreenPage(page,mainMode==2);
     const std::array<std::array<juce::String,4>,8> labels{{{"TONE","COLOR","ENVELOPE","ECHO"},{"ATTACK","DECAY","SUSTAIN","RELEASE"},{"RATE","DEPTH","DESTINATION","SHAPE"},{"DELAY TIME","FEEDBACK","ECHO MIX","DRIVE"},{"TRACK 1","TRACK 2","TRACK 3","TRACK 4"},{"LOW dB","MID dB","HIGH dB","EQ MIX"},{"DRIVE","ECHO MIX","DELAY TIME","FEEDBACK"},{"MASTER","INPUT","REC GAIN","CLICK"}}};
     knobLabels=labels[size_t(page)];
-    for(size_t i=0;i<4;++i){attachments[i].reset();knobs[i].onValueChange=nullptr;knobs[i].onDragStart=nullptr;knobs[i].onDragEnd=nullptr;auto id=ids[size_t(page)][i];
-        if(page==4&&mainMode==2){const int track=int(processor.state.getRawParameterValue("tapeTrack")->load());const juce::String tapeIds[]={"","track"+juce::String(track+1),"tapeSpeed","tapeRecordGain"};id=tapeIds[i];knobLabels={"POSITION","TRACK LEVEL","SPEED","REC GAIN"};}
+    for(size_t i=0;i<4;++i){knobs[i].onValueChange=nullptr;knobs[i].onDragStart=nullptr;knobs[i].onDragEnd=nullptr;auto id=processor.screenParameterId(int(i));
+        if(page==4&&mainMode==2)knobLabels={"POSITION","TRACK LEVEL","SPEED","REC GAIN"};
         if(id.isEmpty()){knobs[i].setRange(0,4<<int(processor.state.getRawParameterValue("tapeLength")->load()),.001);knobs[i].setValue(processor.tapePosition.load(),juce::dontSendNotification);knobs[i].onDragStart=[this]{scrubStart=processor.tapePosition.load();slidingTake=shifted();};knobs[i].onValueChange=[this]{if(knobs[0].isMouseButtonDown()&&!slidingTake)processor.seekTape(knobs[0].getValue());};knobs[i].onDragEnd=[this]{if(slidingTake){juce::String error;if(!processor.slideTape(knobs[0].getValue()-scrubStart,error))showError(error);}slidingTake=false;};}
-        else attachments[i]=std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(processor.state,id,knobs[i]);knobs[i].setTooltip(knobLabels[i]+": drag to adjust; double-click to reset");}
+        else attachments[i]=std::make_unique<juce::SliderParameterAttachment>(processor.screenKnob(int(i)),knobs[i]);knobs[i].setTooltip(processor.screenKnob(int(i)).getName(100)+" follows this page: "+knobLabels[i]+". Map once in your host; sets 1-4 reuse the mapping.");}
     const int tab=mainMode==3?(page==4?0:page-4):page==0?0:page==1?1:page==3?2:page==2?3:-1;
     for(int i=0;i<4;++i) pageButtons[size_t(i)].setColour(juce::TextButton::buttonColourId,i==tab?juce::Colour(0xffc0d0dd):juce::Colour(0xffdbe1e9));
     sequenceAttachment.reset();sequenceAttachment=std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(processor.state,mainMode>=2?"tapePlay":"sequencer",sequence);
@@ -242,6 +244,7 @@ void PocketEditor::selectPage(int selected) {
     timerCallback();
 }
 void PocketEditor::timerCallback() {
+    if(page!=processor.screenPage()||(page==4&&(mainMode==2)!=processor.screenTapeMode())){mainMode=processor.screenTapeMode()?2:processor.screenPage()>=4?3:processor.state.getRawParameterValue("engine")->load()>=4?1:0;selectPage(processor.screenPage());return;}
     processor.updateKeyboardDisplay();
     const int e=int(processor.state.getRawParameterValue("engine")->load());
     cleanSample.setVisible(mainMode<2&&(e==3||e==5));

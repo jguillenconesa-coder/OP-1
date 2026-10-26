@@ -1,0 +1,62 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+imm32 P0, 0xff906f6c
+imm32 R0, 0x02000000
+[P0] = R0;
+P0.H = controls;
+P0.L = controls;
+P1.H = control_ptr;
+P1.L = control_ptr;
+[P1] = P0;
+P0.H = results;
+P0.L = results;
+P1.H = result_ptr;
+P1.L = result_ptr;
+[P1] = P0;
+probe_loop:
+imm32 SP, 0x03000000
+imm32 R0, 0x02001000
+imm32 R1, 0x02002000
+P0.H = control_ptr;
+P0.L = control_ptr;
+R2 = [P0];
+.incbin "@WORK@/fm-probe/prefix.bin"
+P2.H = result_ptr;
+P2.L = result_ptr;
+P3 = [P2];
+[P3++] = R6;
+[P3++] = P0;
+[P3++] = P1;
+[P3++] = P5;
+[P2] = P3;
+P0.H = control_ptr;
+P0.L = control_ptr;
+R0 = [P0];
+R0 += 8;
+[P0] = R0;
+P1.H = controls_end;
+P1.L = controls_end;
+R1 = P1;
+CC = R0 == R1;
+IF !CC JUMP probe_loop;
+P0.H = io_args;
+P0.L = io_args;
+R0 = P0;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+io_args: .long 1, results, 1048576
+control_ptr: .long 0
+result_ptr: .long 0
+controls:
+.set i,0
+.rept 65536
+.short 0,i,i,0
+.set i,i+1
+.endr
+controls_end:
+results: .space 1048576

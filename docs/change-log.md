@@ -30,3 +30,8 @@
 - Moved OUTPUT to a smoothed master stage covering tape playback.
 - Added Windows NSIS installer, native MSVC CI packaging/install/uninstall checks and a one-command Windows build entry point. Generated the real Windows x64 installer using clang-cl/Microsoft CRT/SDK and verified all four Windows test targets plus installer/uninstaller behaviour under Wine.
 - Expanded to three test suites and refreshed real UI screenshots.
+
+
+## 0.7.0
+
+Cuatro parámetros de knobs que siguen la página activa, estado de página persistente, PURGE BANK con borrado real y descarga del sonido activo, reimportación validada sin copias idénticas, y pruebas aisladas del DSP original con simulador Blackfin. [Detalles](releases/v0.7.0.md).

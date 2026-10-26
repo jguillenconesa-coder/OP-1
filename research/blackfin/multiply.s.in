@@ -1,0 +1,28 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+.include "testutils.inc"
+start
+P0.H = inputs;
+P0.L = inputs;
+P1.H = results;
+P1.L = results;
+P2.H = inputs_end;
+P2.L = inputs_end;
+probe_loop:
+R0 = W[P0++] (X);
+R1 = W[P0++] (X);
+.incbin "@WORK@/q15-probe/multiply.bin"
+W[P1++] = R1;
+CC = P0 == P2;
+IF !CC JUMP probe_loop;
+P0.H = io_args;
+P0.L = io_args;
+R0 = P0;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+io_args: .long 1,results,131072
+inputs: .incbin "@WORK@/q15-probe/inputs.bin"
+inputs_end:
+results: .space 131072

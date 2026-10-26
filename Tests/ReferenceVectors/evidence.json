@@ -1,0 +1,74 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "model": "GNU simulator BF524; user-mode explicit RAM; not hardware validation",
+  "artifacts": {
+    "fm-fields.bin": {
+      "bytes": 1048576,
+      "sha256": "ee1fea129340cf3588cba14252c9c14bfe407f9390e5bbdfd21a66da15cb58c8",
+      "matches_committed_fixture": true
+    },
+    "q15-input.bin": {
+      "bytes": 262144,
+      "sha256": "bd2f9638dab2e18ae06719a34b5d72c91888b5bac42c7978485d0a2aab07455d",
+      "matches_committed_fixture": true
+    },
+    "q15-output.bin": {
+      "bytes": 131072,
+      "sha256": "79a7ea07a2614b93599a8df3c685185eae3d11f2a39faf048567c75b86066524",
+      "matches_committed_fixture": true
+    },
+    "pd-input.bin": {
+      "bytes": 143360,
+      "sha256": "02b5d98ed29a30e13173ef8d741cbb37161971f09584e87bd55d359e425c29ca",
+      "matches_committed_fixture": true
+    },
+    "pd-output.bin": {
+      "bytes": 262144,
+      "sha256": "84c5e80d2dbd6f9da35e02090cb230248708d64243fd3a74229cd7f3c9dd5403",
+      "matches_committed_fixture": true
+    },
+    "synthetic-sine.bin": {
+      "bytes": 16384,
+      "sha256": "b73bc0ccbde077a4545a8d6a2a46baa52412a38f1d65beae9f31870e8b8f2717",
+      "matches_committed_fixture": true
+    },
+    "pd-transient-input.bin": {
+      "bytes": 1245184,
+      "sha256": "2f7ede2581afdf9e0d3a565dd763f7b4df98939c332b4299202ebdefe40507ed",
+      "matches_committed_fixture": true
+    },
+    "pd-transient-output.bin": {
+      "bytes": 2228224,
+      "sha256": "34d772850689650861d1c54fcb185c7ea9cd4a439e4a1ecfb5b75e2f52b1948d",
+      "matches_committed_fixture": true
+    },
+    "verified-sine.bin": {
+      "bytes": 16386,
+      "sha256": "f959d94906b410fd7dad618c3e6dff68db1eb2a4b490b60781b3a5c49cf69911",
+      "matches_committed_fixture": true
+    },
+    "lut-copy-output.bin": {
+      "bytes": 16386,
+      "sha256": "2238d02061a26e91bb001ad53f7a1a0250d8fd7de93f6cd8db43e3293d5522e8",
+      "matches_committed_fixture": true
+    }
+  },
+  "tools": {
+    "as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "run": "b5787384c0def3bbaab7a7aa432064fd8db1ec615400f29feab0717d657b7968"
+  },
+  "lut_source": {
+    "entries": 8193,
+    "intersecting_fill_blocks": 6,
+    "source_sha256": "06f658c86b3e749ebf21b615c845f5a2fc644916b9e954cb5cb10e27dc875b34",
+    "matches_mathematical_sine": true,
+    "simulator_initializer_shift_entries": 1,
+    "hardware_timing_verified": false
+  },
+  "tool_versions": {
+    "assembler": "GNU Binutils 2.44 bfin-elf",
+    "linker": "GNU Binutils 2.44 bfin-elf",
+    "simulator": "GNU GDB 13.1 Blackfin simulator"
+  }
+}

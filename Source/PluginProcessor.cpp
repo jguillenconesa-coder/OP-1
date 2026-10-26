@@ -34,6 +34,11 @@ PocketProcessor::PocketProcessor(juce::File soundsDirectory) : AudioProcessor(Bu
     libraryDirectory=soundsDirectory==juce::File{}?juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory).getChildFile("Pocket Instruments/Pocket One/Banks"):soundsDirectory;
     const char* audioIds[]={"engine","tone","color","envelope","effect","attack","decay","sustain","release","lfoRate","lfoDepth","lfoDestination","lfoShape","delayTime","delayFeedback","drive","sampleLoop","sampleRoot","volume","sequencer","tempo","track1","track2","track3","track4","tapePlay","tapeRecord","tapeOverdub","tapeTrack","tapeSpeed","tapeLength","tapeLoop","tapeLoopIn","tapeLoopOut","metronome","inputMonitor","inputGain","tapeRecordGain","eqLow","eqMid","eqHigh","eqMix","masterDrive","masterEcho","masterDelayTime","masterFeedback","clickVolume","seqMode","seqLength","seqRate","seqGate","seqSwing","arpOctaves","seqVelocity","seqEuclidean","seqPulses","seqRotation","sampleClean"};
     for(size_t i=0;i<audioParameters.size();++i) audioParameters[i]=state.getRawParameterValue(audioIds[i]);
+    const char* colours[]={"Blue","Green","White","Orange"};
+    for(int i=0;i<4;++i){auto* knob=new ScreenKnobParameter("screenKnob"+juce::String(i+1),"Screen: Knob "+juce::String(i+1)+" "+colours[i]);addParameter(knob);screenKnobs[size_t(i)]=knob;}
+    screenKnobs[0]->enableTapeCursor(tapePosition,pendingTapeSeek,*state.getRawParameterValue("tapeLength"));
+    screenKnobs[1]->enableTapeTracks({state.getParameter("track1"),state.getParameter("track2"),state.getParameter("track3"),state.getParameter("track4")},*state.getRawParameterValue("tapeTrack"));
+    setScreenPage(0);
     for(int pad=0;pad<pocket::kitCapacity;++pad){const char* ids[]={"start","end","gain","pitch","reverse","gated"};for(int i=0;i<6;++i)padParameters[size_t(pad)][size_t(i)]=state.getRawParameterValue(padParameterId(pad,ids[i]));}
     keyboard.addListener(this);
     initializeSoundSlots();
@@ -42,7 +47,22 @@ PocketProcessor::PocketProcessor(juce::File soundsDirectory) : AudioProcessor(Bu
     const int notes[]={60,-1,67,-1,63,-1,70,-1,60,72,67,-1,63,-1,58,-1};
     for(int i=0;i<16;++i) steps[size_t(i)].store(notes[i]);
 }
-PocketProcessor::~PocketProcessor() {keyboard.removeListener(this);}
+PocketProcessor::~PocketProcessor() {for(auto* knob:screenKnobs)knob->disconnect();keyboard.removeListener(this);}
+
+juce::String PocketProcessor::screenParameterId(int index) const {
+    if(index<0||index>=4)return {};
+    static const char* ids[8][4]={{"tone","color","envelope","effect"},{"attack","decay","sustain","release"},{"lfoRate","lfoDepth","lfoDestination","lfoShape"},{"delayTime","delayFeedback","effect","drive"},{"track1","track2","track3","track4"},{"eqLow","eqMid","eqHigh","eqMix"},{"masterDrive","masterEcho","masterDelayTime","masterFeedback"},{"volume","inputGain","tapeRecordGain","clickVolume"}};
+    if(visiblePage.load()==4&&visibleTape.load()){
+        if(index==0)return {};
+        if(index==1)return "track"+juce::String(1+int(state.getRawParameterValue("tapeTrack")->load()));
+        return index==2?"tapeSpeed":"tapeRecordGain";
+    }
+    return ids[size_t(visiblePage.load())][size_t(index)];
+}
+void PocketProcessor::setScreenPage(int page,bool tapeMode) {
+    visiblePage.store(std::clamp(page,0,7));visibleTape.store(tapeMode&&page==4);
+    for(int i=0;i<4;++i){if(page==4&&tapeMode&&i==1)screenKnobs[1]->followTapeTrack();else screenKnobs[size_t(i)]->follow(state.getParameter(screenParameterId(i)));}
+}
 void PocketProcessor::handleNoteOn(juce::MidiKeyboardState*,int channel,int note,float velocity) {
     if(!reflectingHostNotes&&!uiToAudio.push({channel,note,velocity,true})) keyboardOverflow.store(true);
 }
@@ -338,7 +358,7 @@ void PocketProcessor::applyPreset(int index) {
 }
 
 void PocketProcessor::getStateInformation(juce::MemoryBlock& dest) {
-    auto tree=state.copyState();tree.removeChild(tree.getChildWithName("TapeEdits"),nullptr);tree.addChild(tapeEditSnapshot(),-1,nullptr);tree.removeChild(tree.getChildWithName("SoundLibrary"),nullptr);tree.addChild(librarySnapshot(),-1,nullptr); for(int i=0;i<16;++i) tree.setProperty("step"+juce::String(i),steps[size_t(i)].load(),nullptr);
+    auto tree=state.copyState();tree.setProperty("screenPage",screenPage(),nullptr);tree.setProperty("screenTape",screenTapeMode(),nullptr);tree.removeChild(tree.getChildWithName("TapeEdits"),nullptr);tree.addChild(tapeEditSnapshot(),-1,nullptr);tree.removeChild(tree.getChildWithName("SoundLibrary"),nullptr);tree.addChild(librarySnapshot(),-1,nullptr); for(int i=0;i<16;++i) tree.setProperty("step"+juce::String(i),steps[size_t(i)].load(),nullptr);
     {const juce::ScopedLock lock(libraryStateLock);for(int pad=0;pad<pocket::kitCapacity;++pad)tree.setProperty("kitName"+juce::String(pad),kitNames[size_t(pad)],nullptr);}
     pocket::Kit kitCopy;
     juce::AudioBuffer<float> sampleAudio,tapeAudio; double sampleRate=48000,tapeRate=48000;
@@ -394,6 +414,7 @@ void PocketProcessor::setStateInformation(const void* data,int size) {
             state.replaceState(tree);engine.allNotesOff();heldNotes.clear();seqNote=-1;sequenceNote.store(-1);wasSequencing=false;lastHostStep=INT64_MIN;
         }
         restoreTapeEdits(edits);
+        setScreenPage(int(tree.getProperty("screenPage",0)),bool(tree.getProperty("screenTape",false)));
     }
 }
 juce::AudioProcessorEditor* PocketProcessor::createEditor() {return new PocketEditor(*this);}

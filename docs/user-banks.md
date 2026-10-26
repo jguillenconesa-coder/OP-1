@@ -33,3 +33,28 @@ En 0.3.0, [buttons-and-browser.md](buttons-and-browser.md) explica el navegador,
 ## Kits ampliados de 0.5.0
 
 El formato `formatVersion: 1` admite ahora un array `kit` de ocho **o 24** rutas de audio. Los bancos de ocho mantienen la asignación histórica. Un array opcional `pads` contiene hasta un objeto por muestra, con `start`, `end` (0–1), `gain` (0–2), `pitch` (-24–24 semitonos), `reverse` y `gated`. Campos omitidos usan sus valores por defecto; los valores se limitan al rango de los parámetros. Los elementos deben ser objetos y sus ajustes numéricos finitos o booleanos. No confundir `pads` con los ocho slots de selección de presets. [Guía del editor](kits.md).
+
+
+## Purgar y reimportar (0.7.0)
+
+En BROWSE, elige el banco importado en el filtro superior y pulsa **PURGE BANK**.
+Confirma **DELETE FILES** para borrar sus carpetas y muestras instaladas de forma
+permanente. Con **All banks**, se purgan todos los bancos importados. El botón
+se desactiva cuando el filtro solo incluye sonidos integrados. Para purgar hay
+que detener la cinta y la captura de entrada.
+
+Se vacían los favoritos, slots y portapapeles de los sonidos eliminados; si el
+sonido cargado pertenece al banco, se descargan su muestra/kit de RAM y sus
+previews. La cinta grabada se conserva. Los WAV/AIFF originales, el ZIP de origen
+y los sonidos de fábrica integrados se conservan. Los proyectos guardados
+anteriormente contienen su propia copia de audio y pueden volver a cargarla;
+la purga no reescribe esos archivos. Cierra otras instancias del plugin antes
+de purgar: pueden conservar audio y catálogos en memoria.
+
+Después usa **IMPORT BANK** para reinstalar el ZIP. La reimportación del mismo
+manifiesto valida y decodifica una copia nueva antes de retirar las anteriores;
+repara incluso archivos borrados o modificados y no acumula directorios de
+bancos idénticos. Si Windows impide borrar algún archivo, el plugin muestra el
+error; cierra otras instancias y repite la purga. Un manifiesto distinto puede
+representar otro banco/variantes y no se elimina automáticamente por compartir
+nombre.

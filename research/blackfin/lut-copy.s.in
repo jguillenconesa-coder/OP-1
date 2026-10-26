@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P0.H = init;
+P0.L = init;
+CALL (P0);
+P0.H = io_args;
+P0.L = io_args;
+R0 = P0;
+P0 = 5;
+EXCPT 0;
+exit 0
+init: .incbin "@WORK@/lut-probe/init.bin"
+.data
+io_args: .long 1,0x0101e5e8,16386
+.section .source,"a"
+.incbin "@WORK@/lut-probe/source.bin"

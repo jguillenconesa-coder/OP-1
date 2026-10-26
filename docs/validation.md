@@ -80,3 +80,40 @@ Se comprueba además que todos los parámetros del host tengan categoría y nomb
 Las pruebas sintéticas del generador verifican CRC/contenedor, frecuencia raíz MIDI, 24 regiones Q31 con END inclusivo y conservación exacta del PCM dentro de los WAV. El banco real contiene 23 entradas y 336 regiones; el smoke test toca todos los pads, comprueba audio finito/no silencioso y restaura el kit sin su banco. La ruta CLEAN SAMPLE se compara desde la primera nota con una senoide PCM de 8 kHz, a velocidad y sample rate originales, con un límite RMSE de 1e-5. La prueba no establece equivalencia de envolventes/efectos del OP-1. Se mantienen los nombres MIDI y los IDs/orden de los parámetros previos.
 
 La ejecución 0.6.0 pasó seis suites Linux y ocho suites Windows bajo Wine, incluida instalación, hashes de binarios, carga del VST3, manifiestos y desinstalación. En 18.432 callbacks de la prueba sintética se observaron cero llamadas de heap monitorizadas, un peor p99 del 15,57 % del presupuesto y seis overruns en la VM compartida. Estos tiempos no son una certificación de ausencia de dropouts en Live. No se ha consultado el último CI nativo del repositorio privado con la conexión disponible.
+
+
+## 0.7.0: mapeo contextual, purga y oráculos DSP
+
+Pasan **siete suites Linux** y **nueve Windows x64 bajo Wine**. Los casos nuevos
+comprueban los cuatro sets desde la interfaz, las identidades de host fijas,
+rangos/valores discretos, control con editor cerrado, reapertura y restauración
+de página, páginas MIX/TAPE y selección automatizada de pista. Los parámetros
+existentes mantienen IDs/orden. No se ha validado MIDI Map en Ableton real.
+
+El importador se prueba reimportando, dañando una muestra y reparándola, contando
+los directorios físicos, purgando el banco, comprobando la ausencia de archivos,
+audio embebido y referencias, y volviendo a importar dos veces. La purga rechaza
+cinta en marcha; se preservan el ZIP fuente y los 25 presets integrados. El test
+incluye la purga de un kit de 24 pads y de un banco cuyo audio se ha borrado
+del disco mientras seguía cargado en RAM. Las 23 referencias del firmware
+se vuelven a importar y reproducir con salida finita, incluyendo sus 336 pads;
+la vista del banco de 79 presets también se importa y se renderiza.
+
+La suite `reference_dsp` compara 65.536 campos FM, 65.536 pares Q15, 131.072
+muestras Pd estables y **1.048.576 muestras con ramas secundarias/reset**, más
+los cuatro campos finales en 8.192 bloques. No hay diferencias con los oráculos
+del simulador GNU Blackfin. Un script reproduce los diez archivos de evidencia
+byte a byte a partir del LDR inventariado. [Alcance y discrepancia de copia de
+la LUT](dsp-research.md): no es validación del aparato ni port de presets.
+
+El instalador 0.7.0 instala binarios con hashes idénticos al build; se carga el
+VST3 instalado con sus tres clases y manifiesto Common Controls v6, y la
+desinstalación elimina ejecutables, bundle y registro. Windows se comprueba en
+Wine, sin afirmar un resultado de CI nativo o de Live 10.2.4.
+
+Tiempo real Linux: 18.432 callbacks / 36 cargas, cero llamadas de heap
+monitorizadas y cero muestras de latencia declarada. En la medición final se
+observan **cuatro callbacks fuera de plazo** y peor p99 de **21,21 %** del
+presupuesto, en esta VM compartida. Las operaciones de archivo se hacen fuera
+del callback. Son medidas sintéticas, no una garantía de cero dropouts ni una
+medida de ida y vuelta ASIO. [Datos](realtime-metrics-linux.json).

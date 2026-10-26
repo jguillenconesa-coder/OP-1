@@ -1,6 +1,6 @@
 # Investigación DSP — OP-1 revisión 246
 
-Este registro continúa el [inventario con REA](firmware-analysis.md). No hay todavía un port de los motores originales ni una equivalencia sonora validada. La versión 0.5.0 distribuye los motores propios existentes.
+Este registro continúa el [inventario con REA](firmware-analysis.md). No hay todavía un port de los motores originales ni una equivalencia sonora validada. La versión 0.7.0 distribuye los motores propios existentes.
 
 ## Avance de análisis nativo
 
@@ -56,3 +56,73 @@ Los 14 kits muestreados ofrecen una verificación independiente del formato de p
 El nuevo modo CLEAN SAMPLE soluciona una diferencia propia del plugin detectada durante esa comparación: TONE controla el inicio del sampler, pero también limitaba su filtro global a 900 Hz con inicio cero. La ruta limpia permite comparar la fuente sin esa coloración ni saturación seca, y conserva la ruta antigua para proyectos anteriores. Esto mejora la reproducción de muestras; no demuestra equivalencia del DSP completo del OP-1.
 
 El destino común de inicialización `0x019f15f8` se ha acotado a una rutina breve que escribe `0x80000000` en el campo de 32 bits del offset 0 y cero en el campo de 16 bits del offset 4. No establece por sí solo qué variable representa cada campo ni interpreta los bytes de padding; esa identificación sigue pendiente.
+
+
+## Pruebas de ejecución aislada (0.7.0)
+
+Se ha compilado el simulador Blackfin de **GNU GDB 13.1**, con ensamblador/enlazador
+**Binutils 2.44**. Se ejecutan subrutinas aisladas con memoria y entradas controladas;
+no se ha arrancado el sistema del OP-1. La reconstrucción independiente vive en
+`Source/ReferenceDsp.h`, separada del motor de producción, y tiene pruebas CTest
+con [vectores reproducibles](../Tests/ReferenceVectors/README.md).
+
+| Comprobación | Resultado acotado |
+| --- | --- |
+| Prefijo FM `0x019a23d4` hasta `0x019a2452` | 65.536 casos, cero diferencias. Tres índices `(word >> 12/9/6) & 7`, selector con signo desplazado 11 bits y offsets de tabla 12/28/44 más dos veces cada índice. Las dos palabras recorren juntas 0…65535; no se prueban todas sus combinaciones. |
+| Multiplicación en `0x01a0bd1a` | 65.536 pares Q15, cero diferencias, saturación y redondeo al par del simulador. Otras configuraciones de redondeo y hardware físico siguen sin verificar. |
+| Render Pd `0x01a0bc5c` hasta `0x01a0be82` | 1.024 bloques de 128 muestras, cero diferencias para una rama estable: estado secundario inactivo, sin wrap firmado, controles restantes a cero, incrementos constantes y LUT sintética suministrada. No corresponde al estado de reset normal ni valida el motor completo. |
+| Inicialización `0x019f15f8` | Confirma los campos 32/16 bits descritos antes; los dos bytes de padding no se sobrescriben. |
+
+La vtable de FM en `0x0190ff84` apunta a la rutina de render indicada; la de Pd
+está en `0x0191113c`. El selector FM tiene nueve destinos explícitos y una ruta
+alternativa que aún debe estudiarse. Los campos decodificados todavía no se
+interpretan como ratios musicales ni como nueve algoritmos equivalentes.
+
+Se ha localizado una copia de tabla en `0x01a49b1c`: toma las mitades bajas de
+8.193 palabras de 32 bits desde `0x018b6688` y las escribe como 16 bits en
+`0x0101e5e8`. El mapa genérico omitía seis bloques de relleno, con argumentos `0x7ffe`,
+`0x7fff`, `0x8002` y `0x8001`. Al interpretarlos como palabras little-endian
+repetidas, las 8.193 entradas coinciden exactamente con
+`round(sin(i * pi / 4096) * 32767)`. La tabla matemática independiente y sus hashes
+quedan registrados; no es necesario distribuir la imagen original.
+
+La ejecución de la copia original en GNU GDB 13.1 presenta un desplazamiento de
+una entrada y repite el cero final. Se ha localizado la diferencia en el grupo
+paralelo que carga R0 y almacena R0.L: el simulador actualiza la carga antes del
+almacenamiento. Se registra la discrepancia aparente de temporización como
+**pendiente de verificar contra hardware/semántica del procesador**. La tabla
+fuente validada y la salida desplazada del simulador se guardan por separado;
+las pruebas del núcleo cargan explícitamente la primera.
+
+Los bytes de código y el desensamblado permanecen en el área privada de análisis.
+El repositorio añade únicamente aritmética independiente, harnesses propios,
+entradas sintéticas, salidas numéricas y metadatos. Los tests de coincidencia con
+el simulador no se presentan como equivalencia sonora con el aparato.
+
+
+### Ampliación: rama secundaria, reinicios y cruces de ciclo
+
+`ReferenceDsp.h` incorpora una reconstrucción funcional independiente del núcleo
+Pd, incluida su rama secundaria: Q31 con saturación/truncamiento, contorno,
+reinicio, sumas de fase modulares y contador de ciclos. Los cuatro controles son
+palabras signed16 crudas; sus nombres musicales y conversión desde el preset no
+se dan por establecidos. La tabla se recibe del llamante y permanece explícita.
+
+El nuevo harness llama al render original y, en 2.730 casos, también al reset
+original `0x01a0be82`. Compara **1.048.576 muestras y los cuatro campos finales en
+8.192 bloques**, sin diferencias con el simulador. Incluye las 4.096 combinaciones
+de ocho extremos para los cuatro controles, otras 4.096 entradas deterministas,
+siete incrementos de fase (incluyendo cero, uno e INT32_MAX), fases aleatorias y
+estados secundarios activos/inactivos. Se ejercitan 130.485 cruces de ciclo
+principal y 77.472 secundarios en la reconstrucción.
+
+La coincidencia cubre estas condiciones y el modelo GNU, con la tabla fuente
+cargada de forma explícita. Faltan variaciones de incremento dentro del bloque,
+el proveedor de frecuencia/controles, presets, efectos, render de voz completo y
+comparación con el aparato. El hallazgo sobre la copia paralela refuerza ese
+límite: los vectores de un simulador no bastan para certificar el DSP físico.
+
+Los 25 presets propios y el banco de 79 presets del usuario se conservan como
+material adicional. Las 23 referencias secas del firmware mantienen el banco
+separado **OP-1 firmware reference (local)**. Los futuros patches FM/Pd tendrán
+una categoría propia y no sustituirán estos bancos antes de validar su conversión.

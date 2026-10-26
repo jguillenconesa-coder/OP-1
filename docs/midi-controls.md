@@ -22,3 +22,38 @@ En Ableton, usa **Configure** para exponer los parámetros que quieras y despué
 Los botones de edición de cinta y de archivos no se convierten en CC por cambiar el nombre de los parámetros. En proyectos existentes, el host puede conservar etiquetas antiguas en su caché hasta volver a abrir el plugin o actualizar los parámetros expuestos.
 
 0.6.0 añade **Sampler: Clean Playback** (botón CLEAN SAMPLE), común a sampler y kit. El parámetro se añade al final de la lista y los controles previos mantienen sus IDs y orden. Los bancos de referencia lo activan para conservar mejor el espectro original.
+
+
+## Cuatro asignaciones que siguen el visor (0.7.0)
+
+En Ableton, abre **Configure** y mueve una vez los cuatro mandos de color del
+plugin en el set 1. Expón y asigna estos cuatro parámetros con **MIDI Map**:
+
+| Control físico | Parámetro fijo del host |
+| --- | --- |
+| Azul, primero | Screen: Knob 1 Blue |
+| Verde, segundo | Screen: Knob 2 Green |
+| Blanco, tercero | Screen: Knob 3 White |
+| Naranja, cuarto | Screen: Knob 4 Orange |
+
+Al cambiar a los sets 2, 3 o 4 se conservan las asignaciones y cada mando controla
+el valor de su mismo color en el visor. No hace falta calcular CC consecutivos
+ni crear cuatro bancos en el controlador: se reutilizan las mismas cuatro
+asignaciones. T1 es motor/sampler, T2 ADSR, T3 efectos y T4 LFO; también siguen
+las páginas de MIX y TAPE. El verde de TAPE sigue la pista seleccionada incluso
+si se automatiza su selección. El azul mueve la posición de la cinta.
+
+Las asignaciones antiguas a **Sound: Tone**, **Envelope: Attack**, etc. continúan
+controlando ese parámetro concreto. Para usar el comportamiento contextual hay
+que reasignarlas **una sola vez** a los cuatro parámetros `Screen: Knob…`.
+Guarda el dispositivo/pista como preset en Live para reutilizar su MIDI Map.
+El plugin guarda la última página en el proyecto y la conserva al cerrar y
+abrir su ventana; con la ventana cerrada los mandos siguen esa última página.
+Los proyectos anteriores empiezan en el set 1.
+
+Los cuatro mandos usan valores absolutos normalizados por el host; no añaden
+un decodificador de encoders relativos ni MIDI Learn en el standalone. Para
+escribir automatización de un destino fijo usa el parámetro descriptivo
+original: la automatización de `Screen: Knob…` actúa sobre la página activa.
+Los IDs y el orden de todos los parámetros existentes permanecen iguales;
+los cuatro nuevos se añaden al final.

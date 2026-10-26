@@ -8,7 +8,7 @@
 
 ## Inspiración y referencias
 
-- **Teenage Engineering — OP-1:** inspiración del instrumento, la disposición de controles y el flujo creativo. Las marcas OP-1 y Teenage Engineering pertenecen a sus respectivos titulares. No hay afiliación, patrocinio ni aprobación. No se incluyen firmware, muestras de fábrica, logotipos ni algoritmos originales.
+- **Teenage Engineering — OP-1:** inspiración del instrumento, la disposición de controles y el flujo creativo. Las marcas OP-1 y Teenage Engineering pertenecen a sus respectivos titulares. No hay afiliación, patrocinio ni aprobación. El instrumento no incluye firmware, muestras de fábrica ni logotipos originales. Las reconstrucciones experimentales de DSP se documentan aparte y no se conectan al audio de producción.
 - **OTTO y sus colaboradores:** organización por motores y pantallas, controles vinculados a colores y documentación de un instrumento autónomo. Referencia revisada: [antoinehng/OTTO-1](https://github.com/antoinehng/OTTO-1), revisión `ba534c6c1ed93a6b15cd13a93287b9e8f6f8ca6b`.
 - **TOP-1 y sus colaboradores, incluido D-I-S-K-U-S por sus notas de diseño visual:** referencias de sampler, grabadora de cuatro pistas y relación entre gráficos y parámetros. Referencia revisada: [AlbertSmit/TOP-1](https://github.com/AlbertSmit/TOP-1), revisión `e641d273fb8d0eb4ff2ad1b4a7cd15b8786b62e0`.
 
@@ -36,3 +36,6 @@ OLED animation references: OTTO-1 Nuke, TapeScreen and DrumSampleScreen, revisio
 ## Firmware research tooling (0.4.0)
 
 The user-supplied OP-1 revision 246 was inspected with [REA 6.8.0](https://github.com/morluto/rea) (MIT), [Unblob 26.6.4](https://github.com/onekey-sec/unblob), official 7-Zip tooling and Python's standard library. [op1repacker](https://github.com/op1hacks/op1repacker) documents the CRC/LZMA/TAR container format. These are analysis tools/references, not linked product dependencies. No original firmware, databases, sounds, graphics or decompiled DSP are included. See [the evidence and limits](docs/firmware-analysis.md).
+
+
+GNU Binutils 2.44 (bfin-elf) and the GNU GDB 13.1 Blackfin simulator are external research tools, credited to the GNU projects and contributors. They are not included in the plugin or installer. Own probe harnesses use caller-supplied GDB test helpers only in private generated research programs; [scope and reproducibility](research/blackfin/README.md).

@@ -44,3 +44,8 @@ El motor de pasos/arpegiador usa almacenamiento fijo para las teclas de 16 canal
 ## Kits de 24 pads de 0.5.0
 
 Las 36 cargas actuales añaden ajustes por pad y notas hasta MIDI 83. En los 18.432 callbacks registrados no hubo llamadas de heap monitorizadas; el peor p99 usó 13.91 % del presupuesto y hubo 0 callbacks por encima del plazo en la VM compartida. La latencia declarada sigue en cero muestras. La medición no sustituye una prueba de Live/ASIO en el equipo del usuario.
+
+
+## 0.7.0
+
+Los cuatro parámetros contextuales reutilizan los destinos existentes; la purga/importación hace E/S en el hilo de interfaz y solo intercambia buffers bajo el bloqueo breve del callback. La medición sintética final cubre 18.432 callbacks: cero llamadas de heap monitorizadas, latencia declarada de cero muestras, cuatro overruns observados y peor p99 de 21,21 % del presupuesto en esta VM compartida. [Datos de esta versión](realtime-metrics-linux.json). No certifica un controlador ASIO o una sesión de Live reales. El núcleo Pd experimental permanece fuera del audio de producción.

@@ -14,6 +14,43 @@ int main(int argc,char** argv) {
   juce::StringArray parameterNames;
   for(auto* parameter:p->getParameters()){const auto name=parameter->getName(100);check(!name.isEmpty()&&name.contains(":"),"Host parameter lacks a descriptive category");check(!parameterNames.contains(name),"Ambiguous duplicate MIDI mapping names");parameterNames.add(name);}
   check(p->state.getParameter("volume")->getName(100)=="Output: Volume"&&p->state.getParameter("pad24_pitch")->getName(100)=="Pad 24: Pitch","MIDI mapping parameter names regressed");
+  // The four host identities follow the visible page, including GUI touches,
+  // host automation, discrete controls, editor closure and project restoration.
+  {
+   auto mapped=std::make_unique<PocketProcessor>();
+   check(mapped->screenKnob(0).getParameterIndex()==mapped->state.getParameter("sampleClean")->getParameterIndex()+1,"Screen knobs reordered existing parameters");
+   std::unique_ptr<juce::AudioProcessorEditor> editor(mapped->createEditor());
+   const char* ids[4][4]={{"tone","color","envelope","effect"},{"attack","decay","sustain","release"},{"delayTime","delayFeedback","effect","drive"},{"lfoRate","lfoDepth","lfoDestination","lfoShape"}};
+   for(int page=0;page<4;++page){
+    bool clicked=false;
+    for(auto* child:editor->getChildren())if(auto* button=dynamic_cast<juce::TextButton*>(child))if(button->getButtonText()==juce::String(page+1)&&button->getY()==177&&button->getX()<550){button->onClick();clicked=true;}
+    check(clicked,"Screen set button missing");
+    for(int knob=0;knob<4;++knob){
+     auto& proxy=mapped->screenKnob(knob);auto* target=mapped->state.getParameter(ids[page][knob]);
+     check(proxy.followedParameter()==target,"Screen knob follows the wrong page");
+     const float value=.17f+.19f*knob;proxy.setValueNotifyingHost(value);
+     check(std::abs(target->getValue()-target->convertTo0to1(target->convertFrom0to1(value)))<.0001,"Mapped knob did not update its visible parameter");
+     check(std::abs(proxy.getValue()-target->getValue())<.0001,"Screen knob does not reflect the actual value");
+     bool touched=false;
+     for(auto* child:editor->getChildren())if(child->getComponentID()=="screen-knob-"+juce::String(knob+1))if(auto* slider=dynamic_cast<juce::Slider*>(child)){
+      check(editor->getControlParameterIndex(*slider)==proxy.getParameterIndex(),"Host Configure resolves knob to a page-specific parameter");
+      slider->setValue(target->convertFrom0to1(.81f),juce::sendNotificationSync);touched=true;
+     }
+     check(touched&&std::abs(target->getValue()-target->convertTo0to1(target->convertFrom0to1(.81f)))<.0001,"GUI knob failed to forward through stable mapping");
+    }
+   }
+   editor.reset();mapped->screenKnob(0).setValueNotifyingHost(.34f);
+   check(std::abs(mapped->screenKnob(0).getValue()-mapped->state.getParameter("lfoRate")->getValue())<.0001,"Mapping stopped when editor closed");
+   juce::MemoryBlock snapshot;mapped->getStateInformation(snapshot);auto reopened=std::make_unique<PocketProcessor>();reopened->setStateInformation(snapshot.getData(),int(snapshot.getSize()));
+   check(reopened->screenPage()==2&&reopened->screenKnob(0).followedParameter()==reopened->state.getParameter("lfoRate"),"Screen page not restored without editor");
+   {std::unique_ptr<juce::AudioProcessorEditor> ui(reopened->createEditor());check(reopened->screenPage()==2,"Reopening editor reset screen mapping");}
+   for(int page=4;page<8;++page){mapped->setScreenPage(page);for(int knob=0;knob<4;++knob){auto* target=mapped->state.getParameter(mapped->screenParameterId(knob));mapped->screenKnob(knob).setValueNotifyingHost(.61f);check(std::abs(target->getValue()-mapped->screenKnob(knob).getValue())<.0001,"Mixer knob mapping failed");}}
+   mapped->setScreenPage(4,true);mapped->prepareToPlay(48000,256);
+   mapped->state.getParameter("tapeTrack")->setValueNotifyingHost(1);mapped->screenKnob(1).setValueNotifyingHost(.37f);
+   check(std::abs(mapped->state.getParameter("track4")->getValue()-.37f)<.001,"Tape knob did not follow an automated track selection");
+   mapped->screenKnob(0).setValueNotifyingHost(.5f);juce::AudioBuffer<float> audio(2,256);juce::MidiBuffer events;mapped->processBlock(audio,events);
+   check(std::abs(mapped->tapePosition.load()-4.f)<.01f,"Mapped tape position did not seek");
+  }
   juce::AudioBuffer<float> buffer(2,256); juce::MidiBuffer midi;
   // A timestamped note must not sound before its sample offset.
   midi.addEvent(juce::MidiMessage::noteOn(1,69,.8f),128); p->processBlock(buffer,midi);
@@ -174,6 +211,28 @@ int main(int argc,char** argv) {
    const auto invalid=makeZip(R"({"formatVersion":1,"presets":[{"name":"Invalid","sample":"../escape.wav","parameters":{}}]})","../escape.wav");
    check(!bankProcessor->importUserBank(invalid,error),"Unsafe bank path was accepted");check(!library.getChildFile("Library/escape.wav").exists(),"ZIP escaped its bank folder");
    check(bankProcessor->userPresetNames().size()==1,"Failed import damaged existing bank");
+   // Purging removes installed files, embedded current audio and stale library
+   // references, while preserving source files and independent factory sounds.
+   const auto installed=library.getChildFile("Library");
+   check(installed.findChildFiles(juce::File::findDirectories,false).size()==1,"Repeat import left duplicate directories on disk");
+   auto damaged=installed.findChildFiles(juce::File::findDirectories,false)[0].getChildFile("samples/test.wav");check(damaged.deleteFile(),"Could not damage fixture");
+   check(bankProcessor->importUserBank(valid,error)&&damaged.getParentDirectory().getParentDirectory().exists()==false,"Reimport did not replace damaged bank");
+   check(installed.findChildFiles(juce::File::findDirectories,false).size()==1,"Repair left duplicate bank directories");
+   check(bankProcessor->applyUserPreset(0,error),"Repaired bank could not load");
+   const auto purgedId=bankProcessor->selectedSound();bankProcessor->toggleFavorite(purgedId);check(bankProcessor->assignSoundSlot(false,0),"Purge fixture slot failed");check(bankProcessor->copySound(error),"Purge clipboard fixture failed");
+   check(installed.findChildFiles(juce::File::findFiles,true,"*.wav")[0].deleteFile(),"Could not remove audio before purge");
+   check(bankProcessor->purgeUserBanks("User bank",error),"Bank purge failed");
+   check(installed.findChildFiles(juce::File::findFilesAndDirectories,true).isEmpty(),"Purge left bank files on disk");
+   check(bankProcessor->userPresetNames().isEmpty()&&!bankProcessor->isFavorite(purgedId)&&bankProcessor->selectedSound().isEmpty(),"Purge left stale browser entries");
+   check(bankProcessor->soundSlot(false,0)=="factory:0"&&bankProcessor->clipboardKind.load()==0&&bankProcessor->sampleFrames.load()==0,"Purge retained loaded audio or sound references");
+   check(valid.existsAsFile()&&bankProcessor->soundCatalog().size()==25,"Purge deleted source files or factory sounds");
+   bankProcessor->getStateInformation(saved);auto purgedTree=juce::ValueTree::fromXml(*juce::AudioProcessor::getXmlFromBinary(saved.getData(),int(saved.getSize())));
+   check(!purgedTree.hasProperty("sampleAudio")&&!purgedTree.hasProperty("kitAudio0"),"Purged audio still embedded in a new project snapshot");
+   check(bankProcessor->importUserBank(valid,error)&&bankProcessor->importUserBank(valid,error),"Import after purge failed");
+   check(bankProcessor->userPresetNames().size()==1&&installed.findChildFiles(juce::File::findDirectories,false).size()==1,"Import after purge duplicated files");
+   bankProcessor->state.getParameter("tapePlay")->setValueNotifyingHost(1);check(!bankProcessor->purgeUserBanks({},error)&&bankProcessor->userPresetNames().size()==1,"Purge ignored running tape");bankProcessor->state.getParameter("tapePlay")->setValueNotifyingHost(0);
+   check(bankProcessor->purgeUserBanks({},error),"Purge all failed");
+   check(extended->purgeUserBanks({},error)&&extended->kitPadPreview(23)[0]==0,"Kit purge failed");
   }
   // Browser metadata and independent edited sound slots survive project state.
   auto libraryProcessor=std::make_unique<PocketProcessor>(library.getChildFile("Catalog"));

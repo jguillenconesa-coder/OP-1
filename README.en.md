@@ -1,8 +1,10 @@
-# Pocket One 0.6.0
+# Pocket One 0.7.0
 
 An OP-1-inspired **VST3 instrument and standalone application**, written in C++17 with JUCE 8. Independent of Teenage Engineering; no original firmware, factory samples, graphics or branding are included. The interface uses a grey enclosure, dark animated display, blue/green/white/orange encoders and two rows of button keys.
 
 ![Actual JUCE editor](docs/interface.png)
+
+Version 0.7.0 adds four stable **Screen: Knob 1 Blue / 2 Green / 3 White / 4 Orange** host parameters. Map them once and the assignments follow the current display across sets 1–4. Old mappings to individual sound parameters keep their original destination. **PURGE BANK** permanently deletes the selected imported bank (or all imported banks with All banks selected), unloads its active audio, and clears its library references after confirmation. Factory sounds, source ZIPs and already saved projects are preserved. Close other instances first. Reimporting an identical manifest replaces validated copies and repairs missing audio without accumulating directories.
 
 ## Instruments and controls
 
@@ -42,7 +44,7 @@ This is a constrained loop recorder, not a full recreation of OP-1 tape. It now 
 
 See [Windows build/install instructions](docs/windows.md). Run `packaging\windows\build.cmd` on Windows with Visual Studio 2022 C++ tools, CMake, Git and NSIS 3.11+ installed. The installer is generated in `dist/`, installs the VST3 bundle to the standard Common Files folder, installs the standalone app/Start menu shortcut, and registers an uninstaller. The C++ runtime is statically linked.
 
-**Windows x64 installer:** `Pocket-One-0.6.0-Windows-x64-Setup.exe`. Eight Windows suites and installer/uninstaller checks pass under Wine, including actual VST3 loading and Common Controls manifest inspection. Six Linux suites pass. Native CI for the 0.4.0 SQLite fix also passed Windows/Linux/macOS, including Windows app startup and installer checks; this does not validate a native Ableton project. The installer remains unsigned. See [cross-build instructions](docs/windows-cross-build.md).
+**Windows x64 installer:** `Pocket-One-0.7.0-Windows-x64-Setup.exe`. Nine Windows suites and installer/uninstaller checks pass under Wine, including actual VST3 loading and Common Controls manifest inspection. Seven Linux suites pass. Native CI for the 0.4.0 SQLite fix also passed Windows/Linux/macOS, including Windows app startup and installer checks; this does not validate a native Ableton project. The installer remains unsigned. See [cross-build instructions](docs/windows-cross-build.md).
 
 ## Build from source
 
@@ -76,7 +78,7 @@ xvfb-run -a ./build/plugin_smoke_artefacts/Release/plugin_smoke "$PWD/docs/inter
 
 See [validation evidence and limitations](docs/validation.md) and [OTTO/TOP-1 design references](docs/references.md). No code or assets from those projects have been imported.
 
-Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.6.0`.
+Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.7.0`.
 
 ## Factory sounds
 
@@ -96,6 +98,6 @@ See the [complete button/browser guide](docs/buttons-and-browser.md): contextual
 
 Use **SEQ SETTINGS / SEQ: …** or **Shift + SEQ** for forward/reverse/pendulum/random patterns, held-note arpeggios, rate, gate, swing, length, velocity and a Euclidean rhythm mask. These independent implementations follow host position/tempo and save with the session. See [sequencer controls](docs/sequencers.md) and the [firmware research ledger](docs/firmware-analysis.md). No original firmware/resources are included.
 
-## 24-pad kits (0.6.0)
+## 24-pad kits
 
 The **KIT EDIT** panel selects/auditions 24 pads across C4–B5 and edits trim, gain, pitch, reverse and one-shot/gated playback. Load WAV/AIFF per pad; active kits are embedded in projects. Legacy eight-slot banks keep their original note mapping. Factory kits combine the existing Studio/Circuit/Dust resources in three groups of eight; no original OP-1 resources are bundled. [Kit guide](docs/kits.md).

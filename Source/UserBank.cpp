@@ -35,7 +35,7 @@ bool PocketProcessor::importUserBank(const juce::File& file,juce::String& error)
     if(file.getSize()>256000000) {error="Bank exceeds the 256 MB limit.";return false;}
     juce::ZipFile zip(file);if(zip.getNumEntries()<2||zip.getNumEntries()>512) {error="Invalid sound bank ZIP.";return false;}
     const int manifestIndex=zip.getIndexOfFileName("bank.json");
-    if(manifestIndex>=0&&zip.getEntry(manifestIndex)->uncompressedSize>=0&&zip.getEntry(manifestIndex)->uncompressedSize<=2000000){std::unique_ptr<juce::InputStream> manifestInput(zip.createStreamForEntry(manifestIndex));if(manifestInput){juce::MemoryBlock bytes;manifestInput->readIntoMemoryBlock(bytes,2000001);if(bytes.getSize()<=2000000){const auto manifestText=juce::String::fromUTF8(static_cast<const char*>(bytes.getData()),int(bytes.getSize()));for(const auto& installed:libraryDirectory.findChildFiles(juce::File::findDirectories,false))if(installed.getChildFile("bank.json").loadFileAsString()==manifestText){refreshUserPresets();return true;}}}}
+    if(manifestIndex<0){error="bank.json is missing.";return false;}
     auto destination=libraryDirectory.getNonexistentChildFile("Imported bank","",false);
     if(!destination.createDirectory()) {error="Cannot create the user sound library.";return false;}
     auto fail=[&](const juce::String& message){error=message;destination.deleteRecursively();return false;};
@@ -71,7 +71,58 @@ bool PocketProcessor::importUserBank(const juce::File& file,juce::String& error)
             if(!checked.contains(name)) {auto sample=readSample(destination.getChildFile(name),error);if(sample.frames.empty()) return fail("Cannot decode "+name+": "+error);checked.add(name);}
         }
     }
+    // Fully validate a fresh copy before replacing an identical manifest. This
+    // repairs missing/changed audio too, rather than treating it as installed.
+    const auto canonical=juce::JSON::toString(json,true);
+    for(const auto& installed:libraryDirectory.findChildFiles(juce::File::findDirectories,false)){
+        if(installed==destination||installed.isSymbolicLink())continue;
+        auto previous=installed.getChildFile("bank.json");
+        if(previous.getSize()>2000000||!previous.existsAsFile()||juce::JSON::toString(juce::JSON::parse(previous.loadFileAsString()),true)!=canonical)continue;
+        if(!installed.deleteRecursively(false)){refreshUserPresets();error="Bank validated, but an old copy could not be deleted. Close other instances and purge the bank before importing again.";return false;}
+    }
     refreshUserPresets();return true;
+}
+bool PocketProcessor::purgeUserBanks(const juce::String& name,juce::String& error) {
+    if(state.getRawParameterValue("tapePlay")->load()>.5f||inputCapturing.load()){error="Stop tape and input capture before purging banks.";return false;}
+    juce::StringArray removedIds;
+    for(const auto& p:userPresets)if(name.isEmpty()||p.bank==name)removedIds.addIfNotAlreadyThere(p.id);
+    bool success=true;
+    for(const auto& directory:libraryDirectory.findChildFiles(juce::File::findDirectories,false)){
+        if(directory.isSymbolicLink())continue;
+        const auto manifest=directory.getChildFile("bank.json");if(!manifest.existsAsFile()||manifest.getSize()>2000000)continue;
+        const auto json=juce::JSON::parse(manifest.loadFileAsString());if(int(json["formatVersion"])!=1)continue;
+        auto bankName=json["name"].toString();if(bankName.isEmpty())bankName="User bank";
+        if(name.isNotEmpty()&&name!=bankName)continue;
+        // A damaged/missing sample can disappear from a rescan while its audio
+        // is still embedded in the current project. Retire its identity too.
+        if(auto* presets=json["presets"].getArray())for(const auto& item:*presets){
+            auto path=item["sample"].toString();if(auto* kit=item["kit"].getArray())if(!kit->isEmpty())path=(*kit)[0].toString();
+            removedIds.addIfNotAlreadyThere("user:"+bankName+":"+item["name"].toString().substring(0,100)+":"+path.fromLastOccurrenceOf("/",false,false));
+        }
+        success=directory.deleteRecursively(false)&&success;
+    }
+    refreshUserPresets();
+    // Clear stale references even if an individual file could not be deleted.
+    const auto active=selectedSound();
+    const bool clearLoaded=removedIds.contains(active);
+    {const juce::ScopedLock lock(libraryStateLock);
+        for(const auto& id:removedIds)favorites.removeString(id);
+        for(int mode=0;mode<2;++mode)for(int slot=0;slot<8;++slot)if(removedIds.contains(soundSlotIds[size_t(mode)][size_t(slot)])){soundSlotIds[size_t(mode)][size_t(slot)]="factory:"+juce::String(mode==0?0:22);slotSettings[size_t(mode)][size_t(slot)]={};}
+        if(removedIds.contains(lastSynthSound))lastSynthSound="factory:0";
+        if(removedIds.contains(lastDrumSound))lastDrumSound="factory:22";
+        if(removedIds.contains(soundClipboardId)){soundClipboard={};soundClipboardId.clear();clipboardKind.store(0);}
+        if(clearLoaded){selectedSoundId.clear();for(auto& pad:kitNames)pad="Empty pad";}
+    }
+    if(clearLoaded){
+        pocket::Sample oldSample;pocket::Kit oldKit;
+        {const juce::ScopedLock lock(getCallbackLock());engine.swapSample(oldSample);engine.swapKit(oldKit,8);engine.reset();heldNotes.clear();seqNote=-1;sequenceNote.store(-1);}
+        publishSamplePreview({});for(int pad=0;pad<pocket::kitCapacity;++pad)publishPadPreview(pad,{});
+        sampleFrames.store(0);kitPads.store(8);currentFactoryPreset.store(-1);requestPanic();
+    }
+    currentUserPreset.store(-1);
+    if(!clearLoaded)for(size_t i=0;i<userPresets.size();++i)if(userPresets[i].id==active)currentUserPreset.store(int(i));
+    if(!success)error="Some bank files could not be deleted. Close other instances and retry PURGE BANK.";
+    return success;
 }
 bool PocketProcessor::applyUserPreset(int index,juce::String& error) {
     if(index<0||index>=int(userPresets.size())) {error="User preset no longer exists.";return false;}
