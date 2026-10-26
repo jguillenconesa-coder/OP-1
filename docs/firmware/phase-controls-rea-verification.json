@@ -1,0 +1,16 @@
+{
+  "evidence_id": "ev_8a8192797d9f393e5587503307e37bcdddd099d3c185cae1505d491b66e94809",
+  "operation": "inspect_sqlite_database",
+  "provider": {
+    "id": "sqlite",
+    "name": "REA SQLite database inspector",
+    "version": "SQLite 3.53.4"
+  },
+  "database_sha256": "be4572298fe9dc83b106d5c4eaf1cc972280d97f028f3eaebc0c76dc68ac9cf0",
+  "retained_full_evidence_sha256": "00248cd98c9b178cf453ece91694cef5cf4f5da73e6c00d164c9acb1178a0ffc",
+  "requested_row_limit": 1024,
+  "observed_rows": 169,
+  "phase_presets": 16,
+  "all_raw_phase_controls_match_python_reader": true,
+  "scope": "Database field extraction only; does not establish the runtime control route or sonic equivalence."
+}

@@ -1,0 +1,247 @@
+{
+  "firmware_sha256": "c5315218f825f143b415ca554516541898abee843d3a236df0b54c04e1fb13a9",
+  "database_sha256": "be4572298fe9dc83b106d5c4eaf1cc972280d97f028f3eaebc0c76dc68ac9cf0",
+  "mapping_status": "Raw stored knob words only; control routing/scaling, original frequency preparation, FX, envelope and LFO are not validated.",
+  "presets": [
+    {
+      "name": "bass phase",
+      "controls": [
+        31733,
+        29491,
+        26598,
+        19439
+      ],
+      "octave": -2,
+      "synth_version": 1,
+      "fx_type": "punch",
+      "fx_active": true,
+      "lfo_type": "value",
+      "lfo_active": true
+    },
+    {
+      "name": "bubble",
+      "controls": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "octave": 1,
+      "synth_version": 1,
+      "fx_type": "spring",
+      "fx_active": true,
+      "lfo_type": "tremolo",
+      "lfo_active": true
+    },
+    {
+      "name": "classic lfo",
+      "controls": [
+        32767,
+        29491,
+        0,
+        0
+      ],
+      "octave": 0,
+      "synth_version": 1,
+      "fx_type": "spring",
+      "fx_active": true,
+      "lfo_type": "value",
+      "lfo_active": true
+    },
+    {
+      "name": "hold me",
+      "controls": [
+        0,
+        29491,
+        0,
+        32767
+      ],
+      "octave": -2,
+      "synth_version": 1,
+      "fx_type": "cwo",
+      "fx_active": true,
+      "lfo_type": "value",
+      "lfo_active": true
+    },
+    {
+      "name": "jangle",
+      "controls": [
+        25600,
+        29491,
+        13311,
+        11264
+      ],
+      "octave": 0,
+      "synth_version": 1,
+      "fx_type": "grid",
+      "fx_active": true,
+      "lfo_type": "tremolo",
+      "lfo_active": true
+    },
+    {
+      "name": "kitt",
+      "controls": [
+        0,
+        29491,
+        0,
+        0
+      ],
+      "octave": 1,
+      "synth_version": 1,
+      "fx_type": "cwo",
+      "fx_active": true,
+      "lfo_type": "value",
+      "lfo_active": false
+    },
+    {
+      "name": "lil critter",
+      "controls": [
+        32767,
+        24371,
+        0,
+        32767
+      ],
+      "octave": -3,
+      "synth_version": 1,
+      "fx_type": "nitro",
+      "fx_active": true,
+      "lfo_type": "tremolo",
+      "lfo_active": true
+    },
+    {
+      "name": "pass band",
+      "controls": [
+        32767,
+        24371,
+        0,
+        32767
+      ],
+      "octave": -1,
+      "synth_version": 1,
+      "fx_type": "cwo",
+      "fx_active": true,
+      "lfo_type": "tremolo",
+      "lfo_active": true
+    },
+    {
+      "name": "pure",
+      "controls": [
+        0,
+        3046,
+        16368,
+        8175
+      ],
+      "octave": -2,
+      "synth_version": 1,
+      "fx_type": "spring",
+      "fx_active": false,
+      "lfo_type": "element",
+      "lfo_active": true
+    },
+    {
+      "name": "reflection",
+      "controls": [
+        0,
+        29491,
+        0,
+        17408
+      ],
+      "octave": -1,
+      "synth_version": 1,
+      "fx_type": "cwo",
+      "fx_active": true,
+      "lfo_type": "value",
+      "lfo_active": true
+    },
+    {
+      "name": "roar bass",
+      "controls": [
+        0,
+        8192,
+        19456,
+        14336
+      ],
+      "octave": -2,
+      "synth_version": 1,
+      "fx_type": "punch",
+      "fx_active": true,
+      "lfo_type": "value",
+      "lfo_active": true
+    },
+    {
+      "name": "rownd bass",
+      "controls": [
+        0,
+        29491,
+        0,
+        0
+      ],
+      "octave": -3,
+      "synth_version": 1,
+      "fx_type": "phone",
+      "fx_active": false,
+      "lfo_type": "bend",
+      "lfo_active": true
+    },
+    {
+      "name": "schain bass",
+      "controls": [
+        32767,
+        29491,
+        32767,
+        0
+      ],
+      "octave": -3,
+      "synth_version": 1,
+      "fx_type": "nitro",
+      "fx_active": true,
+      "lfo_type": "element",
+      "lfo_active": true
+    },
+    {
+      "name": "spring pad",
+      "controls": [
+        32767,
+        29491,
+        0,
+        0
+      ],
+      "octave": -1,
+      "synth_version": 1,
+      "fx_type": "spring",
+      "fx_active": true,
+      "lfo_type": "value",
+      "lfo_active": true
+    },
+    {
+      "name": "valentines",
+      "controls": [
+        0,
+        29491,
+        13311,
+        0
+      ],
+      "octave": 0,
+      "synth_version": 1,
+      "fx_type": "cwo",
+      "fx_active": true,
+      "lfo_type": "tremolo",
+      "lfo_active": false
+    },
+    {
+      "name": "werkin it",
+      "controls": [
+        5105,
+        0,
+        10214,
+        0
+      ],
+      "octave": -3,
+      "synth_version": 1,
+      "fx_type": "cwo",
+      "fx_active": true,
+      "lfo_type": "value",
+      "lfo_active": false
+    }
+  ]
+}

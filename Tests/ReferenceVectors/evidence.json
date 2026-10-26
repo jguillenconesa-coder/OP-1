@@ -51,6 +51,16 @@
       "bytes": 16386,
       "sha256": "2238d02061a26e91bb001ad53f7a1a0250d8fd7de93f6cd8db43e3293d5522e8",
       "matches_committed_fixture": true
+    },
+    "pd-stream-input.bin": {
+      "bytes": 1492992,
+      "sha256": "f8198a1ffa7ae21656d737ff959f7f038d29222534f61ddad98f01caab8da43b",
+      "matches_committed_fixture": true
+    },
+    "pd-stream-output.bin": {
+      "bytes": 626688,
+      "sha256": "4600067911da9581a451028323e0b2765e61a018754c6abbadecdda78bdafdef",
+      "matches_committed_fixture": true
     }
   },
   "tools": {
@@ -70,5 +80,22 @@
     "assembler": "GNU Binutils 2.44 bfin-elf",
     "linker": "GNU Binutils 2.44 bfin-elf",
     "simulator": "GNU GDB 13.1 Blackfin simulator"
+  },
+  "stream_scope": {
+    "blocks": 2304,
+    "samples": 294912,
+    "reset_sequences": 144,
+    "rates": [
+      44100,
+      48000,
+      96000
+    ],
+    "trajectories": [
+      "MIDI 60 steady",
+      "MIDI 48 to 60 linear semitone glide",
+      "MIDI 72, 8 Hz vibrato with 1 semitone depth"
+    ],
+    "raw_control_sets": 16,
+    "musical_mapping_verified": false
   }
 }

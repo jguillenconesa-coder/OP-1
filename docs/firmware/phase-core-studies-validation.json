@@ -1,0 +1,28 @@
+{
+  "presets": 16,
+  "unique_audio": 13,
+  "bytes": 5274171,
+  "frames_per_asset": 264600,
+  "sha256": "bcae5ff27031176ec642c3af8aae3d73ea0c2d2aea6b482b705b5425af5b503a",
+  "name": "Pocket-One-Phase-246-Core-Studies.zip",
+  "rate": 44100,
+  "root_midi": 60,
+  "seconds": 6,
+  "tail_fade_ms": 10,
+  "software": "Pocket One 0.7.0 or newer; SAMPLER with Clean Playback",
+  "bank_reproduction_byte_identical": true,
+  "bank_original_kernel_prefix_samples_compared": 32768,
+  "renderer_original_kernel_samples_compared": 98304,
+  "stream_samples_compared": 294912,
+  "stream_final_states_compared": 2304,
+  "raw_phase_controls_verified_by_rea": true,
+  "linux_dsp_and_renderer_tests": "passed",
+  "windows_dsp_and_renderer_tests": "passed under Wine",
+  "all_16_presets_play_and_state_restore": "passed",
+  "limitations": [
+    "Raw knob values are used directly; their original runtime routing/scaling remains unverified.",
+    "Not full original patches: envelope, FX, LFO, original octave setting and frequency provider are omitted.",
+    "Samples transpose by resampling; this is not native Phase synthesis.",
+    "Source sine loaded explicitly; original LUT-copy timing discrepancy remains unresolved on hardware."
+  ]
+}

@@ -10,6 +10,8 @@
 
 **Nuevo en 0.7.0:** asigna una sola vez los [cuatro knobs MIDI](docs/midi-controls.md) para los sets 1–4 y usa [PURGE BANK](docs/user-banks.md) para borrar y reimportar bancos sin duplicar archivos. La investigación DSP añade pruebas de operaciones aisladas frente al simulador Blackfin; los motores originales completos siguen pendientes.
 
+**Banco adicional:** [16 estudios del núcleo Phase / 13 WAV únicos](docs/phase-core-studies.md), compatibles con 0.7.0. Controles extraídos del firmware y renders contrastados con el núcleo original simulado; siguen siendo estudios experimentales sin el resto del preset original.
+
 ## Descargar
 
 | Paquete | Descarga |

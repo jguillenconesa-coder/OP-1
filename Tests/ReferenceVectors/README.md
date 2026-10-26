@@ -18,6 +18,8 @@ Inputs are synthetic. Numeric outputs were independently compared to
 | pd-transient-output.bin | 128 int16 samples + uint32 phase, secondary phase, counter, active | 8,192 blocks / 1,048,576 samples |
 | verified-sine.bin | 8,193 int16 mathematical sine entries, matched to LDR source including fills | 8,193 |
 | lut-copy-output.bin | int16 output of isolated original table-copy initializer on GNU simulator | 8,193 |
+| pd-stream-input.bin | 132 control bytes + 128 uint32 increments + uint32 reset flag, 648 bytes/block | 2,304 |
+| pd-stream-output.bin | 128 int16 samples + uint32 phase, secondary phase, counter, active | 294,912 samples + 2,304 final states |
 
 FM: the packed word and selector word both equal the counter, covering every
 16-bit value of each word, not all 2^32 independent pairs. A dummy table base
@@ -57,3 +59,23 @@ python scripts/verify-reference-dsp.py --ldr /private/OP1_vdk.ldr \
 The output must be a new directory outside this repository. It will contain
 private original instruction snippets; do not add it to releases. Normal CTest
 uses only the numeric fixtures and needs neither firmware nor GNU simulator.
+
+
+## Continuous streams and actual renderer (additional research)
+
+The stream suite carries state across 16 consecutive blocks per sequence. It
+uses the 16 raw Phase control records in `research/blackfin/phase-controls.json`,
+three host sample rates (44100, 48000, 96000), and three external NCO trajectories:
+MIDI 60 steady, MIDI 48→60 glide, and MIDI 72 with 8 Hz / 1 semitone vibrato.
+There are 144 original reset calls, 2,304 blocks and 294,912 compared samples.
+These are **stored knob words applied directly as experimental kernel inputs**;
+their original runtime routing/scaling remains unverified. REA independently
+confirmed their database extraction; see `docs/firmware/phase-controls-rea-verification.json`.
+The NCO trajectory is our test convention, not the original frequency provider.
+
+`pd_renderer` verifies the actual offline `pd_reference_render` executable
+against 98,304 samples from the steady segments (all 16 records × three rates ×
+2,048 frames). This checks its mathematical lookup generation, tuning convention,
+raw control binding, reset, PCM byte order and overwrite protection. The tests
+pass with native Linux and cross-built Windows executables under Wine.
+The simulator reproduction command above now verifies **twelve** fixture files.

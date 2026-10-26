@@ -1,5 +1,16 @@
 # Banco de referencia del firmware OP-1 246
 
+## Nuevo: estudios Phase
+
+[Pocket-One-Phase-246-Core-Studies.zip](Pocket-One-Phase-246-Core-Studies.zip)
+añade **16 presets / 13 WAV únicos** generados con la reconstrucción experimental
+del núcleo Pd. Funciona con **Pocket One 0.7.0 → BROWSE → IMPORT BANK** y conserva
+los bancos anteriores. Son renders muestreados de estudio; faltan la ruta de
+controles, envolventes, efectos y LFO originales. [Contenido, pruebas y límites](../../docs/phase-core-studies.md)
+· [SHA256](Phase-Core-Studies-SHA256SUMS.txt).
+
+## Fuentes de audio del firmware
+
 Contenido destinado al repositorio privado Tiny-one y al trabajo de referencia solicitado por su propietario. Los derechos del audio original corresponden a sus titulares; no se etiqueta como CC0 ni como AGPL.
 
 **Pocket-One-OP1-246-Reference.zip** contiene nueve instrumentos sampler y 14 kits de 24 pads (336 regiones). Es un banco de fuentes secas: no convierte los 160 presets de síntesis ni replica los efectos, envolventes, LFO, pitch/volumen por pad o modos del firmware.

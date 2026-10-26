@@ -117,8 +117,9 @@ estados secundarios activos/inactivos. Se ejercitan 130.485 cruces de ciclo
 principal y 77.472 secundarios en la reconstrucción.
 
 La coincidencia cubre estas condiciones y el modelo GNU, con la tabla fuente
-cargada de forma explícita. Faltan variaciones de incremento dentro del bloque,
-el proveedor de frecuencia/controles, presets, efectos, render de voz completo y
+cargada de forma explícita. La ampliación siguiente comprueba incrementos variables dentro del bloque.
+Siguen pendientes el proveedor de frecuencia/controles, presets completos,
+efectos, render de voz completo y
 comparación con el aparato. El hallazgo sobre la copia paralela refuerza ese
 límite: los vectores de un simulador no bastan para certificar el DSP físico.
 
@@ -126,3 +127,44 @@ Los 25 presets propios y el banco de 79 presets del usuario se conservan como
 material adicional. Las 23 referencias secas del firmware mantienen el banco
 separado **OP-1 firmware reference (local)**. Los futuros patches FM/Pd tendrán
 una categoría propia y no sustituirán estos bancos antes de validar su conversión.
+
+
+## Continuación: streams y banco de estudios Phase
+
+Se añaden **294.912 muestras y 2.304 estados finales** sin diferencias frente al
+núcleo original simulado, con estado conservado entre bloques e incrementos que
+cambian por muestra. Son 144 secuencias: 16 conjuntos de controles × tres rates
+(44,1/48/96 kHz) × nota fija/glide/vibrato. Cada secuencia llama al reset original
+y después procesa 16 bloques consecutivos. El total acumulado de los tres juegos
+Pd es **1.474.560 muestras**. No se incluyen dos veces los casos del renderizador,
+que reutilizan las secuencias de nota fija.
+
+REA 6.8.0, con su proveedor SQLite, vuelve a inspeccionar `synth_presets` del
+firmware: 169 filas, muestra completa sin truncamiento. Las 16 entradas Phase y
+sus cuatro palabras de control coinciden con el lector independiente.
+[Metadatos de esa verificación](firmware/phase-controls-rea-verification.json).
+Leer esos campos no demuestra su transformación antes del render; se mantienen
+identificados como **entradas crudas de investigación**.
+
+El nuevo programa offline `pd_reference_render` calcula PCM con nuestra
+reconstrucción y una convención NCO MIDI externa. El ejecutable coincide con
+98.304 muestras originales simuladas a tres rates, tanto en Linux como en
+Windows bajo Wine. Permite producir un [banco adicional de 16 estudios Phase](phase-core-studies.md),
+con 13 WAV únicos, sin sustituir presets previos ni activar este núcleo dentro
+del motor de producción. Los originales con iguales controles pueden diferir
+por ADSR/FX/LFO; aquí esas funciones quedan fuera y se declara su omisión.
+
+La ruta de frecuencia/control sigue abierta. Se ha delimitado además el payload
+L1 en `0xffa00000`, de 49.076 bytes, con flags bajos `0x2406`. Su desensamblado
+crudo contiene numerosos opcodes inválidos: no se asume que el mapa de payload
+sea una imagen de ejecución válida, ni se etiqueta como descifrado o
+inicialización completa. Antes de usar esa región para identificar funciones
+hay que establecer las transformaciones del cargador y el significado de los
+flags. La imagen/desensamblado permanecen fuera del repositorio.
+
+El banco se prueba importando y reproduciendo todas sus entradas en el plugin,
+y restaurando el sonido activo en otra instancia sin sus archivos instalados.
+Los 16 comienzos de WAV coinciden con los oráculos de nota fija; solo se añade
+un cierre de 10 ms al final. Dos ejecuciones del generador
+dan un ZIP con bytes idénticos con el mismo renderizador.
+[Validación y límites](firmware/phase-core-studies-validation.json).

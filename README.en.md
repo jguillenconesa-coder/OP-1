@@ -8,6 +8,12 @@ Version 0.7.0 adds four stable **Screen: Knob 1 Blue / 2 Green / 3 White / 4 Ora
 
 ## Instruments and controls
 
+[Additional Phase 246 core study bank](docs/phase-core-studies.md): 16 sample
+presets sharing 13 unique WAVs, compatible with 0.7.0. Raw stored controls are
+applied to the independently reconstructed Pd core. Original control routing,
+ADSR/FX/LFO/octave behavior and full voice equivalence remain unverified. The
+current factory/user banks and published installers are preserved.
+
 Eight-voice velocity-sensitive **FM**, **phase distortion**, **plucked string**, **sampler**, **drum** and **24-pad sample kit** engines. Select the engine above the display, use the factory-sound menu, or play MIDI and the on-screen keyboard. The arrow buttons transpose the keyboard in sound modes. Computer keyboard notes start on A when the keyboard component has focus. MIDI channels remain independent for note release/sustain, with a fixed +/-2 semitone pitch wheel range on FM, phase and sampler. The string engine's delay-line fundamental is not currently pitch-bent; its tonal overlay can be modulated.
 
 SYNTH/DRUM/TAPE/MIX select modes. T1 selects the engine page, T2 the envelope, T3 effects and T4 LFO. In tape/mixer mode T1–T4 select a track. SEQ reveals the 16-step editor. Shift + a sound slot 1–8 stores the edited sound; synth/drum assignments and favorites persist in project state. The four encoders change function with the selected page:

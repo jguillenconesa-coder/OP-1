@@ -31,7 +31,7 @@ def main():
     spec=importlib.util.spec_from_file_location('ldr_map',ROOT/'scripts/map-op1-ldr.py');mapper=importlib.util.module_from_spec(spec);spec.loader.exec_module(mapper)
     metadata,image=mapper.inspect(a.ldr.read_bytes());base=int(metadata['sdram_start'],16)
     out.mkdir(parents=True)
-    for folder in ['fm-probe','q15-probe','pd-probe','pd-full-probe','lut-probe']:(out/folder).mkdir()
+    for folder in ['fm-probe','q15-probe','pd-probe','pd-full-probe','lut-probe','pd-stream-probe']:(out/folder).mkdir()
     for folder,name,start,end in [('fm-probe','prefix.bin',0x019a23d4,0x019a2452),('q15-probe','multiply.bin',0x01a0bd1a,0x01a0bd1e),('pd-probe','kernel.bin',0x01a0bc5c,0x01a0be82),('pd-full-probe','kernel.bin',0x01a0bc5c,0x01a0beaa),('lut-probe','init.bin',0x01a49b1c,0x01a49b42)]:
         (out/folder/name).write_bytes(image[start-base:end-base])
     values=[-32768,-32767,-16384,-1,0,1,16384,32766,32767];pairs=[(x,y) for x in values for y in values];state=0x504f434b
@@ -78,14 +78,27 @@ def main():
         secondary=(random_word()^0x80000000)-0x80000000
         cases.append(struct.pack('<4h',*controls)+bytes(124)+struct.pack('<iIiII',phase,increment,secondary,i%9,i%3))
     (out/'pd-full-probe/inputs.bin').write_bytes(b''.join(cases))
+    stream=bytearray()
+    for patch in json.loads((ROOT/'research/blackfin/phase-controls.json').read_text())['presets']:
+        for rate in (44100,48000,96000):
+            for trajectory,note in enumerate((60,48,72)):
+                for block in range(16):
+                    increments=[]
+                    for frame in range(128):
+                        position=block*128+frame
+                        semitones=0 if trajectory==0 else 12*position/2047 if trajectory==1 else math.sin(2*math.pi*8*position/rate)
+                        frequency=440*2**((note-69+semitones)/12)
+                        increments.append(round(frequency/rate*2**32))
+                    stream+=struct.pack('<4h',*patch['controls'])+bytes(124)+struct.pack('<128II',*increments,int(block==0))
+    (out/'pd-stream-probe/inputs.bin').write_bytes(stream)
     templates=ROOT/'research/blackfin'
-    for folder,template,script,regions in [('fm-probe','fm-fields.s.in','flat.ld',['0xff904000,0x4000']),('q15-probe','multiply.s.in','flat.ld',[]),('pd-probe','pd-steady.s.in','pd.ld',['0xff800000,0x8000']),('pd-full-probe','pd-transient.s.in','pd.ld',['0xff800000,0x8000']),('lut-probe','lut-copy.s.in','lut.ld',[])]:
+    for folder,template,script,regions in [('fm-probe','fm-fields.s.in','flat.ld',['0xff904000,0x4000']),('q15-probe','multiply.s.in','flat.ld',[]),('pd-probe','pd-steady.s.in','pd.ld',['0xff800000,0x8000']),('pd-full-probe','pd-transient.s.in','pd.ld',['0xff800000,0x8000']),('lut-probe','lut-copy.s.in','lut.ld',[]),('pd-stream-probe','pd-stream.s.in','pd.ld',['0xff800000,0x8000'])]:
         path=out/folder;source=path/'probe.s';source.write_text((templates/template).read_text().replace('@WORK@',out.as_posix()))
         run([a.assembler,'-I',a.testutils,'-o',path/'probe.o',source]);run([a.linker,'-T',templates/script,'-o',path/'probe.elf',path/'probe.o'])
         command=[a.simulator,'--model','bf524','--memory-size','64M','--watch-cycles-int','300000000']
         for region in regions:command+=['--memory-region',region]
         with (path/'results.bin').open('wb') as stdout,(path/'sim.log').open('wb') as stderr:run(command+[path/'probe.elf'],stdout=stdout,stderr=stderr)
-    comparisons={'fm-fields.bin':'fm-probe/results.bin','q15-input.bin':'q15-probe/inputs.bin','q15-output.bin':'q15-probe/results.bin','pd-input.bin':'pd-probe/inputs.bin','pd-output.bin':'pd-probe/results.bin','synthetic-sine.bin':'pd-probe/table.bin','pd-transient-input.bin':'pd-full-probe/inputs.bin','pd-transient-output.bin':'pd-full-probe/results.bin','verified-sine.bin':'pd-full-probe/table.bin','lut-copy-output.bin':'lut-probe/results.bin'}
+    comparisons={'fm-fields.bin':'fm-probe/results.bin','q15-input.bin':'q15-probe/inputs.bin','q15-output.bin':'q15-probe/results.bin','pd-input.bin':'pd-probe/inputs.bin','pd-output.bin':'pd-probe/results.bin','synthetic-sine.bin':'pd-probe/table.bin','pd-transient-input.bin':'pd-full-probe/inputs.bin','pd-transient-output.bin':'pd-full-probe/results.bin','verified-sine.bin':'pd-full-probe/table.bin','lut-copy-output.bin':'lut-probe/results.bin','pd-stream-input.bin':'pd-stream-probe/inputs.bin','pd-stream-output.bin':'pd-stream-probe/results.bin'}
     result={'ldr_sha256':expected,'model':'GNU simulator BF524; user-mode explicit RAM; not hardware validation','artifacts':{},'tools':{str(x):digest(x) for x in [a.assembler,a.linker,a.simulator]}}
     for fixture,generated in comparisons.items():
         actual=out/generated;reference=ROOT/'Tests/ReferenceVectors'/fixture
@@ -96,5 +109,5 @@ def main():
     if copy_result!=expected_shifted:raise RuntimeError('LUT-copy timing differs from the recorded GNU simulator result; investigate before accepting new vectors')
     result['lut_source']={'entries':8193,'intersecting_fill_blocks':fill_count,'source_sha256':hashlib.sha256(table_source).hexdigest(),'matches_mathematical_sine':True,'simulator_initializer_shift_entries':1,'hardware_timing_verified':False}
     (out/'evidence.json').write_text(json.dumps(result,indent=2)+'\n')
-    print('PASS: reproduced all ten oracle files byte-for-byte; original instructions retained only in '+str(out))
+    print('PASS: reproduced all twelve oracle files byte-for-byte; original instructions retained only in '+str(out))
 if __name__=='__main__':main()

@@ -35,3 +35,8 @@
 ## 0.7.0
 
 Cuatro parámetros de knobs que siguen la página activa, estado de página persistente, PURGE BANK con borrado real y descarga del sonido activo, reimportación validada sin copias idénticas, y pruebas aisladas del DSP original con simulador Blackfin. [Detalles](releases/v0.7.0.md).
+
+
+## Investigación y banco adicional tras 0.7.0
+
+Se añaden streams Pd verificados con incrementos variables y estado entre bloques, renderizador offline contrastado, verificación de controles con REA y un banco de 16 estudios Phase con 13 WAV únicos. Funciona en el sampler de 0.7.0; los presets/bancos e instaladores anteriores se conservan. [Guía y límites](phase-core-studies.md).

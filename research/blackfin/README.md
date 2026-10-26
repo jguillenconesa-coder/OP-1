@@ -10,3 +10,11 @@ helper is not copied into this project or linked into Pocket One.
 The simulator runs bounded isolated programs with synthetic inputs and explicit
 RAM mappings, not OP-1 boot code, OS, drivers or a complete firmware image.
 [Formats, scope and limitations](../../Tests/ReferenceVectors/README.md).
+
+
+`pd-stream.s.in` preserves original kernel state across blocks and supplies
+per-sample increment trajectories; it calls original reset only at sequence
+boundaries. `phase-controls.json` records raw knob words and provenance from the
+operator-supplied firmware. The musical control path is not inferred from their
+presence. The independently generated study bank is documented in
+[phase-core-studies.md](../../docs/phase-core-studies.md).

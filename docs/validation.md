@@ -117,3 +117,28 @@ observan **cuatro callbacks fuera de plazo** y peor p99 de **21,21 %** del
 presupuesto, en esta VM compartida. Las operaciones de archivo se hacen fuera
 del callback. Son medidas sintéticas, no una garantía de cero dropouts ni una
 medida de ida y vuelta ASIO. [Datos](realtime-metrics-linux.json).
+
+
+## Investigación posterior a 0.7.0: estudios Phase
+
+Pasan las suites ampliadas `reference_dsp` y `pd_renderer` en Linux y Windows
+bajo Wine. Se incorporan 294.912 comparaciones de muestras con incrementos
+variables y 2.304 estados finales entre bloques consecutivos. El programa
+renderer real coincide en 98.304 muestras de nota fija con los oráculos; no
+sobrescribe archivos existentes. Los doce fixtures se reproducen byte a byte
+con instrucciones originales aisladas y entradas explícitas.
+
+REA y el lector independiente coinciden en los 16 registros Phase de una
+lectura completa de las 169 filas de `synth_presets`. No queda establecida la
+ruta original entre estos datos y los controles de render.
+
+El nuevo ZIP contiene 16 presets de estudio y 13 WAV físicos. Se verifica el
+formato PCM mono/44100/16-bit, seis segundos, raíz MIDI 60, cierre en cero y
+32.768 comparaciones de muestras frente a los oráculos: las primeras 2.048
+de cada una de las 16 entradas, que comparten 13 WAV. La suite del plugin importa/reproduce las 16 entradas con audio
+finito/no silencioso y restaura el sonido en otra instancia sin el banco. Dos
+generaciones del ZIP son idénticas. [Informe](firmware/phase-core-studies-validation.json).
+
+Estos cambios añaden herramientas/datos de investigación y un banco compatible
+con el instalador 0.7.0 existente. No modifican el motor de producción ni los
+binarios publicados; no se presenta una nueva medición de latencia o dropouts.
