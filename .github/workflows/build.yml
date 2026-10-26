@@ -52,9 +52,11 @@ jobs:
               if summary:
                   with open(summary, 'a', encoding='utf-8') as output:
                       output.write('### CTest diagnostics\n\n```text\n' + text + '\n```\n')
-              for section in text.split('----------------------------------------------------------'):
+              sections = text.split('----------------------------------------------------------')
+              for index, section in enumerate(sections):
                   if 'Test Failed.' in section:
-                      message = section[-6000:].replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+                      output = sections[index-1] if index else ''
+                      message = (output + section)[-10000:].replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
                       print('::error title=CTest failure::' + message)
           PYTESTLOG
       - name: Test Windows standalone startup
