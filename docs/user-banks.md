@@ -1,6 +1,6 @@
 # Bancos de muestras del usuario
 
-Desde **0.2.2**, pulsa **BANK** en la barra inferior y elige un ZIP de banco Pocket One. Espera a que termine la importación con el transporte parado; los presets se añaden al selector como **USER / nombre**. La biblioteca permanece en el equipo al cerrar y reabrir el plugin.
+En **0.3.0**, pulsa **BROWSE → IMPORT BANK** y elige un ZIP Pocket One. En 0.2.2 el botón se llama BANK. Espera a que termine la importación con el transporte parado; los presets aparecen en la biblioteca bajo el nombre del banco. Puedes buscar, filtrar y separar variantes de muestras únicas. La biblioteca permanece en el equipo al cerrar y reabrir el plugin.
 
 - Windows: `%APPDATA%\Pocket Instruments\Pocket One\Banks`.
 - Las sesiones y proyectos del DAW incorporan la muestra o las ocho muestras del kit activo, junto con `sampleRoot`. Se pueden abrir sin instalar de nuevo el banco.
@@ -27,3 +27,5 @@ Se han preparado **79 presets**, incluidos **dos kits**, usando **49 audios úni
 Los AIFF declaran `type: sampler`, `synth_version: 3` y audio estéreo; son instrumentos muestreados, no patches numéricos para los motores FM/PHASE/STRING. Los nombres y metadatos completos están en el manifiesto del banco entregado. DRAGSPEL A2 se asigna a MIDI 45; DRAGSPEL G3 a 55; SKOGSFIOL F3 a 53 y C4 a 60.
 
 El banco se ofrece ahora como [descarga directa del repositorio](../downloads/user-banks/README.md), después de que el enlace local del chat no permitiera descargarlo. No se etiqueta CC0: sus autores y condiciones de redistribución siguen pendientes de identificación. La infraestructura y los presets de parámetros propios sí forman parte del código público; el banco de fábrica original del proyecto sigue disponible con sus licencias.
+
+En 0.3.0, [buttons-and-browser.md](buttons-and-browser.md) explica el navegador, favoritos, slots y el botón ADD SAMPLES.

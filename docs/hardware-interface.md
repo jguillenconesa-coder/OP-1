@@ -25,3 +25,7 @@ Se consultó OTTO-1 en el commit `ba534c6c1ed93a6b15cd13a93287b9e8f6f8ca6b`:
 La implementación JUCE es propia: reactor FM y órbitas, deformación de fase, cuatro cuerdas vibrantes, waveform del sample con cursor, pads reactivos, indicador móvil ADSR, barrido LFO, ecos y carretes. El sampler y la cinta usan su posición real; la actividad/envolvente, voces, LFO y tiempo de audio se publican como un número acotado de atómicos al final del bloque. No se lee el buffer de muestra ni se bloquea el procesador desde el dibujo.
 
 La interfaz se actualiza a 30 fps y repinta la pantalla y el indicador, sin redibujar toda la carcasa en cada tick. Las formas y coordenadas se redibujaron para Pocket One; no se copiaron los assets ni el código de OTTO (MPL-2.0). Las animaciones de FM y cuerda son representaciones visuales, no mediciones físicas ni un analizador espectral. Los tests rasterizan las once vistas y verifican respuesta a cambios de telemetría.
+
+## Cambios de 0.3.0
+
+La distribución se amplió con SPLIT/LIFT/DROP, IN, COM, SEQ y el navegador. Las asignaciones y modos descritos arriba corresponden al diseño 0.2.2; la [guía actual de botones](buttons-and-browser.md) detalla sus funciones nuevas, páginas de mezcla/EQ/FX/salida y tape tricks.

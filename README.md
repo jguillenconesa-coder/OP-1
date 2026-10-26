@@ -1,26 +1,26 @@
-# Pocket One 0.2.2
+# Pocket One 0.3.0
 
 **Sintetizador VST3 y aplicación independiente inspirados en el Teenage Engineering OP-1.** Interfaz gris, pantalla animada, cuatro mandos azul/verde/blanco/naranja y teclado de dos octavas. Implementación independiente; no contiene firmware, muestras de fábrica ni gráficos originales.
 
-[English manual](README.en.md) · [Créditos](CREDITS.md) · [Licencia](LICENSE) · [Notas de versión](docs/releases/v0.2.2.md)
+[English manual](README.en.md) · [Créditos](CREDITS.md) · [Licencia](LICENSE) · [Notas de versión](docs/releases/v0.3.0.md)
 
 ![Interfaz y pantalla animada de Pocket One](docs/screen-animation.gif)
 
-[Captura estática](docs/interface.png) · [Distribución y animaciones inspiradas en OTTO](docs/hardware-interface.md)
+[Navegador de presets y muestras](docs/sound-browser.png) · [Guía de botones](docs/buttons-and-browser.md) · [Captura estática](docs/interface.png) · [Distribución y animaciones inspiradas en OTTO](docs/hardware-interface.md)
 
 ## Descargar
 
 | Paquete | Descarga |
 | --- | --- |
-| Instalador Windows 10/11 x64 | [Pocket-One-0.2.2-Windows-x64-Setup.exe](https://github.com/jguillenconesa-coder/OP-1/raw/refs/heads/main/downloads/v0.2.2/Pocket-One-0.2.2-Windows-x64-Setup.exe) |
-| Windows portable: aplicación y VST3 | [ZIP](downloads/v0.2.2/Pocket-One-0.2.2-Windows-x64-portable.zip) |
-| Linux x86_64: aplicación y VST3 | [TAR.GZ](downloads/v0.2.2/Pocket-One-0.2.2-linux-x86_64.tar.gz) |
-| Fuentes completas con JUCE | [Código fuente correspondiente](downloads/v0.2.2/Pocket-One-0.2.2-corresponding-source.tar.gz) |
-| Kit de compilación del proyecto | [ZIP](downloads/v0.2.2/Pocket-One-0.2.2-Windows-build-kit.zip) |
-| WAVs originales del banco de fábrica (CC0) | [ZIP de 28 muestras](downloads/v0.2.2/Pocket-One-0.2.2-Factory-Samples.zip) |
-| Integridad de las descargas | [SHA256SUMS.txt](downloads/v0.2.2/SHA256SUMS.txt) |
+| Instalador Windows 10/11 x64 | [Pocket-One-0.3.0-Windows-x64-Setup.exe](https://github.com/jguillenconesa-coder/OP-1/raw/refs/heads/main/downloads/v0.3.0/Pocket-One-0.3.0-Windows-x64-Setup.exe) |
+| Windows portable: aplicación y VST3 | [ZIP](downloads/v0.3.0/Pocket-One-0.3.0-Windows-x64-portable.zip) |
+| Linux x86_64: aplicación y VST3 | [TAR.GZ](downloads/v0.3.0/Pocket-One-0.3.0-linux-x86_64.tar.gz) |
+| Fuentes completas con JUCE | [Código fuente correspondiente](downloads/v0.3.0/Pocket-One-0.3.0-corresponding-source.tar.gz) |
+| Kit de compilación del proyecto | [ZIP](downloads/v0.3.0/Pocket-One-0.3.0-Windows-build-kit.zip) |
+| WAVs originales del banco de fábrica (CC0) | [ZIP de 28 muestras](downloads/v0.3.0/Pocket-One-0.3.0-Factory-Samples.zip) |
+| Integridad de las descargas | [SHA256SUMS.txt](downloads/v0.3.0/SHA256SUMS.txt) |
 
-También se ha configurado la creación de una [release de GitHub](https://github.com/jguillenconesa-coder/OP-1/releases) al publicar la etiqueta `v0.2.2`. Los archivos versionados de `downloads/v0.2.2` permiten descargarlos directamente desde el repositorio.
+También se ha configurado la creación de una [release de GitHub](https://github.com/jguillenconesa-coder/OP-1/releases) al publicar la etiqueta `v0.3.0`. Los archivos versionados de `downloads/v0.3.0` permiten descargarlos directamente desde el repositorio.
 
 **Versión preliminar.** El instalador no tiene firma digital. Se probaron los ejecutables Windows y su instalación/desinstalación bajo Wine; el CI nativo de 0.2.1 también pasó en Windows, Linux y macOS; queda pendiente probar el instrumento en un DAW Windows real. La release no incluye un instalador de macOS; CI genera sus artefactos de compilación.
 
@@ -28,7 +28,7 @@ También se ha configurado la creación de una [release de GitHub](https://githu
 
 1. Cierra el DAW y ejecuta el instalador. Requiere Windows 10/11 de 64 bits y permisos de administrador.
 2. Elige VST3, aplicación independiente o ambos. El VST3 se instala en `C:\Program Files\Common Files\VST3\Pocket One.vst3`.
-3. Abre tu DAW, vuelve a buscar plugins e inserta Pocket One en una pista de instrumento/MIDI. La aplicación independiente aparece en Inicio.
+3. Abre tu DAW, vuelve a buscar plugins e inserta Pocket One en una pista de instrumento/MIDI. La aplicación independiente aparece en Inicio. Los bancos importados de 0.2.2 siguen siendo compatibles.
 4. Para desinstalar, usa Configuración de Windows → Aplicaciones → Pocket One.
 
 La versión portable se extrae sin instalador; copia el paquete `.vst3` completo a una carpeta que tu DAW explore. Un binario Linux no funciona en un DAW de Windows. [Instrucciones detalladas](docs/windows.md).
@@ -36,7 +36,7 @@ La versión portable se extrae sin instalador; copia el paquete `.vst3` completo
 ## Qué incluye
 
 - **Seis modos y ocho voces:** FM, distorsión de fase, cuerda pulsada, sampler WAV/AIFF, batería sintética y kits de ocho muestras.
-- **Controles hardware:** modos SYNTH/DRUM/TAPE/MIX; T1 motor, T2 ADSR, T3 FX y T4 LFO; encoders y accesos de sonido 1–8.
+- **Controles hardware:** modos SYNTH/DRUM/TAPE/MIX; T1 motor, T2 ADSR, T3 FX y T4 LFO; accesos independientes SYNTH/DRUM; cinta con SPLIT/JOIN, LIFT/DROP, loop y tape tricks. MIX añade EQ y efectos de master.
 - **MIDI y automatización:** velocidad, sustain CC64, pitch bend en motores compatibles y sonidos iniciales.
 - **Secuenciador:** 16 pasos, edición de notas y seguimiento del tempo, posición y saltos del host.
 - **Cinta:** cuatro pistas mono, bucles de 4/8/16 segundos, grabación, overdub, mezcla, velocidad/reversa y exportación WAV de cuatro canales.
@@ -46,7 +46,7 @@ La versión portable se extrae sin instalador; copia el paquete `.vst3` completo
 
 ## Uso rápido
 
-Selecciona un motor y toca el teclado o envía MIDI. Las flechas cambian de octava en modos de sonido. Arrastra los mandos; el doble clic recupera el valor por defecto. T1–T4 cambian la función de los encoders. Shift + un botón 1–8 asigna el sonido seleccionado a ese acceso rápido.
+Abre **BROWSE**: filtra por banco/tipo, busca por nombre y distingue presets/variantes de muestras únicas. **LOAD SOUND** o doble clic carga; **AUDITION** permite preescuchar. Elige favoritos y asigna sonidos editados a 1–8 con Shift. Selecciona un motor y toca el teclado o envía MIDI. Las flechas cambian de octava en modos de sonido. Arrastra los mandos; el doble clic recupera el valor por defecto. T1–T4 cambian la función de los encoders. Shift + un botón 1–8 asigna el sonido seleccionado a ese acceso rápido.
 
 **Sampler:** elige SAMPLER → LOAD. Importa los primeros 16 segundos del WAV/AIFF; C4/MIDI 60 es la nota raíz. START y LENGTH recortan la ventana; LOOP repite mientras mantienes la nota. Las entradas estéreo se convierten a mono.
 
@@ -78,7 +78,7 @@ En Windows configura con `cmake -S . -B build -A x64`. `packaging\windows\build.
 
 ## Alcance, créditos y licencia
 
-Pocket One se aproxima a la distribución de controles y al flujo creativo del OP-1; **no es una emulación completa ni se ha demostrado equivalencia sonora**. Faltan cinta larga con edición/undo, grabación de entrada/micrófono, más motores y mejoras de antialiasing. No importa proyectos/presets originales. El fundamental del motor de cuerda no responde todavía a pitch bend.
+Pocket One se aproxima a la distribución de controles y al flujo creativo del OP-1; **no es una emulación completa ni se ha demostrado equivalencia sonora**. Faltan cinta larga de seis minutos, todos los secuenciadores originales, radio, data takes y más motores y mejoras de antialiasing. No importa proyectos/presets originales. El fundamental del motor de cuerda no responde todavía a pitch bend.
 
 [Créditos completos](CREDITS.md): Teenage Engineering como inspiración; OTTO/TOP-1 como referencias; JUCE, Steinberg y los proyectos de herramientas/bibliotecas utilizados. No hay afiliación ni recursos originales copiados.
 
@@ -88,8 +88,10 @@ Código original: **AGPL-3.0-only**, con [licencia completa](LICENSE). La distri
 
 25 presets originales, tres kits integrados de ocho pads y cuatro instrumentos muestreados. [Guía del banco y referencias de presets OP-1](docs/sound-bank.md).
 
-**BANK** importa un ZIP de banco local y añade los sonidos al selector USER. La colección preparada con los archivos aportados en la conversación contiene 79 presets, incluidos dos kits, y se entrega separada de las descargas públicas. [Uso, formato y generador de bancos](docs/user-banks.md).
+**BROWSE → IMPORT BANK** importa un ZIP y lo identifica por su banco. **ADD SAMPLES** añade archivos a la biblioteca. La colección de 79 presets y dos kits aportada por el usuario tiene [descarga directa](downloads/user-banks/README.md). El navegador ofrece variantes y vista de muestras únicas sin duplicarlas. Favoritos y slots se guardan con el proyecto. [Uso, formato y generador de bancos](docs/user-banks.md).
 
 ## Audio y latencia
 
 El plugin declara 0 muestras de latencia añadida. Las pruebas incluyen ocho voces, cinta/FX y buffers de 64/128/256 a 48/96 kHz, además de comprobación de heap en el callback. Consulta [medidas, configuración y límites](docs/realtime-audio.md): la prueba sintética no certifica ausencia de dropouts en Ableton. Usa ASIO en Live y comienza con 128 muestras a 48 kHz. Carga/guarda audio con el transporte parado.
+
+[Correspondencia completa de botones, combinaciones Shift y límites](docs/buttons-and-browser.md).

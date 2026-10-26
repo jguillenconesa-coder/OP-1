@@ -122,7 +122,7 @@ int main(int argc,char** argv) {
    };
    const auto valid=makeZip(R"({"formatVersion":1,"presets":[{"name":"Test bass","sample":"samples/test.wav","parameters":{"sampleRoot":45,"attack":0,"effect":0}}]})","samples/test.wav");
    bankProcessor->state.getParameter("tempo")->setValueNotifyingHost(.65f);const auto tempoBefore=bankProcessor->state.getRawParameterValue("tempo")->load();bankProcessor->steps[0].store(77);
-   check(bankProcessor->importUserBank(valid,error),"Valid bank import failed");check(bankProcessor->userPresetNames().size()==1,"Bank catalog missing");
+   check(bankProcessor->importUserBank(valid,error),"Valid bank import failed");check(bankProcessor->userPresetNames().size()==1,"Bank catalog missing");check(bankProcessor->importUserBank(valid,error),"Repeat bank import failed");check(bankProcessor->userPresetNames().size()==1,"Reimport duplicated the bank catalog");
    check(bankProcessor->applyUserPreset(0,error),"User preset selection failed");check(bankProcessor->state.getRawParameterValue("sampleRoot")->load()==45,"Sample root note was not applied");
    check(bankProcessor->state.getRawParameterValue("tempo")->load()==tempoBefore&&bankProcessor->steps[0].load()==77,"Sound preset changed tempo or pattern");
    auto reopened=std::make_unique<PocketProcessor>(library.getChildFile("Library"));check(reopened->userPresetNames().size()==1,"Bank did not persist across instances");
@@ -169,6 +169,8 @@ int main(int argc,char** argv) {
    check(changed>3,"OLED page did not respond to animation telemetry");
   }
   if(argc>1&&juce::String::fromUTF8(argv[1])!="--bank") {
+   if(argc>2){p->getStateInformation(saved);auto screenProcessor=std::make_unique<PocketProcessor>(library.getChildFile("Screen bank"));check(screenProcessor->importUserBank(juce::File(juce::String::fromUTF8(argv[2])),error),"Screenshot bank import failed");screenProcessor->setStateInformation(saved.getData(),int(saved.getSize()));p=std::move(screenProcessor);}
+
    p->prepareToPlay(48000,256);midi.clear();midi.addEvent(juce::MidiMessage::noteOn(1,69,.8f),0);p->processBlock(buffer,midi);midi.clear();
    std::unique_ptr<juce::AudioProcessorEditor> editor(p->createEditor());
    auto image=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);
@@ -176,6 +178,10 @@ int main(int argc,char** argv) {
    check(png.writeImageToStream(image,output),"Screenshot failed");
    auto frames=juce::File::getSpecialLocation(juce::File::tempDirectory).getChildFile("pocket-one-animation-preview");frames.createDirectory();
    for(int frame=0;frame<24;++frame) {for(int block=0;block<10;++block)p->processBlock(buffer,midi);auto preview=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);juce::FileOutputStream file(frames.getChildFile("frame-"+juce::String(frame).paddedLeft('0',2)+".png"));check(png.writeImageToStream(preview,file),"Animation preview failed");}
+   if(argc>2){for(const auto& entry:p->soundCatalog())if(entry.name.equalsIgnoreCase("crystal piano")&&entry.variant=="Dry"){check(p->loadSound(entry.id,error),"Screenshot sound load failed");break;}
+    for(auto* child:editor->getChildren())if(auto* button=dynamic_cast<juce::TextButton*>(child))if(button->getButtonText()=="SYNTH")button->onClick();
+    for(auto* child:editor->getChildren())if(auto* browser=dynamic_cast<SoundBrowser*>(child)){for(auto* field:browser->getChildren())if(field->getComponentID()=="sound-search")if(auto* search=dynamic_cast<juce::TextEditor*>(field)){search->setText("crystal",false);search->onTextChange();}browser->syncSelection();}
+    auto browserImage=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);juce::FileOutputStream browserOutput{juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("sound-browser.png")};check(png.writeImageToStream(browserImage,browserOutput),"Browser screenshot failed");}
    for(auto* child:editor->getChildren()) if(auto* button=dynamic_cast<juce::TextButton*>(child)) if(button->getButtonText()=="TAPE") button->onClick();
    auto tapeImage=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);
    juce::FileOutputStream tapeOutput{juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("tape.png")};

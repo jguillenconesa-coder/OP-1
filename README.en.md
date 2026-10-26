@@ -1,4 +1,4 @@
-# Pocket One 0.2.2
+# Pocket One 0.3.0
 
 An OP-1-inspired **VST3 instrument and standalone application**, written in C++17 with JUCE 8. Independent of Teenage Engineering; no original firmware, factory samples, graphics or branding are included. The interface uses a grey enclosure, dark animated display, blue/green/white/orange encoders and two rows of button keys.
 
@@ -8,7 +8,7 @@ An OP-1-inspired **VST3 instrument and standalone application**, written in C++1
 
 Eight-voice velocity-sensitive **FM**, **phase distortion**, **plucked string**, **sampler**, **drum** and **eight-pad sample kit** engines. Select the engine above the display, use the factory-sound menu, or play MIDI and the on-screen keyboard. The arrow buttons transpose the keyboard in sound modes. Computer keyboard notes start on A when the keyboard component has focus. MIDI channels remain independent for note release/sustain, with a fixed +/-2 semitone pitch wheel range on FM, phase and sampler. The string engine's delay-line fundamental is not currently pitch-bent; its tonal overlay can be modulated.
 
-SYNTH/DRUM/TAPE/MIX select modes. T1 selects the engine page, T2 the envelope, T3 effects and T4 LFO. In tape/mixer mode T1–T4 select a track. Shift reveals the 16-step editor and Shift + a sound slot 1–8 assigns the selected sound for quick recall. The four encoders change function with the selected page:
+SYNTH/DRUM/TAPE/MIX select modes. T1 selects the engine page, T2 the envelope, T3 effects and T4 LFO. In tape/mixer mode T1–T4 select a track. SEQ reveals the 16-step editor. Shift + a sound slot 1–8 stores the edited sound; synth/drum assignments and favorites persist in project state. The four encoders change function with the selected page:
 
 | Page | Blue | Green | White | Orange |
 | --- | --- | --- | --- | --- |
@@ -20,7 +20,7 @@ SYNTH/DRUM/TAPE/MIX select modes. T1 selects the engine page, T2 the envelope, T
 
 Double-click an encoder to restore its parameter default. Parameters are automatable in a DAW. The five original macros, delay time/feedback and drive use 12 ms smoothing; engine switches and track gains are immediate. The envelope macro scales attack/release in addition to the ENV page's independent ADSR controls. OUTPUT is the master level, affecting live sound and tape playback, and is smoothed over 5 ms.
 
-**Sampler:** choose SAMPLER, then LOAD a WAV/AIFF. Up to the first 16 seconds at 8–192 kHz are imported and stereo files are downmixed to mono. C4/MIDI 60 is the root. START and LENGTH trim the window; LOOP repeats it while the note is held. No microphone or incoming DAW audio recording is implemented. Empty sampler slots display a load prompt.
+**Sampler:** choose SAMPLER, then LOAD a WAV/AIFF. Up to the first 16 seconds at 8–192 kHz are imported and stereo files are downmixed to mono. C4/MIDI 60 is the root. START and LENGTH trim the window; LOOP repeats it while the note is held. IN monitors enabled host/standalone audio input; Shift + IN captures up to 16 seconds into the sampler. Configure/unmute the input device first. Empty sampler slots display a load prompt.
 
 **Drums:** C/G pitch classes trigger kick, D/E snare, and other pitch classes hi-hat. Tone, Color and the Envelope macro change pitch/noise/decay. Hits are one-shots. The separate KIT engine includes Studio, Circuit and Dust: three original eight-pad sample kits, mapped to MIDI 60–67 and common GM aliases.
 
@@ -36,13 +36,13 @@ Playback speed ranges from -2x to +2x, including reverse and freeze. Recording a
 
 **SAVE / OPEN** manage complete `.pocketone` sessions. DAW project state also embeds the sample, pattern and all four tape tracks, using 24-bit WAV compressed for storage. Original sample paths are not required. Restoring disarms tape recording. Save/load operations copy and encode audio and can briefly block processing; do them while transport is stopped. Standalone automatic persistence has not been established, so explicitly save before quitting.
 
-This is a constrained loop recorder, not a full recreation of OP-1 tape. It has no cut/lift/drop, undo, long disk-streamed tape, bounce, microphone/radio, or stereo panning. It is not compatible with original OP-1 presets/projects. There has been no measured hardware matching. High harmonic settings can alias; production-grade oversampling remains outstanding.
+This is a constrained loop recorder, not a full recreation of OP-1 tape. It now supports split/join, lift/drop, slide and one-edit undo. It still has no long disk-streamed tape, radio, hardware data takes or stereo panning. It is not compatible with original OP-1 presets/projects. There has been no measured hardware matching. High harmonic settings can alias; production-grade oversampling remains outstanding.
 
 ## Windows installer
 
 See [Windows build/install instructions](docs/windows.md). Run `packaging\windows\build.cmd` on Windows with Visual Studio 2022 C++ tools, CMake, Git and NSIS 3.11+ installed. The installer is generated in `dist/`, installs the VST3 bundle to the standard Common Files folder, installs the standalone app/Start menu shortcut, and registers an uninstaller. The C++ runtime is statically linked.
 
-**Windows x64 installer:** `Pocket-One-0.2.2-Windows-x64-Setup.exe`. Six Windows suites and installer/uninstaller checks pass under Wine, including actual VST3 loading and Common Controls manifest inspection. Four Linux suites pass. Native CI for 0.2.1 also passed Windows/Linux/macOS, including Windows app startup and installer checks; this does not validate a native Ableton project. The installer remains unsigned. See [cross-build instructions](docs/windows-cross-build.md).
+**Windows x64 installer:** `Pocket-One-0.3.0-Windows-x64-Setup.exe`. Six Windows suites and installer/uninstaller checks pass under Wine, including actual VST3 loading and Common Controls manifest inspection. Four Linux suites pass. Native CI for 0.2.1 also passed Windows/Linux/macOS, including Windows app startup and installer checks; this does not validate a native Ableton project. The installer remains unsigned. See [cross-build instructions](docs/windows-cross-build.md).
 
 ## Build from source
 
@@ -76,7 +76,7 @@ xvfb-run -a ./build/plugin_smoke_artefacts/Release/plugin_smoke "$PWD/docs/inter
 
 See [validation evidence and limitations](docs/validation.md) and [OTTO/TOP-1 design references](docs/references.md). No code or assets from those projects have been imported.
 
-Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.2.2`.
+Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.3.0`.
 
 ## Factory sounds
 
@@ -84,8 +84,10 @@ Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENS
 
 ## User banks, animations and realtime audio
 
-**BANK** imports a local Pocket One ZIP bank into the persistent USER sound list. Root notes are supported per sample and selected audio is embedded in DAW state. [User bank guide](docs/user-banks.md). The user-supplied 79-preset collection is delivered separately; its original audio is not published or relicensed with the factory samples.
+**BROWSE > IMPORT BANK** imports a local ZIP bank into a searchable library. Filter bank/type, preset variants, unique samples and favorites. ADD SAMPLES registers multiple WAV/AIFF files. The Loaded label remains separate from the browsing selection. Root notes are supported per sample and selected audio is embedded in DAW state. [User bank guide](docs/user-banks.md). The user-supplied 79-preset collection has a [direct download](downloads/user-banks/README.md); it is not relicensed as the original CC0 factory samples.
 
 The [hardware-style editor and OLED animations](docs/hardware-interface.md) use original JUCE geometry inspired by the supplied OP-1 reference and OTTO-1. [Animated preview](docs/screen-animation.gif).
 
 The processor reports **0 added latency samples**. The realtime test checks tracked heap activity and reports timing across 36 workloads. [Measurements and practical limits](docs/realtime-audio.md). A successful synthetic benchmark does not guarantee dropout-free operation on a particular driver/DAW; load/save/import audio with transport stopped.
+
+See the [complete button/browser guide](docs/buttons-and-browser.md): contextual tape tricks, master EQ/FX pages, input capture, shortcuts and differences from the original firmware.

@@ -1,6 +1,6 @@
 # Reproducible Windows cross build in the cloud
 
-The produced `dist/Pocket-One-0.2.2-Windows-x64-Setup.exe` contains native Windows x64 VST3 and standalone binaries, not Linux artifacts or an installer that compiles on the user's machine.
+The produced `dist/Pocket-One-0.3.0-Windows-x64-Setup.exe` contains native Windows x64 VST3 and standalone binaries, not Linux artifacts or an installer that compiles on the user's machine.
 
 Toolchain: clang-cl/lld 19.1.7, Microsoft's CRT 14.44 and Windows SDK 10.0.26100, JUCE 8.0.6, NSIS 3.11 (amd64 Unicode target). The C++ runtime is statically linked. MinGW is not supported by JUCE 8 and was not used to build this instrument.
 

@@ -16,6 +16,7 @@ void PocketLook::drawButtonText(juce::Graphics& g,juce::TextButton& button,bool 
         else {juce::Path shape;if(role==1){shape.addTriangle(x-5,y-8,x-5,y+8,x+8,y);g.fillPath(shape);}else {const float direction=role==3?-1.f:1.f;shape.startNewSubPath(x-direction*4,y-7);shape.lineTo(x+direction*4,y);shape.lineTo(x-direction*4,y+7);g.strokePath(shape,juce::PathStrokeType(1.5f));}}return;
     }
     const auto legend=button.getProperties()["legend"].toString();if(legend.isNotEmpty()){g.setColour(juce::Colour(0xff4f687a));g.setFont(juce::FontOptions(13));g.drawText(button.getButtonText(),0,8,button.getWidth(),18,juce::Justification::centred);g.setFont(juce::FontOptions(8));g.drawText(legend,0,27,button.getWidth(),13,juce::Justification::centred);return;}
+    if(button.getWidth()<40){g.setColour(juce::Colour(0xff536b7d));g.setFont(juce::FontOptions(9));g.drawFittedText(button.getButtonText(),button.getLocalBounds().reduced(2),juce::Justification::centred,2);return;}
     if(!button.getProperties().contains("modeIcon")) {juce::LookAndFeel_V4::drawButtonText(g,button,over,down);return;}
     const int mode=int(button.getProperties()["modeIcon"]);const float x=button.getWidth()*.5f,y=button.getHeight()*.5f;
     g.setColour(mode==0?hardwareColours[0]:mode==1?hardwareColours[1]:mode==2?hardwareColours[3]:juce::Colour(0xff627185));
@@ -113,15 +114,15 @@ PocketEditor::PocketEditor(PocketProcessor& p) : AudioProcessorEditor(p),process
     saveSession.onClick=[this]{chooseSession(true);}; loadSession.onClick=[this]{chooseSession(false);};
     saveSession.setTooltip("Save complete session: sound, sample, pattern and four tape tracks."); loadSession.setTooltip("Open a .pocketone session.");
     loadSample.onClick=[this]{chooseSample();}; exportTape.onClick=[this]{chooseExport();};
-    rewind.onClick=[this]{processor.rewindTape();}; clear.onClick=[this]{processor.clearTape();};
+    rewind.onClick=[this]{processor.rewindTape();}; clear.onClick=[this]{doTapeEdit("clear");};
     clear.setTooltip("Erase the selected tape track. Export or save your project first.");
-    octaveDown.onClick=[this]{if(mainMode>=2){if(shifted())processor.seekTape(std::max(0.f,processor.tapePosition.load()-240/processor.state.getRawParameterValue("tempo")->load()));}else setOctave(octave-1);};
-    octaveUp.onClick=[this]{if(mainMode>=2){if(shifted())processor.seekTape(processor.tapePosition.load()+240/processor.state.getRawParameterValue("tempo")->load());}else setOctave(octave+1);};
+    octaveDown.onClick=[this]{if(mainMode>=2){if(shifted())processor.seekTape(std::max(0.f,processor.tapePosition.load()-240/std::clamp(processor.effectiveTempo.load(),40.f,300.f)));}else setOctave(octave-1);};
+    octaveUp.onClick=[this]{if(mainMode>=2){if(shifted())processor.seekTape(processor.tapePosition.load()+240/std::clamp(processor.effectiveTempo.load(),40.f,300.f));}else setOctave(octave+1);};
     octaveDown.onStateChange=[this]{if(!octaveDown.isDown())processor.tapeSpool.store(0);else if(mainMode>=2&&!shifted())processor.tapeSpool.store(-5);};octaveUp.onStateChange=[this]{if(!octaveUp.isDown())processor.tapeSpool.store(0);else if(mainMode>=2&&!shifted())processor.tapeSpool.store(5);};
     slotButtons[3].onStateChange=[this]{processor.tapeBreak.store(mainMode>=2&&slotButtons[3].isDown());};slotButtons[5].onStateChange=[this]{processor.tapeChop.store(mainMode>=2&&slotButtons[5].isDown());};
     sequence.onClick=[this]{if(mainMode>=2&&shifted()){const float speed=processor.state.getRawParameterValue("tapeSpeed")->load();setParameter("tapeSpeed",-std::max(.1f,std::abs(speed)));setParameter("tapePlay",1);}};
     tapeRecord.setButtonText("REC");tapeRecord.setColour(juce::TextButton::textColourOffId,hardwareColours[3]);tapeRecord.setTooltip("Record to the selected tape track; starts tape playback.");
-    tapeRecord.onClick=[this]{if(tapeRecord.getToggleState()){auto* p=processor.state.getParameter("tapePlay");p->setValueNotifyingHost(1);selectMode(2);}};
+    tapeRecord.onClick=[this]{if(tapeRecord.getToggleState()){const bool armed=shifted();setParameter("tapePlay",armed?0:1);selectMode(2);if(armed){status.setText("Tape armed. Press PLAY to record.",juce::dontSendNotification);shiftKey.setToggleState(false,juce::dontSendNotification);}}};
     sequence.setButtonText("PLAY");panic.setButtonText("STOP");octaveDown.setButtonText("<");octaveUp.setButtonText(">");
     int role=0;for(auto* button:{&tapeRecord,&sequence,&panic,&octaveDown,&octaveUp})button->getProperties().set("transportIcon",role++);
     addAndMakeVisible(tapeTrack); tapeTrack.addItemList({"Track 1","Track 2","Track 3","Track 4"},1);
@@ -143,6 +144,7 @@ PocketEditor::PocketEditor(PocketProcessor& p) : AudioProcessorEditor(p),process
     sequence.setColour(juce::TextButton::buttonOnColourId,hardwareColours[1].darker());
     sequenceAttachment=std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(p.state,"sequencer",sequence);
     addAndMakeVisible(panic); panic.onClick=[this] {
+        if(processor.inputCapturing.load()){juce::String error;if(!processor.finishInputCapture(error))showError(error);else {mainMode=0;selectPage(0);}}
         processor.tapeSpool.store(0);processor.tapeBreak.store(false);processor.tapeChop.store(false);if(shifted())processor.seekTape(0);
         auto* param=processor.state.getParameter("sequencer"); param->beginChangeGesture(); param->setValueNotifyingHost(0); param->endChangeGesture();
         for(const char* id:{"tapePlay","tapeRecord"}) {auto* parameter=processor.state.getParameter(id); parameter->beginChangeGesture(); parameter->setValueNotifyingHost(0); parameter->endChangeGesture();}
@@ -189,8 +191,7 @@ void PocketEditor::selectMode(int mode) {
     mainMode=mode;
     if(mode>=2) selectPage(4);
     else {const int engineIndex=int(processor.state.getRawParameterValue("engine")->load());
-        if(mode==1&&engineIndex<4) {auto* p=processor.state.getParameter("engine");p->setValueNotifyingHost(p->convertTo0to1(5));}
-        if(mode==0&&engineIndex>=4) {auto* p=processor.state.getParameter("engine");p->setValueNotifyingHost(0);}
+        if((mode==1)!=(engineIndex>=4)){juce::String error;if(!processor.loadSound(processor.lastSound(mode==1),error))processor.applyPreset(mode==1?22:0);browser.syncSelection();}
         selectPage(0);
     }
 }
@@ -204,7 +205,7 @@ void PocketEditor::applySoundSlot(int slot) {
     if(shifted()){if(processor.assignSoundSlot(drums,slot))status.setText("Stored edited sound in "+juce::String(drums?"drum":"synth")+" slot "+juce::String(slot+1),juce::dontSendNotification);else showError("Load a sound before assigning a slot.");shiftKey.setToggleState(false,juce::dontSendNotification);return;}
     juce::String error;if(!processor.recallSoundSlot(drums,slot,error))showError(error);browser.syncSelection();
 }
-void PocketEditor::doTapeEdit(const juce::String& action){juce::String error;if(!(action=="copySound"?processor.copySound(error):action=="pasteSound"?processor.pasteSound(error):processor.tapeEdit(action,shifted(),error))){showError(error);return;}status.setText(action=="split"?(shifted()?"Joined adjacent takes":"Split take at tape head"):action=="lift"?(shifted()?"Lifted all four tracks":"Lifted take to clipboard"):action=="drop"?"Dropped take; clipboard can be reused":action=="sampler"?"Tape clipboard loaded into sampler":action=="copySound"?"Copied current sound and audio to temporary clipboard":action=="pasteSound"?"Restored copied sound; tape and mixer kept":"Undo / redo tape edit",juce::dontSendNotification);if(action=="sampler"){mainMode=0;selectPage(0);}repaint();}
+void PocketEditor::doTapeEdit(const juce::String& action){juce::String error;if(!(action=="copySound"?processor.copySound(error):action=="pasteSound"?processor.pasteSound(error):processor.tapeEdit(action,shifted(),error))){showError(error);return;}status.setText(action=="split"?(shifted()?"Joined adjacent takes":"Split take at tape head"):action=="lift"?(shifted()?"Lifted all four tracks":"Lifted take to clipboard"):action=="drop"?"Dropped take; clipboard can be reused":action=="sampler"?"Tape clipboard loaded into sampler":action=="copySound"?"Copied current sound and audio to temporary clipboard":action=="pasteSound"?"Restored copied sound; tape and mixer kept":action=="clear"?"Cleared selected track (undo available)":"Undo / redo tape edit",juce::dontSendNotification);if(action=="sampler"){mainMode=0;selectPage(0);}repaint();}
 void PocketEditor::applyTapeTrick(int slot){const bool alternate=shifted();const float position=processor.tapePosition.load(),duration=float(4<<int(processor.state.getRawParameterValue("tapeLength")->load()));
     if(slot==0){if(shifted())processor.seekTape(processor.state.getRawParameterValue("tapeLoopIn")->load());else {setParameter("tapeLoopIn",std::min(position,duration-.01f));if(processor.state.getRawParameterValue("tapeLoopOut")->load()<=position)setParameter("tapeLoopOut",duration);}}
     else if(slot==1){if(shifted())processor.seekTape(processor.state.getRawParameterValue("tapeLoopOut")->load()-.001f);else if(position>.001f){setParameter("tapeLoopOut",position);if(processor.state.getRawParameterValue("tapeLoopIn")->load()>=position)setParameter("tapeLoopIn",0);}}
@@ -214,7 +215,7 @@ void PocketEditor::applyTapeTrick(int slot){const bool alternate=shifted();const
     if(alternate)shiftKey.setToggleState(false,juce::dontSendNotification);
 }
 void PocketEditor::showComMenu(){juce::PopupMenu menu;menu.addItem(1,"Export stereo tape mix (WAV)");menu.addItem(2,"Export four raw tracks (WAV)");menu.addSeparator();menu.addItem(3,"Save complete session");menu.addItem(4,"Open complete session");juce::Component::SafePointer<PocketEditor> safe(this);menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(comKey),[safe](int choice){if(!safe)return;if(choice==1){safe->chooser=std::make_unique<juce::FileChooser>("Export stereo tape mix",juce::File{},"*.wav");safe->chooser->launchAsync(juce::FileBrowserComponent::saveMode|juce::FileBrowserComponent::canSelectFiles|juce::FileBrowserComponent::warnAboutOverwriting,[safe](const juce::FileChooser& fc){if(!safe||fc.getResult()==juce::File{})return;juce::String error;if(!safe->processor.exportMix(fc.getResult().withFileExtension("wav"),error))safe->showError(error);});}else if(choice==2)safe->chooseExport();else if(choice==3)safe->chooseSession(true);else if(choice==4)safe->chooseSession(false);});}
-bool PocketEditor::keyPressed(const juce::KeyPress& key){if(dynamic_cast<juce::TextEditor*>(juce::Component::getCurrentlyFocusedComponent()))return false;const int code=key.getKeyCode();if(code==juce::KeyPress::spaceKey){sequence.triggerClick();return true;}if(code==juce::KeyPress::leftKey||code==juce::KeyPress::rightKey){const int direction=code==juce::KeyPress::leftKey?-1:1;if(mainMode>=2)processor.seekTape(std::max(0.f,processor.tapePosition.load()+direction*(shifted()?240/processor.state.getRawParameterValue("tempo")->load():.5f)));else setOctave(octave+direction);return true;}return false;}
+bool PocketEditor::keyPressed(const juce::KeyPress& key){if(dynamic_cast<juce::TextEditor*>(juce::Component::getCurrentlyFocusedComponent()))return false;const int code=key.getKeyCode();if(code==juce::KeyPress::spaceKey){sequence.triggerClick();return true;}if(code==juce::KeyPress::leftKey||code==juce::KeyPress::rightKey){const int direction=code==juce::KeyPress::leftKey?-1:1;if(mainMode>=2)processor.seekTape(std::max(0.f,processor.tapePosition.load()+direction*(shifted()?240/std::clamp(processor.effectiveTempo.load(),40.f,300.f):.5f)));else setOctave(octave+direction);return true;}return false;}
 void PocketEditor::setOctave(int value) {
     octave=juce::jlimit(-2,1,value); const int base=60+octave*12;
     keyboard.setAvailableRange(base,base+23); keyboard.setLowestVisibleKey(base); keyboard.setKeyPressBaseOctave(base/12);

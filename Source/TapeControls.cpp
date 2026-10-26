@@ -11,7 +11,7 @@ bool PocketProcessor::tapeEdit(const juce::String& action,bool shifted,juce::Str
         if(action=="split")ok=tape.split(track,shifted,seconds);
         else if(action=="lift")ok=tape.lift(track,shifted,seconds,state.getRawParameterValue("tapeLoop")->load()>.5f);
         else if(action=="drop")ok=tape.drop(track,seconds);
-        else if(action=="undo")ok=tape.undo();
+        else if(action=="undo")ok=tape.undo();else if(action=="clear"){tape.clear(track);ok=true;}
         tapePosition.store(float(tape.getPosition()));}
     if(ok&&action=="lift")clipboardKind.store(1);
     if(!ok)error=action=="drop"?"The tape clipboard is empty or the head is at the end.":action=="undo"?"There is no tape edit to undo.":"No take boundary or audio range is available here.";return ok;

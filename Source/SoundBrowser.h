@@ -27,7 +27,7 @@ private:
     juce::TextEditor search;
     juce::ListBox list{"Sound results",this};
     juce::TextButton load{"LOAD SOUND"},preview{"AUDITION"},favorite{"FAVORITE"},importBank{"IMPORT BANK"},importSamples{"ADD SAMPLES"};
-    juce::Label details,count;
+    juce::Label details,count,activeSound;
     juce::String selectedId;
     int auditionNote=-1;uint64_t auditionGeneration=0;
     juce::Slider root;

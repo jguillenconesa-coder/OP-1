@@ -1,6 +1,6 @@
 # Descargas versionadas
 
-**Windows: utiliza [v0.2.2](v0.2.2)**. Añade la interfaz hardware animada, bancos de usuario y mejoras de audio. Mantiene la corrección del ordinal 345 de [v0.2.1](v0.2.1).
+**Windows: utiliza [v0.3.0](v0.3.0)**. Añade el navegador organizado, botones de edición de cinta, tape tricks, captura de entrada y páginas de mezcla/master. Mantiene la corrección del ordinal 345 de [v0.2.1](v0.2.1).
 
 Se incluyen instalador Windows x64, ZIP portable, paquete Linux, kit de compilación, fuentes completas con JUCE y `SHA256SUMS.txt`. Los archivos se publican también en GitHub Releases. Comprueba hashes con `sha256sum --check SHA256SUMS.txt` o `Get-FileHash -Algorithm SHA256`.
 
@@ -10,4 +10,4 @@ Son versiones preliminares sin firma digital. La comprobación bajo Wine no sust
 
 ## Banco de las muestras del usuario
 
-[Descargar 79 presets y dos kits](user-banks/README.md). Requiere Pocket One 0.2.2 o posterior: BANK → seleccionar ZIP sin descomprimir.
+[Descargar 79 presets y dos kits](user-banks/README.md). Requiere Pocket One 0.2.2 o posterior: BROWSE → IMPORT BANK → seleccionar ZIP sin descomprimir (en 0.2.2: BANK).

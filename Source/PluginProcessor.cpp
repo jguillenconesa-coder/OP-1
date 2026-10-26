@@ -110,6 +110,7 @@ void PocketProcessor::processBlock(juce::AudioBuffer<float>& buffer,juce::MidiBu
         hostPlaying=pos->getIsPlaying(); running=running&&hostPlaying;
         if(auto beat=pos->getPpqPosition()) {ppq=*beat; hostPosition=true;}
     }
+    bpm=std::isfinite(bpm)?std::clamp(bpm,40.0,300.0):110;effectiveTempo.store(float(bpm),std::memory_order_relaxed);
     if(running&&!wasSequencing) {clock=0; step=0; lastHostStep=-1;}
     if(!running&&wasSequencing) {if(seqNote>=0) engine.noteOff(seqNote,17); seqNote=-1; playhead.store(-1); lastHostStep=-1;}
     wasSequencing=running;

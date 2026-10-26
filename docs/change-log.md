@@ -1,3 +1,11 @@
+# 0.3.0
+
+- Replaced the flat sound menu with a searchable bank/type/variant/favorite browser and unique-sample view, source metadata, explicit load and audition.
+- Added persistent independent synth/drum sound slots with edited parameter settings, stable bank IDs, duplicate import detection and multi-file sample import.
+- Connected contextual tape tricks, split/join, lift/drop, clipboard-to-sampler, slide and undo. Recorded take boundaries use preallocated storage.
+- Added master EQ/drive/echo pages, record/input/click levels, metronome, host-tempo bar jumps, monitored input and sampler capture.
+- COM renders the tape mix through master processing or exports raw tracks. Expanded validation of catalog, slots, input, DSP, OLED and realtime heap behavior.
+
 # 0.2.2
 
 - Rebuilt the editor around the supplied hardware layout, raised key caps, mode icons, T1–T4, sound slots, transport and tap tempo.

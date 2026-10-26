@@ -34,6 +34,8 @@ void PocketProcessor::refreshUserPresets() {
 bool PocketProcessor::importUserBank(const juce::File& file,juce::String& error) {
     if(file.getSize()>256000000) {error="Bank exceeds the 256 MB limit.";return false;}
     juce::ZipFile zip(file);if(zip.getNumEntries()<2||zip.getNumEntries()>512) {error="Invalid sound bank ZIP.";return false;}
+    const int manifestIndex=zip.getIndexOfFileName("bank.json");
+    if(manifestIndex>=0&&zip.getEntry(manifestIndex)->uncompressedSize>=0&&zip.getEntry(manifestIndex)->uncompressedSize<=2000000){std::unique_ptr<juce::InputStream> manifestInput(zip.createStreamForEntry(manifestIndex));if(manifestInput){juce::MemoryBlock bytes;manifestInput->readIntoMemoryBlock(bytes,2000001);if(bytes.getSize()<=2000000){const auto manifestText=juce::String::fromUTF8(static_cast<const char*>(bytes.getData()),int(bytes.getSize()));for(const auto& installed:libraryDirectory.findChildFiles(juce::File::findDirectories,false))if(installed.getChildFile("bank.json").loadFileAsString()==manifestText){refreshUserPresets();return true;}}}}
     auto destination=libraryDirectory.getNonexistentChildFile("Imported bank","",false);
     if(!destination.createDirectory()) {error="Cannot create the user sound library.";return false;}
     auto fail=[&](const juce::String& message){error=message;destination.deleteRecursively();return false;};

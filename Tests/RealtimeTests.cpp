@@ -32,6 +32,7 @@ int main(int argc,char** argv) {
   for(double rate:{48000.,96000.}) for(int block:{64,128,256}) for(int preset:presets) {
    p->applyPreset(preset);p->prepareToPlay(rate,block);
    for(auto item:{std::pair{"tapePlay",1.f},{"tapeRecord",1.f},{"tapeOverdub",1.f},{"lfoDepth",.35f},{"drive",.7f},{"effect",.7f},{"sampleLoop",1.f},{"metronome",1.f},{"masterDrive",.6f},{"masterEcho",.3f},{"eqLow",.25f}}) p->state.getParameter(item.first)->setValueNotifyingHost(item.second);
+   juce::String captureError;if(!p->startInputCapture(captureError))throw std::runtime_error(captureError.toStdString());
    juce::AudioBuffer<float> audio(2,block);juce::MidiBuffer midi;midi.ensureSize(16384);
    for(int note:{48,52,55,59,60,64,67,72})midi.addEvent(juce::MidiMessage::noteOn(1,note,.8f),0);
    p->processBlock(audio,midi);midi.clear();for(int i=0;i<64;++i)p->processBlock(audio,midi);
@@ -51,7 +52,7 @@ int main(int argc,char** argv) {
    auto result=std::make_unique<juce::DynamicObject>();result->setProperty("preset",preset);result->setProperty("rate",rate);result->setProperty("block",block);result->setProperty("deadlineUs",deadline);result->setProperty("medianUs",times[times.size()/2]);result->setProperty("p99Us",times[size_t(times.size()*.99)]);result->setProperty("maxUs",times.back());result->setProperty("deadlineOverruns",int(std::count_if(times.begin(),times.end(),[&](double value){return value>deadline;})));result->setProperty("heapCalls",0);measurements.add(juce::var(result.release()));
   }
   if(argc>1) {juce::File output(juce::String::fromUTF8(argv[1]));if(!output.replaceWithText(juce::JSON::toString(juce::var(measurements))))throw std::runtime_error("Cannot write realtime metrics");}
-  std::cout<<"PASS: 36 realtime workloads, 8 voices + MIDI/GUI notes + tape/FX/LFO; no tracked callback heap calls; reported latency 0 samples\n";
+  std::cout<<"PASS: 36 realtime workloads, 8 voices + MIDI/GUI/SysEx + tape/master FX/EQ/LFO + input capture; no tracked callback heap calls; reported latency 0 samples\n";
   // Timing remains diagnostic: OS scheduling on shared CI cannot certify a DAW deadline.
  }catch(const std::exception& error){tracking=false;std::cerr<<error.what()<<'\n';return 1;}
 }

@@ -39,6 +39,7 @@ public:
     std::vector<SoundInfo> soundCatalog() const;
     bool loadSound(const juce::String& id,juce::String& error);
     juce::String selectedSound() const;
+    juce::String lastSound(bool drums) const;
     bool isFavorite(const juce::String&) const;
     void toggleFavorite(const juce::String&);
     bool assignSoundSlot(bool drums,int slot);
@@ -65,6 +66,7 @@ public:
     juce::AudioProcessorValueTreeState state;
     juce::MidiKeyboardState keyboard;
     std::array<std::atomic<float>,256> scope{};
+    std::atomic<float> effectiveTempo{110};
     std::atomic<int> playhead{-1},lastNote{60};
     std::atomic<float> tapePosition{0};
     std::atomic<int> sampleFrames{0};
@@ -84,7 +86,7 @@ private:
     bool reflectingHostNotes=false;
     struct UserPreset {juce::String name,id,bank,source;juce::File sample;std::array<juce::File,8> kit;juce::var parameters;bool isKit=false;};
     mutable juce::CriticalSection libraryStateLock;
-    juce::String selectedSoundId;
+    juce::String selectedSoundId,lastSynthSound="factory:0",lastDrumSound="factory:22";
     juce::StringArray favorites;
     std::array<std::array<juce::String,8>,2> soundSlotIds;
     std::array<std::array<juce::ValueTree,8>,2> slotSettings;
