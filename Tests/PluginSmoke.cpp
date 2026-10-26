@@ -11,6 +11,9 @@ int main(int argc,char** argv) {
  try {
   juce::ScopedJuceInitialiser_GUI init;
   auto p=std::make_unique<PocketProcessor>(); p->prepareToPlay(48000,256);
+  juce::StringArray parameterNames;
+  for(auto* parameter:p->getParameters()){const auto name=parameter->getName(100);check(!name.isEmpty()&&name.contains(":"),"Host parameter lacks a descriptive category");check(!parameterNames.contains(name),"Ambiguous duplicate MIDI mapping names");parameterNames.add(name);}
+  check(p->state.getParameter("volume")->getName(100)=="Output: Volume"&&p->state.getParameter("pad24_pitch")->getName(100)=="Pad 24: Pitch","MIDI mapping parameter names regressed");
   juce::AudioBuffer<float> buffer(2,256); juce::MidiBuffer midi;
   // A timestamped note must not sound before its sample offset.
   midi.addEvent(juce::MidiMessage::noteOn(1,69,.8f),128); p->processBlock(buffer,midi);

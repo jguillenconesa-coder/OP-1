@@ -11,6 +11,7 @@ import tarfile
 import tempfile
 import unittest
 import zlib
+from functools import reduce
 
 spec = importlib.util.spec_from_file_location('inventory', Path(__file__).resolve().parents[1]/'scripts/analyze-op1-firmware.py')
 module = importlib.util.module_from_spec(spec)
@@ -63,6 +64,21 @@ class InventoryTests(unittest.TestCase):
                 source = self.fixture(Path(d), name, link)
                 with self.assertRaises(ValueError):
                     module.inspect(source)
+
+class LoaderMapTests(unittest.TestCase):
+    def test_headers_fill_and_rejections(self):
+        spec = importlib.util.spec_from_file_location('ldr_map', Path(__file__).resolve().parents[1]/'scripts/map-op1-ldr.py')
+        mapper = importlib.util.module_from_spec(spec);spec.loader.exec_module(mapper)
+        def block(address, payload, flags=0xad000006, count=None):
+            header=bytearray(struct.pack('<4I', flags,address,len(payload) if count is None else count,0))
+            header[2]^=reduce(lambda a,b:a^b,header,0)
+            return bytes(header)+payload
+        data=block(0x01000000,b'abcd')+block(0x01000004,b'',0xad000106,32)+block(0x01000008,b'ef')
+        report,image=mapper.inspect(data)
+        self.assertEqual(report['block_count'],3);self.assertEqual(report['fill_blocks'],1)
+        self.assertEqual(report['mapped_payload_bytes'],6);self.assertEqual(image,b'abcd'+bytes(4)+b'ef')
+        for invalid in [data[:-1],bytes([data[0]^1])+data[1:]]:
+            with self.assertRaises(ValueError):mapper.inspect(invalid)
 
 if __name__ == '__main__':
     unittest.main()

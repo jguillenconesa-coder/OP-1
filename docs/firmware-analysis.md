@@ -72,3 +72,7 @@ rea inspect-sqlite-database /ruta/extraida/content/op1_factory.db --schema-scope
 No se incluye el firmware, sus RAW, gráficos o bases completas en los instaladores ni en los archivos fuente publicados. Los motores y recursos propios de Pocket One mantienen sus licencias anteriores.
 
 Referencias: [REA y su guía de firmware](https://github.com/morluto/rea/blob/main/docs/firmware-analysis.md), [op1repacker: documentación del contenedor CRC/LZMA/TAR](https://github.com/op1hacks/op1repacker), manual OP-1 v2.2 proporcionado por el usuario. Las herramientas se usaron para investigar; no se incorporó su código al DSP.
+
+## Continuación del estudio DSP
+
+Después de este inventario se ha preparado un mapa de cabeceras LDR y desensamblado Blackfin independiente. Se han localizado referencias a unidades FM/Pd, sin recuperar todavía sus algoritmos. [Avances, direcciones y límites](dsp-research.md).

@@ -57,35 +57,88 @@ void PocketProcessor::updateKeyboardDisplay() {
 }
 juce::AudioProcessorValueTreeState::ParameterLayout PocketProcessor::layout() {
     juce::AudioProcessorValueTreeState::ParameterLayout p;
-    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"engine",1},"Engine",juce::StringArray{"FM","PHASE","STRING","SAMPLER","DRUM","KIT"},0));
-    auto number=[&](const char* id,float low,float high,float value){p.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{id,1},id,low,high,value));};
-    auto flag=[&](const char* id){p.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{id,1},id,false));};
+    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"engine",1},"Sound: Engine",juce::StringArray{"FM","PHASE","STRING","SAMPLER","DRUM","KIT"},0));
+    const auto name=[](const char* id)->juce::String{
+        static const std::pair<const char*,const char*> names[]={
+            {"tone","Sound: Tone"},
+            {"color","Sound: Color"},
+            {"envelope","Sound: Envelope Macro"},
+            {"effect","Sound FX: Echo Mix"},
+            {"volume","Output: Volume"},
+            {"attack","Envelope: Attack"},
+            {"decay","Envelope: Decay"},
+            {"sustain","Envelope: Sustain"},
+            {"release","Envelope: Release"},
+            {"lfoDepth","LFO: Depth"},
+            {"delayFeedback","Sound FX: Echo Feedback"},
+            {"drive","Sound FX: Drive"},
+            {"sampleRoot","Sampler: Root Note"},
+            {"lfoRate","LFO: Rate"},
+            {"delayTime","Sound FX: Echo Time"},
+            {"sequencer","Sequencer: Run"},
+            {"sampleLoop","Sampler: Loop"},
+            {"tapePlay","Tape: Play"},
+            {"tapeRecord","Tape: Record Arm"},
+            {"tapeOverdub","Tape: Overdub"},
+            {"eqLow","Master EQ: Low Gain"},
+            {"eqMid","Master EQ: Mid Gain"},
+            {"eqHigh","Master EQ: High Gain"},
+            {"eqMix","Master EQ: Mix"},
+            {"masterDrive","Master FX: Drive"},
+            {"masterEcho","Master FX: Echo Mix"},
+            {"masterDelayTime","Master FX: Echo Time"},
+            {"masterFeedback","Master FX: Echo Feedback"},
+            {"clickVolume","Metronome: Level"},
+            {"inputMonitor","Input: Monitor"},
+            {"inputGain","Input: Gain"},
+            {"tapeRecordGain","Tape: Record Gain"},
+            {"tapeLoop","Tape: Loop Enable"},
+            {"metronome","Metronome: Enable"},
+            {"tapeLoopIn","Tape: Loop In"},
+            {"tapeLoopOut","Tape: Loop Out"},
+            {"tempo","Sequencer: Internal Tempo"},
+            {"tapeSpeed","Tape: Playback Speed"},
+            {"seqEuclidean","Sequencer: Euclidean Enable"},
+            {"seqGate","Sequencer: Gate"},
+            {"seqSwing","Sequencer: Swing"},
+            {"seqVelocity","Sequencer: Note Velocity"},
+            {"track1","Tape: Track 1 Level"},
+            {"track2","Tape: Track 2 Level"},
+            {"track3","Tape: Track 3 Level"},
+            {"track4","Tape: Track 4 Level"},
+        };
+        for(const auto& pair:names)if(juce::String(id)==pair.first)return pair.second;
+        return id;
+    };
+    const auto unit=[](const char* id)->juce::String{const juce::String key(id);if(key=="tempo")return "BPM";if(key=="lfoRate")return "Hz";if(key=="delayTime"||key=="masterDelayTime"||key=="tapeLoopIn"||key=="tapeLoopOut")return "s";if(key=="eqLow"||key=="eqMid"||key=="eqHigh")return "dB";if(key=="sampleRoot")return "MIDI note";if(key=="tapeSpeed")return "x";return {};};
+    auto number=[&](const char* id,float low,float high,float value){p.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{id,1},name(id),juce::NormalisableRange<float>(low,high,.01f),value,juce::AudioParameterFloatAttributes().withLabel(unit(id))));};
+    auto flag=[&](const char* id){p.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{id,1},name(id),false));};
     for(auto pair:{std::pair{"tone",.45f},{"color",.35f},{"envelope",.35f},{"effect",.2f},{"volume",.7f},{"attack",.02f},{"decay",.2f},{"sustain",.8f},{"release",.3f},{"lfoDepth",0.f},{"delayFeedback",.42f},{"drive",0.f},{"track1",.8f},{"track2",.8f},{"track3",.8f},{"track4",.8f}}) number(pair.first,0,1,pair.second);
     number("sampleRoot",0,127,60);
     number("lfoRate",.05f,20,1); number("delayTime",.05f,1,.281f);
-    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"lfoDestination",1},"LFO destination",juce::StringArray{"PITCH","FILTER"},0));
-    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"lfoShape",1},"LFO shape",juce::StringArray{"SINE","TRIANGLE","SQUARE"},0));
+    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"lfoDestination",1},"LFO: Destination",juce::StringArray{"PITCH","FILTER"},0));
+    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"lfoShape",1},"LFO: Shape",juce::StringArray{"SINE","TRIANGLE","SQUARE"},0));
     flag("sequencer"); flag("sampleLoop"); flag("tapePlay"); flag("tapeRecord"); flag("tapeOverdub");
     number("eqLow",-12,12,0);number("eqMid",-12,12,0);number("eqHigh",-12,12,0);number("eqMix",0,1,1);
     number("masterDrive",0,1,0);number("masterEcho",0,1,0);number("masterDelayTime",.05f,1,.281f);number("masterFeedback",0,.85f,.42f);number("clickVolume",0,.3f,.12f);
     flag("inputMonitor");number("inputGain",0,2,1);number("tapeRecordGain",0,2,1);
     flag("tapeLoop");flag("metronome");number("tapeLoopIn",0,16,0);number("tapeLoopOut",0,16,16);
     number("tempo",40,240,110); number("tapeSpeed",-2,2,1);
-    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"tapeTrack",1},"Tape track",juce::StringArray{"1","2","3","4"},0));
-    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"tapeLength",1},"Tape loop",juce::StringArray{"4 seconds","8 seconds","16 seconds"},1));
-    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"seqMode",1},"Sequence mode",juce::StringArray{"FORWARD","REVERSE","PENDULUM","RANDOM","ARP UP","ARP DOWN","ARP UP/DOWN"},0));
-    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"seqRate",1},"Sequence rate",juce::StringArray{"1/4","1/8","1/16","1/32"},2));
-    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"seqLength",1},"Pattern length",1,16,16));
-    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"arpOctaves",1},"Arpeggio octaves",1,3,1));
+    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"tapeTrack",1},"Tape: Record Track",juce::StringArray{"1","2","3","4"},0));
+    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"tapeLength",1},"Tape: Loop Length",juce::StringArray{"4 seconds","8 seconds","16 seconds"},1));
+    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"seqMode",1},"Sequencer: Mode",juce::StringArray{"FORWARD","REVERSE","PENDULUM","RANDOM","ARP UP","ARP DOWN","ARP UP/DOWN"},0));
+    p.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"seqRate",1},"Sequencer: Rate",juce::StringArray{"1/4","1/8","1/16","1/32"},2));
+    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"seqLength",1},"Sequencer: Pattern Length",1,16,16));
+    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"arpOctaves",1},"Arpeggiator: Octaves",1,3,1));
     flag("seqEuclidean");
-    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"seqPulses",1},"Euclidean pulses",0,16,8));
-    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"seqRotation",1},"Euclidean rotation",0,15,0));
+    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"seqPulses",1},"Sequencer: Euclidean Pulses",0,16,8));
+    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"seqRotation",1},"Sequencer: Euclidean Rotation",0,15,0));
     number("seqGate",.1f,1,1);number("seqSwing",0,.45f,0);number("seqVelocity",.1f,1,.8f);
     for(int pad=0;pad<pocket::kitCapacity;++pad){
-        const auto prefix="Pad "+juce::String(pad+1)+" ";
+        const auto prefix="Pad "+juce::String(pad+1).paddedLeft('0',2)+": ";
         for(const auto* field:{"start","end","gain","pitch"}){const float low=juce::String(field)=="pitch"?-24:0,high=juce::String(field)=="pitch"?24:juce::String(field)=="gain"?2:1,initial=juce::String(field)=="end"||juce::String(field)=="gain"?1:0;
-            p.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{padParameterId(pad,field),1},prefix+field,low,high,initial));}
-        for(const auto* field:{"reverse","gated"})p.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{padParameterId(pad,field),1},prefix+field,false));
+            p.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{padParameterId(pad,field),1},prefix+juce::String(field).substring(0,1).toUpperCase()+juce::String(field).substring(1),juce::NormalisableRange<float>(low,high,.01f),initial,juce::AudioParameterFloatAttributes().withLabel(juce::String(field)=="pitch"?"st":"")));}
+        for(const auto* field:{"reverse","gated"})p.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{padParameterId(pad,field),1},prefix+juce::String(field).substring(0,1).toUpperCase()+juce::String(field).substring(1),false));
     }
     return p;
 }

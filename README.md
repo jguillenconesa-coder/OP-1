@@ -99,3 +99,5 @@ Código original: **AGPL-3.0-only**, con [licencia completa](LICENSE). La distri
 El plugin declara 0 muestras de latencia añadida. Las pruebas incluyen ocho voces, cinta/FX y buffers de 64/128/256 a 48/96 kHz, además de comprobación de heap en el callback. Consulta [medidas, configuración y límites](docs/realtime-audio.md): la prueba sintética no certifica ausencia de dropouts en Ableton. Usa ASIO en Live y comienza con 128 muestras a 48 kHz. Carga/guarda audio con el transporte parado.
 
 [Correspondencia completa de botones, combinaciones Shift y límites](docs/buttons-and-browser.md).
+
+[Controles MIDI y automatización con nombres claros](docs/midi-controls.md) · [Avance del estudio DSP original](docs/dsp-research.md).
