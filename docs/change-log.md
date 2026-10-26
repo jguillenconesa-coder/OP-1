@@ -1,4 +1,13 @@
-# 0.3.0
+# Historial de cambios
+
+## 0.12.0
+
+- Value 246 FX: 4.096 estados/display/buffers contrastados; modulación de los cuatro colores de Punch.
+- Set 4 reutiliza los mandos MIDI; fase free/retrigger, sesión/slots/clipboard y migración 0.11.
+- Tres estudios adicionales, incluido Helicopter del manual (calibración acústica pendiente).
+- Benchmark de 84 cargas y compatibilidad de audio anterior contrastada. [Guía](value246-native.md).
+
+## 0.3.0
 
 - Replaced the flat sound menu with a searchable bank/type/variant/favorite browser and unique-sample view, source metadata, explicit load and audition.
 - Added persistent independent synth/drum sound slots with edited parameter settings, stable bank IDs, duplicate import detection and multi-file sample import.

@@ -169,3 +169,26 @@ potencialmente infinita, compatible con el contrato VST3 de JUCE. STOP/CC120
 reinician el estado y la integración queda en silencio hasta nuevo audio. No se
 recorta artificialmente esa cola a una release finita. El modelo/kernel original
 y la integración propia se distinguen en [la guía](punch246-native.md).
+
+## Medición 0.12.0: Value FX
+
+Se ejecutaron **84 cargas / 43.008 callbacks por plataforma**, a 48/96 kHz y
+64/128/256 muestras, con ocho voces, automatización de Value/Punch/osciladores/ADSR,
+MIDI, secuenciación, cinta y efectos. Las mediciones finales Linux y Wine fueron
+secuenciales, sin compilar ni ejecutar otras pruebas del proyecto en paralelo.
+No hubo llamadas de heap monitorizadas en los callbacks; latencia declarada: 0.
+
+| Entorno | Peor p99 / presupuesto | Peor p99 con Value | Callbacks por encima del plazo |
+| --- | --- | --- | --- |
+| Linux, VM compartida | 27,88% | 23,16% | 5 |
+| Windows x64 bajo Wine, misma VM | 41,54% | 41,54% | 5 |
+
+Los sobrepasos quedan registrados; no se afirma ausencia de dropouts. Tampoco se
+mide aquí Ableton/ASIO ni latencia de ida y vuelta. Value utiliza un reloj propio
+de control 44.100/64, independiente del bloque del host, sin añadir un bloque de
+audio de espera. Se verifican notas con offset, pánico y audio idéntico al cambiar
+el bloque 64/128/256. El reloj/alineación de la máquina física siguen pendientes.
+
+[Datos Linux 0.12.0](releases/v0.12.0-linux-realtime.json) ·
+[Datos Wine 0.12.0](releases/v0.12.0-windows-wine-realtime.json) ·
+[Evidencia completa](releases/v0.12.0-validation.json).

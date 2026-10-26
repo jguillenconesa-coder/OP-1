@@ -144,7 +144,7 @@ int main(int argc,char** argv) {
     check(touched&&parameters.getRawParameterValue("phase246Attack")->load()==640,"GUI original envelope control did not forward");
     if(argc>1){juce::PNGImageFormat png;const auto shot=ui->createComponentSnapshot(ui->getLocalBounds(),true,1.5f);juce::FileOutputStream stream(juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("phase246-envelope.png"));stream.setPosition(0);stream.truncate();check(png.writeImageToStream(shot,stream),"Envelope screenshot failed");}
    }
-   auto render=[&](int block,bool digital,bool punch=false){auto processor=std::make_unique<PocketProcessor>();if(digital)processor->applyDigital246Preset(0);else processor->applyPhase246Preset(0);processor->phaseParameters().getParameter(digital?"digital246Attack":"phase246Attack")->setValueNotifyingHost(0);processor->phaseParameters().getParameter("punch246Enabled")->setValueNotifyingHost(punch?1.f:0.f);
+   auto render=[&](int block,bool digital,bool punch=false,bool value=false){auto processor=std::make_unique<PocketProcessor>();if(digital)processor->applyDigital246Preset(0);else processor->applyPhase246Preset(0);processor->phaseParameters().getParameter(digital?"digital246Attack":"phase246Attack")->setValueNotifyingHost(0);processor->phaseParameters().getParameter("punch246Enabled")->setValueNotifyingHost(punch?1.f:0.f);processor->phaseParameters().getParameter("value246Enabled")->setValueNotifyingHost(value?1.f:0.f);processor->phaseParameters().getParameter("value246Speed")->setValueNotifyingHost(.8f);processor->phaseParameters().getParameter("value246Amount")->setValueNotifyingHost(.9f);
     for(auto item:{std::pair{"effect",.7f},{"delayTime",.05f},{"delayFeedback",.75f},{"masterEcho",.5f},{"masterDelayTime",.05f},{"masterDrive",.3f},{"eqLow",6.f}}){auto* p=processor->state.getParameter(item.first);p->setValueNotifyingHost(p->convertTo0to1(item.second));}
     processor->prepareToPlay(48000,block);std::vector<float> output;output.reserve(16384);
     for(int start=0;start<16384;start+=block){juce::AudioBuffer<float> audio(2,block);audio.clear();juce::MidiBuffer midi;
@@ -157,7 +157,26 @@ int main(int argc,char** argv) {
     juce::AudioBuffer<float> sound(2,256);juce::MidiBuffer notes;notes.addEvent(juce::MidiMessage::noteOn(1,60,.8f),0);for(int i=0;i<30;++i)fx->processBlock(sound,notes);
     fx->applyPreset(1);fx->processBlock(sound,notes);check(sound.getMagnitude(0,0,256)>.00001,"Preset change erased global effect history");fx->requestPanic();fx->processBlock(sound,notes);check(sound.getMagnitude(0,0,256)==0,"Panic did not clear output FX history");
    }
-   for(bool digital:{false,true})for(bool punch:{false,true}){const auto a=render(64,digital,punch),b=render(128,digital,punch),c=render(256,digital,punch);for(size_t i=0;i<a.size();++i){check(a[i]==b[i]&&a[i]==c[i],"Native envelope audio depends on DAW block boundaries");if((i<33||i>=7000)&&a[i]!=0)throw std::runtime_error("Original-envelope note timing or panic mute failed at sample "+std::to_string(i)+" value "+std::to_string(a[i]));}}
+   for(bool digital:{false,true})for(bool punch:{false,true})for(bool value:{false,true}){const auto a=render(64,digital,punch,value),b=render(128,digital,punch,value),c=render(256,digital,punch,value);for(size_t i=0;i<a.size();++i){check(a[i]==b[i]&&a[i]==c[i],"Native envelope/Value audio depends on DAW block boundaries");if((i<33||i>=7000)&&a[i]!=0)throw std::runtime_error("Original-envelope note timing or panic mute failed at sample "+std::to_string(i)+" value "+std::to_string(a[i]));}}
+   const auto plain=render(64,true,true,false),animated=render(64,true,true,true);double changed=0;for(size_t i=0;i<plain.size();++i)changed+=std::abs(plain[i]-animated[i]);check(changed>.0001,"Enabled Value has no audible effect on Punch");
+  }
+  {
+   auto value=std::make_unique<PocketProcessor>();auto& raw=value->phaseParameters();juce::String error;
+   check(raw.getParameter("value246Enabled")->getParameterIndex()==raw.getParameter("punch246Orange")->getParameterIndex()+1,"Value changed existing parameter indices");
+   check(value->loadSound("value246:0",error)&&value->value246Enabled()&&value->punch246Enabled()&&value->digital246EnvelopeEnabled()&&value->keyboardOctave.load()==4,"Helicopter study did not load its components");
+   value->setScreenPage(2);for(int i=0;i<4;++i){auto* target=raw.getParameter(pocket::value246Ids[size_t(i)]);check(value->screenKnob(i).followedParameter()==target,"Value set 4 mapping failed with editor closed");value->screenKnob(i).setValueNotifyingHost(.2f+i*.2f);check(std::abs(target->getValue()-value->screenKnob(i).getValue())<.0001,"Value proxy write failed");}
+   raw.getParameter("value246Enabled")->setValueNotifyingHost(0);check(value->screenKnob(0).followedParameter()==value->state.getParameter("lfoRate"),"Value OFF failed to restore own LFO proxy");raw.getParameter("value246Enabled")->setValueNotifyingHost(1);
+   check(value->assignSoundSlot(false,0)&&value->copySound(error),"Value slot/clipboard storage failed");juce::MemoryBlock saved;value->getStateInformation(saved);
+   value->applyPreset(0);check(!value->value246Enabled(),"Legacy patch inherited Value");check(value->recallSoundSlot(false,0,error)&&value->value246Enabled(),"Edited slot lost Value");value->applyPreset(1);check(value->pasteSound(error)&&value->value246Enabled(),"Clipboard lost Value");
+   value->setStateInformation(saved.getData(),int(saved.getSize()));check(value->value246Enabled()&&value->screenKnob(0).followedParameter()==raw.getParameter("value246Speed"),"Project lost Value controls/mapping");
+   auto old=juce::ValueTree::fromXml(*juce::AudioProcessor::getXmlFromBinary(saved.getData(),int(saved.getSize())));
+   auto strip=[](juce::ValueTree tree){for(const auto* id:{"value246Enabled","value246Speed","value246Amount","value246Destination","value246Colour","value246Free"})tree.removeChild(tree.getChildWithProperty("id",id),nullptr);};strip(old.getChildWithName("Phase246"));for(auto slot:old.getChildWithName("SoundLibrary"))strip(slot.getChildWithName("Settings").getChildWithName("Phase246"));
+   juce::MemoryBlock legacy;juce::AudioProcessor::copyXmlToBinary(*old.createXml(),legacy);value->setStateInformation(legacy.getData(),int(legacy.getSize()));check(!value->value246Enabled(),"0.11 project inherited Value");check(value->recallSoundSlot(false,0,error)&&!value->value246Enabled(),"0.11 edited slot inherited Value");
+   value->applyValue246Preset(0);value->setScreenPage(2);
+   {std::unique_ptr<juce::AudioProcessorEditor> ui(value->createEditor());
+    if(argc>1){juce::PNGImageFormat png;const auto shot=ui->createComponentSnapshot(ui->getLocalBounds(),true,1.5f);juce::FileOutputStream stream(juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("value246-native.png"));stream.setPosition(0);stream.truncate();check(png.writeImageToStream(shot,stream),"Value screenshot failed");}
+   }
+   for(double rate:{44100.,48000.,96000.})for(int preset=0;preset<3;++preset){value->applyValue246Preset(preset);value->prepareToPlay(rate,128);juce::AudioBuffer<float> audio(2,128);juce::MidiBuffer notes;notes.addEvent(juce::MidiMessage::noteOn(1,preset==0?108:60,.8f),0);double energy=0;for(int block=0;block<512;++block){value->processBlock(audio,notes);for(int i=0;i<128;++i){const auto x=audio.getSample(0,i);check(std::isfinite(x)&&std::abs(x)<2,"Value study is unstable");energy+=x*x;}}check(energy>.00001,"Value study is silent");value->requestPanic();value->processBlock(audio,notes);check(audio.getMagnitude(0,0,128)==0,"Value study ignored panic");}
   }
   juce::AudioBuffer<float> buffer(2,256); juce::MidiBuffer midi;
   // A timestamped note must not sound before its sample offset.
@@ -333,7 +352,7 @@ int main(int argc,char** argv) {
    check(installed.findChildFiles(juce::File::findFilesAndDirectories,true).isEmpty(),"Purge left bank files on disk");
    check(bankProcessor->userPresetNames().isEmpty()&&!bankProcessor->isFavorite(purgedId)&&bankProcessor->selectedSound().isEmpty(),"Purge left stale browser entries");
    check(bankProcessor->soundSlot(false,0)=="factory:0"&&bankProcessor->clipboardKind.load()==0&&bankProcessor->sampleFrames.load()==0,"Purge retained loaded audio or sound references");
-   check(valid.existsAsFile()&&bankProcessor->soundCatalog().size()==60,"Purge deleted source files or factory sounds");
+   check(valid.existsAsFile()&&bankProcessor->soundCatalog().size()==63,"Purge deleted source files or factory sounds");
    bankProcessor->getStateInformation(saved);auto purgedTree=juce::ValueTree::fromXml(*juce::AudioProcessor::getXmlFromBinary(saved.getData(),int(saved.getSize())));
    check(!purgedTree.hasProperty("sampleAudio")&&!purgedTree.hasProperty("kitAudio0"),"Purged audio still embedded in a new project snapshot");
    check(bankProcessor->importUserBank(valid,error)&&bankProcessor->importUserBank(valid,error),"Import after purge failed");
@@ -344,7 +363,7 @@ int main(int argc,char** argv) {
   }
   // Browser metadata and independent edited sound slots survive project state.
   auto libraryProcessor=std::make_unique<PocketProcessor>(library.getChildFile("Catalog"));
-  check(libraryProcessor->soundCatalog().size()==60,"Factory catalog incomplete");
+  check(libraryProcessor->soundCatalog().size()==63,"Factory catalog incomplete");
   libraryProcessor->applyPreset(0);libraryProcessor->state.getParameter("tone")->setValueNotifyingHost(.83f);
   libraryProcessor->state.getParameter("seqMode")->setValueNotifyingHost(1);
   libraryProcessor->toggleFavorite("factory:0");check(libraryProcessor->assignSoundSlot(false,0),"Could not store edited synth slot");

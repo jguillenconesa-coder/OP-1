@@ -74,3 +74,12 @@ Punch's independent implementation and harness are AGPL-3.0-only project code.
 Numeric control/coefficient/state/output observations and named manual targets
 retain their documented provenance. No original firmware opcodes, DB image,
 manual illustrations, original recordings or GNU executable are included.
+
+## Value FX (0.12.0)
+
+The independently written Value FX kernel, adapter, drawings and harness retain
+the project's AGPL-3.0-only terms. Numeric ranges/state/display/tempo traces are
+documented observations from operator-supplied rev246 firmware. REA's SQLite
+inventory is separate evidence. No original firmware instructions, manual images,
+DB snapshot, audio or simulator binary are shipped. Tool-source patch terms and
+all prior dependency notices remain unchanged.

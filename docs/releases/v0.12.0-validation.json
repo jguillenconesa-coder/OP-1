@@ -1,0 +1,109 @@
+{
+  "version": "0.12.0",
+  "date_utc": "2026-10-26",
+  "linux_suites_passed": 14,
+  "windows_wine_suites_passed": 16,
+  "functional_execution": "Linux functional and realtime suites; Wine first 12 functional suites, then GUI/module/manifest group and realtime. First GUI run without a virtual display interrupted; GUI rerun with active Xvfb passed.",
+  "value_fx_calls_compared": 4096,
+  "value_fx_independent_cases": 2048,
+  "value_fx_stream_cases": 2048,
+  "value_full_self_bytes": 12,
+  "value_full_display_bytes": 32,
+  "value_target_words": 8,
+  "value_fx_ranges": 8,
+  "value_private_reproductions": 2,
+  "value_sanitizers": "ASan and UBSan passed; LeakSanitizer unavailable under sandbox ptrace, disabled for this run.",
+  "reference_model": "GNU 13.1 BF524 with documented local D-register deferred writeback patch; not hardware validation",
+  "control_clock_calls_per_second": 689.0625,
+  "clock_status": "Own integration assumption, not a measured original cadence/alignment",
+  "legacy_audio_regression": {
+    "baseline": "dd24e9040a4095a7115ffe13c4143a7d89010b13",
+    "configurations": 73,
+    "rates": [
+      44100,
+      48000,
+      96000
+    ],
+    "samples": 1794048,
+    "bytes_each": 7176192,
+    "identical": true,
+    "sha256": "7f3f6a098fae1f2bd9aa7639961c85b18063d7a2752dbc4699ebcef4c78c289e",
+    "harness": "Tools/LegacyEngineRender.cpp",
+    "scope": "SAME GCC -O2 differential harness against 0.11/current headers: six legacy engines, 16 Phase and 16 Digital with both envelopes plus three Punch variants; notes/bend/FILTER LFO/note-off; Value disabled. Not every possible project."
+  },
+  "built_in_sounds": 63,
+  "additional_value_studies": 3,
+  "manual_helicopter": "Additional study available; display/raw calibration, complete routing/cadence and hardware audio comparison pending",
+  "video_reference": {
+    "url": "https://www.youtube.com/watch?v=P84SBtIDdSM",
+    "audio_accessed": false,
+    "access_result": "HTTP 403 from this cloud environment",
+    "compared": false
+  },
+  "native_ableton_asio_validated": false,
+  "standalone_main_window_confirmed_in_wine": false,
+  "installer_validation": "Isolated Wine install/hash/source/version/module/manifest/uninstall checks; main standalone GUI startup remains separate.",
+  "installer_sha256": "See downloads/v0.12.0/SHA256SUMS.txt; installer embeds this report so its hash is external.",
+  "linux_realtime": {
+    "version": "0.12.0",
+    "platform": "Linux x86_64 Release / shared cloud VM",
+    "workloads": 84,
+    "callbacks": 43008,
+    "reported_latency_samples": 0,
+    "tracked_heap_calls": 0,
+    "deadline_overruns": 5,
+    "worst_p99_budget_percent": 27.8844,
+    "value_fx_p99_budget_percent": 23.159850000000002,
+    "preset_legend": {
+      "-1": "Phase 246 + reconstructed envelope",
+      "-2": "Phase 246 + previous envelope",
+      "-3": "Digital 246 + reconstructed envelope",
+      "-4": "Digital 246 + previous envelope",
+      "-5": "Digital 246 + original envelope + Punch",
+      "-6": "Phase 246 + original envelope + Punch",
+      "-7": "Digital Helicopter study + Punch + Value FX",
+      "-8": "Phase roar bass + Punch + Value FX"
+    },
+    "scope": "Eight voices, oscillator/ADSR/Punch/Value automation, MIDI/GUI/SysEx, tape/capture, FX/EQ and sequencers; final Linux/Wine benchmarks sequential without concurrent builds or functional tests. Shared VM timings and reported latency do not certify hardware, native Windows/ASIO, round-trip latency or zero dropouts."
+  },
+  "windows_wine_realtime": {
+    "version": "0.12.0",
+    "platform": "Windows x64 under Wine / shared cloud VM",
+    "workloads": 84,
+    "callbacks": 43008,
+    "reported_latency_samples": 0,
+    "tracked_heap_calls": 0,
+    "deadline_overruns": 5,
+    "worst_p99_budget_percent": 41.535,
+    "value_fx_p99_budget_percent": 41.535,
+    "preset_legend": {
+      "-1": "Phase 246 + reconstructed envelope",
+      "-2": "Phase 246 + previous envelope",
+      "-3": "Digital 246 + reconstructed envelope",
+      "-4": "Digital 246 + previous envelope",
+      "-5": "Digital 246 + original envelope + Punch",
+      "-6": "Phase 246 + original envelope + Punch",
+      "-7": "Digital Helicopter study + Punch + Value FX",
+      "-8": "Phase roar bass + Punch + Value FX"
+    },
+    "scope": "Eight voices, oscillator/ADSR/Punch/Value automation, MIDI/GUI/SysEx, tape/capture, FX/EQ and sequencers; final Linux/Wine benchmarks sequential without concurrent builds or functional tests. Shared VM timings and reported latency do not certify hardware, native Windows/ASIO, round-trip latency or zero dropouts."
+  },
+  "binaries": {
+    "windows_standalone": {
+      "bytes": 10969600,
+      "sha256": "d97faf95ca06f6fcfda4e8d3f58cea0280d87c7cd153c43d543dde4a55626355"
+    },
+    "windows_vst3": {
+      "bytes": 11545600,
+      "sha256": "fc63277f31be153593b726c47ebf66c6139fc920ef761b412c1ac68e46699d03"
+    },
+    "linux_standalone": {
+      "bytes": 13840824,
+      "sha256": "f9ecc9534157627c55b37c68d9d8982dabcb43e7ab07ecc4deca5a4a5e2601db"
+    },
+    "linux_vst3": {
+      "bytes": 14462296,
+      "sha256": "9480b6d5b8cbd0f16fa4ab51799f1e2c1e87f5a433ca2908e03012d85f10ecbb"
+    }
+  }
+}

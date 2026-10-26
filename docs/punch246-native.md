@@ -45,10 +45,10 @@ host no la trunque como una release corta. No significa que toda configuración
 mantenga el mismo volumen. Tras reset, la integración permanece en silencio hasta
 que llegue audio; así el offset del núcleo no vuelve a iniciar sonido por sí solo.
 
-Los bancos son aproximaciones parciales del patch completo: LFO, octave, mezcla y
-ruteo originales siguen pendientes. Helicopter del manual necesita además Value
-LFO sobre el parámetro azul del efecto; no se presenta como completado por añadir
-Punch. [Matriz completa y presets objetivo](original-op1-coverage.md).
+Los bancos son aproximaciones parciales del patch completo: octave, mezcla y
+ruteo originales siguen pendientes. Desde 0.12, [Value FX](value246-native.md) permite
+modular sus cuatro colores y añade Helicopter como estudio del manual. La
+calibración raw/display y la comparación acústica siguen pendientes. [Matriz completa y presets objetivo](original-op1-coverage.md).
 
 Reproducción desde un LDR propio del perfil rev246:
 

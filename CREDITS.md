@@ -87,3 +87,14 @@ audio or firmware instructions are redistributed in this work. Punch kernel,
 adapter, visual drawing, harness and tests are independently written; numeric
 coefficients/traces are documented observations. The GNU tool patch retains its
 separate terms. Existing reference attributions above continue to apply.
+
+## Value FX reconstruction (0.12.0)
+
+Value246's independently written FX kernel, clock adapter, display drawing and
+harness are AGPL-3.0-only project work. The user-supplied rev246 image supplies
+numeric observations; GNU BF524 executes the isolated FX path with the documented
+local model patch. REA's read-only SQLite inspector confirms seven LFO type/default
+records. The OP-1 manual §16.3 informs the additional Helicopter study, whose raw
+positions and output remain uncalibrated against hardware. Original firmware,
+opcodes, DB, manual illustrations and recordings are not distributed. Public
+op1-sdk references and all previous tool attributions continue to apply.

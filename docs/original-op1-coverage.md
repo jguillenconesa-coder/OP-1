@@ -1,7 +1,7 @@
 # Objetivo: OP-1 original completo
 
 La meta es cubrir motores, filtros, efectos, envolventes, modulación, modos de
-ejecución y sonidos documentados. La versión 0.11.0 **todavía no es una réplica
+ejecución y sonidos documentados. La versión 0.12.0 **todavía no es una réplica
 completa**. Esta matriz distingue un núcleo contrastado de una aproximación
 propia o una función pendiente; cambiar el nombre de un modelo no completa un port.
 
@@ -62,10 +62,10 @@ a otras funciones no extienden esa evidencia al resto del aparato.
 | ADSR común | Núcleo, tablas y callbacks contrastados; 2.621.440 muestras / 20.480 estados. |
 | Cuatro campos ADSR adicionales y ruteo | Inventariados; falta reconstruir su efecto completo. |
 | Envolventes D-synth / D-box / drum dinámica | Pendientes. No quedan completadas por portar el ADSR común. |
-| Value LFO y destino parámetro/color | Pendiente el núcleo y ruteo original. Necesario para Helicopter. |
+| Value LFO y destino parámetro/color | Ruta FX contrastada: 4.096 estados/display/buffers completos; cuatro colores de Punch disponibles. Destinos de voz/ENV pendientes; reloj del adaptador propio. |
 | Random / Tremolo | Pendientes los originales. Hay LFO propio seno/triángulo/cuadrado. |
 | Element / MIDI / Bend / Crank | Pendientes algoritmos y ruteo originales. Las fuentes físicas necesitarán una integración definida para un plugin. Recibir notas/CC normales no implementa estos LFO. |
-| Retrigger / free | Pendiente replicar su contrato original; no es un motor LFO separado. |
+| Retrigger / free | Callback de fase Value FX contrastado e integrado. Pendiente para el resto de LFO/rutas. |
 | Poly / mono / legato / unison / portamento | Polifonía propia de ocho voces. Modos y asignación originales pendientes. |
 | Octavas del teclado | Interfaz ampliada a −4…+4, guardada en sesión/slot/clipboard, limitada a notas MIDI 0–127. No altera MIDI externo ni implementa aún octave de todos los patches originales. |
 | Secuenciadores | Secuenciación/arpegios propios disponibles; Endless, Pattern, Finger, Tombola, Sketch y Crank originales requieren revisión individual. Tombola bloquea completar Singing Birds. |
@@ -86,18 +86,19 @@ esa distinción en [manual-sound-targets.json](../research/blackfin/manual-sound
 
 | Receta | Dependencias completadas | Pendiente para darla por recreada |
 | --- | --- | --- |
-| Helicopter, §16.3, PDF 51–52 | Digital, ADSR común y Punch; teclado +4 | Value LFO → azul de FX, calibración display/raw, ruteo/salida y comparación acústica. |
+| Helicopter, §16.3, PDF 51–52 | Digital, ADSR común, Punch y Value → azul; teclado +4. Preset de estudio adicional. | Calibración display/raw, cadencia/alineación original, ruteo/salida y comparación acústica. |
 | Singing birds, §16.4, PDF 52 | Infraestructura MIDI/ADSR | FM original, Spring, Tremolo, mono/portamento, Tombola y calibración. |
 
 Actualmente se ofrecen 25 sonidos Factory propios, 16 Phase CORE, 16 Digital CORE
-y 3 variantes **246 CORE + Punch**. Los bancos importados son adicionales. Las
-32 entradas CORE anteriores conservan su comportamiento anterior; Punch no se
-activa al abrir un proyecto previo. Los registros pendientes no aparecen como
+y 3 variantes **246 CORE + Punch**, más 3 **246 Value FX Studies**. Los bancos importados son adicionales. Las
+entradas anteriores conservan su comportamiento anterior; Punch no se
+activa al abrir un proyecto previo; Value también se carga apagado. Los registros pendientes no aparecen como
 presets originales supuestamente reproducidos en el navegador.
 
 ## Orden de trabajo verificable
 
-1. Terminar oráculos/ruteo Value LFO y calibrar Punch para cerrar Helicopter.
+1. Calibrar display/raw y cadencia/ruteo de Helicopter; contrastar con audio real.
+   Extender Value a voz/ENV y comprobar los demás LFO.
 2. Avanzar FM/DrWave/Cluster y filtros internos; mantener explícito el bloqueo de
    datos L1 donde exista. Completar modos de ejecución y controles secundarios.
 3. Spring/Tremolo/Tombola para Singing Birds y los demás FX/motores en la matriz.

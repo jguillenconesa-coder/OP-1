@@ -1,0 +1,134 @@
+{
+  "schema": 1,
+  "database_sha256": "be4572298fe9dc83b106d5c4eaf1cc972280d97f028f3eaebc0c76dc68ac9cf0",
+  "scope": "Additional Value variants use stored oscillator/first ADSR/Punch/Value fields. Remaining play mode, octave, auxiliary controls and complete mix are unverified. Manual study is an authored interpretation, not calibrated firmware values.",
+  "stored_patches": [
+    {
+      "id": 4,
+      "name": "didg",
+      "type": "digital",
+      "knobs": [
+        0,
+        14336,
+        -9192,
+        30690,
+        0,
+        0,
+        0,
+        0
+      ],
+      "adsr": [
+        1535,
+        11258,
+        29183,
+        14784,
+        4000,
+        4000,
+        4000,
+        4000
+      ],
+      "fx_type": "punch",
+      "fx_active": true,
+      "fx_params": [
+        6000,
+        28315,
+        20000,
+        28000,
+        8000,
+        8000,
+        8000,
+        8000
+      ],
+      "lfo_type": "value",
+      "lfo_active": true,
+      "lfo_params": [
+        4608,
+        23815,
+        9856,
+        2960,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 107,
+      "name": "roar bass",
+      "type": "phase",
+      "knobs": [
+        0,
+        8192,
+        19456,
+        14336,
+        0,
+        0,
+        0,
+        0
+      ],
+      "adsr": [
+        3136,
+        5696,
+        30720,
+        12736,
+        11168,
+        6432,
+        4000,
+        4000
+      ],
+      "fx_type": "punch",
+      "fx_active": true,
+      "fx_params": [
+        7233,
+        28175,
+        16992,
+        32767,
+        8000,
+        8000,
+        8000,
+        8000
+      ],
+      "lfo_type": "value",
+      "lfo_active": true,
+      "lfo_params": [
+        9216,
+        6624,
+        8688,
+        2000,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "manual_study": {
+    "id": "value246:0",
+    "name": "Helicopter (manual study)",
+    "section": "16.3",
+    "digital": [
+      17408,
+      24320,
+      1535,
+      10240
+    ],
+    "adsr": [
+      6000,
+      16383,
+      32767,
+      3500
+    ],
+    "punch": [
+      6912,
+      21000,
+      25088,
+      32767
+    ],
+    "value_speed": 11000,
+    "value_amount": 24576,
+    "destination": "FX",
+    "colour": "blue",
+    "free_phase": false,
+    "ui_keyboard_octave": 4
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "evidence_id": "ev_0bac067b722f466b1bd41e169493a62c41362d7f98602e369f9ad772435aaf6c",
+  "subject": {
+    "name": "op1_factory.db",
+    "sha256": "be4572298fe9dc83b106d5c4eaf1cc972280d97f028f3eaebc0c76dc68ac9cf0"
+  },
+  "provider": {
+    "id": "sqlite",
+    "name": "REA SQLite database inspector",
+    "version": "SQLite 3.53.4"
+  },
+  "operation": "inspect_sqlite_database",
+  "table": "lfo_types",
+  "returned_rows": 7,
+  "truncated": false,
+  "scope": "Read-only LFO type/default-control inventory; not DSP or full instrument verification.",
+  "rows": [
+    [
+      "1",
+      "tremolo",
+      "[16000,0,0,16000,0,0,0,0]"
+    ],
+    [
+      "2",
+      "value",
+      "[1000,4000,2000,2000,0,0,0,0]"
+    ],
+    [
+      "3",
+      "random",
+      "[2000,4000,2000,24000,0,0,0,0]"
+    ],
+    [
+      "4",
+      "element",
+      "[2000,4000,2000,2000,0,0,0,0]"
+    ],
+    [
+      "5",
+      "midi",
+      "[2000,2000,2000,2000,2000,2000,2000,2000]"
+    ],
+    [
+      "6",
+      "bend",
+      "[7200,7100,32767,0,0,0,0,2048]"
+    ],
+    [
+      "7",
+      "crank",
+      "[0,16384,2000,2000,0,0,0,0]"
+    ]
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "references": [
+    {
+      "url": "https://www.youtube.com/watch?v=P84SBtIDdSM",
+      "supplied_by": "user",
+      "purpose": "Auditory comparison of OP-1 presets",
+      "access_checked_utc": "2026-10-26",
+      "access_result": "HTTP 403 for YouTube watch page and oEmbed in cloud environment",
+      "audio_accessed": false,
+      "title_verified": false,
+      "preset_names_verified": false,
+      "comparisons_completed": false,
+      "status": "Reference recorded; audio and preset/time alignment required before drawing sonic conclusions"
+    }
+  ]
+}

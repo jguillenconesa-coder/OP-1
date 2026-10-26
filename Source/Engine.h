@@ -8,6 +8,7 @@
 #include "Phase246.h"
 #include "Digital246Voice.h"
 #include "Punch246Effect.h"
+#include "Value246Fx.h"
 #include "StringVoice.h"
 
 namespace pocket {
@@ -19,6 +20,8 @@ struct Parameters {
     bool phase246=false,phase246Envelope=false;std::array<int16_t,4> phase246Controls{{0,29491,0,0}},phase246Adsr{{64,8064,32767,8192}};
     bool digital246=false,digital246Envelope=false;std::array<int16_t,4> digital246Controls{{0,16384,0,0}},digital246Adsr{{64,8064,32767,8192}};
     bool punch246=false;std::array<int16_t,4> punch246Controls{{6000,15000,20000,28000}};
+    bool value246=false,value246Free=false,value246Destination=true;
+    int value246Speed=1000,value246Amount=4000,value246Colour=0;uint32_t value246Tempo=199457888;
     std::array<PadSettings,kitCapacity> pads{};
     float tone=.45f,color=.35f,envelope=.35f,effect=.2f,volume=.7f;
     float attack=.02f,decay=.2f,sustain=.8f,release=.3f;
@@ -31,8 +34,8 @@ using Kit=std::array<Sample,kitCapacity>;
 class Engine {
 public:
     static constexpr int polyphony=8;
-    void prepare(double rate) { sampleRate=std::max(8000.0,rate); smoothing=float(1-std::exp(-1.0/(sampleRate*.012))); cachedCutoff=-1;stringRetune=1-std::exp(-1/(sampleRate*.003));phaseConfig.prepare(sampleRate);punchEffect.prepare(sampleRate);reset(); }
-    void reset() { voices={}; delayValid=0; write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1;cleanMix=0;modulatedFilterMix=0;cleanInitialized=false;phaseControlsInitialized=false;digitalControlsInitialized=false;nativeEnvelopeActive=false;nativeDigitalActive=false;punchEffect.reset();punchMix=0;punchActive=false; }
+    void prepare(double rate) { sampleRate=std::max(8000.0,rate); smoothing=float(1-std::exp(-1.0/(sampleRate*.012))); cachedCutoff=-1;stringRetune=1-std::exp(-1/(sampleRate*.003));phaseConfig.prepare(sampleRate);punchEffect.prepare(sampleRate);valueEffect.prepare(sampleRate);reset(); }
+    void reset() { voices={}; delayValid=0; write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1;cleanMix=0;modulatedFilterMix=0;cleanInitialized=false;phaseControlsInitialized=false;digitalControlsInitialized=false;nativeEnvelopeActive=false;nativeDigitalActive=false;punchEffect.reset();valueEffect.reset();valueActive=false;punchMix=0;punchActive=false; }
     void setSample(Sample data) { sample=std::move(data); voices={}; }
     void swapSample(Sample& data) {std::swap(sample,data);voices={};}
     void swapKit(Kit& data,int count=8) {kit.swap(data);kitCount=count==24?24:8;voices={};}
@@ -51,6 +54,7 @@ public:
         if(!down) for(auto& v:voices) if(v.channel==channel&&!v.keyDown) v.released=true;
     }
     void noteOn(int note,float velocity,int channel=1) {
+        valueEffect.noteOn();
         Voice* v=nullptr;
         for(auto& candidate:voices) if(!candidate.active) { v=&candidate; break; }
         if(!v) v=&*std::min_element(voices.begin(),voices.end(),[](auto& a,auto& b){return a.age<b.age;});
@@ -68,7 +72,7 @@ public:
     }
     struct VisualState {float envelope=0,progress=0,lfo=0;int active=0,stage=0;uint64_t trigger=0;};
     VisualState visualState(int mode) const noexcept {
-        VisualState out;out.trigger=age;out.lfo=float(lfoPhase);uint64_t latest=0;
+        VisualState out;out.trigger=age;out.lfo=valueActive?valueEffect.phase():float(lfoPhase);uint64_t latest=0;
         for(const auto& v:voices) if(v.active) {
             ++out.active;out.envelope=std::max(out.envelope,v.level);
             if(v.age>=latest) {latest=v.age;out.stage=nativeEnvelopeActive?(nativeDigitalActive?v.digital246.output.envelopeStage():v.phase246.envelopeStage()):v.released?4:v.stage==0?1:std::abs(v.level-currentSustain)>.005f?2:3;
@@ -96,7 +100,7 @@ public:
         follow(current.delayTime,target.delayTime); follow(current.feedback,target.feedback);
         const auto& p=current;currentSustain=target.sustain;
         lfoPhase+=std::clamp(double(target.lfoRate),.05,20.0)/sampleRate; lfoPhase-=std::floor(lfoPhase);
-        const double lfo=target.lfoDepth*(target.lfoShape==1 ? 1-4*std::abs(lfoPhase-.5) : target.lfoShape==2 ? (lfoPhase<.5?1:-1) : std::sin(2*pi*lfoPhase));
+        const double lfo=(target.value246?0:target.lfoDepth)*(target.lfoShape==1 ? 1-4*std::abs(lfoPhase-.5) : target.lfoShape==2 ? (lfoPhase<.5?1:-1) : std::sin(2*pi*lfoPhase));
         const double pitchMod=target.lfoDestination==0?lfo*2:0;
         const double pitchFactor=pitchMod==0?1:std::exp2(pitchMod/12);
         const double kitPitch=target.engine==5?std::exp2((p.tone-.5)*2):1;
@@ -183,17 +187,20 @@ public:
         follow(cleanMix,((target.sampleClean&&(target.engine==3||target.engine==5))||nativeCore)?1.f:0.f);
         // CLEAN bypasses the implicit tone filter, but an explicitly selected
         // FILTER LFO must still be audible. Ramp its insertion to avoid a jump.
-        follow(modulatedFilterMix,target.lfoDestination==1&&target.lfoDepth>0?1.f:0.f);
+        follow(modulatedFilterMix,!target.value246&&target.lfoDestination==1&&target.lfoDepth>0?1.f:0.f);
         const float cleanInput=sum+(filter-sum)*modulatedFilterMix;
         const float legacyDriven=std::tanh(filter*(1+p.drive*12))/(1+p.drive*2);
         const float cleanDriven=p.drive<.000001f?cleanInput:std::tanh(cleanInput*(1+p.drive*12))/(1+p.drive*2);
         float driven=legacyDriven+(cleanDriven-legacyDriven)*cleanMix;
+        valueActive=target.value246;
         if(target.punch246||punchActive){
             for(size_t i=0;i<4;++i){if(!punchActive)punchWords[i]=target.punch246Controls[i];else punchWords[i]+=smoothing*(target.punch246Controls[i]-punchWords[i]);punchRaw[i]=int16_t(std::lround(std::clamp(punchWords[i],0.f,32767.f)));}
             punchActive=true;follow(punchMix,target.punch246?1.f:0.f);
-            const auto processed=punchEffect.next(driven,punchRaw,phaseConfig.table);driven+=punchMix*(processed-driven);
+            const auto modulated=valueEffect.next(target.value246,target.value246Destination&&target.punch246,target.value246Free,target.value246Speed,target.value246Amount,target.value246Colour,target.value246Tempo,punchRaw,phaseConfig.table);
+            const auto processed=punchEffect.next(driven,modulated,phaseConfig.table);driven+=punchMix*(processed-driven);
             if(!target.punch246&&punchMix<.000001f){punchMix=0;punchActive=false;punchEffect.reset();}
         }
+        else valueEffect.next(target.value246,false,target.value246Free,target.value246Speed,target.value246Amount,target.value246Colour,target.value246Tempo,target.punch246Controls,phaseConfig.table);
         const auto lag=std::clamp(size_t(sampleRate*p.delayTime),size_t(1),delay.size()-1);
         const float echo=lag<=delayValid?delay[(write+delay.size()-lag)%delay.size()]:0;
         delay[write]=std::tanh(driven+echo*std::clamp(p.feedback,0.f,.85f)); write=(write+1)%delay.size();if(delayValid<delay.size())++delayValid;
@@ -212,6 +219,7 @@ private:
     };
     Phase246Config phaseConfig;bool phaseControlsInitialized=false,digitalControlsInitialized=false,nativeEnvelopeActive=false,nativeDigitalActive=false;
     Punch246Effect punchEffect;float punchMix=0;bool punchActive=false;
+    Value246Fx valueEffect;bool valueActive=false;
     std::array<float,4> punchWords{};std::array<int16_t,4> punchRaw{};
     std::array<float,4> phaseWords{};std::array<int16_t,4> phaseRaw{};
     std::array<float,4> digitalWords{};std::array<int16_t,4> digitalRaw{};

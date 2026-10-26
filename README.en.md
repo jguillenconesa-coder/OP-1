@@ -1,10 +1,10 @@
-# Pocket One 0.11.0
+# Pocket One 0.12.0
 
 An OP-1-inspired **VST3 instrument and standalone application**, written in C++17 with JUCE 8. Independent of Teenage Engineering; no original firmware, factory samples, graphics or branding are included. The interface uses a grey enclosure, dark animated display, blue/green/white/orange encoders and two rows of button keys.
 
 ![Actual JUCE editor](docs/interface.png)
 
-Version 0.11.0 adds **[Punch 246](docs/punch246-native.md)**: a reconstructed mono sound effect with three additional Phase/Digital variants and contextual set-3 MIDI controls. Keyboard octave range is now −4…+4 and survives sessions/edited slots/clipboard. [Full OP-1 coverage and remaining work](docs/original-op1-coverage.md) distinguishes verified kernels from approximations, including the manual sound exercises and a 169-synth/24-kit numeric inventory.
+Version 0.12.0 adds **[Value 246 FX](docs/value246-native.md)**: reconstructed modulation of all four Punch colours, with contextual set-4 MIDI controls and free/retrigger phase. Three additional studies include **Helicopter (manual study)**. Old sounds and mappings are preserved. Display/raw calibration and hardware matching remain pending; [full coverage](docs/original-op1-coverage.md).
 
 Version 0.8.0 added optional **[Phase 246 CORE](docs/phase246-native.md)**: a playable independent Pd reconstruction at a fixed 88.2 kHz internal clock with 16 additional raw-control patches. Its core is tested against original instructions in the GNU simulator; NCO, envelope, modulation and output filtering are ours. Existing Phase presets remain available.
 
@@ -54,7 +54,7 @@ This is a constrained loop recorder, not a full recreation of OP-1 tape. It now 
 
 See [Windows build/install instructions](docs/windows.md). Run `packaging\windows\build.cmd` on Windows with Visual Studio 2022 C++ tools, CMake, Git and NSIS 3.11+ installed. The installer is generated in `dist/`, installs the VST3 bundle to the standard Common Files folder, installs the standalone app/Start menu shortcut, and registers an uninstaller. The C++ runtime is statically linked.
 
-**Windows x64 installer:** `Pocket-One-0.11.0-Windows-x64-Setup.exe`. Fifteen Windows suites and installer/uninstaller checks pass under Wine, including actual VST3 loading and Common Controls manifest inspection. Thirteen Linux suites pass. Native CI for the 0.4.0 SQLite fix also passed Windows/Linux/macOS, including Windows app startup and installer checks; this does not validate a native Ableton project. The installer remains unsigned. See [cross-build instructions](docs/windows-cross-build.md).
+**Windows x64 installer:** `Pocket-One-0.12.0-Windows-x64-Setup.exe`. Sixteen Windows suites and installer/uninstaller checks pass under Wine, including actual VST3 loading and Common Controls manifest inspection. Fourteen Linux suites pass. Native CI for the 0.4.0 SQLite fix also passed Windows/Linux/macOS, including Windows app startup and installer checks; this does not validate a native Ableton project. The installer remains unsigned. See [cross-build instructions](docs/windows-cross-build.md).
 
 ## Build from source
 
@@ -88,7 +88,7 @@ xvfb-run -a ./build/plugin_smoke_artefacts/Release/plugin_smoke "$PWD/docs/inter
 
 See [validation evidence and limitations](docs/validation.md) and [OTTO/TOP-1 design references](docs/references.md). No code or assets from those projects have been imported.
 
-Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.11.0`.
+Pocket One's original source is distributed under **AGPL-3.0-only**; see [LICENSE](LICENSE). This open-source distribution uses JUCE's AGPLv3 option and the bundled VST3 SDK's GPLv3 option. Third-party components retain their original terms. See [credits](CREDITS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Complete corresponding source, including pinned JUCE, is available in `downloads/v0.12.0`.
 
 ## Factory sounds
 

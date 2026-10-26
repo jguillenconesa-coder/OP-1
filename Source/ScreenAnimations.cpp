@@ -35,6 +35,13 @@ void drawScreen(juce::Graphics& g,const ScreenFrame& f) {
         for(auto point:{juce::Point<float>{a,top},{d,sustain},{s,sustain}})dot(g,point.x,point.y,2);
         float x=f.stage==1?12+f.envelope*(a-12):f.stage==2?a+(1-f.envelope)/std::max(.001f,1-f.sustain)*(d-a):f.stage==4?s+(1-f.envelope/std::max(.001f,f.sustain))*(end-s):s;
         g.setColour(colors[3]);if(f.voices>0)dot(g,std::clamp(x,12.f,end),y-f.envelope*56,3.2f);
+    } else if(f.page==2&&f.value246) {
+        const auto colour=colors[size_t(std::clamp(f.valueColour,0,3))];
+        for(int i=0;i<225;++i){const float x=13.f+i,y=56-float(std::sin(2*pi*(double(i)/224-f.lfoPhase)))*23;if(i==0)curve.startNewSubPath(x,y);else curve.lineTo(x,y);}
+        g.setColour(colour.withAlpha(f.valueDestination?1.f:.3f));g.strokePath(curve,juce::PathStrokeType(1.4f));
+        g.fillEllipse(123,52-float(std::sin(2*pi*f.lfoPhase))*23,8,8);
+        label(g,"VALUE 246 > "+juce::String(f.valueDestination?"PUNCH":"OFF"),{15,25,220,12},9,colour);
+        label(g,juce::String(f.lfoRate,2)+" Hz  /  "+juce::StringArray{"BLUE","GREEN","WHITE","ORANGE"}[std::clamp(f.valueColour,0,3)],{15,86,220,12},8,colors[2]);
     } else if(f.page==2) {
         for(int i=0;i<225;++i){const double p=double(i)/224*2,w=p-std::floor(p);const float v=float(f.lfoShape==1?1-4*std::abs(w-.5):f.lfoShape==2?(w<.5?1:-1):std::sin(2*pi*p));const float x=13.f+i,y=56-v*25;if(i==0)curve.startNewSubPath(x,y);else curve.lineTo(x,y);}
         g.setColour(colors[1]);g.strokePath(curve,juce::PathStrokeType(1.4f));g.setColour(colors[3]);g.drawVerticalLine(int(13+f.lfoPhase*224),26,85);label(g,juce::String(f.lfoRate,2)+" Hz",{15,86,100,12},8,colors[2]);

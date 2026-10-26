@@ -28,13 +28,15 @@
       "implemented_components": [
         "Digital core",
         "ADSR core",
-        "Punch mono core"
+        "Punch mono core",
+        "Value FX core / blue routing (own control-clock adapter)"
       ],
       "pending": [
-        "Original Value LFO and FX-blue routing",
+        "Original control cadence/alignment and complete voice/envelope LFO destinations",
         "Display-to-raw calibration",
         "Complete original mixing/output and acoustic comparison"
-      ]
+      ],
+      "additional_study_preset": "value246:0 (Helicopter manual study; descriptive positions uncalibrated)"
     },
     {
       "name": "Singing birds",

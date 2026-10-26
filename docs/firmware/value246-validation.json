@@ -1,0 +1,42 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "model": "GNU 13.1 BF524 with documented local D-register writeback patch; not hardware validation",
+  "process": "0x019cff68 (FX dispatch only)",
+  "note_reset": "0x019d023e",
+  "range_helper": "0x01a1de68",
+  "range_initializer": "0x01a1e914",
+  "fx_ranges": "0x01de5c50",
+  "value_ranges": "0x01de5770",
+  "tempo_float_multiply": "0x01aa55a0",
+  "tempo_float_to_integer": "0x01aa4dbc",
+  "tempo_constant_float32": 1662149.125,
+  "tempo_setter_calls": "0x01a5e850 / 0x01a5e908 / 0x01a5e972",
+  "independent_cases": 2048,
+  "stream_cases": 2048,
+  "cases": 4096,
+  "full_self_bytes": 12,
+  "full_display_bytes": 32,
+  "target_words": 8,
+  "artifacts": {
+    "value246-input.bin": {
+      "bytes": 393216,
+      "sha256": "60c632879d4c1e29f9d2887819796fa945b4a69bc56ad849dfb20917d35a7db9",
+      "matches_committed_fixture": true
+    },
+    "value246-output.bin": {
+      "bytes": 278936,
+      "sha256": "d5e440e9b1d8dee34d081d65701bf03a0a771f60376e900161180bc6b5e978cb",
+      "matches_committed_fixture": true
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "patch_sha256": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+  "limitations": [
+    "FX dispatch kinds 2 and 5 only; synthesis/drum voice and envelope destinations are not reconstructed.",
+    "The integrated 64-sample / 44.1 kHz control clock is an assumption; isolated results do not establish complete instrument timing or acoustic fidelity."
+  ]
+}
