@@ -59,6 +59,9 @@ int main(int argc,char** argv) {
   juce::AudioBuffer<float> exportedAudio(4,4096);check(reader->read(&exportedAudio,0,4096,0,true,true),"Exported WAV could not be read");
   check(exportedAudio.getMagnitude(0,0,4096)>.001,"Exported track is silent");
   for(int c=1;c<4;++c)check(exportedAudio.getMagnitude(c,0,4096)==0,"Recording leaked into other tracks");reader.reset();exported.deleteFile();
+  auto stereoFile=juce::File::getSpecialLocation(juce::File::tempDirectory).getNonexistentChildFile("pocket-stereo",".wav",false);
+  check(portable->exportMix(stereoFile,error),"COM stereo render failed");std::unique_ptr<juce::AudioFormatReader> mixReader(wav.createReaderFor(stereoFile.createInputStream().release(),true));
+  check(mixReader&&mixReader->numChannels==2&&mixReader->lengthInSamples==384000,"COM render has wrong channel count or length");juce::AudioBuffer<float> mixProbe(2,4096);check(mixReader->read(&mixProbe,0,4096,0,true,true)&&mixProbe.getMagnitude(0,0,4096)>.001,"COM render is silent");mixReader.reset();stereoFile.deleteFile();
   // Restoring a session must disarm recording to protect its existing audio.
   p->state.getParameter("tapeRecord")->setValueNotifyingHost(1);p->getStateInformation(saved);portable->setStateInformation(saved.getData(),int(saved.getSize()));
   check(portable->state.getRawParameterValue("tapeRecord")->load()==0,"State restore left recording armed");
@@ -177,11 +180,11 @@ int main(int argc,char** argv) {
    juce::FileOutputStream output{juce::File(juce::String::fromUTF8(argv[1]))}; output.setPosition(0);output.truncate();juce::PNGImageFormat png;
    check(png.writeImageToStream(image,output),"Screenshot failed");
    auto frames=juce::File::getSpecialLocation(juce::File::tempDirectory).getChildFile("pocket-one-animation-preview");frames.createDirectory();
-   for(int frame=0;frame<24;++frame) {for(int block=0;block<10;++block)p->processBlock(buffer,midi);auto preview=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);juce::FileOutputStream file(frames.getChildFile("frame-"+juce::String(frame).paddedLeft('0',2)+".png"));check(png.writeImageToStream(preview,file),"Animation preview failed");}
+   for(int frame=0;frame<24;++frame) {for(int block=0;block<10;++block)p->processBlock(buffer,midi);auto preview=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);juce::FileOutputStream file(frames.getChildFile("frame-"+juce::String(frame).paddedLeft('0',2)+".png"));file.setPosition(0);file.truncate();check(png.writeImageToStream(preview,file),"Animation preview failed");}
    if(argc>2){for(const auto& entry:p->soundCatalog())if(entry.name.equalsIgnoreCase("crystal piano")&&entry.variant=="Dry"){check(p->loadSound(entry.id,error),"Screenshot sound load failed");break;}
     for(auto* child:editor->getChildren())if(auto* button=dynamic_cast<juce::TextButton*>(child))if(button->getButtonText()=="SYNTH")button->onClick();
     for(auto* child:editor->getChildren())if(auto* browser=dynamic_cast<SoundBrowser*>(child)){for(auto* field:browser->getChildren())if(field->getComponentID()=="sound-search")if(auto* search=dynamic_cast<juce::TextEditor*>(field)){search->setText("crystal",false);search->onTextChange();}browser->syncSelection();}
-    auto browserImage=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);juce::FileOutputStream browserOutput{juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("sound-browser.png")};check(png.writeImageToStream(browserImage,browserOutput),"Browser screenshot failed");}
+    auto browserImage=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);juce::FileOutputStream browserOutput{juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("sound-browser.png")};browserOutput.setPosition(0);browserOutput.truncate();check(png.writeImageToStream(browserImage,browserOutput),"Browser screenshot failed");}
    for(auto* child:editor->getChildren()) if(auto* button=dynamic_cast<juce::TextButton*>(child)) if(button->getButtonText()=="TAPE") button->onClick();
    auto tapeImage=editor->createComponentSnapshot(editor->getLocalBounds(),true,1.5f);
    juce::FileOutputStream tapeOutput{juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("tape.png")};

@@ -30,3 +30,9 @@ Carga bancos, cambia muestras grandes y guarda/abre sesiones con el transporte p
 ## Medición Linux nativa de esta actualización
 
 La prueba Release completó 18.432 bloques en las 36 cargas, sin llamadas de heap monitorizadas y sin bloques por encima de su plazo en esa ejecución. El peor p99 fue el 8,41% del presupuesto. A 48 kHz, el peor p99 entre motores fue 112,03 µs con 64 muestras (presupuesto 1.333,33 µs), 118,76 µs con 128 (2.666,67 µs) y 207,93 µs con 256 (5.333,33 µs). Los datos completos están en [realtime-metrics-linux.json](realtime-metrics-linux.json). Son resultados de una máquina virtual compartida, no una garantía para Windows, el controlador o Ableton.
+
+## Medición 0.3.0 con controles nuevos
+
+La prueba incluye ahora captura de entrada, EQ/master FX, metronomo y SysEx además de la carga anterior. Se procesaron 18.432 bloques sin llamadas de heap monitorizadas; el peor p99 consumió el 7.61% del presupuesto. Se observaron 1 bloques fuera de plazo en esta ejecución compartida. Son interrupciones/tardanzas observadas, no se presentan como una garantía de cero dropouts ni como una medida dentro de Ableton. Los [datos completos actuales](realtime-metrics-linux.json) identifican 0.3.0; las cifras anteriores corresponden a 0.2.2.
+
+Las divisiones de tomas usan almacenamiento reservado antes del procesamiento, incluido el marcado de inicio/final de grabación. Las ediciones destructivas y el undo copian audio fuera del callback, con la cinta parada. Se ignoran SysEx no soportados sin construir mensajes largos dentro del callback.
