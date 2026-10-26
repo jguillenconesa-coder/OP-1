@@ -1,7 +1,7 @@
-# Validation log — Pocket One 0.8.0
+# Validation log — Pocket One 0.9.0
 
-Current release: 9 Linux suites and 11 Windows suites under Wine passed.
-[0.8.0 evidence and binary hashes](releases/v0.8.0-validation.json). Native Windows/Ableton/ASIO validation is pending. Historical records follow.
+Current release: 11 Linux suites and 13 Windows suites under Wine passed.
+[0.9.0 evidence and binary hashes](releases/v0.9.0-validation.json). Native Windows/Ableton/ASIO validation is pending. Historical records follow.
 
 Native environment: Debian 13 x86_64, GCC 14.2, CMake 4.4.4, JUCE 8.0.6.
 
@@ -183,3 +183,41 @@ The NCO, fixed-rate adapter, smoothing, output filter, envelope, LFO and FX are 
 integration. Original full note preparation, encrypted L1 routines, full preset
 behavior, aliasing limits and acoustic fidelity are not validated. This does not
 certify zero dropouts or an exact OP-1 replica. [Scope](phase246-native.md).
+
+
+## 0.9.0 — reconstructed envelope, String tuning and reliable panic
+
+- **11 Linux / 13 Windows suites under Wine passed.** The expanded realtime suite
+  was subsequently rebuilt and passed with both native envelope variants (48 workloads).
+- **2,621,440 ADSR samples / 20,480 complete states**, 256 converted coefficients,
+  all nine observed stages and original note/release/fast-stop callbacks agree
+  with the documented deferred D-register simulator model. The stock hazard
+  trace is retained separately. Five independently written packet probes check
+  the model change; original firmware instructions are unmodified and remain private.
+- Existing **1,572,864 Pd samples**, FM field and Q15 probes retain their results
+  under that model. The original LUT-copy probe now matches the unshifted source.
+- Native envelope timing at seven host rates; all 16 presets with both envelopes
+  at three rates; sustain/pedal release, MIDI timestamps, exact block-partition
+  invariance with bend/pedal/FX, edited slots/clipboard/session roundtrips and
+  0.8.0 project/slot migration. New parameter IDs/indices are appended only.
+- String: 36 frequency/bend/rate configurations within the three-cent test bound,
+  safe poisoned-buffer reuse and early downward bends. The test's autocorrelation
+  estimate is not a hardware/acoustic accuracy claim.
+- Explicit FILTER LFO attenuates clean sampler/native Phase test tones; dry CLEAN
+  regressions remain passing. CC120/panic silence output histories exactly in
+  the test, while ordinary preset changes preserve the master tail. Delay reset
+  invalidates history instead of clearing large buffers in the callback.
+- 48 workloads / 24,576 callbacks per platform, no monitored callback heap calls.
+  Final Linux: 4 deadline overruns, worst p99 14.20% of deadline;
+  Wine: 7 overruns, worst p99 25.25%. [Metrics](realtime-audio.md).
+- 0.9.0 installer installs matching executable/VST3/source files, registers the
+  version, loads its VST3 factory, preserves Common Controls v6 manifests and
+  removes files/registration in the isolated Wine prefix. Source/cache exclusions
+  and versioned package hashes are checked before publication.
+
+Native Windows startup, Ableton 10.2.4/ASIO, physical dropouts, complete firmware
+routing/mixing, FM/FX and acoustic equivalence remain unvalidated. The standalone
+main window was not confirmed under headless Wine in the previous baseline;
+passing the processor/editor or manifest suites is not proof of native app startup.
+No original firmware images/instructions or GNU simulator binary are distributed;
+coefficient observations, numerical fixtures and the separately licensed patch are included.

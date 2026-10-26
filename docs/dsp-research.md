@@ -227,3 +227,21 @@ Referencias externas consultadas (no dependencias del producto):
 - [op1-sdk / internals](https://github.com/BertBrandstifter/op1-sdk/blob/ae1945a9c61468f0e0d7cfdd5dd60c2cf9731ff1/docs/internals.md), MIT.
 - [bootrom.h de U-Boot v2013.10](https://github.com/u-boot/u-boot/blob/v2013.10/arch/blackfin/include/asm/mach-common/bits/bootrom.h).
 - [op1-decryptor](https://github.com/sualk/op1-decryptor/tree/20f86baa116b4c7b1da7e0d4e3a24f171c76767b), solo referencia de formato.
+
+
+## 0.9.0: envolvente reconstruida y modelo de instrucciones paralelas
+
+La ruta ADSR SDRAM, sus conversiones de tablas y callbacks se han aislado.
+**2.621.440 muestras y 20.480 estados completos** coinciden con nuestra
+reconstrucción bajo el modelo GNU con escrituras D-reg diferidas. Se conserva
+el resultado stock que muestra los hazards de registros; no se incorpora esa
+salida al instrumento. Cinco probes independientes documentan el cambio, y los
+probes anteriores FM/Q15/Pd conservan sus resultados. La copia LUT coincide
+ahora con la fuente sin desplazar en ese modelo; la validación de hardware sigue
+pendiente. [Método, archivos y límites](envelope246-research.md).
+
+La integración añade una envolvente opcional al banco Phase, conserva el modo
+0.8.0 en proyectos/slots anteriores y expone los cuatro controles por el set 2.
+Normalización, mezcla, velocidad y flujo de dither siguen siendo propios.
+[Uso](phase246-native.md). String se corrige como modelo propio, sin presentarlo
+como un port original. [Estado de motores y funciones](audio-engines.md).

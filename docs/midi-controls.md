@@ -68,3 +68,14 @@ open editor. Five additional direct host parameters are appended after the old
 parameters, preserving all previous IDs and indices; integer ranges follow the
 original initializer (green 0–29491, others 0–32767). Edited values survive sessions,
 slots and sound lift/drop. [Usage and fidelity limits](phase246-native.md).
+
+
+## Original envelope controls (0.9.0)
+
+Phase presets loaded from the CORE bank now enable the reconstructed envelope.
+Set 2 routes the same four Screen knobs to Phase 246: Envelope Attack / Decay /
+Sustain / Release; set 1 remains oscillator controls, sets 3–4 FX/LFO. Turning
+246 ENVELOPE off restores the previous ADSR targets. Both enable guards also work
+with the editor closed. Five additional direct parameters follow all 0.8.0
+parameters without changing their IDs/indices. Old projects and edited slots
+without those fields default to the previous envelope, not the new one.

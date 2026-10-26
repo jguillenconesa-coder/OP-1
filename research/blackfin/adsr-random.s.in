@@ -1,0 +1,100 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+P0.H = cases;
+P0.L = cases;
+P1.H = case_ptr;
+P1.L = case_ptr;
+[P1] = P0;
+P0.H = results;
+P0.L = results;
+P1.H = result_ptr;
+P1.L = result_ptr;
+[P1] = P0;
+probe_loop:
+P0.H = case_ptr;
+P0.L = case_ptr;
+P3 = [P0];
+R0 = [P3+36];
+imm32 P0, 0xff802bc8
+[P0] = R0;
+R0 = [P3+40];
+imm32 P0, 0x01b60534
+[P0] = R0;
+P0.H = result_ptr;
+P0.L = result_ptr;
+P1 = [P0];
+P0.H = output_ptr;
+P0.L = output_ptr;
+[P0] = P1;
+R0 = P3;
+R1 = P1;
+R2 = P3;
+R2 += 24;
+R3 = P3;
+R3 += 32;
+[SP+12] = R3;
+imm32 P0, 0x01912128
+CALL (P0);
+P0.H = result_ptr;
+P0.L = result_ptr;
+P1 = [P0];
+[P1+280] = R0;
+P0.H = case_ptr;
+P0.L = case_ptr;
+P3 = [P0];
+P2 = 256;
+P2 = P1 + P2;
+R0 = [P3++];
+[P2++] = R0;
+R0 = [P3++];
+[P2++] = R0;
+R0 = [P3++];
+[P2++] = R0;
+R0 = [P3++];
+[P2++] = R0;
+R0 = [P3++];
+[P2++] = R0;
+R0 = [P3++];
+[P2++] = R0;
+imm32 P3, 0xff802bc8
+R0 = [P3];
+[P1+284] = R0;
+imm32 P3, 0x01b60534
+R0 = [P3];
+[P1+288] = R0;
+P4 = 292;
+P1 = P1 + P4;
+P0.H = result_ptr;
+P0.L = result_ptr;
+[P0] = P1;
+P0.H = case_ptr;
+P0.L = case_ptr;
+P1 = [P0];
+P1 += 48;
+[P0] = P1;
+P2.H = cases_end;
+P2.L = cases_end;
+CC = P1 == P2;
+IF !CC JUMP probe_loop;
+P0.H = table_args;
+P0.L = table_args;
+R0 = P0;
+P0 = 5;
+EXCPT 0;
+P0.H = result_args;
+P0.L = result_args;
+R0 = P0;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+table_args: .long 1,0x106b3cc,1024
+result_args: .long 1,results,1196032
+case_ptr: .long 0
+result_ptr: .long 0
+output_ptr: .long 0
+cases: .incbin "@WORK@/inputs.bin"
+cases_end:
+results: .space 1196032
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

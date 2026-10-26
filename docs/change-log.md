@@ -48,3 +48,12 @@ Optional native Phase 246 CORE, 16 additional experimental raw-control patches,
 fixed 88.2 kHz internal clock, original control ranges, MIDI/slot/session integration
 and 98,304 new isolated original-kernel sample comparisons. See
 [release notes](releases/v0.8.0.md) and [scope](phase246-native.md).
+
+
+## 0.9.0
+
+Envolvente rev246 opcional en Phase CORE, set 2 y controles MIDI/estado compatibles
+con 0.8.0; 2.621.440 muestras y 20.480 estados ADSR contrastados bajo el modelo GNU
+documentado. Afinación/bend de String corregidos; FILTER LFO funcional en rutas
+limpias; pánico sin borrado de buffers grandes, preservación de FX master al
+cambiar preset y duración de colas actualizada. [Notas](releases/v0.9.0.md).

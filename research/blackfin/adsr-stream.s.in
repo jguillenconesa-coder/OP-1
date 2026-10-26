@@ -1,0 +1,140 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+P0.H = cases;
+P0.L = cases;
+P1.H = case_ptr;
+P1.L = case_ptr;
+[P1] = P0;
+P0.H = results;
+P0.L = results;
+P1.H = result_ptr;
+P1.L = result_ptr;
+[P1] = P0;
+probe_loop:
+P0.H = case_ptr;
+P0.L = case_ptr;
+P3 = [P0];
+R0 = [P3+44];
+CC = R0 == 1;
+IF !CC JUMP maybe_release;
+P0.H = state;
+P0.L = state;
+R0 = [P3+0];
+[P0+0] = R0;
+R0 = [P3+4];
+[P0+4] = R0;
+R0 = [P3+8];
+[P0+8] = R0;
+R0 = [P3+12];
+[P0+12] = R0;
+R0 = [P3+16];
+[P0+16] = R0;
+R0 = [P3+20];
+[P0+20] = R0;
+R0 = [P3+36];
+imm32 P0, 0xff802bc8
+[P0] = R0;
+R0 = [P3+40];
+imm32 P0, 0x01b60534
+[P0] = R0;
+P0.H = state;
+P0.L = state;
+R0 = P0;
+imm32 P0, 0x0191211a
+CALL (P0);
+JUMP render_block;
+maybe_release:
+CC = R0 == 2;
+IF !CC JUMP maybe_fast;
+R0 = W[P3+28] (Z);
+imm32 P0, 0x01b60ef0
+W[P0+4] = R0;
+P0.H = state;
+P0.L = state;
+R0 = P0;
+R1 = 0;
+imm32 P0, 0x019120d0
+CALL (P0);
+JUMP render_block;
+maybe_fast:
+CC = R0 == 3;
+IF !CC JUMP render_block;
+P0.H = state;
+P0.L = state;
+R0 = P0;
+imm32 P0, 0x0191209c
+CALL (P0);
+render_block:
+P0.H = case_ptr;
+P0.L = case_ptr;
+P3 = [P0];
+P0.H = result_ptr;
+P0.L = result_ptr;
+P1 = [P0];
+R1 = P1;
+P0.H = state;
+P0.L = state;
+R0 = P0;
+R2 = P3;
+R2 += 24;
+R3 = P3;
+R3 += 32;
+[SP+12] = R3;
+imm32 P0, 0x01912128
+CALL (P0);
+P0.H = result_ptr;
+P0.L = result_ptr;
+P1 = [P0];
+[P1+280] = R0;
+P3.H = state;
+P3.L = state;
+P2 = 256;
+P2 = P1 + P2;
+R0 = [P3++];
+[P2++] = R0;
+R0 = [P3++];
+[P2++] = R0;
+R0 = [P3++];
+[P2++] = R0;
+R0 = [P3++];
+[P2++] = R0;
+R0 = [P3++];
+[P2++] = R0;
+R0 = [P3++];
+[P2++] = R0;
+imm32 P3, 0xff802bc8
+R0 = [P3];
+[P1+284] = R0;
+imm32 P3, 0x01b60534
+R0 = [P3];
+[P1+288] = R0;
+P4 = 292;
+P1 = P1 + P4;
+P0.H = result_ptr;
+P0.L = result_ptr;
+[P0] = P1;
+P0.H = case_ptr;
+P0.L = case_ptr;
+P1 = [P0];
+P1 += 48;
+[P0] = P1;
+P2.H = cases_end;
+P2.L = cases_end;
+CC = P1 == P2;
+IF !CC JUMP probe_loop;
+P0.H = io_args;
+P0.L = io_args;
+R0 = P0;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+io_args: .long 1,results,4784128
+case_ptr: .long 0
+result_ptr: .long 0
+state: .space 24
+cases: .incbin "@WORK@/stream-inputs.bin"
+cases_end:
+results: .space 4784128
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

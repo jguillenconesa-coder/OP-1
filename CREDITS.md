@@ -51,3 +51,16 @@ supplied flag definitions; [sualk/op1-decryptor](https://github.com/sualk/op1-de
 was consulted for the encryption layout only (no declared license; no code copied).
 None is linked or bundled. Pocket One's reconstruction, adapter, GUI and tests
 are independently written. Original firmware/decryption keys are not distributed.
+
+
+## Envelope research and simulator correction (0.9.0)
+
+GNU GDB 13.1's Blackfin simulator is Copyright (C) 2005–2023 Free Software
+Foundation, Inc.; contributed by Analog Devices, Inc.; GPL-3.0-or-later.
+`research/blackfin/gnu-13.1-dreg-writeback.patch` is a local modification under
+those terms, retained separately with the [GPL text](licenses/GPL-3.0.txt).
+No GNU simulator binary/code is linked into the instrument. The product's C++
+envelope is an independent reconstruction, with numerical coefficient observations
+and test traces from the user-supplied firmware. No firmware images/instruction
+snippets are packaged. The local patch is not claimed to be upstream-approved or
+hardware validated. See [evidence](docs/envelope246-research.md).

@@ -1,0 +1,98 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "model": "GNU 13.1 BF524 with local D-register deferred-write patch; original instructions unchanged; not hardware validation",
+  "stock_model_preserved": true,
+  "source_coefficients": [
+    "0x018c13c4",
+    "0x018c15c4"
+  ],
+  "coefficient_conversion": "0x01aa6fd0",
+  "render": "0x01912128",
+  "note_on": "0x0191211a",
+  "release": "0x019120d0",
+  "fast_stop": "0x0191209c",
+  "random_blocks": 4096,
+  "random_samples": 524288,
+  "stream_blocks": 16384,
+  "stream_samples": 2097152,
+  "preset_envelopes": 16,
+  "microprobes": {
+    "expected": [
+      "0x11112222",
+      "0x7",
+      "0x33334444",
+      "0x3",
+      "0x55556666",
+      "0x77778888",
+      "0x1234",
+      "0x43214321",
+      "0x13572468",
+      "0x0"
+    ],
+    "models": {
+      "stock": [
+        "0x7",
+        "0x7",
+        "0x3",
+        "0x3",
+        "0x77778888",
+        "0x77778888",
+        "0x4321",
+        "0x43214321",
+        "0x0",
+        "0x0"
+      ],
+      "dreg_deferred": [
+        "0x11112222",
+        "0x7",
+        "0x33334444",
+        "0x3",
+        "0x55556666",
+        "0x77778888",
+        "0x1234",
+        "0x43214321",
+        "0x13572468",
+        "0x0"
+      ]
+    }
+  },
+  "artifacts": {
+    "adsr246-input.bin": {
+      "bytes": 196608,
+      "sha256": "1880c8ccb33d6e1e9b0afdbc7fa52e400ccdbf934d317468ab5eb16fdaa1410c",
+      "matches_committed_fixture": true
+    },
+    "adsr246-output.bin": {
+      "bytes": 1197056,
+      "sha256": "0b6f9dbc73ebfdd74872ee9de0943502bf3d1203967abfe9c1485934b878dffd",
+      "matches_committed_fixture": true
+    },
+    "adsr246-stock-output.bin": {
+      "bytes": 1197056,
+      "sha256": "b0283ca41d96f5d4bcf86cd2217c37166ced1fb82aba810f7d681900725e1ae0",
+      "matches_committed_fixture": true
+    },
+    "adsr246-stream-input.bin": {
+      "bytes": 786432,
+      "sha256": "ee14c68d9d588810b134016b1c46eb922f7e4124bf129226064f55a7b4f68559",
+      "matches_committed_fixture": true
+    },
+    "adsr246-stream-output.bin": {
+      "bytes": 4784128,
+      "sha256": "3bc3fa930efe41ec083f1bf2f9b7fa5d214d55fa5854e1881596dc5b440200ee",
+      "matches_committed_fixture": true
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/build/sim/bfin/run": "b5787384c0def3bbaab7a7aa432064fd8db1ec615400f29feab0717d657b7968",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "patch_sha256": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+  "limitations": [
+    "Only the documented D-register packet writeback hazards are corrected, not a general validation of the complete simulator.",
+    "Original boot, full preset control/LFO/velocity path, output mix, DSP timing and hardware audio are not validated.",
+    "Production adds its own NCO/filter/rate adapter and envelope normalization; dither state is per voice, not the original shared global stream."
+  ]
+}

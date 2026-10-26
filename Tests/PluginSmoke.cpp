@@ -78,6 +78,43 @@ int main(int argc,char** argv) {
    roundtrip->phaseParameters().getParameter("phase246Enabled")->setValueNotifyingHost(1);check(roundtrip->screenKnob(0).followedParameter()==roundtrip->phaseParameters().getParameter("phase246Blue"),"Mode automation did not reroute the proxy");
    roundtrip->state.getParameter("engine")->setValueNotifyingHost(0);check(roundtrip->screenKnob(0).followedParameter()==roundtrip->state.getParameter("tone"),"Engine automation left the proxy on Phase");
   }
+  // Original envelope integration preserves 0.8.0 automation and project/slot defaults.
+  {
+   auto env=std::make_unique<PocketProcessor>();env->applyPhase246Preset(0);env->setScreenPage(1);auto& parameters=env->phaseParameters();
+   check(env->phase246EnvelopeEnabled(),"New CORE preset does not enable original envelope");
+   check(parameters.getParameter("phase246Envelope")->getParameterIndex()==parameters.getParameter("phase246Orange")->getParameterIndex()+1,"Envelope shifted 0.8.0 host parameter indices");
+   for(size_t i=0;i<4;++i){auto* raw=parameters.getParameter(pocket::phase246EnvelopeIds[i]);check(env->screenKnob(int(i)).followedParameter()==raw,"Set 2 does not map original ADSR with editor closed");env->screenKnob(int(i)).setValueNotifyingHost(.25f+.15f*float(i));check(std::abs(raw->getValue()-env->screenKnob(int(i)).getValue())<.0001,"Original ADSR MIDI proxy failed");}
+   parameters.getParameter("phase246Release")->setValueNotifyingHost(0);check(env->getTailLengthSeconds()>60,"Host truncates the longest original release");
+   parameters.getParameter("phase246Envelope")->setValueNotifyingHost(0);check(env->screenKnob(0).followedParameter()==env->state.getParameter("attack"),"Envelope OFF does not restore own ADSR mapping");
+   parameters.getParameter("phase246Envelope")->setValueNotifyingHost(1);parameters.getParameter("phase246Enabled")->setValueNotifyingHost(0);check(env->screenKnob(0).followedParameter()==env->state.getParameter("attack"),"Set 2 ignores native oscillator enable guard");
+   parameters.getParameter("phase246Enabled")->setValueNotifyingHost(1);check(env->assignSoundSlot(false,0),"Envelope slot assign failed");
+   const auto attack=parameters.getRawParameterValue("phase246Attack")->load();juce::String error;check(env->copySound(error),"Envelope sound copy failed");env->applyPreset(0);check(env->recallSoundSlot(false,0,error)&&env->phase246EnvelopeEnabled()&&parameters.getRawParameterValue("phase246Attack")->load()==attack,"Slot lost edited original ADSR");env->applyPreset(1);check(env->pasteSound(error)&&env->phase246EnvelopeEnabled(),"Clipboard lost original envelope mode");
+   juce::MemoryBlock saved;env->getStateInformation(saved);auto old=juce::ValueTree::fromXml(*juce::AudioProcessor::getXmlFromBinary(saved.getData(),int(saved.getSize())));
+   auto strip=[](juce::ValueTree tree){if(!tree.isValid())return;for(const char* id:{"phase246Envelope","phase246Attack","phase246Decay","phase246Sustain","phase246Release"})tree.removeChild(tree.getChildWithProperty("id",id),nullptr);};
+   strip(old.getChildWithName("Phase246"));for(const auto& slot:old.getChildWithName("SoundLibrary"))strip(slot.getChildWithName("Settings").getChildWithName("Phase246"));
+   juce::MemoryBlock legacy;juce::AudioProcessor::copyXmlToBinary(*old.createXml(),legacy);env->setStateInformation(legacy.getData(),int(legacy.getSize()));
+   check(env->phase246Enabled()&&!env->phase246EnvelopeEnabled(),"0.8.0 project inherited new original envelope");check(env->recallSoundSlot(false,0,error)&&!env->phase246EnvelopeEnabled(),"0.8.0 slot inherited the upgraded preset envelope");
+   env->setStateInformation(saved.getData(),int(saved.getSize()));check(env->phase246EnvelopeEnabled()&&parameters.getRawParameterValue("phase246Attack")->load()==attack,"Original envelope project roundtrip failed");
+   env->setScreenPage(1);{std::unique_ptr<juce::AudioProcessorEditor> ui(env->createEditor());bool touched=false;
+    for(auto* child:ui->getChildren())if(child->getComponentID()=="screen-knob-1")if(auto* slider=dynamic_cast<juce::Slider*>(child)){check(slider->getMaximum()==16383,"Original ADSR GUI range is incorrect");slider->setValue(640,juce::sendNotificationSync);touched=true;}
+    check(touched&&parameters.getRawParameterValue("phase246Attack")->load()==640,"GUI original envelope control did not forward");
+    if(argc>1){juce::PNGImageFormat png;const auto shot=ui->createComponentSnapshot(ui->getLocalBounds(),true,1.5f);juce::FileOutputStream stream(juce::File(juce::String::fromUTF8(argv[1])).getSiblingFile("phase246-envelope.png"));stream.setPosition(0);stream.truncate();check(png.writeImageToStream(shot,stream),"Envelope screenshot failed");}
+   }
+   auto render=[&](int block){auto processor=std::make_unique<PocketProcessor>();processor->applyPhase246Preset(0);processor->phaseParameters().getParameter("phase246Attack")->setValueNotifyingHost(0);
+    for(auto item:{std::pair{"effect",.7f},{"delayTime",.05f},{"delayFeedback",.75f},{"masterEcho",.5f},{"masterDelayTime",.05f},{"masterDrive",.3f},{"eqLow",6.f}}){auto* p=processor->state.getParameter(item.first);p->setValueNotifyingHost(p->convertTo0to1(item.second));}
+    processor->prepareToPlay(48000,block);std::vector<float> output;output.reserve(16384);
+    for(int start=0;start<16384;start+=block){juce::AudioBuffer<float> audio(2,block);audio.clear();juce::MidiBuffer midi;
+     auto add=[&](int position,const juce::MidiMessage& event){if(position>=start&&position<start+block)midi.addEvent(event,position-start);};
+     add(33,juce::MidiMessage::noteOn(1,60,.8f));add(2500,juce::MidiMessage::pitchWheel(1,11000));add(3000,juce::MidiMessage::controllerEvent(1,64,127));add(4000,juce::MidiMessage::noteOff(1,60));add(6000,juce::MidiMessage::controllerEvent(1,64,0));add(7000,juce::MidiMessage::allSoundOff(1));
+     processor->processBlock(audio,midi);output.insert(output.end(),audio.getReadPointer(0),audio.getReadPointer(0)+block);
+    }return output;};
+   // Patch changes retain global FX tails; explicit panic clears them immediately.
+   {auto fx=std::make_unique<PocketProcessor>();fx->applyPreset(0);for(auto item:{std::pair{"masterEcho",1.f},{"masterDelayTime",.05f},{"masterFeedback",.75f}}){auto* p=fx->state.getParameter(item.first);p->setValueNotifyingHost(p->convertTo0to1(item.second));}fx->prepareToPlay(48000,256);
+    juce::AudioBuffer<float> sound(2,256);juce::MidiBuffer notes;notes.addEvent(juce::MidiMessage::noteOn(1,60,.8f),0);for(int i=0;i<30;++i)fx->processBlock(sound,notes);
+    fx->applyPreset(1);fx->processBlock(sound,notes);check(sound.getMagnitude(0,0,256)>.00001,"Preset change erased global effect history");fx->requestPanic();fx->processBlock(sound,notes);check(sound.getMagnitude(0,0,256)==0,"Panic did not clear output FX history");
+   }
+   const auto a=render(64),b=render(128),c=render(256);for(size_t i=0;i<a.size();++i){check(a[i]==b[i]&&a[i]==c[i],"Native envelope audio depends on DAW block boundaries");if((i<33||i>=7000)&&a[i]!=0)throw std::runtime_error("Original-envelope note timing or panic mute failed at sample "+std::to_string(i)+" value "+std::to_string(a[i]));}
+  }
   juce::AudioBuffer<float> buffer(2,256); juce::MidiBuffer midi;
   // A timestamped note must not sound before its sample offset.
   midi.addEvent(juce::MidiMessage::noteOn(1,69,.8f),128); p->processBlock(buffer,midi);

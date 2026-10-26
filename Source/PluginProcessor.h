@@ -3,6 +3,7 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include "Engine.h"
 #include "Phase246Presets.h"
+#include "Phase246Envelopes.h"
 #include "Tape.h"
 #include "NoteQueue.h"
 #include "SoundLibrary.h"
@@ -34,12 +35,13 @@ public:
     bool exportTape(const juce::File&,juce::String& error);
     void clearTape();
     void rewindTape();
-    void requestPanic() { panicRequested.store(true); }
+    void requestPanic(bool clearOutput=true) {if(clearOutput)panicOutputRequested.store(true);panicRequested.store(true); }
     void applyPreset(int index);
     static juce::StringArray factoryPresetNames();
     void applyPhase246Preset(int index);
     juce::AudioProcessorValueTreeState& phaseParameters() {return *phaseState;}
     bool phase246Enabled() const {return phaseAudio[0]->load()>.5f&&int(audioParameters[size_t(Param::engine)]->load())==1;}
+    bool phase246EnvelopeEnabled() const {return phase246Enabled()&&phaseAudio[5]->load()>.5f;}
     std::atomic<int> currentFactoryPreset{-1},currentUserPreset{-1};
     juce::StringArray userPresetNames() const;
     std::vector<SoundInfo> soundCatalog() const;
@@ -95,7 +97,8 @@ public:
 private:
     static juce::AudioProcessorValueTreeState::ParameterLayout layout();
     std::unique_ptr<juce::AudioProcessorValueTreeState> phaseState;
-    std::array<std::atomic<float>*,5> phaseAudio{};
+    std::array<std::atomic<float>*,10> phaseAudio{};
+    juce::ValueTree normalizedPhaseState(juce::ValueTree) const;
     enum class Param {engine,tone,color,envelope,effect,attack,decay,sustain,release,lfoRate,lfoDepth,lfoDestination,lfoShape,delayTime,delayFeedback,drive,sampleLoop,sampleRoot,volume,sequencer,tempo,track1,track2,track3,track4,tapePlay,tapeRecord,tapeOverdub,tapeTrack,tapeSpeed,tapeLength,tapeLoop,tapeLoopIn,tapeLoopOut,metronome,inputMonitor,inputGain,tapeRecordGain,eqLow,eqMid,eqHigh,eqMix,masterDrive,masterEcho,masterDelayTime,masterFeedback,clickVolume,seqMode,seqLength,seqRate,seqGate,seqSwing,arpOctaves,seqVelocity,seqEuclidean,seqPulses,seqRotation,sampleClean,Count};
     std::array<std::atomic<float>*,size_t(Param::Count)> audioParameters{};
     std::array<std::array<std::atomic<float>*,6>,pocket::kitCapacity> padParameters{};
@@ -136,7 +139,7 @@ private:
     void loadFactoryKit(int index);
     pocket::Engine engine;
     pocket::Tape tape;
-    std::atomic<bool> panicRequested{false};
+    std::atomic<bool> panicRequested{false},panicOutputRequested{false};
     pocket::HeldNotes heldNotes;
     double rate=48000, clock=0;
     int previousSeqMode=-1;
@@ -150,7 +153,8 @@ private:
     float clickDecay=.99f;
     float eqLowState=0,eqHighState=0,eqLowCoefficient=0,eqHighCoefficient=0;
     std::array<float,3> eqGains{{1,1,1}};
-    std::array<float,192000> masterDelay{};size_t masterDelayWrite=0;
+    std::array<float,192000> masterDelay{};size_t masterDelayWrite=0,masterDelayValid=0;
+    void resetOutputHistory() noexcept {masterDelayWrite=masterDelayValid=0;eqLowState=eqHighState=0;clickEnvelope=0;}
     float masterDriveSmooth=0,masterEchoSmooth=0,masterTimeSmooth=.281f,eqMixSmooth=0;
     double clickBeat=0,clickPhase=0;float clickEnvelope=0;int64_t lastClickBeat=-1;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PocketProcessor)

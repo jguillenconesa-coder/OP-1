@@ -1,0 +1,62 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "model": "Local GNU 13.1 deferred D-register patch, not hardware validation",
+  "simulator_sha256": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16",
+  "patch_sha256": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+  "pd_samples_unchanged": 1572864,
+  "fm_fields_unchanged": 65536,
+  "q15_pairs_unchanged": 65536,
+  "lut_copy_matches_verified_unshifted_source": true,
+  "stock_fixtures_preserved": true,
+  "probes": {
+    "fm-probe": {
+      "elf_sha256": "9b181e668e01c102a6263cbcdb20fc14149f43bb9149b360929a3dc88bc48702",
+      "expected_fixture": "fm-fields.bin",
+      "bytes": 1048576,
+      "sha256": "ee1fea129340cf3588cba14252c9c14bfe407f9390e5bbdfd21a66da15cb58c8",
+      "matches": true
+    },
+    "q15-probe": {
+      "elf_sha256": "215da5cfec3787756c6554dd53ec11f4d25f28d88a5e1c6b1bd875ce39b7c953",
+      "expected_fixture": "q15-output.bin",
+      "bytes": 131072,
+      "sha256": "79a7ea07a2614b93599a8df3c685185eae3d11f2a39faf048567c75b86066524",
+      "matches": true
+    },
+    "pd-probe": {
+      "elf_sha256": "6f8f4bd9607b307a548273330f7db4d86666a50bc05999cb313842ac3d865c8b",
+      "expected_fixture": "pd-output.bin",
+      "bytes": 262144,
+      "sha256": "84c5e80d2dbd6f9da35e02090cb230248708d64243fd3a74229cd7f3c9dd5403",
+      "matches": true
+    },
+    "pd-full-probe": {
+      "elf_sha256": "e6621191c2018ca01729885641873851a67830a17c95d5bddd3a1dc0b418c493",
+      "expected_fixture": "pd-transient-output.bin",
+      "bytes": 2228224,
+      "sha256": "34d772850689650861d1c54fcb185c7ea9cd4a439e4a1ecfb5b75e2f52b1948d",
+      "matches": true
+    },
+    "pd-stream-probe": {
+      "elf_sha256": "cdf60bae7525ab09a0c963ce9d140c9f665d9c452ed86874e8b62343cc11ec12",
+      "expected_fixture": "pd-stream-output.bin",
+      "bytes": 626688,
+      "sha256": "4600067911da9581a451028323e0b2765e61a018754c6abbadecdda78bdafdef",
+      "matches": true
+    },
+    "lut-probe": {
+      "elf_sha256": "6d99e481b9bb172768f54b4920e04ed84c9bb6087602f4133cbc845f2b112e2f",
+      "expected_fixture": "verified-sine.bin",
+      "bytes": 16386,
+      "sha256": "f959d94906b410fd7dad618c3e6dff68db1eb2a4b490b60781b3a5c49cf69911",
+      "matches": true
+    },
+    "pd-clock-probe": {
+      "elf_sha256": "2b30bb9088c22b8af7253367a2d982ce0f2d9c65f0cbe0ffbf209210c7fd2a38",
+      "expected_fixture": "pd-clock-output.bin",
+      "bytes": 208896,
+      "sha256": "0c9d644c6dff8ec70ea6d1638f9f2fdb9b1a2932fa247fb37f7fa2b3b327481c",
+      "matches": true
+    }
+  }
+}

@@ -20,7 +20,7 @@ Target amd64-unicode
   !define OUTPUT_DIR "."
 !endif
 !ifndef VERSION
-  !define VERSION "0.8.0"
+  !define VERSION "0.9.0"
 !endif
 Name "Pocket One"
 OutFile "${OUTPUT_DIR}${PATH_SEP}Pocket-One-${VERSION}-Windows-x64-Setup.exe"

@@ -65,6 +65,13 @@ int main(int argc,char** argv) {
    e->noteOn(60,1);double error=0;for(int i=0;i<1024;++i){const double difference=e->next(p)-reference[size_t(i)]*.16;error+=difference*difference;}
    check(std::sqrt(error/1024)<.00001,"Clean sample path changes the dry PCM waveform");
   }
+  // Explicit FILTER modulation must work even when implicit filtering is bypassed.
+  {
+   pocket::Sample wave;wave.rate=48000;wave.frames.resize(9600);for(size_t i=0;i<wave.frames.size();++i)wave.frames[i]=float(std::sin(2*pocket::pi*8000*i/48000))*.7f;e->setSample(std::move(wave));
+   auto energy=[&](bool native,bool modulated){e->prepare(48000);p={};p.engine=native?1:3;p.phase246=native;p.phase246Controls={0,0,0,0};p.sampleClean=true;p.sampleLoop=true;p.sampleRoot=69;p.tone=0;p.color=1;p.effect=0;p.volume=1;p.attack=0;p.sustain=1;p.lfoDestination=1;p.lfoDepth=modulated?1.f:0.f;p.lfoRate=2;e->noteOn(native?108:69,1);double result=0;
+    for(int i=0;i<48000;++i){const auto sample=e->next(p);check(std::isfinite(sample),"Explicit clean-path filter is unstable");if(i>5000)result+=sample*sample;}return result;};
+   for(bool native:{false,true}){const auto dry=energy(native,false),filtered=energy(native,true);check(dry>.1&&filtered<dry*.6,"FILTER LFO is inaudible on clean sampler/native Phase");}
+  }
   if(argc>1) {
    e->prepare(48000); p={}; std::vector<int16_t> pcm;
    for(int section=0;section<3;++section) { p.engine=section; e->noteOn(60, .8f); e->noteOn(67,.7f); e->noteOn(75,.6f);

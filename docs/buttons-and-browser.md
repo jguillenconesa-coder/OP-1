@@ -77,3 +77,13 @@ La cinta sigue limitada a 4/8/16 segundos, grabación a x1 y cuatro pistas mono.
 ## Kits de 24 pads (0.5.0)
 
 Carga un kit en DRUM y pulsa **KIT EDIT**. Los 24 botones seleccionan/preescuchan pads; la forma de onda muestra el recorte. Cada pad tiene START, END, GAIN, PITCH, REVERSE y GATED. LOAD PAD sustituye su audio; RESET PAD recupera sus controles. Los ocho accesos de sonido de la máquina siguen seleccionando presets, mientras que el teclado toca los pads. [Guía y compatibilidad](kits.md).
+
+
+## Ajustes de 0.9.0
+
+En Phase 246 CORE, **246 ENVELOPE** activa la reconstrucción de envolvente y el
+set 2 sigue sus cuatro controles. Nuevos presets CORE la activan; sesiones/slots
+0.8.0 conservan el modo anterior. **STOP/pánico** corta también el historial de
+salida; no elimina la cinta. Los cambios normales de preset conservan las colas
+master. FILTER LFO ya actúa en las rutas nativa y CLEAN cuando se selecciona.
+[Guía Phase](phase246-native.md) · [Motores](audio-engines.md).

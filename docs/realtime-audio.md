@@ -75,3 +75,40 @@ monitorizadas: **4** tardanzas, peor p99 global **43.74 %** y Phase
 **43.74 %**. [Datos Wine](realtime-metrics-windows-wine.json).
 La variación entre ejecuciones refleja que se trata de una máquina compartida.
 Estas pruebas no certifican cero dropouts ni miden ASIO/Live 10.2.4 en Windows real.
+
+
+## 0.9.0: envolvente reconstruida, String y pánico
+
+El benchmark añade ambas envolventes de Phase: **48 cargas / 24.576 callbacks**
+por plataforma, con automatización de los cuatro controles de oscilador y ADSR.
+No se observaron llamadas de heap monitorizadas en el callback. El resto de la
+carga incluye ocho voces, MIDI/GUI/SysEx, captura, cinta, FX/EQ/LFO y secuenciadores.
+
+| Medición final sin compilación simultánea | Linux | Windows bajo Wine |
+| --- | --- | --- |
+| Peor p99 como % del plazo | 14.20 % | 25.25 % |
+| Phase con envolvente rev246: peor p99 | 9.53 % | 23.49 % |
+| Callbacks fuera de plazo observados | 4 | 7 |
+| Llamadas de heap monitorizadas | 0 | 0 |
+| Latencia declarada | 0 muestras | 0 muestras |
+
+[Datos Linux](realtime-metrics-linux.json) · [Datos Wine](realtime-metrics-windows-wine.json).
+Las tardanzas observadas se conservan: estas métricas de VM no certifican cero
+dropouts, latencia de ida/vuelta ni funcionamiento en Ableton/ASIO Windows real.
+No se ha validado aquí el arranque gráfico completo del standalone Windows.
+
+El ADSR avanza por muestra al reloj interno, con coeficientes retenidos en tramos
+de 128 muestras del núcleo. El adaptador sintetiza los puntos que necesita el
+interpolador; no espera un bloque de audio de entrada. Las notas mantienen sus
+offsets MIDI y el audio de la prueba coincide al procesar bloques de 64/128/256.
+Los filtros tienen su retardo de grupo. La inserción explícita de FILTER LFO se
+suaviza en 12 ms; el retune de String, en unos 3 ms con límite de movimiento.
+
+Los dos delays invalidan su historial con contadores al reiniciar, sin borrar
+sus buffers grandes dentro del callback. STOP/CC120 limpian también EQ/historial
+master; los cambios normales de preset conservan ese historial. Guardar/importar
+sigue teniendo las restricciones de bloqueo descritas anteriormente.
+
+Las colas de la envolvente reconstruida pueden durar decenas de segundos. El host
+recibe una estimación conservadora de su release y delays en cascada, en lugar de
+usar únicamente el tiempo de la envolvente anterior. Esto no añade latencia de entrada.

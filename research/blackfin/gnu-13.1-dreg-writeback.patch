@@ -1,0 +1,23 @@
+SPDX-License-Identifier: GPL-3.0-or-later
+Local research patch to GNU GDB 13.1 simulator, FSF/Analog Devices source.
+Not linked into Pocket One; see CREDITS.md.
+
+--- a/sim/bfin/bfin-sim.c
++++ b/sim/bfin/bfin-sim.c
+@@ -546,6 +546,16 @@
+   do { \
+     if (BFIN_CPU_STATE.n_stores == 20) abort (); \
+     queue_store (cpu, &(X), (Y)); \
++  } while (0)
++
++/* Local research fix: defer D-register writes inside parallel packets. */
++#undef SET_DREG
++#define SET_DREG(x, val) \
++  do { \
++    if (PARALLEL_GROUP != BFIN_PARALLEL_NONE) \
++      STORE (DREG (x), (val)); \
++    else \
++      _SET_CORE32REG_IDX (DREG (x), R, x, (val)); \
+   } while (0)
+ 
+ static void

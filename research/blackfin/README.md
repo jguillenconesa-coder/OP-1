@@ -24,3 +24,18 @@ sampler frequency setter. `scripts/verify-phase-contract.py` reproduces these
 results and a separate 88.2 kHz Pd stream oracle; it keeps the full private SDRAM
 image outside this repository. The optional 0.8.0 native integration is described
 in [phase246-native.md](../../docs/phase246-native.md).
+
+
+## ADSR probes and simulator model (0.9.0)
+
+`parallel-dreg.s`, `adsr-random.s.in` and `adsr-stream.s.in` are our independently
+written harnesses. `verify-envelope246.py` reproduces both the stock-model hazard
+trace and the separately corrected-model oracles. `compare-dreg-model.py` checks
+old privately generated probes, including the now-unshifted LUT copy.
+
+**Exception to the harness license:** `gnu-13.1-dreg-writeback.patch` is a local
+GPL-3.0-or-later modification of GNU GDB 13.1's Blackfin simulator (FSF / Analog
+Devices source); it is not linked into the plugin. The GNU binary is not shipped.
+Keep the stock simulator and a separate patched build. This fixes the documented
+D-register writeback hazards only, not every ISA/timing behavior. See
+[the full method and reproduction](../../docs/envelope246-research.md).

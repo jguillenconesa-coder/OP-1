@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <vector>
 #include "Phase246.h"
+#include "StringVoice.h"
 
 namespace pocket {
 constexpr double pi = 3.14159265358979323846;
@@ -13,7 +14,7 @@ constexpr int kitCapacity=24;
 struct PadSettings {float start=0,end=1,gain=1,pitch=0;bool reverse=false,gated=false;};
 struct Parameters {
     int engine=0;
-    bool phase246=false;std::array<int16_t,4> phase246Controls{{0,29491,0,0}};
+    bool phase246=false,phase246Envelope=false;std::array<int16_t,4> phase246Controls{{0,29491,0,0}},phase246Adsr{{64,8064,32767,8192}};
     std::array<PadSettings,kitCapacity> pads{};
     float tone=.45f,color=.35f,envelope=.35f,effect=.2f,volume=.7f;
     float attack=.02f,decay=.2f,sustain=.8f,release=.3f;
@@ -26,8 +27,8 @@ using Kit=std::array<Sample,kitCapacity>;
 class Engine {
 public:
     static constexpr int polyphony=8;
-    void prepare(double rate) { sampleRate=std::max(8000.0,rate); smoothing=float(1-std::exp(-1.0/(sampleRate*.012))); cachedCutoff=-1;phaseConfig.prepare(sampleRate);reset(); }
-    void reset() { voices={}; delay.fill(0); write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1;cleanMix=0;cleanInitialized=false;phaseControlsInitialized=false; }
+    void prepare(double rate) { sampleRate=std::max(8000.0,rate); smoothing=float(1-std::exp(-1.0/(sampleRate*.012))); cachedCutoff=-1;stringRetune=1-std::exp(-1/(sampleRate*.003));phaseConfig.prepare(sampleRate);reset(); }
+    void reset() { voices={}; delayValid=0; write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1;cleanMix=0;modulatedFilterMix=0;cleanInitialized=false;phaseControlsInitialized=false;nativeEnvelopeActive=false; }
     void setSample(Sample data) { sample=std::move(data); voices={}; }
     void swapSample(Sample& data) {std::swap(sample,data);voices={};}
     void swapKit(Kit& data,int count=8) {kit.swap(data);kitCount=count==24?24:8;voices={};}
@@ -52,7 +53,7 @@ public:
         *v={}; v->active=true; v->keyDown=true; v->note=note; v->channel=channel;
         v->velocity=std::clamp(velocity,0.f,1.f); v->age=++age;
         v->frequency=440.0*std::pow(2.0,(note-69)/12.0);
-        v->stringLength=std::clamp(int(sampleRate/v->frequency),2,8192);
+
     }
     void noteOff(int note,int channel=1) {
         for(auto& v:voices) if(v.active&&v.note==note&&v.channel==channel) { v.keyDown=false; if(!pedals[channelIndex(channel)]) v.released=true; }
@@ -66,7 +67,7 @@ public:
         VisualState out;out.trigger=age;out.lfo=float(lfoPhase);uint64_t latest=0;
         for(const auto& v:voices) if(v.active) {
             ++out.active;out.envelope=std::max(out.envelope,v.level);
-            if(v.age>=latest) {latest=v.age;out.stage=v.released?4:v.stage==0?1:std::abs(v.level-currentSustain)>.005f?2:3;
+            if(v.age>=latest) {latest=v.age;out.stage=nativeEnvelopeActive?v.phase246.envelopeStage():v.released?4:v.stage==0?1:std::abs(v.level-currentSustain)>.005f?2:3;
                 const size_t length=mode==5?kit[size_t(kitSlot(v.note,kitCount))].frames.size():sample.frames.size();
                 if(length) out.progress=std::clamp(float(v.samplePosition/double(length))+(mode==3?current.tone*.9f:0.f),0.f,1.f);
             }
@@ -75,6 +76,7 @@ public:
     }
     float next(const Parameters& target) {
         const bool nativePhase=target.engine==1&&target.phase246;
+        nativeEnvelopeActive=nativePhase&&target.phase246Envelope;
         if(nativePhase){for(size_t i=0;i<4;++i){if(!phaseControlsInitialized)phaseWords[i]=target.phase246Controls[i];else phaseWords[i]+=smoothing*(target.phase246Controls[i]-phaseWords[i]);phaseRaw[i]=int16_t(std::clamp(phaseWords[i],0.f,32767.f)+.5f);}phaseControlsInitialized=true;}
         else phaseControlsInitialized=false;
         const reference::PdCoefficients phaseCoefficients(phaseRaw);
@@ -99,27 +101,29 @@ public:
         float sum=0;
         for(auto& v:voices) {
             if(!v.active) continue;
-            if(v.released) v.level*=releaseFactor;
+            if(nativeEnvelopeActive){}
+            else if(v.released) v.level*=releaseFactor;
             else if(v.stage==0) {v.level=std::min(1.f,v.level+attackStep);if(v.level>=1) v.stage=1;}
             else v.level=target.sustain+(v.level-target.sustain)*decayFactor;
-            if(target.engine!=4&&target.engine!=5&&v.released&&v.level<.0001f) { v.active=false; continue; }
+            if(!nativeEnvelopeActive&&target.engine!=4&&target.engine!=5&&v.released&&v.level<.0001f) { v.active=false; continue; }
             const double bend=bends[channelIndex(v.channel)]*pitchFactor;
             const double frequency=v.frequency*bend;
             v.phase+=frequency/sampleRate; v.phase-=std::floor(v.phase);
             v.modPhase+=frequency*(1+std::round(p.color*7))/sampleRate; v.modPhase-=std::floor(v.modPhase);
             float s=0, amplitude=v.level;
             if(target.engine==0) s=float(std::sin(2*pi*v.phase+p.tone*7*(.25+.75*v.level)*std::sin(2*pi*v.modPhase)));
-            else if(nativePhase) s=v.phase246.next(frequency,phaseCoefficients,phaseConfig);
+            else if(nativePhase){
+                s=v.phase246.next(frequency,phaseCoefficients,phaseConfig,nativeEnvelopeActive?&target.phase246Adsr:nullptr,v.released);
+                if(nativeEnvelopeActive){amplitude=1;v.level=v.phase246.envelopeLevel();if(v.phase246.envelopeDone())v.active=false;}
+            }
             else if(target.engine==1) {
                 const double bendPoint=.08+p.tone*.84;
                 const double phase=v.phase<bendPoint?.5*v.phase/bendPoint:.5+.5*(v.phase-bendPoint)/(1-bendPoint);
                 s=float(std::cos(2*pi*phase)*(1-p.color*.45)+std::sin(4*pi*v.phase)*p.color*.45);
             } else if(target.engine==2) {
                 auto& stringBuffer=stringBuffers[size_t(&v-voices.data())];
-                if(!v.stringReady) {for(int i=0;i<v.stringLength;++i) stringBuffer[size_t(i)]=noise()*.6f;v.stringReady=true;}
-                auto a=size_t(v.stringIndex),b=size_t((v.stringIndex+1)%v.stringLength);
-                s=stringBuffer[a]; stringBuffer[a]=(s+stringBuffer[b])*(.475f+p.tone*.0245f);
-                v.stringIndex=(v.stringIndex+1)%v.stringLength;
+                if(!v.string.ready)v.string.excite(stringBuffer,frequency,sampleRate,[this]{return noise();});
+                s=v.string.next(stringBuffer,frequency,sampleRate,p.tone,stringRetune);
                 s=s*(1-p.color*.5f)+float(std::sin(2*pi*v.phase))*v.level*p.color*.25f;
             } else if(target.engine==3&&!sample.frames.empty()) {
                 const auto start=size_t(p.tone*.9*double(sample.frames.size()-1));
@@ -164,36 +168,41 @@ public:
         const float coefficient=filterCoefficient;
         filter+=coefficient*(sum-filter);
         follow(cleanMix,((target.sampleClean&&(target.engine==3||target.engine==5))||nativePhase)?1.f:0.f);
+        // CLEAN bypasses the implicit tone filter, but an explicitly selected
+        // FILTER LFO must still be audible. Ramp its insertion to avoid a jump.
+        follow(modulatedFilterMix,target.lfoDestination==1&&target.lfoDepth>0?1.f:0.f);
+        const float cleanInput=sum+(filter-sum)*modulatedFilterMix;
         const float legacyDriven=std::tanh(filter*(1+p.drive*12))/(1+p.drive*2);
-        const float cleanDriven=p.drive<.000001f?sum:std::tanh(sum*(1+p.drive*12))/(1+p.drive*2);
+        const float cleanDriven=p.drive<.000001f?cleanInput:std::tanh(cleanInput*(1+p.drive*12))/(1+p.drive*2);
         const float driven=legacyDriven+(cleanDriven-legacyDriven)*cleanMix;
         const auto lag=std::clamp(size_t(sampleRate*p.delayTime),size_t(1),delay.size()-1);
-        const float echo=delay[(write+delay.size()-lag)%delay.size()];
-        delay[write]=std::tanh(driven+echo*std::clamp(p.feedback,0.f,.85f)); write=(write+1)%delay.size();
+        const float echo=lag<=delayValid?delay[(write+delay.size()-lag)%delay.size()]:0;
+        delay[write]=std::tanh(driven+echo*std::clamp(p.feedback,0.f,.85f)); write=(write+1)%delay.size();if(delayValid<delay.size())++delayValid;
         const float output=(driven+echo*p.effect*.7f)*p.volume,limited=std::tanh(output);
         return limited+(output-limited)*cleanMix;
     }
 private:
     static size_t channelIndex(int ch) { return size_t(std::clamp(ch,1,17)-1); }
     struct Voice {
-        bool active=false,released=false,keyDown=false,stringReady=false; int note=0,channel=1,stage=0,stringLength=2,stringIndex=0;
+        bool active=false,released=false,keyDown=false; int note=0,channel=1,stage=0;
+        StringVoice string;
         Phase246Voice phase246;
         uint64_t age=0; float velocity=0,level=0,lastNoise=0;
         double phase=0,modPhase=0,frequency=440,samplePosition=0,time=0,drumPhase=0;
     };
-    Phase246Config phaseConfig;bool phaseControlsInitialized=false;
+    Phase246Config phaseConfig;bool phaseControlsInitialized=false,nativeEnvelopeActive=false;
     std::array<float,4> phaseWords{};std::array<int16_t,4> phaseRaw{};
     float noise() { random^=random<<13; random^=random>>17; random^=random<<5; return float(double(random)/4294967295.0*2-1); }
-    bool cleanInitialized=false;float cleanMix=0,currentSustain=.8f;
+    bool cleanInitialized=false;float cleanMix=0,modulatedFilterMix=0,currentSustain=.8f;
     float cachedAttack=-1,cachedDecay=-1,cachedRelease=-1,cachedMacro=-1,attackStep=0,decayFactor=0,releaseFactor=0;
     double cachedRoot=-1,rootFrequency=261.625565,cachedCutoff=-1;float filterCoefficient=0;
-    double sampleRate=48000,lfoPhase=0; float smoothing=.0017f; Parameters current;
+    double sampleRate=48000,lfoPhase=0,stringRetune=.01; float smoothing=.0017f; Parameters current;
     std::array<std::array<float,8192>,polyphony> stringBuffers{};
     std::array<Voice,polyphony> voices{}; std::array<float,192000> delay{};
     std::array<float,17> bends{}; std::array<bool,17> pedals{};
     Sample sample;Kit kit;int kitCount=8;
     std::array<float,kitCapacity> cachedPadPitch{};
     std::array<double,kitCapacity> padPitch{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
-    size_t write=0; uint64_t age=0; uint32_t random=0x12345678; float filter=0;
+    size_t write=0,delayValid=0; uint64_t age=0; uint32_t random=0x12345678; float filter=0;
 };
 }

@@ -142,5 +142,5 @@ bool PocketProcessor::applyUserPreset(int index,juce::String& error) {
         auto* parameter=state.getParameter(id);parameter->beginChangeGesture();parameter->setValueNotifyingHost(juce::jlimit(0.f,1.f,parameter->convertTo0to1(value)));parameter->endChangeGesture();
     }
     if(p.isKit)if(auto* pads=p.pads.getArray())for(int pad=0;pad<std::min(p.kitCount,pads->size());++pad)for(const auto* field:{"start","end","gain","pitch","reverse","gated"})if((*pads)[pad].hasProperty(field)){auto* parameter=state.getParameter(padParameterId(pad,field));const float value=float((*pads)[pad][field]);if(std::isfinite(value))parameter->setValueNotifyingHost(std::clamp(parameter->convertTo0to1(value),0.f,1.f));}
-    setSelectedSound(p.id);currentFactoryPreset.store(-1);currentUserPreset.store(index);requestPanic();return true;
+    setSelectedSound(p.id);currentFactoryPreset.store(-1);currentUserPreset.store(index);requestPanic(false);return true;
 }

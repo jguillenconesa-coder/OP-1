@@ -59,8 +59,9 @@ private:
     std::array<juce::TextButton,4> modeButtons;
     std::array<juce::TextButton,8> slotButtons;
     juce::TextButton browseKey{"BROWSE"},splitKey{"SPLIT"},liftKey{"LIFT"},dropKey{"DROP"},undoKey{"UNDO"},sequencerKey{"SEQ"},comKey{"COM"},micKey{"IN"},metroKey{"CLICK"};
-    juce::TextButton phase246{"PHASE 246 CORE"};bool lastPhase246=false;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> phaseAttachment;
+    juce::TextButton phase246{"PHASE 246 CORE"};bool lastPhase246=false,lastPhaseEnvelope=false;
+    juce::TextButton phaseEnvelope{"246 ENVELOPE"};
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> phaseAttachment,envelopeAttachment;
     juce::TextButton cleanSample{"CLEAN SAMPLE"};
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> cleanAttachment;
     juce::Label status;

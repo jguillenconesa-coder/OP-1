@@ -66,6 +66,6 @@ void drawScreen(juce::Graphics& g,const ScreenFrame& f) {
         for(int i=0;i<126;++i){const double p=double(i)/125;const float x=109.f+i,y=57-float(std::sin(2*pi*p+f.tone*7*std::sin(2*pi*p*(1+std::round(f.color*7))+phase)))*(12+activity*8);if(i==0)curve.startNewSubPath(x,y);else curve.lineTo(x,y);}g.setColour(colors[0]);g.strokePath(curve,juce::PathStrokeType(1.2f));
     }
     if(f.page!=4)for(int step=0;step<16;++step){g.setColour(step==f.step?colors[3]:juce::Colour(0xff27394a));dot(g,14.f+step*14.7f,95,step==f.step?2.f:1.f);}
-    for(int i=0;i<4;++i){label(g,f.labels[size_t(i)].substring(0,5),{10+i*59,102,58,9},7,colors[size_t(i)]);label(g,juce::String(f.values[size_t(i)],(f.page==2&&i>=2)||(f.page==0&&f.phase246)?0:2),{10+i*59,111,58,11},9,colors[size_t(i)]);}
+    for(int i=0;i<4;++i){label(g,f.labels[size_t(i)].substring(0,5),{10+i*59,102,58,9},7,colors[size_t(i)]);label(g,juce::String(f.values[size_t(i)],(f.page==2&&i>=2)||(f.page==0&&f.phase246)||(f.page==1&&f.phaseEnvelope)?0:2),{10+i*59,111,58,11},9,colors[size_t(i)]);}
 }
 }

@@ -1,0 +1,67 @@
+{
+  "version": "0.9.0",
+  "date": "2026-10-26",
+  "linux_suites_passed": 11,
+  "windows_wine_suites_passed": 13,
+  "realtime_workloads_per_platform": 48,
+  "adsr_samples_compared": 2621440,
+  "adsr_block_states_compared": 20480,
+  "pd_samples_preserved": 1572864,
+  "adsr_reference_model": "Separate GNU 13.1 simulator with local D-register deferred-write patch; no hardware validation",
+  "native_ableton_asio_validated": false,
+  "standalone_main_window_confirmed_in_wine": false,
+  "installer_validation": "Isolated Wine install/hash/source/version/module/uninstall checks; main GUI startup is a separate pending check.",
+  "installer_sha256": "See downloads/v0.9.0/SHA256SUMS.txt; installer embeds this report, so its own hash is external.",
+  "linux_realtime": {
+    "version": "0.9.0",
+    "platform": "linux x86_64 Release / shared cloud VM",
+    "workloads": 48,
+    "callbacks": 24576,
+    "reported_latency_samples": 0,
+    "tracked_heap_calls": 0,
+    "deadline_overruns": 4,
+    "worst_p99_budget_percent": 14.203312500000001,
+    "native_phase_original_envelope_p99_budget_percent": 9.5320875,
+    "native_phase_previous_envelope_p99_budget_percent": 10.2603,
+    "preset_legend": {
+      "-1": "Phase 246 + reconstructed envelope",
+      "-2": "Phase 246 + previous envelope"
+    },
+    "scope": "Eight voices, control/ADSR automation, GUI/MIDI/SysEx, tape/capture, FX/EQ/LFO, sequencers; no concurrent compilation. VM/Wine timing diagnostics do not certify native Windows/ASIO/Ableton or zero dropouts."
+  },
+  "windows_wine_realtime": {
+    "version": "0.9.0",
+    "platform": "windows-wine x86_64 Release / shared cloud VM",
+    "workloads": 48,
+    "callbacks": 24576,
+    "reported_latency_samples": 0,
+    "tracked_heap_calls": 0,
+    "deadline_overruns": 7,
+    "worst_p99_budget_percent": 25.245,
+    "native_phase_original_envelope_p99_budget_percent": 23.486250000000002,
+    "native_phase_previous_envelope_p99_budget_percent": 19.762500000000003,
+    "preset_legend": {
+      "-1": "Phase 246 + reconstructed envelope",
+      "-2": "Phase 246 + previous envelope"
+    },
+    "scope": "Eight voices, control/ADSR automation, GUI/MIDI/SysEx, tape/capture, FX/EQ/LFO, sequencers; no concurrent compilation. VM/Wine timing diagnostics do not certify native Windows/ASIO/Ableton or zero dropouts."
+  },
+  "binaries": {
+    "windows_standalone": {
+      "bytes": 10942976,
+      "sha256": "7a7b5901751aede5ba80d5ea3b96e4c10c52650863c89ecacb99f46686f33975"
+    },
+    "windows_vst3": {
+      "bytes": 11519488,
+      "sha256": "40e9d8d12666152523a8ec01bc0c2b9a1a5f0b7161c750b23b797ca23e1016db"
+    },
+    "linux_standalone": {
+      "bytes": 13777088,
+      "sha256": "0ad30cdc51219291ffd1125a48da424be65733b62179d7415fbe86c1985bd0e4"
+    },
+    "linux_vst3": {
+      "bytes": 14398552,
+      "sha256": "47f4c346fc4836508abf746124b21cd3ec6b6551c3bf2c02e4da76bcf8306b42"
+    }
+  }
+}

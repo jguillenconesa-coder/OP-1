@@ -3,8 +3,8 @@
 #include <array>
 #include <cstdint>
 namespace pocket {
-// Raw stored fields from rev246. Original octave, envelope, FX and LFO are not
-// applied. These are additional experimental CORE patches, not factory replicas.
+// Raw stored oscillator fields from rev246; envelope fields are separate.
+// Original octave/FX/LFO/full mixing remain unvalidated. Experimental patches.
 struct Phase246Preset {const char* name;std::array<int16_t,4> controls;};
 inline constexpr std::array<Phase246Preset,16> phase246Presets{{
     {"bass phase",{{31733,29491,26598,19439}}},

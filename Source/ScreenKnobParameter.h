@@ -19,8 +19,8 @@ public:
         disconnect();target.store(next);
         if(next){next->addListener(this);sendValueChangedMessageToListeners(next->getValue());}
     }
-    void followAlternative(juce::RangedAudioParameter* base,juce::RangedAudioParameter* other,std::atomic<float>& enabled,std::atomic<float>& engine) {
-        disconnect();selection=&enabled;engineSelection=&engine;target.store(base);alternative.store(other);
+    void followAlternative(juce::RangedAudioParameter* base,juce::RangedAudioParameter* other,std::atomic<float>& enabled,std::atomic<float>& engine,std::atomic<float>* prerequisite=nullptr) {
+        disconnect();selection=&enabled;engineSelection=&engine;guard.store(prerequisite);target.store(base);alternative.store(other);
         base->addListener(this);other->addListener(this);sendValueChangedMessageToListeners(getValue());
     }
     void enableTapeTracks(const std::array<juce::RangedAudioParameter*,4>& parameters,std::atomic<float>& selection) {tracks=parameters;trackSelection=&selection;}
@@ -46,12 +46,12 @@ private:
     void parameterGestureChanged(int,bool) override {}
     std::atomic<juce::RangedAudioParameter*> target{nullptr};
     std::atomic<juce::RangedAudioParameter*> alternative{nullptr};
-    std::atomic<std::atomic<float>*> selection{nullptr},engineSelection{nullptr};
+    std::atomic<std::atomic<float>*> selection{nullptr},engineSelection{nullptr},guard{nullptr};
     std::array<juce::RangedAudioParameter*,4> tracks{};
     std::atomic<float>* trackSelection=nullptr;
     std::atomic<bool> trackMode{false};
     juce::RangedAudioParameter* currentTarget() const {if(trackMode.load())return tracks[size_t(std::clamp(int(trackSelection->load()),0,3))];
-        if(auto* p=alternative.load())if(selection.load()->load()>.5f&&int(engineSelection.load()->load())==1)return p;
+        if(auto* p=alternative.load())if(selection.load()->load()>.5f&&int(engineSelection.load()->load())==1){auto* condition=guard.load();if(!condition||condition->load()>.5f)return p;}
         return target.load();}
     std::atomic<float>* cursor=nullptr,*seek=nullptr,*tapeLength=nullptr;
     float duration() const {return tapeLength?float(4<<std::clamp(int(tapeLength->load()),0,2)):1.f;}

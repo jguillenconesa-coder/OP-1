@@ -93,3 +93,22 @@ format: 16 raw presets × three pitch trajectories × 16 blocks of 128 samples,
 now with external NCO increments at 88200 Hz. They contain 98,304 sample outputs
 and 768 final states. `verify-phase-contract.py` reproduces all three byte-for-byte.
 Original pitch preparation, output filtering and envelope remain outside the oracle.
+
+
+## ADSR and parallel writeback (0.9.0)
+
+`adsr246-input.bin`: 4096 × 48 bytes. Six uint32 state words (stage, block count,
+level bits, field12, field16, gain), four int16 controls, int16 volume + two pad
+bytes, uint32 RNG seed, int32 prior dither value, uint32 action. All little endian.
+`adsr246-output.bin`: 1024-byte header of 256 Q31 coefficients, then 4096 × 292
+bytes: 128 int16 outputs, six final state words, uint32 completion, final seed and
+prior dither value. `adsr246-stock-output.bin` records the unmodified GNU hazard
+trace separately; it is not the production acceptance oracle.
+
+`adsr246-stream-input.bin`: 16384 records in the same 48-byte format, 16 stored
+envelopes × 1024 blocks. Actions 1/2/3 invoke original note-on/release/fast-stop;
+0 continues. Action 1 loads the supplied initial state/seed. The 292-byte output
+format has no coefficient header. State is carried between blocks. The model
+uses the documented local GNU D-register deferred-write patch; instructions
+remain original. These numerical traces do not establish hardware equivalence.
+[Provenance and reproduction](../../docs/envelope246-research.md).

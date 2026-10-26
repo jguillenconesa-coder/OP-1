@@ -48,3 +48,12 @@ declared) were consulted as research references only. No source from them is
 copied or linked into the product. Revisions and scope are in CREDITS.md and
 docs/dsp-research.md. Numeric control/range observations do not include firmware
 instructions, and the native mode contains independently written code.
+
+
+## GNU simulator patch and numeric observations (0.9.0)
+
+The local Blackfin research patch retains GNU GDB 13.1's GPL-3.0-or-later terms
+(FSF / Analog Devices). It is a tool-source patch, not a plugin dependency or
+shipped simulator binary. Coefficient values and oracle traces are numeric
+research observations; the implementation is independently written. Original
+firmware images/instructions and decryption keys are not included. See CREDITS.md.
