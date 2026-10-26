@@ -1,0 +1,6 @@
+50c5219cf55496b5fd713c25f1036deff989f8cf054234349fd1a2eec2ef9e84  Pocket-One-0.9.0-Factory-Samples.zip
+d17f755bd55c196d294b4df40a344b8b5c82fd00ebea434ef9d70ab7f6e49d00  Pocket-One-0.9.0-Windows-build-kit.zip
+13352e0bb1a8ea10cf3f429b370969954e3ee9db98adc5a93d98392e169776c7  Pocket-One-0.9.0-Windows-x64-Setup.exe
+c546edc15e8491a256423280517152b6f4a4510d789ea50fb4e9f7515306fbf0  Pocket-One-0.9.0-Windows-x64-portable.zip
+0657848addfe9c6752e664d9be3b673467183a55f54c62cf501ecd6544073101  Pocket-One-0.9.0-corresponding-source.tar.gz
+4b4557e3ed11a6605adc99f5eb1850de9c52e284f13d4eba9dcd6edbd6b059dd  Pocket-One-0.9.0-linux-x86_64.tar.gz
