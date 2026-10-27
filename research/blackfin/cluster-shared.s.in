@@ -1,0 +1,97 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Independent contract probe; all source table words are caller-supplied tests.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P4.H = scalar_inputs;
+P4.L = scalar_inputs;
+P5.H = scalar_results;
+P5.L = scalar_results;
+scalar_loop:
+R0 = [P4];
+imm32 P0, 0x01aa7014
+CALL (P0);
+[P5++] = R0;
+R0 = [P4++];
+imm32 P0, 0x01aa6fd0
+CALL (P0);
+[P5++] = R0;
+R0 = P4;
+R1.H = scalar_end;
+R1.L = scalar_end;
+CC = R0 == R1;
+IF !CC JUMP scalar_loop;
+P4.H = shared_inputs;
+P4.L = shared_inputs;
+P5.H = shared_results;
+P5.L = shared_results;
+shared_loop:
+P1 = P4;
+imm32 P2, 0xff900524
+P3 = 8;
+LSETUP(copy_source,copy_source_end) LC0 = P3;
+copy_source:
+R0 = [P1++];
+copy_source_end: [P2++] = R0;
+imm32 P2, 0x01baa910
+P3 = 16;
+LSETUP(copy_image,copy_image_end) LC0 = P3;
+copy_image:
+R0 = [P1++];
+copy_image_end: [P2++] = R0;
+R0 = [P1++];
+imm32 P2, 0xff802bc8
+[P2] = R0;
+imm32 P2, 0x0106a954
+P3 = 32;
+LSETUP(copy_damping,copy_damping_end) LC0 = P3;
+copy_damping:
+R0 = [P1++];
+copy_damping_end: [P2++] = R0;
+imm32 P0, 0x019608e0
+CALL (P0);
+imm32 P1, 0x01baa910
+P2 = P5;
+P3 = 16;
+LSETUP(save_image,save_image_end) LC0 = P3;
+save_image:
+R0 = [P1++];
+save_image_end: [P2++] = R0;
+imm32 P1, 0xff802bc8
+R0 = [P1];
+[P2++] = R0;
+imm32 P1, 0x0106a954
+P3 = 32;
+LSETUP(save_damping,save_damping_end) LC0 = P3;
+save_damping:
+R0 = [P1++];
+save_damping_end: [P2++] = R0;
+P5 = P2;
+P0 = 228;
+P4 = P4 + P0;
+R0 = P4;
+R1.H = shared_end;
+R1.L = shared_end;
+CC = R0 == R1;
+IF !CC JUMP shared_loop;
+R0.H = scalar_args;
+R0.L = scalar_args;
+P0 = 5;
+EXCPT 0;
+R0.H = shared_args;
+R0.L = shared_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+scalar_args: .long 1,scalar_results,@SCALAR_BYTES@
+shared_args: .long 1,shared_results,@SHARED_BYTES@
+scalar_inputs: .incbin "@WORK@/scalar-inputs.bin"
+scalar_end:
+shared_inputs: .incbin "@WORK@/shared-inputs.bin"
+shared_end:
+scalar_results: .space @SCALAR_BYTES@
+shared_results: .space @SHARED_BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #pragma once
 #include "ReferenceDsp.h"
+#include "Fractional246.h"
 #include <cstddef>
 #include <optional>
 
@@ -70,6 +71,16 @@ struct Cluster246Tables {
     std::array<int16_t,8> normalization{};
     std::array<int32_t,32> damping{};
 };
+// Contract of 0x019608e0 with ALL eight source float words supplied explicitly.
+// This is not a default original table: three original words remain unknown.
+// The shared RNG, damping table and unrelated caller state are left intact.
+inline void cluster246InitializeShared(Cluster246Tables& tables,Cluster246Context& context,
+                                      int16_t& controlWord,
+                                      const std::array<uint32_t,8>& sourceFloatBits) noexcept {
+    controlWord=16384;
+    for(size_t i=0;i<8;++i)tables.normalization[i]=fractional246Q15FromBits(sourceFloatBits[i]);
+    context.weights.fill(0);context.display.fill(0);
+}
 inline int16_t cluster246Wrap16(int32_t value) noexcept {
     const auto word=uint32_t(value)&65535u;
     return int16_t(word<32768?int(word):int(word)-65536);

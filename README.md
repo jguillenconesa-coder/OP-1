@@ -14,6 +14,8 @@
 
 **Avance de Cluster:** [cinco normalizaciones y constructor de seis slots contrastados](docs/cluster246-normalization.md). Faltan tres entradas de normalización; el motor aún no se integra en el plugin.
 
+[Inicialización compartida y conversiones Q15/Q31](docs/cluster246-shared-init.md): nueva lógica contrastada con entradas explícitas y apoyo de REA. La tabla original continúa incompleta.
+
 **Banco adicional:** [16 estudios del núcleo Phase / 13 WAV únicos](docs/phase-core-studies.md), compatibles con 0.7.0. Controles extraídos del firmware y renders contrastados con el núcleo original simulado; siguen siendo estudios experimentales sin el resto del preset original.
 
 ## Descargar

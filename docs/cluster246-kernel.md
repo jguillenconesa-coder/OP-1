@@ -11,6 +11,11 @@ coeficientes identificados como sintéticos. La [ampliación de inicialización]
 añade cinco entradas legibles convertidas por el helper original, 81.920 muestras
 con esos valores y el constructor de seis slots. No se han usado presets ni vídeo.
 
+La [rutina de inicialización compartida y sus conversiones](cluster246-shared-init.md)
+también están contrastadas bajo un contrato de ocho palabras fuente suministradas.
+Esto cierra la lógica observada de esa rutina, sin recuperar los tres valores L1
+que siguen cifrados ni completar la integración del instrumento.
+
 ## Contrato reconstruido
 
 | Entrada/estado | Alcance |

@@ -148,5 +148,26 @@
     "vtable_tag": "0x0190f67c",
     "cases_compared": 60,
     "scope": "Object construction and reset only; full allocator/scheduling not implemented"
+  },
+  "shared_initialization": {
+    "function": "0x019608e0",
+    "status": "Reconstructed and compared under explicit caller-supplied source words; original table remains partial",
+    "source_float_words": 8,
+    "control_word_address": "0x01baa918",
+    "control_word_value": 16384,
+    "normalization_address": "0x01baa91c",
+    "weights_address": "0x01baa92c",
+    "display_address": "0x01baa93c",
+    "rng_preserved": true,
+    "damping_preserved": true,
+    "complete_test_image_bytes": 64,
+    "test_cases": 256,
+    "conversion_helpers": {
+      "q15": "0x01aa7014",
+      "q31": "0x01aa6fd0",
+      "binary32_cases": 65536,
+      "conversion_outputs": 131072
+    },
+    "evidence": "../../docs/firmware/cluster246-shared-validation.json"
   }
 }

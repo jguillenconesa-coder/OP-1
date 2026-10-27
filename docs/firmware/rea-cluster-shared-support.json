@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "scope": "Read-only support for Cluster firmware research; no REA Blackfin decompilation or L1 decryption claimed.",
+  "rea_version": "6.8.0",
+  "sqlite_checks": {
+    "source_sha256": "27f625e4b7bd710a5e51a104499ff8d6f9952fd8e61f0051efbf934bbbedb6f4",
+    "source_relative_path": "content/kerntable.db",
+    "source_bytes": 4096,
+    "schema_evidence_id": "ev_351100553fb3f17e13035060227ef72700fd27ea985b6dbef57cfa335fe93881",
+    "rows_evidence_id": "ev_d0ff1a8c88c0ea895f7a22137136aab33f8eccc880ff86d66f20b2cf8e476c33",
+    "provider": {
+      "id": "sqlite",
+      "name": "REA SQLite database inspector",
+      "version": "SQLite 3.53.4"
+    },
+    "schema_scope": "database",
+    "schema_complete": "complete",
+    "observed_tables": [
+      {
+        "name": "kerntable",
+        "columns": [
+          "a",
+          "b",
+          "kerning"
+        ]
+      }
+    ],
+    "returned_rows": 5,
+    "rows_truncated": true,
+    "observation": "Sampled rows have two character/text columns and a numeric kerning value.",
+    "interpretation": "This schema/sample is consistent with typographic kerning; not used as a DSP coefficient source. No claim about unsampled rows or arbitrary other databases.",
+    "source_hash_unchanged": true
+  },
+  "elf_inspection_attempt": {
+    "status": "provider_unavailable",
+    "operation": "inspect_binary_layout",
+    "reason": "Set REA_PWNTOOLS_PYTHON to an absolute caller-supplied Python executable with pwntools 4.15.0, pyelftools 0.33 and Unicorn 2.1.2; REA never installs Python or packages.",
+    "fallback": "GNU readelf, ELF32 little-endian Analog Devices Blackfin; only .text/.data/.sdram load segments in private harness",
+    "private_elf_sha256": "ff44248437a825a8e0dd39bae53a1b1e5c40dcbd7c2f52d76bdf490c0f8317ce",
+    "layout_evidence_sha256": "c9a54ad23be7ad5782c13b93f2a10b867d88c3329062a12e94672bb360f0af53"
+  },
+  "retained_private_evidence": {
+    "rea-kerntable-schema.json": "f16a57412ef8e9bb41d650e11ddf0c23f36a999c529d317eaad104bb902895d0",
+    "rea-kerntable-rows.json": "51059920e087ceed563450ea6941ac26781f270c44b41e801e64b44309945f04",
+    "rea-elf-layout.json": "06ebd2e6242d9552721c321e4d6717c5d6b74adcc6fae3bc718e9fb481949bd3",
+    "binutils-elf-layout.txt": "c9a54ad23be7ad5782c13b93f2a10b867d88c3329062a12e94672bb360f0af53"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "shared_initializer": "0x019608e0",
+  "q15_helper": "0x01aa7014",
+  "q31_helper": "0x01aa6fd0",
+  "scalar_cases": 65536,
+  "scalar_conversions": 131072,
+  "directed_exponent_sign_fraction_cases": 3072,
+  "shared_cases": 256,
+  "shared_image_base": "0x01baa910",
+  "shared_image_bytes": 64,
+  "rng_bytes": 4,
+  "damping_bytes": 128,
+  "initializer_source_contract": "All eight IEEE binary32 words supplied explicitly. Known five source words retained in first 64 test records; other entries are synthetic test values, never recovered originals.",
+  "unresolved_original_counts": [
+    2,
+    3,
+    8
+  ],
+  "covering_normalization_source_ldr_blocks": [
+    {
+      "header_offset": "0x1fe870",
+      "flags": "0xad812406",
+      "address": "0xff9003f0",
+      "bytes": 656
+    }
+  ],
+  "model": "GNU BF524 with documented D-register deferred-writeback patch; not hardware/boot validation",
+  "artifacts": {
+    "fractional246-input.bin": {
+      "bytes": 262144,
+      "sha256": "863e3d9ef09e1130ca75e201f595d6ef5d84d21589d9e004711c5f0fedd26b7a"
+    },
+    "fractional246-output.bin": {
+      "bytes": 524288,
+      "sha256": "8895bcce14822046f7f3bc0a7ebb7fc376c9bceac8dac1cecf61c93a52cee0cd"
+    },
+    "cluster246-shared-input.bin": {
+      "bytes": 58368,
+      "sha256": "032ca3c29fcd608bae535ca5356a43fd60d33c03c318c560d0f522149a12cbff"
+    },
+    "cluster246-shared-output.bin": {
+      "bytes": 50176,
+      "sha256": "1f22d9bebd7c46ee40359525c00b7b16faabddf364b067932fce4067d6277569"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "limitations": [
+    "Original table is still partial; complete module initialization under test inputs does not supply three missing L1 values.",
+    "No allocator, cadence or full plugin integration claimed. No presets or video used."
+  ],
+  "validation": {
+    "private_oracle_runs": 2,
+    "stock_simulator_output_matches": true,
+    "stock_simulator_sha256": "b5787384c0def3bbaab7a7aa432064fd8db1ec615400f29feab0717d657b7968",
+    "stock_simulator_scope": "Same GNU model without the local D-register patch; not an independent simulator or hardware validation",
+    "native_core_ctest_suites_passed": 16,
+    "windows_wine": "cluster246_shared, cluster246_init and cluster246 suites passed",
+    "sanitizers": "Shared/conversion test passed ASan and UBSan; LeakSanitizer disabled because sandbox ptrace prevents its operation",
+    "plugin_integration": false,
+    "base_commit": "eb9edbd7dc3c60a99b545a1ca4c3202f7c61af7c",
+    "source_hashes": {
+      "Source/Fractional246.h": "ea523c878ddf3caaec9c46d5073be38f4dbab357a291552693a978880a22604b",
+      "Source/Cluster246.h": "b4201d47d4a25a18a4ac6b38b9ecaf077373dfc4eabdd986986b32367733e135",
+      "Tests/Cluster246SharedTests.cpp": "9d5e04cceded04eb4b1bfc05bedaaa24b95a58f5daede155ffda88d688e73f08",
+      "scripts/verify-cluster246-shared.py": "653e11aacf8c3cc606e5650e57ec5bbb6f9b1f61a6d948629bc60230d33357bb",
+      "research/blackfin/cluster-shared.s.in": "e2526f88ad50a3770bfdd8bcf5084a86dd3c77769f4e308d802f1a2c080b290d"
+    },
+    "rea_support": "rea-cluster-shared-support.json"
+  }
+}

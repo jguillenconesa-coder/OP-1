@@ -44,6 +44,12 @@ citada en créditos. Su localización no es prueba de equivalencia sonora. Los
 núcleos Digital, Pd y ADSR tienen evidencia numérica específica; las referencias
 a otras funciones no extienden esa evidencia al resto del aparato.
 
+Cluster dispone además de la [inicialización compartida contrastada](cluster246-shared-init.md)
+en 256 casos con fuentes explícitas y de 131.072 resultados de los helpers Q15/Q31.
+La tabla original sigue incompleta; las entradas de prueba no sustituyen los tres
+valores cifrados. REA apoya consultas de lectura/procedencia; la verificación de
+instrucciones Blackfin de esta etapa usa GNU y Binutils.
+
 ## Efectos y filtros
 
 | Objetivo | Estado |

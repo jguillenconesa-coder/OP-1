@@ -156,3 +156,16 @@ copied or bundled, and no encryption key is recovered or distributed. Five
 unchanged scalar words are converted using the original helper in the private
 oracle; the remaining three entries stay unknown. The independent constructor
 and fixture harness additionally verify the original six-slot object factory.
+
+## Cluster shared initialization and fractional conversions
+
+The [shared-initializer reconstruction](docs/cluster246-shared-init.md) and
+binary32-to-Q15/Q31 helpers are independently written from private instruction
+observations of the operator-supplied firmware. Inputs are explicit numerical
+test values; no three missing normalization entries are inferred. REA 6.8.0 was
+used for read-only auxiliary SQLite schema/sample inspection. Its ELF provider
+was unavailable; GNU Binutils checked the private harness layout instead. The
+support summary preserves the distinction and does not attribute Blackfin
+decompilation or L1 decryption to REA. GNU model outputs with and without the
+previously credited local patch agree for these new cases; this is not hardware
+validation. Original firmware/ELF, databases and instruction bytes stay private.
