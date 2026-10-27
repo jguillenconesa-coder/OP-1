@@ -76,3 +76,14 @@ RNG, Core pointers and source sound controls are compared after each record.
 This is not the original allocator, cadence, ADSR or mixer. The original private
 instruction image is supplied by the operator and never distributed.
 [Contract, evidence and reproduction](../../docs/cluster246-core-routing.md).
+
+## Common ADSR transition dependency
+
+`adsr-transition.s.in` and `verify-envelope246-transition.py` independently probe
+the original initializer/restart request and existing note/release/fast-stop
+callbacks, then render one 128-sample block. All event ordering and pending words
+are explicit inputs, with state/dither carried across continuous sequences.
+The initializer preserves the high half of gain; restart preserves level/gain
+while storing the two pending words. Original pitch/velocity interpretation,
+runtime consumers and the complete Cluster envelope route are not established.
+[Contract, evidence and reproduction](../../docs/cluster246-envelope-transitions.md).

@@ -1,0 +1,85 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "initialize": "0x019120ba",
+  "request_restart": "0x019120fc",
+  "note_on": "0x0191211a",
+  "release": "0x019120d0",
+  "fast_release": "0x0191209c",
+  "render": "0x01912128",
+  "coefficient_conversion": "0x01aa6fd0",
+  "source_coefficients": [
+    "0x018c13c4",
+    "0x018c15c4"
+  ],
+  "independent_cases": 512,
+  "continuous_streams": 16,
+  "blocks_per_stream": 128,
+  "blocks": 2560,
+  "samples": 327680,
+  "state_before_after_bytes": 24,
+  "input_record_bytes": 56,
+  "output_record_bytes": 316,
+  "artifacts": {
+    "adsr246-transition-input.bin": {
+      "bytes": 143360,
+      "sha256": "853799686934e612e81b2987f90f4ad88ddf930c9c2b98114f1d071bc230d8f7"
+    },
+    "adsr246-transition-output.bin": {
+      "bytes": 808960,
+      "sha256": "b42fafa785c2c3de54461f8649bea72c0c28b91a8e91989b50aa9840a06ba1bd"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "model": "GNU BF524 with documented D-register deferred writeback patch; no hardware timing validation",
+  "limitations": [
+    "Events, pending words, gain, volume and controls are explicit test inputs; not the complete VoiceCtl/Cluster/pitch/mixer schedule.",
+    "Source addresses of restart inputs are distinct and outside the envelope state; pointer aliasing not covered.",
+    "Valid first-four ADSR ranges and nonnegative level/gain/volume tested. No semantics inferred for the four auxiliary preset controls or pending-field runtime consumers.",
+    "No presets, audio from videos or plugin integration added."
+  ],
+  "validation": {
+    "base_commit": "3c6c9fbcecd104c604980362feea530670836b0c",
+    "private_oracle_runs": 2,
+    "numeric_fixtures_reproduced": true,
+    "action_counts": {
+      "continue": 2006,
+      "initialize": 86,
+      "note_on": 117,
+      "release": 101,
+      "fast_release": 101,
+      "request_restart": 149
+    },
+    "directed_action_stage_level_class_combinations": 486,
+    "restart_requests_from_stage_7": 25,
+    "state_image_pairs": 2560,
+    "native_core_ctest_suites_passed": 18,
+    "native_ctest_total_seconds": 2.88,
+    "windows_wine": "MSVC-target Windows build and envelope246_transition test passed under Wine; not native Windows/Ableton/ASIO validation",
+    "sanitizers": "New transition test passed ASan+UBSan; LeakSanitizer disabled because sandbox ptrace prevents its operation",
+    "source_hashes": {
+      "Source/Envelope246Transition.h": "c1fc3b8b7130d5816da36700c7725e2478d74488d9f699e9b9a9d733dd3c154f",
+      "Source/Envelope246.h": "08d0039239e1ffef2d503abe5b3493613161709ebaf14d0cb00015a0c4b7157c",
+      "Source/Envelope246Tables.h": "94f6473d5fd63db6b590a73d5994cb25459318d32d136456577365ad01d1e3a0",
+      "Source/ReferenceDsp.h": "6f237e97236494636a71ae47582b4b9b0f75357176bdf102a45c87d230808acd",
+      "Tests/Envelope246TransitionTests.cpp": "16374647424e10c966d6f382e51ef9fad4cd3d2f8352aa5671e8fc86e5eba350",
+      "scripts/verify-envelope246-transition.py": "026cc4071d7fd6e3f025690dc8be2c54d41070d2ee6974d510ac83760c398a1e",
+      "research/blackfin/adsr-transition.s.in": "22a483659e6b332969ccf840667d932def2c8d873eaa66947b9663421232711b",
+      "research/blackfin/voice-contract.ld": "56392dfc7b84df5f3552546615b4a95e7fcbd8d3deb5ebf2838e624b8e0d196d"
+    },
+    "native_ctest_log_sha256": "97b852b5d33e197dae80bf976b13b383c49c30c64f89f17b15af34f298051720",
+    "unchanged_plugin_runtime": true,
+    "runtime_linkage": "New header only included by new test; existing Envelope246.h and active plugin paths unchanged."
+  },
+  "static_callsite_observations": {
+    "restart_request_callers": [
+      "0x01a84554",
+      "0x01a84a36",
+      "0x01a84b46"
+    ],
+    "scope": "SDRAM callsites used to locate the callback; full VoiceCtl functions not executed or reconstructed in this delta."
+  }
+}

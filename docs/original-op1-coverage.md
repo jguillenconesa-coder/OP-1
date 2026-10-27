@@ -56,6 +56,11 @@ Note-on exige coincidencia del sonido cargado/seleccionado; release no la exige.
 El orden de eventos, pitch y renders es explícito del harness, sin completar
 asignación, cadencia, ruteo ADSR ni mezcla de salida originales.
 
+Como dependencia de Cluster, se contrastan las [transiciones del ADSR común](cluster246-envelope-transitions.md):
+inicialización y solicitud de reinicio, rampa de etapa 6 y nuevo ataque,
+con 327.680 muestras y 2.560 pares de estados. Las palabras pendientes del objeto
+no completan los cuatro controles auxiliares de preset ni el ruteo con el motor.
+
 ## Efectos y filtros
 
 | Objetivo | Estado |

@@ -1,0 +1,137 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Independent callback/render probe. Event order and pending values are inputs.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+@COEFFICIENTS@
+P4.H = inputs;
+P4.L = inputs;
+P5.H = results;
+P5.L = results;
+probe_loop:
+R0 = [P4 + 52];
+CC = BITTST(R0, 8);
+IF !CC JUMP dispatch;
+P1 = P4;
+P2.H = state;
+P2.L = state;
+P3 = 6;
+LSETUP(load_state,load_state_end) LC0 = P3;
+load_state:
+R0 = [P1++];
+load_state_end: [P2++] = R0;
+R0 = [P4 + 44];
+imm32 P1, 0xff802bc8
+[P1] = R0;
+R0 = [P4 + 48];
+imm32 P1, 0x01b60534
+[P1] = R0;
+dispatch:
+R0 = [P4 + 52];
+R1 = 255;
+R0 = R0 & R1;
+CC = R0 == 0;
+IF CC JUMP save_callback;
+CC = R0 == 1;
+IF !CC JUMP maybe_note;
+R0.H = state;
+R0.L = state;
+imm32 P0, 0x019120ba
+CALL (P0);
+JUMP save_callback;
+maybe_note:
+CC = R0 == 2;
+IF !CC JUMP maybe_release;
+R0.H = state;
+R0.L = state;
+imm32 P0, 0x0191211a
+CALL (P0);
+JUMP save_callback;
+maybe_release:
+CC = R0 == 3;
+IF !CC JUMP maybe_fast;
+R0 = W[P4 + 34] (Z);
+imm32 P1, 0x01b60ef0
+W[P1 + 4] = R0;
+R0.H = state;
+R0.L = state;
+R1 = 0;
+imm32 P0, 0x019120d0
+CALL (P0);
+JUMP save_callback;
+maybe_fast:
+R1 = 4;
+CC = R0 == R1;
+IF !CC JUMP request_restart;
+R0.H = state;
+R0.L = state;
+imm32 P0, 0x0191209c
+CALL (P0);
+JUMP save_callback;
+request_restart:
+R0.H = state;
+R0.L = state;
+R1 = P4;
+R1 += 36;
+R2 = P4;
+R2 += 40;
+imm32 P0, 0x019120fc
+CALL (P0);
+save_callback:
+P1.H = state;
+P1.L = state;
+P2 = P5;
+P3 = 6;
+LSETUP(save_before,save_before_end) LC0 = P3;
+save_before:
+R0 = [P1++];
+save_before_end: [P2++] = R0;
+R0.H = state;
+R0.L = state;
+R1 = P5;
+R1 += 24;
+R2 = P4;
+R2 += 24;
+R3 = P4;
+R3 += 32;
+[SP + 12] = R3;
+imm32 P0, 0x01912128
+CALL (P0);
+[P5 + 304] = R0;
+P1.H = state;
+P1.L = state;
+P2 = 280;
+P2 = P5 + P2;
+P3 = 6;
+LSETUP(save_after,save_after_end) LC0 = P3;
+save_after:
+R0 = [P1++];
+save_after_end: [P2++] = R0;
+imm32 P1, 0xff802bc8
+R0 = [P1];
+[P5 + 308] = R0;
+imm32 P1, 0x01b60534
+R0 = [P1];
+[P5 + 312] = R0;
+P4 += 56;
+P0 = 316;
+P5 = P5 + P0;
+R0 = P4;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF !CC JUMP probe_loop;
+R0.H = io_args;
+R0.L = io_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+io_args: .long 1,results,@BYTES@
+state: .space 24
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

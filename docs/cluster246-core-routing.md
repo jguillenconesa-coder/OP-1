@@ -85,3 +85,7 @@ registros de 1.104 bytes. Solo se publican código/harness propios, observacione
 numéricas y metadatos. No se incluyen instrucciones originales, firmware ni ELF.
 No cambia el instrumento ejecutable ni se genera un nuevo instalador por esta
 ampliación de investigación. [Siguiente trabajo de Cluster](firmware-dsp-workplan.md).
+
+La siguiente ampliación contrasta las [transiciones del ADSR común](cluster246-envelope-transitions.md)
+como dependencia de la voz. Su solicitud de reinicio conserva nivel y ganancia;
+el consumo de sus palabras pendientes y la conexión con Cluster siguen abiertos.

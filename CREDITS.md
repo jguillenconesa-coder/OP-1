@@ -181,3 +181,13 @@ read-only SQLite evidence distinguishes the factory DB's Cluster row ID 1 from
 runtime engine type 4, independently checked through the original Core factory.
 No presets are read for this delta. Source databases, instructions, firmware and
 ELF remain private; only own code and numerical fixtures/metadata are published.
+
+## Common ADSR transition dependency
+
+The independently written [ADSR transition reconstruction](docs/cluster246-envelope-transitions.md)
+uses private original callback/render calls from the user-supplied rev246 image
+and the previously credited GNU model. Pending words and event order are explicit
+test inputs; their complete runtime consumers, MIDI mapping, Cluster envelope
+routing and mixer are not inferred. No preset/video data is used. Original
+instructions, firmware and ELF are not included; the new header is not yet used
+by the plugin. Existing ADSR kernel/provenance notices continue to apply.

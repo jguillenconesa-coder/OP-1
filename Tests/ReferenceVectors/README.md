@@ -165,3 +165,22 @@ There are 256 independent cases and 12 continuous streams of 64 records. Unknown
 normalization entries 2/3/8 are zero placeholders that are never selected. Events
 and pitch are external inputs; full original audio scheduling is not claimed.
 [Method, hashes and limitations](../../docs/cluster246-core-routing.md).
+
+## Common ADSR transition dependency
+
+`adsr246-transition-input.bin`: 2,560 little-endian records of 56 bytes. Offsets
+0–23 contain the six state words; 24–31 four int16 controls; 32 int16 volume;
+34 uint16 release-sustain word; 36 uint32 pending word; 40 uint16 pending word;
+42 two pad bytes; 44 uint32 RNG seed; 48 int32 prior dither value; 52 uint32 action.
+The low action byte is 0 continue, 1 initialize, 2 note-on, 3 release, 4 fast-stop,
+5 restart request. Bit 8 loads the record's state/RNG/dither; otherwise they carry.
+Controls, volume and callback inputs are supplied for every record. Sustain,
+level, low-half gain and volume stay nonnegative; pending fields cover raw bits.
+
+`adsr246-transition-output.bin`: 2,560 records of 316 bytes. Offsets 0–23 hold the
+post-callback/pre-render state; 24–279 the 128 int16 outputs; 280–303 the post-render
+state; 304 uint32 completion; 308 uint32 RNG; 312 int32 prior dither value.
+There are 512 independent cases and 16 streams × 128 records. These are numeric
+observations from isolated original callbacks and render under the documented
+GNU model. There is no full original scheduler, MIDI route or Cluster mixer.
+[Method, hashes and limitations](../../docs/cluster246-envelope-transitions.md).

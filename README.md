@@ -14,6 +14,8 @@
 
 **Avance de Cluster:** [disparo, liberación y seis slots intercalados](docs/cluster246-core-routing.md), contrastados con 131.072 muestras adicionales y un RNG compartido. Se conservan las [cinco normalizaciones observadas](docs/cluster246-normalization.md) y la [inicialización compartida con apoyo de REA](docs/cluster246-shared-init.md). Tres normalizaciones y la integración completa siguen pendientes.
 
+Como dependencia de esa ruta, las [transiciones del ADSR común](docs/cluster246-envelope-transitions.md) añaden 327.680 muestras contrastadas: inicialización y rampa previa al nuevo ataque. No completan su conexión con Cluster ni cambian el plugin instalado.
+
 **Banco adicional:** [16 estudios del núcleo Phase / 13 WAV únicos](docs/phase-core-studies.md), compatibles con 0.7.0. Controles extraídos del firmware y renders contrastados con el núcleo original simulado; siguen siendo estudios experimentales sin el resto del preset original.
 
 ## Descargar
