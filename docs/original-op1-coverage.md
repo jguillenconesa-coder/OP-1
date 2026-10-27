@@ -7,7 +7,8 @@ propia o una función pendiente; cambiar el nombre de un modelo no completa un p
 
 **Prioridad activa: reconstrucción del DSP del firmware.** Presets, bancos y vídeo
 quedan aplazados. El [plan de trabajo por componentes](firmware-dsp-workplan.md)
-mantiene un único bloque activo: Cluster, con sus dependencias y pruebas explícitas.
+mantiene un único bloque activo: Dr. Wave. Cluster conserva sus resultados y sus
+bloqueos concretos de normalización, afinación y relevo L1.
 
 Fuentes: manual v2.2 suministrado por el usuario, 56 páginas, y firmware rev246
 inventariado. Las páginas 53–54 del PDF muestran motores y efectos; 47–50, LFO;
@@ -25,7 +26,7 @@ del plugin. Ese selector mantiene su orden para conservar automatizaciones.
 | --- | --- | --- |
 | 0 | FM de cuatro operadores | FM propio de dos osciladores disponible. Se contrastaron campos de control; falta el render original y validar tablas L1 cifradas. |
 | 1 | Digital | Núcleo reconstruido, 262.144 muestras / 2.048 estados; integración, mezcla y voz propias. 16 presets CORE. |
-| 2 | Dr. Wave | Ruta candidata localizada; render y tablas pendientes de oráculos/port. |
+| 2 | Dr. Wave | Lectura y mezcla aisladas de cinco osciladores: 241.920 muestras y 2.048 pools de seis slots contrastados con ondas sintéticas. Generación de ondas, cadencia e integración pendientes; [alcance](drwave246-reader.md). |
 | 3 | String | Modelo Karplus–Strong propio afinado; pendiente el waveguide original y todos sus controles. |
 | 4 | Cluster | Núcleo aislado: 262.144 muestras con coeficientes de prueba y 81.920 con cinco normalizaciones legibles convertidas por el helper original. 24 coeficientes de amortiguación y 60 casos de factoría/reset de seis slots contrastados. Faltan tres normalizaciones y la integración completa; [avance](cluster246-normalization.md). |
 | 5 | Pulse | Render localizado en L1 cifrada (`0xffa04b88`), sin imagen descifrada validada. Port pendiente; [bloqueo](firmware/pulse246-l1-blocker.json). |
@@ -124,8 +125,9 @@ presets originales supuestamente reproducidos en el navegador.
 
 ## Orden de trabajo verificable
 
-1. Cerrar el contrato de Cluster: normalización L1, inicialización y dependencias
-   originales; integrar solo cuando estén verificadas.
+1. Completar generación de ondas y contrato de Dr. Wave. Cluster queda pendiente
+   de sus tres normalizaciones, afinación y relevo L1; integrar cada motor solo
+   cuando estén verificadas sus dependencias.
 2. Continuar los motores y sus filtros/rutas internas por dependencias, con tablas,
    muestras y estado completo contrastados antes de cada integración.
 3. Completar envolventes auxiliares/específicas, moduladores y destinos pendientes,

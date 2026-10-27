@@ -6,7 +6,7 @@ An OP-1-inspired **VST3 instrument and standalone application**, written in C++1
 
 Version 0.13.0 adds **[Value 246 Voice](docs/value-voice246-native.md)**: independent per-voice modulation of Phase/Digital controls or common ADSR. Five additional studies reuse the set-4 MIDI knobs; old FX parameters, mappings and projects are preserved. Other engines/routes and hardware matching remain pending; [full coverage](docs/original-op1-coverage.md).
 
-**Active work: firmware DSP reconstruction.** The [component workplan](docs/firmware-dsp-workplan.md) prioritizes engines, filters, envelopes and modulators. [Cluster](docs/cluster246-kernel.md) has a validated isolated coefficient-parameterized kernel; original L1 normalization and full integration remain pending. Presets, sound banks and video matching are deferred.
+**Active work: firmware DSP reconstruction.** The [component workplan](docs/firmware-dsp-workplan.md) prioritizes engines, filters, envelopes and modulators. [Dr. Wave](docs/drwave246-reader.md) now has an isolated five-oscillator reader/mixer checked against 241,920 samples using explicit synthetic waves; wave generation and integration remain pending. [Cluster](docs/cluster246-kernel.md) retains its checked kernel and unresolved normalization, tuning and L1 handoff dependencies. Presets, sound banks and video matching are deferred.
 
 **Cluster progress:** [Core note-on/release routing and six interleaved slots](docs/cluster246-core-routing.md) checked against another 131,072 samples with shared RNG. The [five observed normalization entries](docs/cluster246-normalization.md) and [shared initialization with REA support](docs/cluster246-shared-init.md) remain available. Three normalization entries and full integration remain unresolved.
 

@@ -28,7 +28,22 @@ concreta; no se rellena con constantes o algoritmos supuestamente originales.
 6. **Distribución:** generar instaladores cuando cambie el instrumento ejecutable.
    Una prueba de núcleo aislado no se presenta como un motor completo instalado.
 
-## Bloque activo: Cluster rev246
+## Bloque activo: Dr. Wave rev246
+
+Se avanza con Dr. Wave por el bloqueo concreto de las dependencias restantes de
+Cluster. Su ruta de lectura es SDRAM legible y permite contrastar otro núcleo sin
+inventar coeficientes ni ejecutar instrucciones cifradas.
+
+| Parte | Estado |
+| --- | --- |
+| Lectura, mezcla de cinco osciladores y desviación de pitch | 241.920 muestras contrastadas con ondas sintéticas explícitas. Fases de 24 bits y refinamiento entero del recíproco conservados. |
+| Objetos y contexto compartido | 2.048 pools de seis slots; 293 construcciones, 121 resets y 187 releases; cinco incrementos, semillas y puntero compartidos contrastados. |
+| Rama de actualización y generación de ondas | Siguiente paso: reconstruirla y contrastar sus datos e inicializadores. Solo se han ejecutado los otros slots y el retorno inactivo. |
+| Cadencia, voz completa e integración | Pendientes; el nuevo núcleo solo se usa desde pruebas. No cambia el instalador. |
+
+[Contrato, alcance y reproducción de Dr. Wave](drwave246-reader.md).
+
+## Cluster rev246: conservado con dependencias bloqueadas
 
 | Parte | Estado |
 | --- | --- |
@@ -58,6 +73,14 @@ antes de conectarlo al plugin. [Avance de normalización/inicialización](cluste
 [Preparación de nota y bloqueo del relevo L1](cluster246-note-activation.md) ·
 [Contrato y reproducción del núcleo](cluster246-kernel.md).
 
+La búsqueda de afinación ha identificado un inicializador en `0x01a866e4` que
+construye **2.400 palabras de cuatro bytes** desde `0x027fc720`, usando el callback
+`0x01a84388`: este solo escribe cero. El bloque LDR que cubre esa memoria también
+es un fill a cero. No se ha localizado y verificado la rutina que escribe los
+coeficientes de uso. Ese inicializador no proporciona una afinación válida.
+Junto con las tres normalizaciones y el relevo L1 cifrado, esta dependencia
+justifica pasar a Dr. Wave; Cluster mantiene los resultados ya contrastados.
+
 ## Cola de componentes
 
 La [matriz completa](original-op1-coverage.md) conserva el estado individual. El
@@ -66,7 +89,7 @@ el motivo y el siguiente bloque activo, manteniendo un solo frente.
 
 | Área | Trabajo pendiente que debe contrastarse |
 | --- | --- |
-| Motores | Cluster; después Dr. Wave/FM y demás motores según sus dependencias. Resolver las tablas L1 necesarias; no sustituir un motor por otra síntesis con el mismo nombre. |
+| Motores | Completar Dr. Wave; retomar Cluster cuando se resuelvan sus dependencias; después FM y demás motores. Resolver las tablas L1 necesarias; no sustituir un motor por otra síntesis con el mismo nombre. |
 | Filtros | Filtros internos de cada motor, ruta Filter/Nitro y etapas de salida/decimación. Cada ruta requiere coeficientes, estado e impulsos/barridos contrastados. |
 | Envolventes | Completar cuatro campos ADSR auxiliares, ruteo y modos de ejecución; envolventes específicas de D-synth/D-box/drum. El ADSR común ya contrastado no las completa. |
 | Moduladores | Extender Value a rutas pendientes; reconstruir Random/Tremolo y después Element/MIDI/Bend/Crank, con sus destinos, reinicios y fase libre originales. |

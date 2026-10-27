@@ -1,0 +1,73 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "render": "0x0197c870",
+  "reset": "0x0197a826",
+  "release": "0x0197a838",
+  "factory": "0x0197ada8",
+  "vtable": "0x0190fb2c",
+  "state_bytes": 36,
+  "slots": 6,
+  "oscillators": 5,
+  "phase_mask": "0x00ffffff",
+  "synthetic_waves_address": "0x01cea08c",
+  "shared_increments_address": "0x01ceb88c",
+  "reciprocal_seed_source": "0x018d5100",
+  "reciprocal_seed_u16": [
+    32768,
+    29127,
+    26214,
+    23831,
+    21845,
+    20164,
+    18724,
+    17476
+  ],
+  "independent_cases": 1024,
+  "continuous_streams": 16,
+  "blocks_per_stream": 64,
+  "cases": 2048,
+  "rendered_blocks": 1890,
+  "inactive_blocks": 158,
+  "rendered_samples": 241920,
+  "factory_calls": 293,
+  "reset_calls": 121,
+  "release_calls": 187,
+  "model": "GNU BF524 with documented D-register deferred-writeback patch; not hardware validation",
+  "artifacts": {
+    "drwave246-reader-input.bin": {
+      "bytes": 2201600,
+      "sha256": "fb4216c2ab1bafaab8b68e48b038f838ef8d0024a234dd3c8a0e0f25a3a04421"
+    },
+    "drwave246-reader-output.bin": {
+      "bytes": 1103872,
+      "sha256": "83d498fddb8caa0646ca2b422cc4b6fb1ab61916e3cefa523c16a7cc15979de0"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "limitations": [
+    "All six wave buffers are synthetic caller inputs. No original waveform tables or presets are recovered by this test.",
+    "The explicit nonnegative signed16 update counter designates a wave-update slot modulo six. Only other slots or the inactive early return are executed; wave generation remains pending.",
+    "Only pitch[0] is consumed by this route. The external scheduler, pitch provider, ADSR, mixer and plugin integration remain pending."
+  ],
+  "validation": {
+    "independent_reproduction": "Two new private output directories; inputs and complete original outputs agree byte for byte.",
+    "native_core_ctest_suites_passed": 20,
+    "native_ctest_total_seconds": 4.74,
+    "windows_wine": "MSVC-target cross-build and drwave246 test passed under Wine; not native Windows/Ableton/ASIO validation.",
+    "sanitizers": "ASan+UBSan test passed; LeakSanitizer disabled because of sandbox ptrace limitation.",
+    "source_hashes": {
+      "Source/DrWave246.h": "b2680ccd6d4fbd8ddb60df013197ce5a6492b61e11e9a7c8e68471fac3941b3c",
+      "Source/ReferenceDsp.h": "6f237e97236494636a71ae47582b4b9b0f75357176bdf102a45c87d230808acd",
+      "Tests/DrWave246Tests.cpp": "eb3cee27ecf5b4cd8c2d9aaa1ab58f6113d43bef2a75320c46949bfb1cd1c074",
+      "scripts/verify-drwave246-reader.py": "35339c2521c27f291f7bc4b08f981d1446944e9b0c88957acf9fbe8d128c30bc",
+      "research/blackfin/drwave-reader.s.in": "2b6a88e64cad2cd6446cd21380eb0ef067c33cc667c8c77043c717cf012642fe",
+      "research/blackfin/voice-contract.ld": "56392dfc7b84df5f3552546615b4a95e7fcbd8d3deb5ebf2838e624b8e0d196d"
+    },
+    "unchanged_plugin_runtime": true,
+    "runtime_linkage": "DrWave246.h is only included by drwave246_tests. No instrument executable, selector, MIDI/host parameter IDs or preset banks changed."
+  }
+}

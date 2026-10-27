@@ -1,5 +1,28 @@
 # Isolated original-instruction reference vectors
 
+## Dr. Wave reader delta
+
+`drwave246-reader-input.bin` has 6,144 bytes of six own synthetic 256-word wave
+buffers, followed by 2,048 records of 1,072 bytes. Each record contains action,
+voice, nonnegative signed16 update counter, enabled and reserved uint32 words;
+four signed16 controls; 128 pitch words; a 216-byte six-object pool; a 272-byte
+output image with 8-byte guards on either side; five shared increments; an init
+flag and 16 seed bytes; and one shared pointer. Action bits reload state,
+construct the current slot, reset and release, in that order. Reload happens for
+the first 1,024 independent cases and the start of each subsequent 64-block stream.
+
+`drwave246-reader-output.bin` has 2,048 records of 536 bytes: guarded output,
+216-byte pool, five increments, init flag, 16 seed bytes, shared wave pointer and
+factory return pointer (zero when not requested). The final 6,144 bytes verify
+that all synthetic waves remain unchanged. There are 1,890 rendered blocks and
+158 inactive returns. The wave-update slot (`counter % 6`) is always different
+from the rendered object's slot. Wave generation is **not** exercised.
+
+These fixtures use the documented GNU D-register deferred-writeback model.
+[Contract, reproduction and limitations](../../docs/drwave246-reader.md).
+
+## Earlier vectors
+
 Generated with GNU Binutils 2.44 (bfin-elf) and GNU GDB 13.1 Blackfin simulator,
 BF524 model in user mode with explicitly mapped RAM. The matching original LDR
 SHA-256 is recorded in `evidence.json`; original code snippets are not included.

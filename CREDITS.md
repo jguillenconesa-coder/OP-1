@@ -203,3 +203,17 @@ the harness's held-increment schedule. The L1 handoff remains blocked by mixed
 ciphertext, using the previously credited community layout model only. No key,
 firmware, original instructions, ELF or L1 image is included, and no preset/video
 data is used. The new headers are not linked into the plugin.
+
+## Dr. Wave reader and five-oscillator reconstruction
+
+The independent [Dr. Wave reader](docs/drwave246-reader.md) is checked against
+unmodified SDRAM instructions from the operator-supplied rev246 firmware using
+the previously credited GNU BF524 model and local D-register patch. All six wave
+buffers are synthetic test inputs authored here, not recovered factory resources.
+The numerical reciprocal seeds, object layout and callbacks are private firmware
+observations; no original code, firmware image or ELF is published. The probe
+verifies only the reader route outside the scheduled wave-update slot and the
+inactive early return. Wave generation, complete scheduling and plugin integration
+remain pending. The community op1-sdk provided candidate addresses; its WHEEL DSP
+is not copied or presented as the original Dr. Wave. No new REA decompilation or
+L1 decryption is claimed for this delta.
