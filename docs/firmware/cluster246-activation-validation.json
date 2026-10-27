@@ -1,0 +1,136 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "voice_activation": "0x01a84414",
+  "core_note_on": "0x01967854",
+  "note_table_source": "0x018c21b0",
+  "note_table_destination": "0x01dfe530",
+  "bounded_copy_fragment": {
+    "start": "0x01a86700",
+    "end_exclusive": "0x01a8672e",
+    "sha256": "f879c0b4703370e0a161b0981a550cb67034ff532a960da84043a210eacdc4d1",
+    "scope": "Unmodified PC-relative copy loop, isolated with own appended RTS; not the whole initializer"
+  },
+  "tuning_index_address": "0x018c2184",
+  "observed_tuning_index": 1200,
+  "tuning_word_address": "0x027fd9e0",
+  "tuning_contract": "One explicit caller-supplied signed32 word at observed index 1200. Original/default tuning coefficient not recovered.",
+  "independent_cases": 512,
+  "continuous_streams": 8,
+  "blocks_per_stream": 64,
+  "cases": 1024,
+  "samples": 131072,
+  "held_increment_schedule": "Harness copies each prepared pitch word into all 128 phase-increment positions; not the original pitch provider.",
+  "l1_handoff_blocker": {
+    "covering_blocks": [
+      {
+        "header_offset": "0x206214",
+        "address": "0xffa00000",
+        "bytes": 49076,
+        "flags": "0xaddb2406"
+      }
+    ],
+    "candidate_references": [
+      "0xffa00a78",
+      "0xffa00b7a",
+      "0xffa00b82"
+    ],
+    "scope": "Readable address materializations/call adjacent to ciphertext. No validated whole control/data flow or execution of L1 consumer claimed.",
+    "classified_spans": [
+      {
+        "address": "0xffa00a78",
+        "bytes": 8,
+        "payload_mod24": 16,
+        "classification_by_community_layout": "unchanged",
+        "label": "candidate getter-address materialization"
+      },
+      {
+        "address": "0xffa00a80",
+        "bytes": 8,
+        "payload_mod24": 0,
+        "classification_by_community_layout": "encrypted",
+        "label": "unknown following bytes"
+      },
+      {
+        "address": "0xffa00b70",
+        "bytes": 8,
+        "payload_mod24": 0,
+        "classification_by_community_layout": "encrypted",
+        "label": "unknown preceding bytes"
+      },
+      {
+        "address": "0xffa00b7a",
+        "bytes": 8,
+        "payload_mod24": 10,
+        "classification_by_community_layout": "unchanged",
+        "label": "candidate render-address materialization"
+      },
+      {
+        "address": "0xffa00b82",
+        "bytes": 2,
+        "payload_mod24": 18,
+        "classification_by_community_layout": "unchanged",
+        "label": "candidate indirect call"
+      }
+    ],
+    "layout_reference": "https://github.com/sualk/op1-decryptor/blob/20f86baa116b4c7b1da7e0d4e3a24f171c76767b/README.md",
+    "not_validated": "Instruction boundaries across ciphertext, complete caller dataflow, pending-field consumption and L1 runtime image. No code was executed from this L1 block."
+  },
+  "artifacts": {
+    "cluster246-activation-input.bin": {
+      "bytes": 934032,
+      "sha256": "d9ceec7dec6e669442d35d563bce652cd9eeb3f19459c0978ad177bfc3f928ca"
+    },
+    "cluster246-activation-output.bin": {
+      "bytes": 1044992,
+      "sha256": "4463484b2f23b4f920b112b4788e78735d0032691d6f0f6019f4e6336a35adbb"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "model": "GNU BF524 with documented D-register deferred-writeback patch; not hardware validation",
+  "limitations": [
+    "Activation is specialized to Cluster with explicit tuning and known normalization counts 1,4,5,6,7. Counts 2,3,8 remain unknown.",
+    "The original activation function has no defined result; C++ bool only reports adapter acceptance.",
+    "No complete ADSR pending-field consumer, pitch provider, scheduler, allocator, mixer, plugin integration or new presets claimed."
+  ],
+  "validation": {
+    "base_commit": "d858eddfc47b59f278f6f9bf27a8cd0a4a13b15e",
+    "private_oracle_runs": 2,
+    "numeric_fixtures_reproduced": true,
+    "source_note_table_matches_original_copy": true,
+    "accepted": 768,
+    "gated": 256,
+    "accepted_explicit_pitch": 384,
+    "accepted_note_indices": 128,
+    "native_core_ctest_suites_passed": 19,
+    "native_ctest_total_seconds": 2.88,
+    "windows_wine": "MSVC-target Windows cross-build and cluster246_activation test passed under Wine; not native Windows/Ableton/ASIO validation",
+    "sanitizers": "New activation test passed ASan+UBSan; LeakSanitizer disabled because sandbox ptrace prevents its operation",
+    "source_hashes": {
+      "Source/Cluster246Activation.h": "684b0df531a840b34ac37a93d2313920861617f2763d2535c424159ad4bd0222",
+      "Source/Voice246NoteTable.h": "fd5c365d39491eb4939f47f55f229113484aecb0d48347057457390a55959383",
+      "Source/Cluster246Routing.h": "690c8dd956be29103cfc32ec481f4efcfc4b900afd72c3dc06eb54b055498131",
+      "Source/Cluster246.h": "b4201d47d4a25a18a4ac6b38b9ecaf077373dfc4eabdd986986b32367733e135",
+      "Source/ReferenceDsp.h": "6f237e97236494636a71ae47582b4b9b0f75357176bdf102a45c87d230808acd",
+      "Tests/Cluster246ActivationTests.cpp": "3fc0975c5300f443613eeca3c2736ad5744d98aa5ebaf400dcf414f729b1bfed",
+      "scripts/verify-cluster246-activation.py": "6faed7d70b200d5c24880676a5e803886df2eba8c540c3f1cebba75b08d620e3",
+      "research/blackfin/cluster-activation.s.in": "d342a0f91edb5f41d1151f2a44ed763ee796af996672590942c68f09f2892739",
+      "research/blackfin/voice-contract.ld": "56392dfc7b84df5f3552546615b4a95e7fcbd8d3deb5ebf2838e624b8e0d196d"
+    },
+    "native_ctest_log_sha256": "3a8901bb5182436f769c995e4ca2295c094651551c8c1b1c5af5923cbc892239",
+    "unchanged_plugin_runtime": true,
+    "runtime_linkage": "New headers only reached through cluster246_activation_tests; no instrument selector, host parameter IDs or runtime audio paths changed."
+  },
+  "note_table_observation": {
+    "words": 128,
+    "bytes": 512,
+    "sha256": "23bbaea7cb7c651cca1d8d36c851b635c34543d1da93f74da37ab24e9355b89e",
+    "index_69_word": 21426141,
+    "explicit_test_tuning_word": "0x40000000",
+    "prepared_word_for_that_test": 21426140,
+    "scope": "One observed scalar example; explicit coefficient is not claimed as original/default tuning."
+  }
+}

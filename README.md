@@ -16,6 +16,8 @@
 
 Como dependencia de esa ruta, las [transiciones del ADSR común](docs/cluster246-envelope-transitions.md) añaden 327.680 muestras contrastadas: inicialización y rampa previa al nuevo ataque. No completan su conexión con Cluster ni cambian el plugin instalado.
 
+La [preparación de nota desde VoiceCtl](docs/cluster246-note-activation.md) contrasta una tabla de 128 valores de pitch y la preparación de velocidad y activación, con un coeficiente de afinación explícito. El relevo ADSR sigue pendiente en L1 parcialmente cifrada.
+
 **Banco adicional:** [16 estudios del núcleo Phase / 13 WAV únicos](docs/phase-core-studies.md), compatibles con 0.7.0. Controles extraídos del firmware y renders contrastados con el núcleo original simulado; siguen siendo estudios experimentales sin el resto del preset original.
 
 ## Descargar

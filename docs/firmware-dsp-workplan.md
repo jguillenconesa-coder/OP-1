@@ -40,18 +40,22 @@ concreta; no se rellena con constantes o algoritmos supuestamente originales.
 | Factoría de objetos | Seis slots de 108 bytes: 60 casos contrastados de construcción/reset, vecinos, relleno y RNG. No completa el asignador/cadencia. |
 | Inicialización compartida | Rutina completa contrastada en 256 casos con ocho palabras fuente explícitas; pesos/display a cero y campos/RNG/amortiguación no escritos preservados. No completa la tabla original. |
 | Conversión de tablas | Helpers Q15/Q31 contrastados en 65.536 patrones binary32: 131.072 resultados. Coinciden también con GNU sin el parche local para estos casos. |
-| Cadencia, preparación de nota, envolvente/ruteo y salida completos | Pendientes. |
+| Cadencia, pitch por muestra, envolvente/ruteo y salida completos | Pendientes. |
 | Disparo y liberación desde Core | Note-on condicionado a coincidencia entre sonido cargado y seleccionado; release sin esa condición. Factoría Core tipo 4 y seis punteros contrastados. |
 | Estado compartido entre voces | 131.072 muestras adicionales y 1.024 pools completos, con seis slots intercalados y un RNG/contexto compartidos. Orden externo explícito; no completa el scheduler original. |
 | Dependencia ADSR: inicialización y reinicio | Callbacks y rampa de etapa 6 → 7 → ataque contrastados: 327.680 muestras / 2.560 registros. Conservación de nivel/ganancia y almacenamiento de palabras pendientes. No completa su consumo ni el ruteo con Cluster. |
+| Preparación/activación desde VoiceCtl | Tabla de 128 notas y preparación de pitch/velocidad/actividad contrastadas, con afinación explícita. 131.072 muestras posteriores con incremento mantenido por el harness. Calibración/afinación original y proveedor de pitch por muestra pendientes. |
+| Consumidor de campos ADSR pendientes | Referencias candidatas localizadas en L1 parcialmente cifrada; faltan instrucciones verificadas del relevo. No se ejecuta ese tramo ni se supone su flujo. |
 | Integración en el selector del plugin | Pendiente; el núcleo aún no se expone como motor original completo. |
 
 El siguiente paso de **este bloque** es resolver la procedencia/inicialización de
-las tres entradas restantes de normalización y contrastar el contrato completo
+las tres entradas restantes de normalización, la calibración de afinación y el
+relevo L1 pendiente, y contrastar el contrato completo
 antes de conectarlo al plugin. [Avance de normalización/inicialización](cluster246-normalization.md) ·
 [Inicialización compartida y apoyo de REA](cluster246-shared-init.md) ·
 [Disparo, liberación y seis voces intercaladas](cluster246-core-routing.md) ·
 [Transiciones del ADSR común](cluster246-envelope-transitions.md) ·
+[Preparación de nota y bloqueo del relevo L1](cluster246-note-activation.md) ·
 [Contrato y reproducción del núcleo](cluster246-kernel.md).
 
 ## Cola de componentes

@@ -69,6 +69,10 @@ con Cluster; mezcla, filtrado/decimación de salida; y las tres normalizaciones
 cifradas de Cluster. La nueva API conserva los valores opacos en lugar de
 atribuirles un comportamiento no comprobado. [Plan activo](firmware-dsp-workplan.md).
 
+La [ampliación de preparación de nota](cluster246-note-activation.md) contrasta
+la activación desde VoiceCtl y localiza las referencias candidatas del relevo en
+L1 parcialmente cifrada. No establece todavía el consumidor de los campos ADSR.
+
 ## Reproducir
 
 ```bash

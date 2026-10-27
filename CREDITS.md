@@ -191,3 +191,15 @@ test inputs; their complete runtime consumers, MIDI mapping, Cluster envelope
 routing and mixer are not inferred. No preset/video data is used. Original
 instructions, firmware and ELF are not included; the new header is not yet used
 by the plugin. Existing ADSR kernel/provenance notices continue to apply.
+
+## Cluster VoiceCtl activation and note-table observations
+
+The [activation reconstruction](docs/cluster246-note-activation.md) independently
+implements an original SDRAM VoiceCtl route specialized to Cluster. The numeric
+128-note table is checked through an unchanged bounded original copy fragment in
+a private probe, not through the complete initializer. Tuning is an explicit
+caller input; no original tuning calibration is claimed. Following renders use
+the harness's held-increment schedule. The L1 handoff remains blocked by mixed
+ciphertext, using the previously credited community layout model only. No key,
+firmware, original instructions, ELF or L1 image is included, and no preset/video
+data is used. The new headers are not linked into the plugin.

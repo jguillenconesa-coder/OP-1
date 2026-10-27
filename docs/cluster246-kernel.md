@@ -21,6 +21,11 @@ contrasta el disparo condicionado al sonido cargado/seleccionado, la liberación
 esa condición y otras 131.072 muestras conservando el estado de los seis slots y
 su RNG compartido. El scheduler, ADSR y mezclador completos siguen pendientes.
 
+La [preparación desde VoiceCtl](cluster246-note-activation.md) contrasta una palabra
+base de pitch con afinación explícita y 128 valores de tabla. El buffer de 128
+incrementos continúa siendo una entrada del llamador; su proveedor original por
+muestra y el relevo ADSR L1 no se completan con ese avance.
+
 ## Contrato reconstruido
 
 | Entrada/estado | Alcance |

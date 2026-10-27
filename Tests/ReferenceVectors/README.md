@@ -184,3 +184,23 @@ There are 512 independent cases and 16 streams × 128 records. These are numeric
 observations from isolated original callbacks and render under the documented
 GNU model. There is no full original scheduler, MIDI route or Cluster mixer.
 [Method, hashes and limitations](../../docs/cluster246-envelope-transitions.md).
+
+## Cluster VoiceCtl preparation
+
+`cluster246-activation-input.bin`: 144 bytes of explicit coefficients (eight int16
+normalizations, 32 int32 damping words), then 1,024 little-endian 912-byte records.
+Offsets: 0 uint32 action (bit 0 load, bit 1 Core factory); 4 voice, 8 loaded sound,
+12 selected sound; 16–31 source note (index/velocity/opaque word/explicit pitch);
+32 signed32 tuning; 36–683 full pool; 684–715 context; 716 RNG; 720–783 two 32-byte
+register images; 784–911 eight sounds × eight int16 controls. Load selects only
+the pool/context/RNG/register input; controls, note, tuning and IDs always update.
+
+`cluster246-activation-output.bin`: a 512-byte header of 128 note-table words
+observed through the original bounded copy loop, then 1,024 records of 1,020 bytes.
+Offsets: 0–255 samples; 256–903 pool; 904–935 context; 936 RNG; 940–1003 register
+images; 1004–1019 unchanged source note. The register images come from
+`0xff80105c` and `0xff8012d4`, each 32 bytes, including untouched guard bytes.
+There are 512 independent cases and eight 64-record streams. The following
+Cluster render holds the prepared pitch throughout each block as an explicit
+test convention. Tuning is supplied by the caller; counts 2/3/8 are never selected.
+[Method, hashes and limitations](../../docs/cluster246-note-activation.md).

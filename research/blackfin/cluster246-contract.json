@@ -188,5 +188,21 @@
     "whole_pool_bytes": 648,
     "explicit_external_scheduler": true,
     "evidence": "../../docs/firmware/cluster246-routing-validation.json"
+  },
+  "voice_activation": {
+    "function": "0x01a84414",
+    "note_table_words": 128,
+    "note_table_source": "0x018c21b0",
+    "note_table_destination": "0x01dfe530",
+    "active_flags": "0xff80105c",
+    "velocity_words": "0xff801064",
+    "pitch_words": "0xff8012d4",
+    "explicit_tuning_coefficient": true,
+    "original_tuning_calibration_validated": false,
+    "cases": 1024,
+    "samples": 131072,
+    "render_schedule": "Harness-held increments only; not original per-sample provider",
+    "l1_adsr_handoff_validated": false,
+    "evidence": "../../docs/firmware/cluster246-activation-validation.json"
   }
 }

@@ -61,6 +61,12 @@ inicialización y solicitud de reinicio, rampa de etapa 6 y nuevo ataque,
 con 327.680 muestras y 2.560 pares de estados. Las palabras pendientes del objeto
 no completan los cuatro controles auxiliares de preset ni el ruteo con el motor.
 
+La [preparación de nota de VoiceCtl para Cluster](cluster246-note-activation.md)
+añade una tabla contrastada de 128 palabras y la escritura de pitch, velocidad y
+actividad, con afinación explícita y 131.072 muestras con incremento mantenido.
+La calibración original, pitch por muestra y consumidor ADSR siguen pendientes;
+las referencias candidatas del relevo están en L1 parcialmente cifrada.
+
 ## Efectos y filtros
 
 | Objetivo | Estado |

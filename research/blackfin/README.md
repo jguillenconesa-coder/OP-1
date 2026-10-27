@@ -87,3 +87,14 @@ The initializer preserves the high half of gain; restart preserves level/gain
 while storing the two pending words. Original pitch/velocity interpretation,
 runtime consumers and the complete Cluster envelope route are not established.
 [Contract, evidence and reproduction](../../docs/cluster246-envelope-transitions.md).
+
+## Cluster VoiceCtl preparation
+
+`cluster-activation.s.in` and `verify-cluster246-activation.py` independently probe
+the original SDRAM activation routine and Cluster render with explicit tuning.
+A bounded original note-table copy fragment is generated only in the operator's
+private output directory, relocated unchanged and followed by an own RTS. It
+checks 128 numeric words, not the complete initializer. The harness holds the
+prepared pitch over 128 samples; the original per-sample provider and L1 ADSR
+handoff are not reconstructed. No original code fragment is bundled here.
+[Contract, evidence and reproduction](../../docs/cluster246-note-activation.md).
