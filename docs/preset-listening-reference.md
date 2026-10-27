@@ -27,7 +27,19 @@ ni demuestra que una diferencia proceda del núcleo DSP.
 Las coincidencias numéricas de rutinas aisladas documentadas en este repositorio
 siguen siendo evidencia separada de una comparación auditiva del aparato completo.
 
-El usuario indicó después que se ignorasen los lotes segmentados aportados hasta
-el momento y que enviaría un lote definitivo. Esos lotes quedan apartados: no se
-publican índices ni comparaciones derivados de ellos. La validación DSP 0.13
-procede del firmware y de pruebas propias, independientemente del vídeo.
+El usuario indicó después que se ignorasen los primeros lotes segmentados. Esos
+lotes permanecen apartados. La validación DSP 0.13 procede del firmware y de
+pruebas propias, independientemente del vídeo.
+
+El **27 de octubre de 2026** se recibió y descargó correctamente el lote definitivo
+de **21 segmentos**. Se decodificó todo su audio y se revisaron visualmente
+**169 selecciones de presets en 11 categorías**, correlacionadas por nombre con
+el inventario rev246. Los cortes contienen preroll: se alinearon mediante 1.650
+paquetes H264 idénticos en los solapes, en lugar de usar sus nombres como offsets.
+El OCR localizó 168 nombres; `basslineslide` requirió inspección adicional.
+
+El [índice por categoría, nombre y tiempo](preset-video-index.md) está disponible
+con hashes, método y datos numéricos. Sus tiempos son observaciones de pantalla,
+no inicios de notas ni intervalos completos de sonido. La comparación de timbre,
+notas/velocidades y calibración del plugin sigue pendiente; no se han ajustado
+presets ni DSP a partir de este índice. No se publica el vídeo, audio ni fotogramas.

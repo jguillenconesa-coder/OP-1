@@ -10,6 +10,8 @@
 
 **Nuevo en 0.13.0:** [Value 246 Voice](docs/value-voice246-native.md), modulación por voz de los cuatro controles Phase/Digital o de su ADSR. Cinco variantes adicionales, con los mismos mandos MIDI del set 4 y estados antiguos conservados. [Cobertura completa y pendientes](docs/original-op1-coverage.md).
 
+**Referencia de presets:** [índice de 169 nombres y categorías con tiempos de pantalla](docs/preset-video-index.md), revisado a partir de los 21 segmentos definitivos aportados. Comparación acústica pendiente.
+
 **Banco adicional:** [16 estudios del núcleo Phase / 13 WAV únicos](docs/phase-core-studies.md), compatibles con 0.7.0. Controles extraídos del firmware y renders contrastados con el núcleo original simulado; siguen siendo estudios experimentales sin el resto del preset original.
 
 ## Descargar

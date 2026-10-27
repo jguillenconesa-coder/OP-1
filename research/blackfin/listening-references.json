@@ -9,9 +9,9 @@
       "access_result": "HTTP 403 for YouTube watch page and oEmbed in cloud environment",
       "audio_accessed": false,
       "title_verified": false,
-      "preset_names_verified": false,
+      "preset_names_verified": true,
       "comparisons_completed": false,
-      "status": "Awaiting definitive replacement batch. User explicitly asked to ignore segmented batches supplied so far; they are excluded from indexing and sonic comparisons.",
+      "status": "Definitive 21-segment replacement downloaded, hashed and aligned on 2026-10-27. 169 synth screen selections in 11 categories visually reviewed against rev246 names; full audio decoded. Acoustic comparison and note annotations pending.",
       "attachment": {
         "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés).mp4",
         "transfer_attempted_utc": "2026-10-26",
@@ -25,6 +25,21 @@
         "ignored_at_user_request": true,
         "date_utc": "2026-10-27",
         "used_for_dsp_or_sound_matching": false
+      },
+      "definitive_batch": {
+        "date_utc": "2026-10-27",
+        "segments": 21,
+        "segment_manifest": "preset-video-segments.json",
+        "screen_index": "preset-video-index.json",
+        "screen_selections_reviewed": 169,
+        "categories": 11,
+        "sampled_frames": 1600,
+        "automatic_names_located": 168,
+        "additional_manual_names": 1,
+        "shared_video_packet_anchors": 1650,
+        "audio_decoded": true,
+        "critical_listening_or_timbre_comparison_completed": false,
+        "original_media_published": false
       }
     }
   ]

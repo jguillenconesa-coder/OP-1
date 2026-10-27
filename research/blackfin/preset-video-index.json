@@ -1,0 +1,3574 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-27",
+  "reference_url": "https://www.youtube.com/watch?v=P84SBtIDdSM",
+  "source_manifest": "preset-video-segments.json",
+  "source_manifest_sha256": "1206db08995104d87c49db0da173e74d4edc900d7957837de6ce9d5211276b9f",
+  "scope": "169 visually reviewed on-screen synth preset/category observations, correlated by name to the rev246 inventory. Same name does not establish identical stored parameters or firmware revision in the recording. No drum-kit coverage is claimed.",
+  "timing": "A sampled screen-selection observation, not first note, patch-loading completion, full sound interval or note/velocity annotation. Global video PTS aligned by shared H264 packets, relative to supplied segment 1. Baseline screen sampling every 60 decoded frames at 30 fps (2s).",
+  "sampled_frames": 1600,
+  "automatic_names_located": 168,
+  "manually_located_names": 1,
+  "categories": {
+    "cluster": 16,
+    "digital": 16,
+    "dna": 16,
+    "drwave": 16,
+    "dsynth": 16,
+    "fm": 16,
+    "phase": 16,
+    "pulse": 16,
+    "sampler": 9,
+    "string": 16,
+    "voltage": 16
+  },
+  "all_source_audio_decoded": true,
+  "audio_timbre_comparison_completed": false,
+  "plugin_dsp_changed": false,
+  "media_distributed": false,
+  "presets": [
+    {
+      "category": "cluster",
+      "name": "bass face",
+      "inventory_id": 65,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 1,
+        "local_pts_seconds": 40.0,
+        "video_seconds": 40.0,
+        "sampled_frame_ordinal": 21,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 6,
+        "mean_string_similarity": 0.971,
+        "score_margin": 6.724,
+        "sampled_observations": 17
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "caterpillar",
+      "inventory_id": 66,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 1,
+        "local_pts_seconds": 118.0,
+        "video_seconds": 118.0,
+        "sampled_frame_ordinal": 60,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.921,
+        "score_margin": 5.357,
+        "sampled_observations": 8
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "cstrings",
+      "inventory_id": 67,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 2,
+        "local_pts_seconds": 4.052018,
+        "video_seconds": 153.333333,
+        "sampled_frame_ordinal": 3,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.884,
+        "score_margin": 4.138,
+        "sampled_observations": 7
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "dissolver",
+      "inventory_id": 68,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 2,
+        "local_pts_seconds": 34.052018,
+        "video_seconds": 183.333333,
+        "sampled_frame_ordinal": 18,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.902,
+        "score_margin": 4.207,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "dub bass",
+      "inventory_id": 69,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 2,
+        "local_pts_seconds": 116.052018,
+        "video_seconds": 265.333333,
+        "sampled_frame_ordinal": 59,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 6,
+        "mean_string_similarity": 0.971,
+        "score_margin": 6.724,
+        "sampled_observations": 20
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "grit drive",
+      "inventory_id": 70,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 3,
+        "local_pts_seconds": 34.05,
+        "video_seconds": 338.0,
+        "sampled_frame_ordinal": 18,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 6,
+        "mean_string_similarity": 0.952,
+        "score_margin": 6.614,
+        "sampled_observations": 37
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "kids show",
+      "inventory_id": 71,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 3,
+        "local_pts_seconds": 100.05,
+        "video_seconds": 404.0,
+        "sampled_frame_ordinal": 51,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.949,
+        "score_margin": 5.496,
+        "sampled_observations": 20
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "love chords",
+      "inventory_id": 72,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 4,
+        "local_pts_seconds": 24.049023,
+        "video_seconds": 482.666666,
+        "sampled_frame_ordinal": 13,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.882,
+        "score_margin": 4.129,
+        "sampled_observations": 22
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "mr legato",
+      "inventory_id": 73,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 4,
+        "local_pts_seconds": 58.049023,
+        "video_seconds": 516.666666,
+        "sampled_frame_ordinal": 30,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.822,
+        "score_margin": 3.889,
+        "sampled_observations": 18
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "newday",
+      "inventory_id": 74,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 4,
+        "local_pts_seconds": 72.049023,
+        "video_seconds": 530.666666,
+        "sampled_frame_ordinal": 37,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.921,
+        "score_margin": 5.353,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "serious bass",
+      "inventory_id": 75,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 4,
+        "local_pts_seconds": 152.049023,
+        "video_seconds": 610.666666,
+        "sampled_frame_ordinal": 77,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.79,
+        "score_margin": 2.821,
+        "sampled_observations": 10
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "so lonely",
+      "inventory_id": 76,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 5,
+        "local_pts_seconds": 8.047005,
+        "video_seconds": 621.333333,
+        "sampled_frame_ordinal": 5,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.928,
+        "score_margin": 5.392,
+        "sampled_observations": 16
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "sqeek bend",
+      "inventory_id": 77,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 5,
+        "local_pts_seconds": 44.047005,
+        "video_seconds": 657.333333,
+        "sampled_frame_ordinal": 23,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 1.0,
+        "score_margin": 5.75,
+        "sampled_observations": 16
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "streengs",
+      "inventory_id": 78,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 5,
+        "local_pts_seconds": 94.047005,
+        "video_seconds": 707.333333,
+        "sampled_frame_ordinal": 48,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.872,
+        "score_margin": 5.109,
+        "sampled_observations": 14
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "trans4m",
+      "inventory_id": 79,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 5,
+        "local_pts_seconds": 114.047005,
+        "video_seconds": 727.333333,
+        "sampled_frame_ordinal": 58,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.988,
+        "score_margin": 4.552,
+        "sampled_observations": 9
+      }
+    },
+    {
+      "category": "cluster",
+      "name": "xyz files",
+      "inventory_id": 80,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 5,
+        "local_pts_seconds": 132.047005,
+        "video_seconds": 745.333333,
+        "sampled_frame_ordinal": 67,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.911,
+        "score_margin": 5.306,
+        "sampled_observations": 11
+      }
+    },
+    {
+      "category": "digital",
+      "name": "auto rptr",
+      "inventory_id": 1,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 6,
+        "local_pts_seconds": 38.052995,
+        "video_seconds": 800.666667,
+        "sampled_frame_ordinal": 20,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.844,
+        "score_margin": 3.975,
+        "sampled_observations": 23
+      }
+    },
+    {
+      "category": "digital",
+      "name": "booooh",
+      "inventory_id": 2,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 6,
+        "local_pts_seconds": 60.052995,
+        "video_seconds": 822.666667,
+        "sampled_frame_ordinal": 31,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.95,
+        "score_margin": 4.4,
+        "sampled_observations": 8
+      }
+    },
+    {
+      "category": "digital",
+      "name": "daylight",
+      "inventory_id": 3,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 6,
+        "local_pts_seconds": 74.052995,
+        "video_seconds": 836.666667,
+        "sampled_frame_ordinal": 38,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.958,
+        "score_margin": 4.433,
+        "sampled_observations": 11
+      }
+    },
+    {
+      "category": "digital",
+      "name": "didg",
+      "inventory_id": 4,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 6,
+        "local_pts_seconds": 96.052995,
+        "video_seconds": 858.666667,
+        "sampled_frame_ordinal": 49,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.933,
+        "score_margin": 3.25,
+        "sampled_observations": 7
+      }
+    },
+    {
+      "category": "digital",
+      "name": "forgotten",
+      "inventory_id": 5,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 6,
+        "local_pts_seconds": 130.052995,
+        "video_seconds": 892.666667,
+        "sampled_frame_ordinal": 66,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.773,
+        "score_margin": 3.692,
+        "sampled_observations": 10
+      }
+    },
+    {
+      "category": "digital",
+      "name": "glenn",
+      "inventory_id": 6,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 6,
+        "local_pts_seconds": 158.052995,
+        "video_seconds": 920.666667,
+        "sampled_frame_ordinal": 80,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.917,
+        "score_margin": 4.267,
+        "sampled_observations": 24
+      }
+    },
+    {
+      "category": "digital",
+      "name": "low end",
+      "inventory_id": 7,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 7,
+        "local_pts_seconds": 44.052018,
+        "video_seconds": 961.333333,
+        "sampled_frame_ordinal": 23,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.855,
+        "score_margin": 5.027,
+        "sampled_observations": 13
+      }
+    },
+    {
+      "category": "digital",
+      "name": "lullaby time",
+      "inventory_id": 8,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 7,
+        "local_pts_seconds": 58.052018,
+        "video_seconds": 975.333333,
+        "sampled_frame_ordinal": 30,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.823,
+        "score_margin": 4.867,
+        "sampled_observations": 16
+      }
+    },
+    {
+      "category": "digital",
+      "name": "organbratto",
+      "inventory_id": 9,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 7,
+        "local_pts_seconds": 108.052018,
+        "video_seconds": 1025.333333,
+        "sampled_frame_ordinal": 55,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.939,
+        "score_margin": 3.268,
+        "sampled_observations": 33
+      }
+    },
+    {
+      "category": "digital",
+      "name": "princess",
+      "inventory_id": 10,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 20.05,
+        "video_seconds": 1092.0,
+        "sampled_frame_ordinal": 11,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.932,
+        "score_margin": 4.327,
+        "sampled_observations": 8
+      }
+    },
+    {
+      "category": "digital",
+      "name": "queff bass",
+      "inventory_id": 11,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 30.05,
+        "video_seconds": 1102.0,
+        "sampled_frame_ordinal": 16,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.977,
+        "score_margin": 4.509,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "digital",
+      "name": "recognizer",
+      "inventory_id": 12,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 36.05,
+        "video_seconds": 1108.0,
+        "sampled_frame_ordinal": 19,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.968,
+        "score_margin": 5.592,
+        "sampled_observations": 13
+      }
+    },
+    {
+      "category": "digital",
+      "name": "sugar",
+      "inventory_id": 13,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 72.05,
+        "video_seconds": 1144.0,
+        "sampled_frame_ordinal": 37,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 1.0,
+        "score_margin": 5.75,
+        "sampled_observations": 12
+      }
+    },
+    {
+      "category": "digital",
+      "name": "theremono",
+      "inventory_id": 14,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 88.05,
+        "video_seconds": 1160.0,
+        "sampled_frame_ordinal": 45,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.863,
+        "score_margin": 4.051,
+        "sampled_observations": 7
+      }
+    },
+    {
+      "category": "digital",
+      "name": "tomorrow",
+      "inventory_id": 15,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 106.05,
+        "video_seconds": 1178.0,
+        "sampled_frame_ordinal": 54,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.978,
+        "score_margin": 4.047,
+        "sampled_observations": 10
+      }
+    },
+    {
+      "category": "digital",
+      "name": "violinist",
+      "inventory_id": 16,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 126.05,
+        "video_seconds": 1198.0,
+        "sampled_frame_ordinal": 64,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.933,
+        "score_margin": 4.331,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "dna",
+      "name": "basslineslide",
+      "inventory_id": 17,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 130.05,
+        "video_seconds": 1202.0,
+        "sampled_frame_ordinal": 66,
+        "visually_reviewed": true,
+        "review_method": "Manual inspection of 4 fps detail at video 1198–1206s, using crop x403 y164 width220 height116; highlighted BASSLINESLIDE and DNA visible. Default crop clips this row."
+      },
+      "automatic_candidate": null
+    },
+    {
+      "category": "dna",
+      "name": "chord tilt",
+      "inventory_id": 18,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 136.05,
+        "video_seconds": 1208.0,
+        "sampled_frame_ordinal": 69,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.866,
+        "score_margin": 5.081,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "dna",
+      "name": "decept",
+      "inventory_id": 19,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 150.05,
+        "video_seconds": 1222.0,
+        "sampled_frame_ordinal": 76,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.828,
+        "score_margin": 3.91,
+        "sampled_observations": 4
+      }
+    },
+    {
+      "category": "dna",
+      "name": "destination u",
+      "inventory_id": 20,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 156.05,
+        "video_seconds": 1228.0,
+        "sampled_frame_ordinal": 79,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.865,
+        "score_margin": 5.075,
+        "sampled_observations": 4
+      }
+    },
+    {
+      "category": "dna",
+      "name": "e bass",
+      "inventory_id": 21,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 9,
+        "local_pts_seconds": 4.049023,
+        "video_seconds": 1230.666666,
+        "sampled_frame_ordinal": 3,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.859,
+        "score_margin": 4.038,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "dna",
+      "name": "fickle bass",
+      "inventory_id": 22,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 9,
+        "local_pts_seconds": 20.049023,
+        "video_seconds": 1246.666666,
+        "sampled_frame_ordinal": 11,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.8,
+        "score_margin": 4.751,
+        "sampled_observations": 8
+      }
+    },
+    {
+      "category": "dna",
+      "name": "galaxy code",
+      "inventory_id": 23,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 9,
+        "local_pts_seconds": 58.049023,
+        "video_seconds": 1284.666666,
+        "sampled_frame_ordinal": 30,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 6,
+        "mean_string_similarity": 0.956,
+        "score_margin": 5.0,
+        "sampled_observations": 15
+      }
+    },
+    {
+      "category": "dna",
+      "name": "harmsichord",
+      "inventory_id": 24,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 9,
+        "local_pts_seconds": 70.049023,
+        "video_seconds": 1296.666666,
+        "sampled_frame_ordinal": 36,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.967,
+        "score_margin": 3.95,
+        "sampled_observations": 7
+      }
+    },
+    {
+      "category": "dna",
+      "name": "ingwie",
+      "inventory_id": 25,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 9,
+        "local_pts_seconds": 88.049023,
+        "video_seconds": 1314.666666,
+        "sampled_frame_ordinal": 45,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 1.0,
+        "score_margin": 4.117,
+        "sampled_observations": 7
+      }
+    },
+    {
+      "category": "dna",
+      "name": "m8kme chord",
+      "inventory_id": 26,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 9,
+        "local_pts_seconds": 96.049023,
+        "video_seconds": 1322.666666,
+        "sampled_frame_ordinal": 49,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.967,
+        "score_margin": 1.717,
+        "sampled_observations": 4
+      }
+    },
+    {
+      "category": "dna",
+      "name": "naggin",
+      "inventory_id": 27,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 9,
+        "local_pts_seconds": 110.049023,
+        "video_seconds": 1336.666666,
+        "sampled_frame_ordinal": 56,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.905,
+        "score_margin": 5.277,
+        "sampled_observations": 4
+      }
+    },
+    {
+      "category": "dna",
+      "name": "pianopad",
+      "inventory_id": 28,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 9,
+        "local_pts_seconds": 122.049023,
+        "video_seconds": 1348.666666,
+        "sampled_frame_ordinal": 62,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.778,
+        "score_margin": 3.712,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "dna",
+      "name": "rise rnd",
+      "inventory_id": 29,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 9,
+        "local_pts_seconds": 128.049023,
+        "video_seconds": 1354.666666,
+        "sampled_frame_ordinal": 65,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 2,
+        "mean_string_similarity": 0.887,
+        "score_margin": 2.075,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "dna",
+      "name": "running late",
+      "inventory_id": 30,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 9,
+        "local_pts_seconds": 132.049023,
+        "video_seconds": 1358.666666,
+        "sampled_frame_ordinal": 67,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.788,
+        "score_margin": 3.751,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "dna",
+      "name": "tight n right",
+      "inventory_id": 31,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 9,
+        "local_pts_seconds": 144.049023,
+        "video_seconds": 1370.666666,
+        "sampled_frame_ordinal": 73,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.932,
+        "score_margin": 4.327,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "dna",
+      "name": "tink peggio",
+      "inventory_id": 32,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 10,
+        "local_pts_seconds": 12.047005,
+        "video_seconds": 1393.333333,
+        "sampled_frame_ordinal": 7,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 1.0,
+        "score_margin": 5.75,
+        "sampled_observations": 19
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "brinsting",
+      "inventory_id": 33,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 10,
+        "local_pts_seconds": 34.047005,
+        "video_seconds": 1415.333333,
+        "sampled_frame_ordinal": 18,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.829,
+        "score_margin": 4.894,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "delicatto",
+      "inventory_id": 34,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 10,
+        "local_pts_seconds": 38.047005,
+        "video_seconds": 1419.333333,
+        "sampled_frame_ordinal": 20,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.894,
+        "score_margin": 3.131,
+        "sampled_observations": 10
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "dimensions",
+      "inventory_id": 35,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 10,
+        "local_pts_seconds": 66.047005,
+        "video_seconds": 1447.333333,
+        "sampled_frame_ordinal": 34,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.919,
+        "score_margin": 5.345,
+        "sampled_observations": 10
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "fake piano",
+      "inventory_id": 36,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 10,
+        "local_pts_seconds": 90.047005,
+        "video_seconds": 1471.333333,
+        "sampled_frame_ordinal": 46,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.917,
+        "score_margin": 4.267,
+        "sampled_observations": 8
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "faze pad",
+      "inventory_id": 37,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 10,
+        "local_pts_seconds": 104.047005,
+        "video_seconds": 1485.333333,
+        "sampled_frame_ordinal": 53,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.962,
+        "score_margin": 5.562,
+        "sampled_observations": 7
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "feena",
+      "inventory_id": 38,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 10,
+        "local_pts_seconds": 116.047005,
+        "video_seconds": 1497.333333,
+        "sampled_frame_ordinal": 59,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.9,
+        "score_margin": 5.251,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "grams organ",
+      "inventory_id": 39,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 10,
+        "local_pts_seconds": 136.047005,
+        "video_seconds": 1517.333333,
+        "sampled_frame_ordinal": 69,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.946,
+        "score_margin": 5.481,
+        "sampled_observations": 11
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "k-pulse",
+      "inventory_id": 40,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 10,
+        "local_pts_seconds": 152.047005,
+        "video_seconds": 1533.333333,
+        "sampled_frame_ordinal": 77,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.933,
+        "score_margin": 4.331,
+        "sampled_observations": 7
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "l-beam",
+      "inventory_id": 41,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 11,
+        "local_pts_seconds": 20.052995,
+        "video_seconds": 1550.666667,
+        "sampled_frame_ordinal": 11,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 1.0,
+        "score_margin": 5.75,
+        "sampled_observations": 18
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "plinka",
+      "inventory_id": 42,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 11,
+        "local_pts_seconds": 42.052995,
+        "video_seconds": 1572.666667,
+        "sampled_frame_ordinal": 22,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 1.0,
+        "score_margin": 5.75,
+        "sampled_observations": 4
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "probe lead",
+      "inventory_id": 43,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 11,
+        "local_pts_seconds": 62.052995,
+        "video_seconds": 1592.666667,
+        "sampled_frame_ordinal": 32,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.978,
+        "score_margin": 5.639,
+        "sampled_observations": 20
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "scorebored",
+      "inventory_id": 44,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 11,
+        "local_pts_seconds": 100.052995,
+        "video_seconds": 1630.666667,
+        "sampled_frame_ordinal": 51,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 1.0,
+        "score_margin": 4.6,
+        "sampled_observations": 8
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "sexwave",
+      "inventory_id": 45,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 11,
+        "local_pts_seconds": 126.052995,
+        "video_seconds": 1656.666667,
+        "sampled_frame_ordinal": 64,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 1.0,
+        "score_margin": 4.6,
+        "sampled_observations": 16
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "the thinny",
+      "inventory_id": 46,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 11,
+        "local_pts_seconds": 152.052995,
+        "video_seconds": 1682.666667,
+        "sampled_frame_ordinal": 77,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.941,
+        "score_margin": 3.274,
+        "sampled_observations": 15
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "tristar",
+      "inventory_id": 47,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 12,
+        "local_pts_seconds": 28.052018,
+        "video_seconds": 1713.333333,
+        "sampled_frame_ordinal": 15,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.926,
+        "score_margin": 4.306,
+        "sampled_observations": 9
+      }
+    },
+    {
+      "category": "drwave",
+      "name": "z-nerves",
+      "inventory_id": 48,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 12,
+        "local_pts_seconds": 46.052018,
+        "video_seconds": 1731.333333,
+        "sampled_frame_ordinal": 24,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 6,
+        "mean_string_similarity": 0.834,
+        "score_margin": 5.905,
+        "sampled_observations": 13
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "back bass",
+      "inventory_id": 49,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 12,
+        "local_pts_seconds": 68.052018,
+        "video_seconds": 1753.333333,
+        "sampled_frame_ordinal": 35,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.879,
+        "score_margin": 5.147,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "beep me",
+      "inventory_id": 50,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 12,
+        "local_pts_seconds": 82.052018,
+        "video_seconds": 1767.333333,
+        "sampled_frame_ordinal": 42,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.886,
+        "score_margin": 4.142,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "chronx",
+      "inventory_id": 51,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 12,
+        "local_pts_seconds": 116.052018,
+        "video_seconds": 1801.333333,
+        "sampled_frame_ordinal": 59,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.98,
+        "score_margin": 5.65,
+        "sampled_observations": 16
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "dsynthetic",
+      "inventory_id": 52,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 12,
+        "local_pts_seconds": 130.052018,
+        "video_seconds": 1815.333333,
+        "sampled_frame_ordinal": 66,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.933,
+        "score_margin": 3.25,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "evolvs",
+      "inventory_id": 53,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 12,
+        "local_pts_seconds": 156.052018,
+        "video_seconds": 1841.333333,
+        "sampled_frame_ordinal": 79,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.98,
+        "score_margin": 5.65,
+        "sampled_observations": 17
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "haunted",
+      "inventory_id": 54,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 13,
+        "local_pts_seconds": 36.05,
+        "video_seconds": 1876.0,
+        "sampled_frame_ordinal": 19,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.934,
+        "score_margin": 5.419,
+        "sampled_observations": 15
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "jammed",
+      "inventory_id": 55,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 13,
+        "local_pts_seconds": 40.05,
+        "video_seconds": 1880.0,
+        "sampled_frame_ordinal": 21,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.853,
+        "score_margin": 5.017,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "legacy",
+      "inventory_id": 56,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 13,
+        "local_pts_seconds": 52.05,
+        "video_seconds": 1892.0,
+        "sampled_frame_ordinal": 27,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.956,
+        "score_margin": 5.531,
+        "sampled_observations": 9
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "pianolan",
+      "inventory_id": 57,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 13,
+        "local_pts_seconds": 70.05,
+        "video_seconds": 1910.0,
+        "sampled_frame_ordinal": 36,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.927,
+        "score_margin": 5.383,
+        "sampled_observations": 6
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "plip",
+      "inventory_id": 58,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 13,
+        "local_pts_seconds": 82.05,
+        "video_seconds": 1922.0,
+        "sampled_frame_ordinal": 42,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.929,
+        "score_margin": 4.314,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "plugged in",
+      "inventory_id": 59,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 13,
+        "local_pts_seconds": 84.05,
+        "video_seconds": 1924.0,
+        "sampled_frame_ordinal": 43,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.958,
+        "score_margin": 4.433,
+        "sampled_observations": 4
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "secret",
+      "inventory_id": 60,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 13,
+        "local_pts_seconds": 104.05,
+        "video_seconds": 1944.0,
+        "sampled_frame_ordinal": 53,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.846,
+        "score_margin": 4.98,
+        "sampled_observations": 7
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "shino",
+      "inventory_id": 61,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 13,
+        "local_pts_seconds": 126.05,
+        "video_seconds": 1966.0,
+        "sampled_frame_ordinal": 64,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.846,
+        "score_margin": 4.982,
+        "sampled_observations": 10
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "sunday morn",
+      "inventory_id": 62,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 13,
+        "local_pts_seconds": 128.05,
+        "video_seconds": 1968.0,
+        "sampled_frame_ordinal": 65,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.91,
+        "score_margin": 3.181,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "wasteland",
+      "inventory_id": 63,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 13,
+        "local_pts_seconds": 142.05,
+        "video_seconds": 1982.0,
+        "sampled_frame_ordinal": 72,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.854,
+        "score_margin": 5.022,
+        "sampled_observations": 15
+      }
+    },
+    {
+      "category": "dsynth",
+      "name": "zamfir",
+      "inventory_id": 64,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 14,
+        "local_pts_seconds": 50.049023,
+        "video_seconds": 2044.666666,
+        "sampled_frame_ordinal": 26,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 1.0,
+        "score_margin": 5.75,
+        "sampled_observations": 16
+      }
+    },
+    {
+      "category": "fm",
+      "name": "big bottom",
+      "inventory_id": 145,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 14,
+        "local_pts_seconds": 60.049023,
+        "video_seconds": 2054.666666,
+        "sampled_frame_ordinal": 31,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.859,
+        "score_margin": 5.044,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "fm",
+      "name": "dr fm",
+      "inventory_id": 146,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 14,
+        "local_pts_seconds": 68.049023,
+        "video_seconds": 2062.666666,
+        "sampled_frame_ordinal": 35,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.945,
+        "score_margin": 3.286,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "fm",
+      "name": "drill deep",
+      "inventory_id": 147,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 14,
+        "local_pts_seconds": 82.049023,
+        "video_seconds": 2076.666666,
+        "sampled_frame_ordinal": 42,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.861,
+        "score_margin": 4.043,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "fm",
+      "name": "inner space",
+      "inventory_id": 148,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 14,
+        "local_pts_seconds": 86.049023,
+        "video_seconds": 2080.666666,
+        "sampled_frame_ordinal": 44,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.819,
+        "score_margin": 2.906,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "fm",
+      "name": "mantra tones",
+      "inventory_id": 149,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 14,
+        "local_pts_seconds": 94.049023,
+        "video_seconds": 2088.666666,
+        "sampled_frame_ordinal": 48,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.746,
+        "score_margin": 3.584,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "fm",
+      "name": "neutrinos",
+      "inventory_id": 150,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 14,
+        "local_pts_seconds": 114.049023,
+        "video_seconds": 2108.666666,
+        "sampled_frame_ordinal": 58,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.799,
+        "score_margin": 3.795,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "fm",
+      "name": "organized",
+      "inventory_id": 151,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 14,
+        "local_pts_seconds": 120.049023,
+        "video_seconds": 2114.666666,
+        "sampled_frame_ordinal": 61,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 2,
+        "mean_string_similarity": 0.804,
+        "score_margin": 1.907,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "fm",
+      "name": "repeat",
+      "inventory_id": 152,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 14,
+        "local_pts_seconds": 132.049023,
+        "video_seconds": 2126.666666,
+        "sampled_frame_ordinal": 67,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.909,
+        "score_margin": 4.235,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "fm",
+      "name": "rez bass",
+      "inventory_id": 153,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 14,
+        "local_pts_seconds": 138.049023,
+        "video_seconds": 2132.666666,
+        "sampled_frame_ordinal": 70,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.898,
+        "score_margin": 4.194,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "fm",
+      "name": "space radar",
+      "inventory_id": 154,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 14,
+        "local_pts_seconds": 148.049023,
+        "video_seconds": 2142.666666,
+        "sampled_frame_ordinal": 75,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.81,
+        "score_margin": 3.838,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "fm",
+      "name": "squared",
+      "inventory_id": 155,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 4.047005,
+        "video_seconds": 2153.333333,
+        "sampled_frame_ordinal": 3,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 1.0,
+        "score_margin": 3.45,
+        "sampled_observations": 1
+      }
+    },
+    {
+      "category": "fm",
+      "name": "sub bass",
+      "inventory_id": 156,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 10.047005,
+        "video_seconds": 2159.333333,
+        "sampled_frame_ordinal": 6,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.897,
+        "score_margin": 4.19,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "fm",
+      "name": "sweet hi",
+      "inventory_id": 157,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 14.047005,
+        "video_seconds": 2163.333333,
+        "sampled_frame_ordinal": 8,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 1.0,
+        "score_margin": 4.6,
+        "sampled_observations": 6
+      }
+    },
+    {
+      "category": "fm",
+      "name": "the cellist",
+      "inventory_id": 158,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 32.047005,
+        "video_seconds": 2181.333333,
+        "sampled_frame_ordinal": 17,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.903,
+        "score_margin": 2.619,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "fm",
+      "name": "warning",
+      "inventory_id": 159,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 36.047005,
+        "video_seconds": 2185.333333,
+        "sampled_frame_ordinal": 19,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.952,
+        "score_margin": 3.307,
+        "sampled_observations": 1
+      }
+    },
+    {
+      "category": "fm",
+      "name": "yoshonka",
+      "inventory_id": 160,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 44.047005,
+        "video_seconds": 2193.333333,
+        "sampled_frame_ordinal": 23,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.846,
+        "score_margin": 4.98,
+        "sampled_observations": 6
+      }
+    },
+    {
+      "category": "phase",
+      "name": "bass phase",
+      "inventory_id": 97,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 70.047005,
+        "video_seconds": 2219.333333,
+        "sampled_frame_ordinal": 36,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.877,
+        "score_margin": 4.109,
+        "sampled_observations": 8
+      }
+    },
+    {
+      "category": "phase",
+      "name": "bubble",
+      "inventory_id": 98,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 72.047005,
+        "video_seconds": 2221.333333,
+        "sampled_frame_ordinal": 37,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.9,
+        "score_margin": 5.25,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "phase",
+      "name": "classic lfo",
+      "inventory_id": 99,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 80.047005,
+        "video_seconds": 2229.333333,
+        "sampled_frame_ordinal": 41,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.944,
+        "score_margin": 3.283,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "phase",
+      "name": "hold me",
+      "inventory_id": 100,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 86.047005,
+        "video_seconds": 2235.333333,
+        "sampled_frame_ordinal": 44,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.864,
+        "score_margin": 4.055,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "phase",
+      "name": "jangle",
+      "inventory_id": 101,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 104.047005,
+        "video_seconds": 2253.333333,
+        "sampled_frame_ordinal": 53,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.927,
+        "score_margin": 5.383,
+        "sampled_observations": 9
+      }
+    },
+    {
+      "category": "phase",
+      "name": "kitt",
+      "inventory_id": 102,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 120.047005,
+        "video_seconds": 2269.333333,
+        "sampled_frame_ordinal": 61,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.958,
+        "score_margin": 4.433,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "phase",
+      "name": "lil critter",
+      "inventory_id": 103,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 146.047005,
+        "video_seconds": 2295.333333,
+        "sampled_frame_ordinal": 74,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 2,
+        "mean_string_similarity": 0.917,
+        "score_margin": 2.133,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "phase",
+      "name": "pass band",
+      "inventory_id": 104,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 8.052995,
+        "video_seconds": 2306.666667,
+        "sampled_frame_ordinal": 5,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 2,
+        "mean_string_similarity": 0.9,
+        "score_margin": 2.1,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "phase",
+      "name": "pure",
+      "inventory_id": 105,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 12.052995,
+        "video_seconds": 2310.666667,
+        "sampled_frame_ordinal": 7,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.956,
+        "score_margin": 5.531,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "phase",
+      "name": "reflection",
+      "inventory_id": 106,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 16.052995,
+        "video_seconds": 2314.666667,
+        "sampled_frame_ordinal": 9,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.778,
+        "score_margin": 2.783,
+        "sampled_observations": 1
+      }
+    },
+    {
+      "category": "phase",
+      "name": "roar bass",
+      "inventory_id": 107,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 24.052995,
+        "video_seconds": 2322.666667,
+        "sampled_frame_ordinal": 13,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.989,
+        "score_margin": 5.697,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "phase",
+      "name": "rownd bass",
+      "inventory_id": 108,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 28.052995,
+        "video_seconds": 2326.666667,
+        "sampled_frame_ordinal": 15,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 6,
+        "mean_string_similarity": 0.929,
+        "score_margin": 6.472,
+        "sampled_observations": 4
+      }
+    },
+    {
+      "category": "phase",
+      "name": "schain bass",
+      "inventory_id": 109,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 40.052995,
+        "video_seconds": 2338.666667,
+        "sampled_frame_ordinal": 21,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 1.0,
+        "score_margin": 3.45,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "phase",
+      "name": "spring pad",
+      "inventory_id": 110,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 46.052995,
+        "video_seconds": 2344.666667,
+        "sampled_frame_ordinal": 24,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.889,
+        "score_margin": 2.444,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "phase",
+      "name": "valentines",
+      "inventory_id": 111,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 62.052995,
+        "video_seconds": 2360.666667,
+        "sampled_frame_ordinal": 32,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.967,
+        "score_margin": 5.586,
+        "sampled_observations": 11
+      }
+    },
+    {
+      "category": "phase",
+      "name": "werkin it",
+      "inventory_id": 112,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 94.052995,
+        "video_seconds": 2392.666667,
+        "sampled_frame_ordinal": 48,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.775,
+        "score_margin": 1.945,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "chinese whist",
+      "inventory_id": 113,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 100.052995,
+        "video_seconds": 2398.666667,
+        "sampled_frame_ordinal": 51,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.943,
+        "score_margin": 3.831,
+        "sampled_observations": 7
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "chord lr",
+      "inventory_id": 114,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 118.052995,
+        "video_seconds": 2416.666667,
+        "sampled_frame_ordinal": 60,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.849,
+        "score_margin": 3.994,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "fat bass",
+      "inventory_id": 115,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 122.052995,
+        "video_seconds": 2420.666667,
+        "sampled_frame_ordinal": 62,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.819,
+        "score_margin": 3.875,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "funk bass",
+      "inventory_id": 116,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 126.052995,
+        "video_seconds": 2424.666667,
+        "sampled_frame_ordinal": 64,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.886,
+        "score_margin": 1.515,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "histeric",
+      "inventory_id": 117,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 132.052995,
+        "video_seconds": 2430.666667,
+        "sampled_frame_ordinal": 67,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.856,
+        "score_margin": 4.025,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "moonweed",
+      "inventory_id": 118,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 138.052995,
+        "video_seconds": 2436.666667,
+        "sampled_frame_ordinal": 70,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.942,
+        "score_margin": 4.366,
+        "sampled_observations": 4
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "mystic",
+      "inventory_id": 119,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 2.052018,
+        "video_seconds": 2455.333333,
+        "sampled_frame_ordinal": 2,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.958,
+        "score_margin": 3.907,
+        "sampled_observations": 14
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "pizzicato",
+      "inventory_id": 120,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 14.052018,
+        "video_seconds": 2467.333333,
+        "sampled_frame_ordinal": 8,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.964,
+        "score_margin": 2.824,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "pulse lead",
+      "inventory_id": 121,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 28.052018,
+        "video_seconds": 2481.333333,
+        "sampled_frame_ordinal": 15,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.885,
+        "score_margin": 3.624,
+        "sampled_observations": 4
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "shrink me",
+      "inventory_id": 122,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 32.052018,
+        "video_seconds": 2485.333333,
+        "sampled_frame_ordinal": 17,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.906,
+        "score_margin": 4.225,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "soft",
+      "inventory_id": 123,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 58.052018,
+        "video_seconds": 2511.333333,
+        "sampled_frame_ordinal": 30,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.925,
+        "score_margin": 5.375,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "system bass",
+      "inventory_id": 124,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 66.052018,
+        "video_seconds": 2519.333333,
+        "sampled_frame_ordinal": 34,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.891,
+        "score_margin": 5.206,
+        "sampled_observations": 1
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "twankle",
+      "inventory_id": 125,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 70.052018,
+        "video_seconds": 2523.333333,
+        "sampled_frame_ordinal": 36,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.915,
+        "score_margin": 3.196,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "vibrato",
+      "inventory_id": 126,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 82.052018,
+        "video_seconds": 2535.333333,
+        "sampled_frame_ordinal": 42,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.974,
+        "score_margin": 3.373,
+        "sampled_observations": 1
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "warm pad",
+      "inventory_id": 127,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 84.052018,
+        "video_seconds": 2537.333333,
+        "sampled_frame_ordinal": 43,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.942,
+        "score_margin": 4.369,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "pulse",
+      "name": "warp evo",
+      "inventory_id": 128,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 90.052018,
+        "video_seconds": 2543.333333,
+        "sampled_frame_ordinal": 46,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.951,
+        "score_margin": 5.506,
+        "sampled_observations": 6
+      }
+    },
+    {
+      "category": "sampler",
+      "name": "acidrone",
+      "inventory_id": 169,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 104.052018,
+        "video_seconds": 2557.333333,
+        "sampled_frame_ordinal": 53,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.914,
+        "score_margin": 3.192,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "sampler",
+      "name": "designadrum",
+      "inventory_id": 161,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 110.052018,
+        "video_seconds": 2563.333333,
+        "sampled_frame_ordinal": 56,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.819,
+        "score_margin": 3.876,
+        "sampled_observations": 1
+      }
+    },
+    {
+      "category": "sampler",
+      "name": "dist a log",
+      "inventory_id": 162,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 114.052018,
+        "video_seconds": 2567.333333,
+        "sampled_frame_ordinal": 58,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 2,
+        "mean_string_similarity": 0.9,
+        "score_margin": 2.1,
+        "sampled_observations": 1
+      }
+    },
+    {
+      "category": "sampler",
+      "name": "knorr",
+      "inventory_id": 163,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 120.052018,
+        "video_seconds": 2573.333333,
+        "sampled_frame_ordinal": 61,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.803,
+        "score_margin": 2.86,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "sampler",
+      "name": "leader",
+      "inventory_id": 164,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 126.052018,
+        "video_seconds": 2579.333333,
+        "sampled_frame_ordinal": 64,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.805,
+        "score_margin": 3.818,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "sampler",
+      "name": "m-glide",
+      "inventory_id": 165,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 17,
+        "local_pts_seconds": 138.052018,
+        "video_seconds": 2591.333333,
+        "sampled_frame_ordinal": 70,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.866,
+        "score_margin": 4.066,
+        "sampled_observations": 1
+      }
+    },
+    {
+      "category": "sampler",
+      "name": "piano mid",
+      "inventory_id": 166,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 18,
+        "local_pts_seconds": 6.05,
+        "video_seconds": 2614.0,
+        "sampled_frame_ordinal": 4,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.905,
+        "score_margin": 5.277,
+        "sampled_observations": 17
+      }
+    },
+    {
+      "category": "sampler",
+      "name": "punchsub",
+      "inventory_id": 168,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 18,
+        "local_pts_seconds": 24.05,
+        "video_seconds": 2632.0,
+        "sampled_frame_ordinal": 13,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.72,
+        "score_margin": 3.481,
+        "sampled_observations": 1
+      }
+    },
+    {
+      "category": "sampler",
+      "name": "suitcase",
+      "inventory_id": 167,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 18,
+        "local_pts_seconds": 42.05,
+        "video_seconds": 2650.0,
+        "sampled_frame_ordinal": 22,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.987,
+        "score_margin": 5.683,
+        "sampled_observations": 9
+      }
+    },
+    {
+      "category": "string",
+      "name": "antistring",
+      "inventory_id": 129,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 18,
+        "local_pts_seconds": 72.05,
+        "video_seconds": 2680.0,
+        "sampled_frame_ordinal": 37,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 1.0,
+        "score_margin": 5.75,
+        "sampled_observations": 16
+      }
+    },
+    {
+      "category": "string",
+      "name": "blues solo",
+      "inventory_id": 130,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 18,
+        "local_pts_seconds": 90.05,
+        "video_seconds": 2698.0,
+        "sampled_frame_ordinal": 46,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.944,
+        "score_margin": 5.469,
+        "sampled_observations": 4
+      }
+    },
+    {
+      "category": "string",
+      "name": "cut throat",
+      "inventory_id": 131,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 18,
+        "local_pts_seconds": 94.05,
+        "video_seconds": 2702.0,
+        "sampled_frame_ordinal": 48,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.945,
+        "score_margin": 3.286,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "string",
+      "name": "deep space",
+      "inventory_id": 132,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 18,
+        "local_pts_seconds": 108.05,
+        "video_seconds": 2716.0,
+        "sampled_frame_ordinal": 55,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.978,
+        "score_margin": 5.639,
+        "sampled_observations": 7
+      }
+    },
+    {
+      "category": "string",
+      "name": "east",
+      "inventory_id": 133,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 18,
+        "local_pts_seconds": 120.05,
+        "video_seconds": 2728.0,
+        "sampled_frame_ordinal": 61,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.933,
+        "score_margin": 5.417,
+        "sampled_observations": 6
+      }
+    },
+    {
+      "category": "string",
+      "name": "great wall",
+      "inventory_id": 134,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 18,
+        "local_pts_seconds": 130.05,
+        "video_seconds": 2738.0,
+        "sampled_frame_ordinal": 66,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 6,
+        "mean_string_similarity": 0.871,
+        "score_margin": 6.126,
+        "sampled_observations": 4
+      }
+    },
+    {
+      "category": "string",
+      "name": "guitwob",
+      "inventory_id": 135,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 18,
+        "local_pts_seconds": 134.05,
+        "video_seconds": 2742.0,
+        "sampled_frame_ordinal": 68,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.92,
+        "score_margin": 5.351,
+        "sampled_observations": 4
+      }
+    },
+    {
+      "category": "string",
+      "name": "jans hammer",
+      "inventory_id": 136,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 18,
+        "local_pts_seconds": 148.05,
+        "video_seconds": 2756.0,
+        "sampled_frame_ordinal": 75,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.972,
+        "score_margin": 4.489,
+        "sampled_observations": 9
+      }
+    },
+    {
+      "category": "string",
+      "name": "just a phase",
+      "inventory_id": 137,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 19,
+        "local_pts_seconds": 8.049023,
+        "video_seconds": 2770.666666,
+        "sampled_frame_ordinal": 5,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.905,
+        "score_margin": 4.219,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "string",
+      "name": "koto",
+      "inventory_id": 138,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 19,
+        "local_pts_seconds": 28.049023,
+        "video_seconds": 2790.666666,
+        "sampled_frame_ordinal": 15,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.975,
+        "score_margin": 4.5,
+        "sampled_observations": 11
+      }
+    },
+    {
+      "category": "string",
+      "name": "mearth",
+      "inventory_id": 139,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 19,
+        "local_pts_seconds": 50.049023,
+        "video_seconds": 2812.666666,
+        "sampled_frame_ordinal": 26,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.954,
+        "score_margin": 5.519,
+        "sampled_observations": 8
+      }
+    },
+    {
+      "category": "string",
+      "name": "piano of love",
+      "inventory_id": 140,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 19,
+        "local_pts_seconds": 74.049023,
+        "video_seconds": 2836.666666,
+        "sampled_frame_ordinal": 38,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.867,
+        "score_margin": 4.067,
+        "sampled_observations": 12
+      }
+    },
+    {
+      "category": "string",
+      "name": "pizzzz",
+      "inventory_id": 141,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 19,
+        "local_pts_seconds": 80.049023,
+        "video_seconds": 2842.666666,
+        "sampled_frame_ordinal": 41,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.96,
+        "score_margin": 5.55,
+        "sampled_observations": 1
+      }
+    },
+    {
+      "category": "string",
+      "name": "power bow",
+      "inventory_id": 142,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 19,
+        "local_pts_seconds": 86.049023,
+        "video_seconds": 2848.666666,
+        "sampled_frame_ordinal": 44,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.988,
+        "score_margin": 4.552,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "string",
+      "name": "set to stun",
+      "inventory_id": 143,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 19,
+        "local_pts_seconds": 90.049023,
+        "video_seconds": 2852.666666,
+        "sampled_frame_ordinal": 46,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.861,
+        "score_margin": 4.043,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "string",
+      "name": "swingin mics",
+      "inventory_id": 144,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 19,
+        "local_pts_seconds": 104.049023,
+        "video_seconds": 2866.666666,
+        "sampled_frame_ordinal": 53,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 6,
+        "mean_string_similarity": 0.903,
+        "score_margin": 6.318,
+        "sampled_observations": 8
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "basslines",
+      "inventory_id": 81,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 19,
+        "local_pts_seconds": 110.049023,
+        "video_seconds": 2872.666666,
+        "sampled_frame_ordinal": 56,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.906,
+        "score_margin": 4.225,
+        "sampled_observations": 1
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "bright",
+      "inventory_id": 91,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 19,
+        "local_pts_seconds": 120.049023,
+        "video_seconds": 2882.666666,
+        "sampled_frame_ordinal": 61,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.969,
+        "score_margin": 4.475,
+        "sampled_observations": 8
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "chordite",
+      "inventory_id": 82,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 19,
+        "local_pts_seconds": 136.049023,
+        "video_seconds": 2898.666666,
+        "sampled_frame_ordinal": 69,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 2,
+        "mean_string_similarity": 1.0,
+        "score_margin": 2.3,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "cosmopoly",
+      "inventory_id": 83,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 19,
+        "local_pts_seconds": 140.049023,
+        "video_seconds": 2902.666666,
+        "sampled_frame_ordinal": 71,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 6,
+        "mean_string_similarity": 0.927,
+        "score_margin": 6.465,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "crystals",
+      "inventory_id": 84,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 20,
+        "local_pts_seconds": 6.055013,
+        "video_seconds": 2918.0,
+        "sampled_frame_ordinal": 4,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.854,
+        "score_margin": 4.015,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "dubby 80s",
+      "inventory_id": 85,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 20,
+        "local_pts_seconds": 12.055013,
+        "video_seconds": 2924.0,
+        "sampled_frame_ordinal": 7,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.95,
+        "score_margin": 4.4,
+        "sampled_observations": 2
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "elektra",
+      "inventory_id": 86,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 20,
+        "local_pts_seconds": 36.055013,
+        "video_seconds": 2948.0,
+        "sampled_frame_ordinal": 19,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 2,
+        "mean_string_similarity": 0.955,
+        "score_margin": 2.209,
+        "sampled_observations": 1
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "engage",
+      "inventory_id": 87,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 20,
+        "local_pts_seconds": 40.055013,
+        "video_seconds": 2952.0,
+        "sampled_frame_ordinal": 21,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.85,
+        "score_margin": 5.0,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "paddy",
+      "inventory_id": 88,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 20,
+        "local_pts_seconds": 44.055013,
+        "video_seconds": 2956.0,
+        "sampled_frame_ordinal": 23,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.923,
+        "score_margin": 4.29,
+        "sampled_observations": 5
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "polyphase",
+      "inventory_id": 89,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 20,
+        "local_pts_seconds": 62.055013,
+        "video_seconds": 2974.0,
+        "sampled_frame_ordinal": 32,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected-row OCR",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.95,
+        "score_margin": 4.4,
+        "sampled_observations": 8
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "racing",
+      "inventory_id": 90,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 20,
+        "local_pts_seconds": 78.055013,
+        "video_seconds": 2990.0,
+        "sampled_frame_ordinal": 40,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.964,
+        "score_margin": 4.457,
+        "sampled_observations": 6
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "sichord",
+      "inventory_id": 92,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 20,
+        "local_pts_seconds": 138.055013,
+        "video_seconds": 3050.0,
+        "sampled_frame_ordinal": 70,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 5,
+        "mean_string_similarity": 0.982,
+        "score_margin": 5.659,
+        "sampled_observations": 36
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "small wave",
+      "inventory_id": 93,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 21,
+        "local_pts_seconds": 6.052995,
+        "video_seconds": 3072.666667,
+        "sampled_frame_ordinal": 4,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.939,
+        "score_margin": 4.356,
+        "sampled_observations": 3
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "trumpton",
+      "inventory_id": 94,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 21,
+        "local_pts_seconds": 20.052995,
+        "video_seconds": 3086.666667,
+        "sampled_frame_ordinal": 11,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.95,
+        "score_margin": 4.4,
+        "sampled_observations": 6
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "warm",
+      "inventory_id": 95,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 21,
+        "local_pts_seconds": 30.052995,
+        "video_seconds": 3096.666667,
+        "sampled_frame_ordinal": 16,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 4,
+        "mean_string_similarity": 0.917,
+        "score_margin": 4.267,
+        "sampled_observations": 8
+      }
+    },
+    {
+      "category": "voltage",
+      "name": "wobble",
+      "inventory_id": 96,
+      "inventory_table": "synth_presets",
+      "screen_observation": {
+        "segment": 21,
+        "local_pts_seconds": 44.052995,
+        "video_seconds": 3110.666667,
+        "sampled_frame_ordinal": 23,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "automatic_candidate": {
+        "method": "selected highlight + adjacent OCR / inventory order",
+        "matching_rows": 3,
+        "mean_string_similarity": 0.974,
+        "score_margin": 1.823,
+        "sampled_observations": 4
+      }
+    }
+  ]
+}

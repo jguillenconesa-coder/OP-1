@@ -1,0 +1,1111 @@
+{
+  "schema": 1,
+  "reference_url": "https://www.youtube.com/watch?v=P84SBtIDdSM",
+  "batch": "definitive 21-segment replacement supplied 2026-10-27",
+  "source_media_distributed": false,
+  "alignment_scope": "Offsets match identical H264 packet payload hashes between adjacent supplied files. Times are relative to the first supplied video, not note onsets. Filename times include keyframe preroll and are not used as exact offsets.",
+  "total_shared_packet_anchors": 1650,
+  "segments": [
+    {
+      "segment": 1,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.00.00.000-00.02.33.527-seg01.mp4",
+      "nominal_start_seconds": 0.0,
+      "nominal_end_seconds": 153.527,
+      "container_duration_seconds": 153.566667,
+      "video_start_pts_seconds": 0.0,
+      "video_duration_seconds": 153.566667,
+      "audio_duration_seconds": 153.53034,
+      "global_video_pts_offset_seconds": 0,
+      "actual_first_video_global_seconds": 0.0,
+      "alignment_method": "first supplied segment origin",
+      "shared_packet_anchors": 0,
+      "anchor_offset_spread_seconds": 0,
+      "size_bytes": 26145784,
+      "sha256": "1989193c37300828b21a2d899a68c061c4b8651d3abfef8d93741b4c9e8824e9",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 1,
+        "decoded_sample_frames": 6770688,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "decfc9b3a633c48eb45a54dfe7c7b39a85dd3e56fd11f6dbfc5c9e82c05a3921",
+        "peak_dbfs": [
+          -1.5824,
+          -1.5824
+        ],
+        "rms_dbfs": [
+          -25.5328,
+          -25.5328
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 2,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.02.33.527-00.05.07.054-seg02.mp4",
+      "nominal_start_seconds": 153.527,
+      "nominal_end_seconds": 307.054,
+      "container_duration_seconds": 157.818685,
+      "video_start_pts_seconds": 0.052018,
+      "video_duration_seconds": 157.766667,
+      "audio_duration_seconds": 157.779592,
+      "global_video_pts_offset_seconds": 149.281315,
+      "actual_first_video_global_seconds": 149.333333,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 127,
+      "anchor_offset_spread_seconds": 0.0,
+      "size_bytes": 26898612,
+      "sha256": "6cd0447a9ccfcd5d0cc342895f673c2b6c2a57aacf37701e40267cdb1617751b",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 2,
+        "decoded_sample_frames": 6958080,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "3c70a74405a6e802d4f57bc7d462ab558f1ae31f15b9780b2f15142305e5aeb2",
+        "peak_dbfs": [
+          -4.2606,
+          -4.2606
+        ],
+        "rms_dbfs": [
+          -25.1165,
+          -25.1165
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 3,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.05.07.054-00.07.40.581-seg03.mp4",
+      "nominal_start_seconds": 307.054,
+      "nominal_end_seconds": 460.581,
+      "container_duration_seconds": 156.683333,
+      "video_start_pts_seconds": 0.05,
+      "video_duration_seconds": 156.633333,
+      "audio_duration_seconds": 156.641814,
+      "global_video_pts_offset_seconds": 303.95,
+      "actual_first_video_global_seconds": 304.0,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 93,
+      "anchor_offset_spread_seconds": 0.0,
+      "size_bytes": 26601567,
+      "sha256": "0dd0069ddcf56a8d68d14355c67afae0c16cff3f6fa594854295a8fa190df05e",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 3,
+        "decoded_sample_frames": 6907904,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "aaadd8084028317954f9173fe5badeb3394fcaf8e24609a046e9683f2ecb635c",
+        "peak_dbfs": [
+          0.001,
+          0.001
+        ],
+        "rms_dbfs": [
+          -23.5538,
+          -23.5538
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 4
+      }
+    },
+    {
+      "segment": 4,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.07.40.581-00.10.14.108-seg04.mp4",
+      "nominal_start_seconds": 460.581,
+      "nominal_end_seconds": 614.108,
+      "container_duration_seconds": 155.549023,
+      "video_start_pts_seconds": 0.049023,
+      "video_duration_seconds": 155.5,
+      "audio_duration_seconds": 155.504036,
+      "global_video_pts_offset_seconds": 458.617643,
+      "actual_first_video_global_seconds": 458.666666,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 59,
+      "anchor_offset_spread_seconds": 1e-06,
+      "size_bytes": 26565924,
+      "sha256": "5eb04a25a0b608cc31974bc7ebb0f94ddfce4d0057ab92d2eab1ca1c6b001281",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 4,
+        "decoded_sample_frames": 6857728,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "aba960866fb9a475360b01ccd8493cd2f552833190fa868ce90fcf252f579c32",
+        "peak_dbfs": [
+          -1.542,
+          -1.542
+        ],
+        "rms_dbfs": [
+          -23.0716,
+          -23.0716
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 5,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.10.14.108-00.12.47.635-seg05.mp4",
+      "nominal_start_seconds": 614.108,
+      "nominal_end_seconds": 767.635,
+      "container_duration_seconds": 154.413672,
+      "video_start_pts_seconds": 0.047005,
+      "video_duration_seconds": 154.366667,
+      "audio_duration_seconds": 154.366259,
+      "global_video_pts_offset_seconds": 613.286328,
+      "actual_first_video_global_seconds": 613.333333,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 25,
+      "anchor_offset_spread_seconds": 1e-06,
+      "size_bytes": 26318608,
+      "sha256": "34d037aad09c1f9289bb04a7512f344ae240e9a4fb60753bdf6a7b53af053c05",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 5,
+        "decoded_sample_frames": 6807552,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "38cf90777a095cf3dac0f4ed38ae91d34d56eb74e5444437291a9d1765d892f5",
+        "peak_dbfs": [
+          -6.5626,
+          -6.5626
+        ],
+        "rms_dbfs": [
+          -29.7499,
+          -29.7499
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 6,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.12.47.635-00.15.21.162-seg06.mp4",
+      "nominal_start_seconds": 767.635,
+      "nominal_end_seconds": 921.162,
+      "container_duration_seconds": 158.586328,
+      "video_start_pts_seconds": 0.052995,
+      "video_duration_seconds": 158.533333,
+      "audio_duration_seconds": 158.56907,
+      "global_video_pts_offset_seconds": 762.613672,
+      "actual_first_video_global_seconds": 762.666667,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 151,
+      "anchor_offset_spread_seconds": 0.0,
+      "size_bytes": 26905682,
+      "sha256": "c63f9fbc0802374daf516bf3bee8b9f18ec4d24ac7854979815978fe808547fc",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 6,
+        "decoded_sample_frames": 6992896,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "4cd5efdca3ae52099fa95fd90a11c3ab4c9b413e94535c4cb91f7e961b64da67",
+        "peak_dbfs": [
+          -5.372,
+          -5.372
+        ],
+        "rms_dbfs": [
+          -26.6966,
+          -26.6966
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 7,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.15.21.162-00.17.54.690-seg07.mp4",
+      "nominal_start_seconds": 921.162,
+      "nominal_end_seconds": 1074.69,
+      "container_duration_seconds": 157.452018,
+      "video_start_pts_seconds": 0.052018,
+      "video_duration_seconds": 157.4,
+      "audio_duration_seconds": 157.431293,
+      "global_video_pts_offset_seconds": 917.281315,
+      "actual_first_video_global_seconds": 917.333333,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 116,
+      "anchor_offset_spread_seconds": 0.0,
+      "size_bytes": 26817990,
+      "sha256": "e7995e2dac61821d3bd5216c3cc3f71646459a6d51afdc5dd4a2ea798d71b325",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 7,
+        "decoded_sample_frames": 6942720,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "4169bdaad24beb65cf97ca53e7cab3b1632498f3a7dbfe69158bfce63cca14bb",
+        "peak_dbfs": [
+          -7.8824,
+          -7.8824
+        ],
+        "rms_dbfs": [
+          -27.0344,
+          -27.0344
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 8,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.17.54.690-00.20.28.217-seg08.mp4",
+      "nominal_start_seconds": 1074.69,
+      "nominal_end_seconds": 1228.217,
+      "container_duration_seconds": 156.316667,
+      "video_start_pts_seconds": 0.05,
+      "video_duration_seconds": 156.266667,
+      "audio_duration_seconds": 156.270295,
+      "global_video_pts_offset_seconds": 1071.95,
+      "actual_first_video_global_seconds": 1072.0,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 82,
+      "anchor_offset_spread_seconds": 0.0,
+      "size_bytes": 26650785,
+      "sha256": "dc4561c6e51dc105aae1aa7d57e239be07c4c8daf861c55deb023dbe5fe8ab4b",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 8,
+        "decoded_sample_frames": 6891520,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "965773d2575b366be0d16cd95d3215c55b6cd4aa973d3d32d993030e5dde7890",
+        "peak_dbfs": [
+          -2.9571,
+          -2.9571
+        ],
+        "rms_dbfs": [
+          -27.338,
+          -27.338
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 9,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.20.28.217-00.23.01.744-seg09.mp4",
+      "nominal_start_seconds": 1228.217,
+      "nominal_end_seconds": 1381.744,
+      "container_duration_seconds": 155.182356,
+      "video_start_pts_seconds": 0.049023,
+      "video_duration_seconds": 155.133333,
+      "audio_duration_seconds": 155.132517,
+      "global_video_pts_offset_seconds": 1226.617643,
+      "actual_first_video_global_seconds": 1226.666666,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 48,
+      "anchor_offset_spread_seconds": 1e-06,
+      "size_bytes": 26475581,
+      "sha256": "677e32cb259fae10c37b6c16824cafbcb55f64e8c0545b907a36fe46a334f9a2",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 9,
+        "decoded_sample_frames": 6841344,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "2c669bd6edff3e8771256851f2d6281d58bf63b6a191ae2c6a4acac56b4a834e",
+        "peak_dbfs": [
+          -6.3379,
+          -6.3379
+        ],
+        "rms_dbfs": [
+          -27.2512,
+          -27.2512
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 10,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.23.01.744-00.25.35.271-seg10.mp4",
+      "nominal_start_seconds": 1381.744,
+      "nominal_end_seconds": 1535.271,
+      "container_duration_seconds": 154.047005,
+      "video_start_pts_seconds": 0.047005,
+      "video_duration_seconds": 154.0,
+      "audio_duration_seconds": 153.994739,
+      "global_video_pts_offset_seconds": 1381.286328,
+      "actual_first_video_global_seconds": 1381.333333,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 14,
+      "anchor_offset_spread_seconds": 1e-06,
+      "size_bytes": 26200916,
+      "sha256": "b4c36bfdfb3981bfbe2c8b34629d09a8821ff9ec191332e62e01a9675e9dc3d7",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 10,
+        "decoded_sample_frames": 6791168,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "c9661206b75cfc66b83da3696dbd26c0435fca4e36f68edf507e1ab259a3eb4c",
+        "peak_dbfs": [
+          -1.3383,
+          -1.3383
+        ],
+        "rms_dbfs": [
+          -31.5742,
+          -31.5742
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 11,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.25.35.271-00.28.08.798-seg11.mp4",
+      "nominal_start_seconds": 1535.271,
+      "nominal_end_seconds": 1688.798,
+      "container_duration_seconds": 158.219662,
+      "video_start_pts_seconds": 0.052995,
+      "video_duration_seconds": 158.166667,
+      "audio_duration_seconds": 158.197551,
+      "global_video_pts_offset_seconds": 1530.613672,
+      "actual_first_video_global_seconds": 1530.666667,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 140,
+      "anchor_offset_spread_seconds": 0.0,
+      "size_bytes": 27138882,
+      "sha256": "58be2fb2fc837af3f5dc75fd18d939dc95b1801ec668bb5db889e357e7be763e",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 11,
+        "decoded_sample_frames": 6976512,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "19f95243d4d75f7bee8f6a28d18f8f0da631e174e0ee55d5ed8796de63af6c95",
+        "peak_dbfs": [
+          -5.4029,
+          -5.4029
+        ],
+        "rms_dbfs": [
+          -31.2462,
+          -31.2462
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 12,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.28.08.798-00.30.42.325-seg12.mp4",
+      "nominal_start_seconds": 1688.798,
+      "nominal_end_seconds": 1842.325,
+      "container_duration_seconds": 157.085351,
+      "video_start_pts_seconds": 0.052018,
+      "video_duration_seconds": 157.033333,
+      "audio_duration_seconds": 157.059773,
+      "global_video_pts_offset_seconds": 1685.281315,
+      "actual_first_video_global_seconds": 1685.333333,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 105,
+      "anchor_offset_spread_seconds": 0.0,
+      "size_bytes": 26769746,
+      "sha256": "9eaa6a95fa2d35436c01a9706396c29b76e7ce92447c441dd996523aabae7e3e",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 12,
+        "decoded_sample_frames": 6926336,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "b856c04955d8f741bee088183111226568d227993f61a2ab85f1ea6c85abe253",
+        "peak_dbfs": [
+          -9.227,
+          -9.227
+        ],
+        "rms_dbfs": [
+          -33.1517,
+          -33.1517
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 13,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.30.42.325-00.33.15.852-seg13.mp4",
+      "nominal_start_seconds": 1842.325,
+      "nominal_end_seconds": 1995.852,
+      "container_duration_seconds": 155.95,
+      "video_start_pts_seconds": 0.05,
+      "video_duration_seconds": 155.9,
+      "audio_duration_seconds": 155.921995,
+      "global_video_pts_offset_seconds": 1839.95,
+      "actual_first_video_global_seconds": 1840.0,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 71,
+      "anchor_offset_spread_seconds": 0.0,
+      "size_bytes": 26589951,
+      "sha256": "516d178c18693e01dac46a27780733b95acc9fb0099f9574d8e4982ac48626f4",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 13,
+        "decoded_sample_frames": 6876160,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "e7498efb698b52f1e8cd31a78f69726a3156c1d7e273760139eb29df5950b57c",
+        "peak_dbfs": [
+          -12.4281,
+          -12.4281
+        ],
+        "rms_dbfs": [
+          -35.4309,
+          -35.4309
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 14,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.33.15.852-00.35.49.379-seg14.mp4",
+      "nominal_start_seconds": 1995.852,
+      "nominal_end_seconds": 2149.379,
+      "container_duration_seconds": 154.81569,
+      "video_start_pts_seconds": 0.049023,
+      "video_duration_seconds": 154.766667,
+      "audio_duration_seconds": 154.784218,
+      "global_video_pts_offset_seconds": 1994.617643,
+      "actual_first_video_global_seconds": 1994.666666,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 37,
+      "anchor_offset_spread_seconds": 1e-06,
+      "size_bytes": 26597072,
+      "sha256": "e8c6a26dc1f383228b1cc6c363d2e1f9406757b0044e4166182fc1e90d88b434",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 14,
+        "decoded_sample_frames": 6825984,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "47eb1c3c6efe0869b6681e8adf48ffdd02db02ba8e5c28a910c06f329dd4e3d4",
+        "peak_dbfs": [
+          -6.9361,
+          -6.9361
+        ],
+        "rms_dbfs": [
+          -35.8212,
+          -35.8212
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 15,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.35.49.379-00.38.22.906-seg15.mp4",
+      "nominal_start_seconds": 2149.379,
+      "nominal_end_seconds": 2302.906,
+      "container_duration_seconds": 153.680338,
+      "video_start_pts_seconds": 0.047005,
+      "video_duration_seconds": 153.633333,
+      "audio_duration_seconds": 153.62322,
+      "global_video_pts_offset_seconds": 2149.286328,
+      "actual_first_video_global_seconds": 2149.333333,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 3,
+      "anchor_offset_spread_seconds": 1e-06,
+      "size_bytes": 26483318,
+      "sha256": "e7a453482d119745cf70acd3a177489266859be6f47b7ef252afd87d3f0d3f95",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 15,
+        "decoded_sample_frames": 6774784,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "108de9fe674b7ecd8562ada7cc36d98e9f38121e9241662ac1262d20195ca228",
+        "peak_dbfs": [
+          -13.0869,
+          -13.0869
+        ],
+        "rms_dbfs": [
+          -37.7877,
+          -37.7877
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 16,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.38.22.906-00.40.56.433-seg16.mp4",
+      "nominal_start_seconds": 2302.906,
+      "nominal_end_seconds": 2456.433,
+      "container_duration_seconds": 157.852995,
+      "video_start_pts_seconds": 0.052995,
+      "video_duration_seconds": 157.8,
+      "audio_duration_seconds": 157.826032,
+      "global_video_pts_offset_seconds": 2298.613672,
+      "actual_first_video_global_seconds": 2298.666667,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 129,
+      "anchor_offset_spread_seconds": 0.0,
+      "size_bytes": 27134743,
+      "sha256": "60befa48ad8f98b0150ee8d326ca5484eae5433345a77a10e324787fd0434eea",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 16,
+        "decoded_sample_frames": 6960128,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "76225774ec1fd4063d86b084bdba16d3e0b202ada12081f0b382eac04fc87566",
+        "peak_dbfs": [
+          -9.8101,
+          -9.8101
+        ],
+        "rms_dbfs": [
+          -39.9388,
+          -39.9388
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 17,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.40.56.433-00.43.29.960-seg17.mp4",
+      "nominal_start_seconds": 2456.433,
+      "nominal_end_seconds": 2609.96,
+      "container_duration_seconds": 156.718685,
+      "video_start_pts_seconds": 0.052018,
+      "video_duration_seconds": 156.666667,
+      "audio_duration_seconds": 156.688254,
+      "global_video_pts_offset_seconds": 2453.281315,
+      "actual_first_video_global_seconds": 2453.333333,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 94,
+      "anchor_offset_spread_seconds": 0.0,
+      "size_bytes": 27034590,
+      "sha256": "985283db3e1789bc314f17cb4960cd0ae42dd0bbb885de49eb2fb037274c7f77",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 17,
+        "decoded_sample_frames": 6909952,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "7649c75af19402d609c1f74386a97d3197824e74dfde535c68e2d7cdad878356",
+        "peak_dbfs": [
+          -9.6291,
+          -9.6291
+        ],
+        "rms_dbfs": [
+          -39.8776,
+          -39.8776
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 18,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.43.29.960-00.46.03.487-seg18.mp4",
+      "nominal_start_seconds": 2609.96,
+      "nominal_end_seconds": 2763.487,
+      "container_duration_seconds": 155.583333,
+      "video_start_pts_seconds": 0.05,
+      "video_duration_seconds": 155.533333,
+      "audio_duration_seconds": 155.550476,
+      "global_video_pts_offset_seconds": 2607.95,
+      "actual_first_video_global_seconds": 2608.0,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 60,
+      "anchor_offset_spread_seconds": 0.0,
+      "size_bytes": 26639040,
+      "sha256": "040cc98340f41d881952c2b47d941cd9b7f1716a996fe59e9976c649e0d8c29c",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 18,
+        "decoded_sample_frames": 6859776,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "da6be28b1fa3275bf5e37b33772d17bd31307a7dc66e7c82f8b589c9fea754ef",
+        "peak_dbfs": [
+          -11.315,
+          -11.315
+        ],
+        "rms_dbfs": [
+          -36.5989,
+          -36.5989
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 19,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.46.03.487-00.48.37.014-seg19.mp4",
+      "nominal_start_seconds": 2763.487,
+      "nominal_end_seconds": 2917.014,
+      "container_duration_seconds": 154.449023,
+      "video_start_pts_seconds": 0.049023,
+      "video_duration_seconds": 154.4,
+      "audio_duration_seconds": 154.412698,
+      "global_video_pts_offset_seconds": 2762.617643,
+      "actual_first_video_global_seconds": 2762.666666,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 26,
+      "anchor_offset_spread_seconds": 1e-06,
+      "size_bytes": 26684402,
+      "sha256": "0b5d26d71df1b21017148b9bc9f1e5bfa5e9f4126f12c376d52612df2dce40dd",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 19,
+        "decoded_sample_frames": 6809600,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "c7cda383acd6a413ec5a684d08880298a751e22351c8671b455dbab14e511968",
+        "peak_dbfs": [
+          -6.8404,
+          -6.8404
+        ],
+        "rms_dbfs": [
+          -33.2588,
+          -33.2588
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 20,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.48.37.014-00.51.10.542-seg20.mp4",
+      "nominal_start_seconds": 2917.014,
+      "nominal_end_seconds": 3070.542,
+      "container_duration_seconds": 158.655013,
+      "video_start_pts_seconds": 0.055013,
+      "video_duration_seconds": 158.6,
+      "audio_duration_seconds": 158.61551,
+      "global_video_pts_offset_seconds": 2911.944987,
+      "actual_first_video_global_seconds": 2912.0,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 152,
+      "anchor_offset_spread_seconds": 1e-06,
+      "size_bytes": 27249872,
+      "sha256": "98a6b6d1621bc9ce232e61714d2b8cf60da6d358aa7d35dd5ffbc6d3cab05356",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 20,
+        "decoded_sample_frames": 6994944,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "5212ace5d3973039cd9b79446df9f409c8acb9f73e59b65e9980824db9273df4",
+        "peak_dbfs": [
+          -7.8298,
+          -7.8298
+        ],
+        "rms_dbfs": [
+          -31.1422,
+          -31.1422
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    },
+    {
+      "segment": 21,
+      "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés)-00.51.10.542-00.52.05.058-seg21.mp4",
+      "nominal_start_seconds": 3070.542,
+      "nominal_end_seconds": 3125.058,
+      "container_duration_seconds": 58.444626,
+      "video_start_pts_seconds": 0.052995,
+      "video_duration_seconds": 58.3,
+      "audio_duration_seconds": 58.444626,
+      "global_video_pts_offset_seconds": 3066.613672,
+      "actual_first_video_global_seconds": 3066.666667,
+      "alignment_method": "identical H264 packet hashes shared with previous segment",
+      "shared_packet_anchors": 118,
+      "anchor_offset_spread_seconds": 0.0,
+      "size_bytes": 9897563,
+      "sha256": "1cba7a48470c18146e7bab1f430311c9d8d86884f4b9fb128307175e90fc9e68",
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "sample_rate": null,
+          "channels": null
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "audio_decode": {
+        "segment": 21,
+        "decoded_sample_frames": 2577408,
+        "sample_rate": 44100,
+        "channels": 2,
+        "decoded_pcm_float32le_sha256": "4d370a3dc876670c874e5ffa76c84d4fb268704e67fec82f6d202113c4268126",
+        "peak_dbfs": [
+          -4.6733,
+          -4.6733
+        ],
+        "rms_dbfs": [
+          -28.4996,
+          -28.4996
+        ],
+        "nonfinite_samples": 0,
+        "samples_at_or_above_full_scale": 0
+      }
+    }
+  ],
+  "analysis_environment": {
+    "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+    "tesseract": "tesseract 5.5.0",
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "pillow": "12.3.0",
+    "analysis_script": "scripts/analyse-preset-video.py",
+    "analysis_script_sha256": "5f54151cad9b9dece4965287d588cd54efbb96a9531b8042c45f5efe783a90d3"
+  }
+}

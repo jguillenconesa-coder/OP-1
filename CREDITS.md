@@ -111,3 +111,16 @@ behavior remain explicit. The supplied preset-demo MP4 could not be transferred
 because of the tool's 32 MiB limit; no audio/screens are copied or claimed as
 verified for the active reference. Superseded segmented batches are excluded at
 the user's request. Existing dependency/reference notices remain valid.
+
+## Preset listening reference index (2026-10-27)
+
+The user supplied 21 definitive excerpts of the demo linked at
+<https://www.youtube.com/watch?v=P84SBtIDdSM>, with the supplied filename
+“Every Single OP-1 Preset (2021)”. The [screen index](docs/preset-video-index.md)
+records 169 reviewed name/category observations and their times, correlated to
+rev246 inventory names. It does not claim identical parameters, acoustic matching
+or drum-kit coverage. No video, decoded audio or screenshots are distributed.
+
+The local analysis tool uses separately installed FFmpeg/ffprobe, Tesseract,
+Python, NumPy and Pillow. These research tools are not added to the plugin or
+bundled in its installers. See the index for reproduction and review limits.

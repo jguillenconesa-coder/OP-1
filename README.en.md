@@ -6,6 +6,8 @@ An OP-1-inspired **VST3 instrument and standalone application**, written in C++1
 
 Version 0.13.0 adds **[Value 246 Voice](docs/value-voice246-native.md)**: independent per-voice modulation of Phase/Digital controls or common ADSR. Five additional studies reuse the set-4 MIDI knobs; old FX parameters, mappings and projects are preserved. Other engines/routes and hardware matching remain pending; [full coverage](docs/original-op1-coverage.md).
 
+**Preset reference:** [169 visually reviewed names/categories with screen timestamps](docs/preset-video-index.md), indexed from the definitive 21-segment upload. Acoustic matching remains pending.
+
 Version 0.8.0 added optional **[Phase 246 CORE](docs/phase246-native.md)**: a playable independent Pd reconstruction at a fixed 88.2 kHz internal clock with 16 additional raw-control patches. Its core is tested against original instructions in the GNU simulator; NCO, envelope, modulation and output filtering are ours. Existing Phase presets remain available.
 
 Version 0.7.0 added four stable **Screen: Knob 1 Blue / 2 Green / 3 White / 4 Orange** host parameters. Map them once and the assignments follow the current display across sets 1–4. Old mappings to individual sound parameters keep their original destination. **PURGE BANK** permanently deletes the selected imported bank (or all imported banks with All banks selected), unloads its active audio, and clears its library references after confirmation. Factory sounds, source ZIPs and already saved projects are preserved. Close other instances first. Reimporting an identical manifest replaces validated copies and repairs missing audio without accumulating directories.

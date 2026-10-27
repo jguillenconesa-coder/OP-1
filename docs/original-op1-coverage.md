@@ -110,6 +110,9 @@ Una coincidencia de oráculo bajo el modelo GNU documentado no certifica la máq
 completa, el reloj físico, su latencia ni ausencia de dropouts. El proyecto conserva
 ambos tipos de evidencia por separado y mantiene sonidos/versiones anteriores.
 
-La [demo de presets aportada](preset-listening-reference.md) sigue pendiente de
-comparación con el lote definitivo de segmentos. Los lotes descartados a petición
-del usuario no se usan para indexar ni comparar esta implementación.
+La [demo de presets aportada](preset-listening-reference.md) ya dispone de un
+[índice de 169 selecciones revisadas en 11 categorías](preset-video-index.md),
+obtenido del lote definitivo de 21 segmentos. Se ha decodificado su audio y
+alineado el vídeo mediante paquetes compartidos. Sigue pendiente la comparación
+acústica con notas/FX/LFO documentados; identificar un nombre no completa un port.
+Los lotes descartados a petición del usuario permanecen excluidos.
