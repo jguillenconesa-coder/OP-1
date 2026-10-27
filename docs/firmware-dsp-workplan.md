@@ -38,10 +38,12 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | --- | --- |
 | Lectura, mezcla de cinco osciladores y desviación de pitch | 241.920 muestras contrastadas con ondas sintéticas explícitas. Fases de 24 bits y refinamiento entero del recíproco conservados. |
 | Objetos y contexto compartido | 2.048 pools de seis slots; 293 construcciones, 121 resets y 187 releases; cinco incrementos, semillas y puntero compartidos contrastados. |
-| Rama de actualización y generación de ondas | Siguiente paso: reconstruirla y contrastar sus datos e inicializadores. Solo se han ejecutado los otros slots y el retorno inactivo. |
+| Generación de tablas base | Seis bancos / 320 ondas generados desde el seno contrastado; 18 secuencias de arranque y 1.474.560 muestras de tabla coinciden con las rutinas originales. Valores predeterminados y preservación de memoria compartida contrastados. |
+| Rama de actualización de ondas | Siguiente paso: reconstruir la combinación/transformación de esas tablas según los controles y sus cachés. El render contrastado sigue limitado a los otros slots y al retorno inactivo. |
 | Cadencia, voz completa e integración | Pendientes; el nuevo núcleo solo se usa desde pruebas. No cambia el instalador. |
 
-[Contrato, alcance y reproducción de Dr. Wave](drwave246-reader.md).
+[Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
+[Generación de los seis bancos base](drwave246-wavebank.md).
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

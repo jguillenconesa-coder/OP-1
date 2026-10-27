@@ -10,7 +10,9 @@
 
 **Nuevo en 0.13.0:** [Value 246 Voice](docs/value-voice246-native.md), modulación por voz de los cuatro controles Phase/Digital o de su ADSR. Cinco variantes adicionales, con los mismos mandos MIDI del set 4 y estados antiguos conservados. [Cobertura completa y pendientes](docs/original-op1-coverage.md).
 
-**Trabajo activo: DSP del firmware.** [Plan por componentes](docs/firmware-dsp-workplan.md): motores, filtros, envolventes y moduladores. [Dr. Wave](docs/drwave246-reader.md) tiene lectura y mezcla de cinco osciladores contrastadas con 241.920 muestras y ondas sintéticas; su generación de ondas e integración siguen pendientes. [Cluster](docs/cluster246-kernel.md) conserva sus pruebas y bloqueos de normalización, afinación y relevo L1. Presets, bancos y comparación con vídeo quedan aplazados.
+**Trabajo activo: DSP del firmware.** [Plan por componentes](docs/firmware-dsp-workplan.md): motores, filtros, envolventes y moduladores. [Dr. Wave](docs/drwave246-reader.md) tiene lectura y mezcla de cinco osciladores contrastadas con 241.920 muestras y ondas sintéticas; falta actualizar las ondas según los controles e integrar el motor completo. [Cluster](docs/cluster246-kernel.md) conserva sus pruebas y bloqueos de normalización, afinación y relevo L1. Presets, bancos de samples y comparación con vídeo quedan aplazados.
+
+**Tablas base de Dr. Wave:** [seis bancos / 320 ondas generados](docs/drwave246-wavebank.md) desde el seno contrastado. Coinciden 1.474.560 muestras de tabla en 18 inicializaciones; falta la combinación/transformación de estas ondas según los controles y la integración en el plugin.
 
 **Avance de Cluster:** [disparo, liberación y seis slots intercalados](docs/cluster246-core-routing.md), contrastados con 131.072 muestras adicionales y un RNG compartido. Se conservan las [cinco normalizaciones observadas](docs/cluster246-normalization.md) y la [inicialización compartida con apoyo de REA](docs/cluster246-shared-init.md). Tres normalizaciones y la integración completa siguen pendientes.
 

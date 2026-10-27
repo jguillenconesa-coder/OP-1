@@ -21,6 +21,25 @@ from the rendered object's slot. Wave generation is **not** exercised.
 These fixtures use the documented GNU D-register deferred-writeback model.
 [Contract, reproduction and limitations](../../docs/drwave246-reader.md).
 
+## Dr. Wave base-bank initialization delta
+
+`drwave246-wavebank-input.bin` contains 18 records of 16 bytes: uint32 scratch
+slot, gain-override flag, signed32 reference gain (raw bits), and uint32 preload
+pattern. Every case calls the original shared initializer before the complete
+bank builder, so the scratch wave starts clean. The first six cases preserve
+the captured default gain and exercise all six scratch slots; twelve cases
+inject explicit gains, including signed32 extremes.
+
+`drwave246-wavebank-output.bin` contains 18 records of 172,128 bytes: 16 bytes of
+settings immediately after shared initialization; 172,108 bytes from original
+runtime range `[0x01cc1864,0x01ceb8b0)` after building the banks; and the uint32
+scratch pointer. The range includes six contiguous banks of 320 × 256 signed16
+table samples, six runtime waves, five shared increments, settings, caches and
+surrounding memory. All values are little endian. The sine input is the previously
+verified source supplied by the harness, not an execution of its full initializer.
+
+[Contract, reproduction and limitations](../../docs/drwave246-wavebank.md).
+
 ## Earlier vectors
 
 Generated with GNU Binutils 2.44 (bfin-elf) and GNU GDB 13.1 Blackfin simulator,

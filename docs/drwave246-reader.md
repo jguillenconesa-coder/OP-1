@@ -9,6 +9,11 @@ estado compartido de las instrucciones originales bajo GNU BF524.
 suministra seis buffers sintéticos propios; no recupera las ondas originales ni
 añade Dr. Wave al selector del plugin. Los presets continúan aplazados.
 
+La [ampliación de generación de tablas base](drwave246-wavebank.md) reconstruye
+después los seis bancos originales de arranque, con 1.474.560 muestras de tabla
+contrastadas. Son pruebas separadas: los fixtures de lectura de esta página
+siguen usando ondas sintéticas y no completan la actualización de voz.
+
 ## Contrato observado
 
 | Elemento | Observación contrastada |

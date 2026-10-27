@@ -217,3 +217,16 @@ inactive early return. Wave generation, complete scheduling and plugin integrati
 remain pending. The community op1-sdk provided candidate addresses; its WHEEL DSP
 is not copied or presented as the original Dr. Wave. No new REA decompilation or
 L1 decryption is claimed for this delta.
+
+## Dr. Wave generated base banks
+
+The [base-bank reconstruction](docs/drwave246-wavebank.md) independently computes
+six banks of harmonic-sum tables from the previously verified sine. The private
+oracle executes the original shared initializer and complete bank builder from
+the user-supplied rev246 image using the credited GNU BF524 model and D-register
+patch. Only own source/harnesses, numerical test inputs/outputs and metadata are
+published. Factory presets, sample recordings, firmware, original instructions
+and ELF are not included. Non-default gains are explicit stress inputs. The
+scheduled control-driven wave update and full engine integration remain pending;
+these generated base tables alone do not implement that route. No WHEEL synthesis
+code or new REA decompilation/decryption is used for this delta.

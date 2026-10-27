@@ -1,0 +1,103 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "shared_initializer": "0x0197d774",
+  "bank_initializer": "0x0197cdec",
+  "sine_source": "0x018b6688",
+  "sine_runtime": "0x0101e5e8",
+  "sine_contract": "8192 low signed16 words from the previously verified source; explicit harness copy, not the full original sine initializer.",
+  "settings": "0x01cc1864",
+  "runtime_waves": "0x01cea08c",
+  "shared_increments": "0x01ceb88c",
+  "captured_default_reference_gain": 32768,
+  "captured_default_output_gain": 262144,
+  "clean_scratch_sequence": true,
+  "cases": 18,
+  "default_cases": 6,
+  "explicit_gain_cases": 12,
+  "waves_per_build": 320,
+  "samples_per_wave": 256,
+  "table_samples_compared": 1474560,
+  "captured_region": {
+    "start": "0x1cc1864",
+    "end_exclusive": "0x1ceb8b0",
+    "bytes": 172108
+  },
+  "result_bytes_per_case": 172128,
+  "banks": [
+    {
+      "address": "0x1cc208c",
+      "waves": 64,
+      "harmonics": "all",
+      "direction": "descending"
+    },
+    {
+      "address": "0x1cca08c",
+      "waves": 64,
+      "harmonics": "all",
+      "direction": "ascending"
+    },
+    {
+      "address": "0x1cd208c",
+      "waves": 64,
+      "harmonics": "odd",
+      "direction": "descending"
+    },
+    {
+      "address": "0x1cda08c",
+      "waves": 64,
+      "harmonics": "odd",
+      "direction": "ascending"
+    },
+    {
+      "address": "0x1ce208c",
+      "waves": 32,
+      "harmonics": "alternating odd / square",
+      "direction": "descending"
+    },
+    {
+      "address": "0x1ce608c",
+      "waves": 32,
+      "harmonics": "alternating odd / square",
+      "direction": "ascending"
+    }
+  ],
+  "artifacts": {
+    "drwave246-wavebank-input.bin": {
+      "bytes": 288,
+      "sha256": "bbec2697362db227cbb5cc6b48b659ea4917ed55f827651a6483a5c442c579a7"
+    },
+    "drwave246-wavebank-output.bin": {
+      "bytes": 3098304,
+      "sha256": "60a61a1793a6a8b135fe7bd202df04702772ee708913a389664b9693036b62d9"
+    }
+  },
+  "model": "GNU BF524 with documented D-register deferred-writeback patch; not hardware validation",
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "limitations": [
+    "Startup with a clean scratch wave only. Dirty-scratch reinitialization is not reconstructed.",
+    "Only table generation and shared initialization are checked. The scheduled morph/resample/update route, complete voice, scheduler, ADSR, output and plugin integration remain pending.",
+    "Non-default reference gains are explicit stress inputs, not recovered settings or presets."
+  ],
+  "validation": {
+    "independent_reproduction": "Two new private directories; full inputs and original outputs agree byte for byte.",
+    "native_core_ctest_suites_passed": 21,
+    "native_ctest_total_seconds": 5.06,
+    "windows_wine": "MSVC-target cross-build and drwave246_wavebank test passed under Wine; not native Windows/Ableton/ASIO validation.",
+    "sanitizers": "New bank test passed ASan+UBSan; LeakSanitizer disabled because of sandbox ptrace limitation.",
+    "source_hashes": {
+      "Source/DrWave246WaveBank.h": "001316372cb37a05cb2286da761c99472c94ba2629407d626cf57786f21bc4d5",
+      "Source/DrWave246.h": "b2680ccd6d4fbd8ddb60df013197ce5a6492b61e11e9a7c8e68471fac3941b3c",
+      "Source/ReferenceDsp.h": "6f237e97236494636a71ae47582b4b9b0f75357176bdf102a45c87d230808acd",
+      "Tests/DrWave246WaveBankTests.cpp": "84413e49279759ad10262e8d9806cb7b89e4708a8d60f9ac9847bb5482c5cd24",
+      "scripts/verify-drwave246-wavebank.py": "b837c9a5740acd8559624b6b3f313f159aa4819bf5072c5cb2441f406879d069",
+      "research/blackfin/drwave-wavebank.s.in": "242f9c77a36b022a3da19de1cc8a9d2b0076ba369e36693a971d1d2f17390bbb",
+      "research/blackfin/voice-contract.ld": "56392dfc7b84df5f3552546615b4a95e7fcbd8d3deb5ebf2838e624b8e0d196d"
+    },
+    "unchanged_plugin_runtime": true,
+    "runtime_linkage": "New header is only included by drwave246_wavebank_tests. No instrument executable, selector, MIDI/host parameter IDs or presets changed."
+  }
+}

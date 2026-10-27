@@ -26,7 +26,7 @@ del plugin. Ese selector mantiene su orden para conservar automatizaciones.
 | --- | --- | --- |
 | 0 | FM de cuatro operadores | FM propio de dos osciladores disponible. Se contrastaron campos de control; falta el render original y validar tablas L1 cifradas. |
 | 1 | Digital | Núcleo reconstruido, 262.144 muestras / 2.048 estados; integración, mezcla y voz propias. 16 presets CORE. |
-| 2 | Dr. Wave | Lectura y mezcla aisladas de cinco osciladores: 241.920 muestras y 2.048 pools de seis slots contrastados con ondas sintéticas. Generación de ondas, cadencia e integración pendientes; [alcance](drwave246-reader.md). |
+| 2 | Dr. Wave | Lectura/mezcla aisladas: 241.920 muestras con ondas sintéticas y 2.048 pools. Seis bancos base / 320 ondas generados desde seno: 1.474.560 muestras de tabla contrastadas. Combinación/transformación durante la actualización, cadencia e integración pendientes; [lectura](drwave246-reader.md) · [tablas](drwave246-wavebank.md). |
 | 3 | String | Modelo Karplus–Strong propio afinado; pendiente el waveguide original y todos sus controles. |
 | 4 | Cluster | Núcleo aislado: 262.144 muestras con coeficientes de prueba y 81.920 con cinco normalizaciones legibles convertidas por el helper original. 24 coeficientes de amortiguación y 60 casos de factoría/reset de seis slots contrastados. Faltan tres normalizaciones y la integración completa; [avance](cluster246-normalization.md). |
 | 5 | Pulse | Render localizado en L1 cifrada (`0xffa04b88`), sin imagen descifrada validada. Port pendiente; [bloqueo](firmware/pulse246-l1-blocker.json). |

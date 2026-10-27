@@ -1,0 +1,76 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own startup caller; original instructions and ELF stay private.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+imm32 P1, 0x018b6688
+imm32 P2, 0x0101e5e8
+P3 = 8192;
+LSETUP(sine,sine_end) LC0 = P3;
+sine: R0 = [P1++];
+sine_end: W[P2++] = R0;
+P4.H = inputs;
+P4.L = inputs;
+P5.H = results;
+P5.L = results;
+record_loop:
+R0 = [P4 + 12];
+imm32 P1, 0x01cc1864
+imm32 P2, @WORDS@
+LSETUP(fill,fill_end) LC0 = P2;
+fill: NOP;
+fill_end: [P1++] = R0;
+imm32 P0, 0x0197d774
+CALL (P0);
+// Capture the original defaults before the optional explicit gain override.
+imm32 P1, 0x01cc1864
+P2 = P5;
+P3 = 4;
+LSETUP(defaults,defaults_end) LC0 = P3;
+defaults: R0 = [P1++];
+defaults_end: [P2++] = R0;
+R0 = [P4 + 4];
+CC = R0 == 0;
+IF CC JUMP default_gain;
+R0 = [P4 + 8];
+imm32 P1, 0x01cc186c
+[P1] = R0;
+default_gain:
+R0 = [P4];
+R0 <<= 10;
+imm32 R1, 0x01cea08c
+R0 = R0 + R1;
+imm32 P1, 0xff906a94
+[P1] = R0;
+imm32 P0, 0x0197cdec
+CALL (P0);
+P0 = 16;
+P2 = P5 + P0;
+imm32 P1, 0x01cc1864
+imm32 P3, @WORDS@
+LSETUP(state,state_end) LC0 = P3;
+state: R0 = [P1++];
+state_end: [P2++] = R0;
+imm32 P1, 0xff906a94
+R0 = [P1];
+[P2++] = R0;
+P5 = P2;
+P4 += 16;
+R0 = P4;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF !CC JUMP record_loop;
+R0.H = io_args;
+R0.L = io_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+io_args: .long 1,results,@BYTES@
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"
