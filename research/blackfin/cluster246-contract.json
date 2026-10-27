@@ -169,5 +169,24 @@
       "conversion_outputs": 131072
     },
     "evidence": "../../docs/firmware/cluster246-shared-validation.json"
+  },
+  "core_routing": {
+    "note_on": "0x01967854",
+    "release": "0x019678f0",
+    "factory": "0x01967960",
+    "cluster_internal_engine_type": 4,
+    "producer_pointers": "0x01aaad18",
+    "loaded_sound": "0x01aaac0c",
+    "selected_sound": "0xff8016d4",
+    "controls": "0xff8013c4",
+    "sound_slots": 8,
+    "control_words_per_sound": 8,
+    "note_on_requires_loaded_selected_match": true,
+    "release_requires_loaded_selected_match": false,
+    "rendered_blocks": 1024,
+    "rendered_samples": 131072,
+    "whole_pool_bytes": 648,
+    "explicit_external_scheduler": true,
+    "evidence": "../../docs/firmware/cluster246-routing-validation.json"
   }
 }

@@ -8,9 +8,7 @@ Version 0.13.0 adds **[Value 246 Voice](docs/value-voice246-native.md)**: indepe
 
 **Active work: firmware DSP reconstruction.** The [component workplan](docs/firmware-dsp-workplan.md) prioritizes engines, filters, envelopes and modulators. [Cluster](docs/cluster246-kernel.md) has a validated isolated coefficient-parameterized kernel; original L1 normalization and full integration remain pending. Presets, sound banks and video matching are deferred.
 
-**Cluster progress:** [five readable normalization entries and the six-slot factory checked](docs/cluster246-normalization.md). Three normalization entries and full plugin integration remain unresolved.
-
-[Shared initialization and Q15/Q31 conversions](docs/cluster246-shared-init.md) are now checked under explicit source inputs, with read-only REA support. The original table remains incomplete.
+**Cluster progress:** [Core note-on/release routing and six interleaved slots](docs/cluster246-core-routing.md) checked against another 131,072 samples with shared RNG. The [five observed normalization entries](docs/cluster246-normalization.md) and [shared initialization with REA support](docs/cluster246-shared-init.md) remain available. Three normalization entries and full integration remain unresolved.
 
 Version 0.8.0 added optional **[Phase 246 CORE](docs/phase246-native.md)**: a playable independent Pd reconstruction at a fixed 88.2 kHz internal clock with 16 additional raw-control patches. Its core is tested against original instructions in the GNU simulator; NCO, envelope, modulation and output filtering are ours. Existing Phase presets remain available.
 

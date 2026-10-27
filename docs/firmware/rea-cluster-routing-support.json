@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "scope": "Read-only engine-type identity support. No presets, Blackfin decompilation or L1 decryption in this delta.",
+  "rea_version": "6.8.0",
+  "source_relative_path": "content/op1_factory.db",
+  "source_sha256": "be4572298fe9dc83b106d5c4eaf1cc972280d97f028f3eaebc0c76dc68ac9cf0",
+  "source_bytes": 107520,
+  "source_hash_unchanged": true,
+  "provider": {
+    "id": "sqlite",
+    "name": "REA SQLite database inspector",
+    "version": "SQLite 3.53.3"
+  },
+  "schema_evidence_id": "ev_265784d62ccd5900293deeca0738afcc6084561b9e433459442fabd239a11279",
+  "schema_completeness": "complete",
+  "rows_evidence_id": "ev_99853d2d52a86aab05cb5532df5866a244aca9a6e07ca63f709d77267fee2b0c",
+  "table": "synth_types",
+  "columns": [
+    "id",
+    "type"
+  ],
+  "row_limit": 32,
+  "returned_rows": 10,
+  "rows_truncated": false,
+  "row_order": "unspecified",
+  "observation": {
+    "type": "cluster",
+    "database_row_id": 1
+  },
+  "separate_runtime_observation": {
+    "cluster_internal_engine_type": 4,
+    "verification": "Original Core factory 0x01967960, six returned producer pointers and complete objects checked in routing oracle"
+  },
+  "interpretation": "Factory database row IDs, internal engine types, sound slots and voice slots are separate identifier domains. No general mapping inferred from this one row.",
+  "retained_private_evidence": {
+    "rea-schema.json": "377c6671c40cd149c78400872dad585feef24d82a8eb88603865f9e02727df91",
+    "rea-synth-types.json": "f62337a6372f461fd22a26ac13ec5f3fba7720ee2444d8315376562a69c793e8"
+  }
+}

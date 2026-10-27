@@ -169,3 +169,15 @@ support summary preserves the distinction and does not attribute Blackfin
 decompilation or L1 decryption to REA. GNU model outputs with and without the
 previously credited local patch agree for these new cases; this is not hardware
 validation. Original firmware/ELF, databases and instruction bytes stay private.
+
+## Cluster Core routing and shared six-slot state
+
+The [Core callback reconstruction](docs/cluster246-core-routing.md) independently
+implements Cluster note-on/release behavior observed in the operator-supplied
+rev246 firmware. Its own harness explicitly schedules six interleaved slots;
+it does not implement the original allocator, clock, ADSR routing or mixer.
+Only the five previously verified normalization counts are selected. REA 6.8.0
+read-only SQLite evidence distinguishes the factory DB's Cluster row ID 1 from
+runtime engine type 4, independently checked through the original Core factory.
+No presets are read for this delta. Source databases, instructions, firmware and
+ELF remain private; only own code and numerical fixtures/metadata are published.

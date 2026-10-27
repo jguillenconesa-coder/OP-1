@@ -41,12 +41,15 @@ concreta; no se rellena con constantes o algoritmos supuestamente originales.
 | Inicialización compartida | Rutina completa contrastada en 256 casos con ocho palabras fuente explícitas; pesos/display a cero y campos/RNG/amortiguación no escritos preservados. No completa la tabla original. |
 | Conversión de tablas | Helpers Q15/Q31 contrastados en 65.536 patrones binary32: 131.072 resultados. Coinciden también con GNU sin el parche local para estos casos. |
 | Cadencia, preparación de nota, envolvente/ruteo y salida completos | Pendientes. |
+| Disparo y liberación desde Core | Note-on condicionado a coincidencia entre sonido cargado y seleccionado; release sin esa condición. Factoría Core tipo 4 y seis punteros contrastados. |
+| Estado compartido entre voces | 131.072 muestras adicionales y 1.024 pools completos, con seis slots intercalados y un RNG/contexto compartidos. Orden externo explícito; no completa el scheduler original. |
 | Integración en el selector del plugin | Pendiente; el núcleo aún no se expone como motor original completo. |
 
 El siguiente paso de **este bloque** es resolver la procedencia/inicialización de
 las tres entradas restantes de normalización y contrastar el contrato completo
 antes de conectarlo al plugin. [Avance de normalización/inicialización](cluster246-normalization.md) ·
 [Inicialización compartida y apoyo de REA](cluster246-shared-init.md) ·
+[Disparo, liberación y seis voces intercaladas](cluster246-core-routing.md) ·
 [Contrato y reproducción del núcleo](cluster246-kernel.md).
 
 ## Cola de componentes

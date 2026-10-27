@@ -144,3 +144,24 @@ ranges only. GNU deferred D-register model; no hardware timing validation.
 The test also checks streaming parity at 44.1 kHz with integration DC removal
 disabled, all seven adapter rates, and post-panic silence. See reproduction and
 hashes in docs/punch246-native.md and docs/firmware/punch246-validation.json.
+
+## Cluster Core routing
+
+`cluster246-routing-input.bin`: 144 bytes of explicit coefficient words (eight
+int16 normalization entries and 32 int32 damping entries), then 1,024 little-endian
+records of 1,340 bytes. Each record contains uint32 action, voice, loaded-sound
+and selected-sound IDs; 648 pool bytes; 32 context bytes; uint32 RNG;
+eight sounds × eight int16 controls; and 128 uint32 phase increments.
+Action bits: 0 loads pool/context/RNG, 1 calls the six-slot Core factory,
+2 calls Core note-on, 3 calls Core release, 5 decays display. Every record renders
+one selected voice. Per-record pool/context/RNG bytes are ignored when load bit 0
+is clear; sound IDs, controls and phase increments are supplied for every record.
+
+`cluster246-routing-output.bin`: 1,024 records of 1,104 bytes. Each contains uint32
+note-on result (`0xffffffff` if not requested), 128 int16 samples, 648 pool bytes,
+32 context bytes, uint32 RNG, six uint32 producer pointers, loaded/selected uint32
+IDs and the 128 source control bytes. The original release callback is void.
+There are 256 independent cases and 12 continuous streams of 64 records. Unknown
+normalization entries 2/3/8 are zero placeholders that are never selected. Events
+and pitch are external inputs; full original audio scheduling is not claimed.
+[Method, hashes and limitations](../../docs/cluster246-core-routing.md).

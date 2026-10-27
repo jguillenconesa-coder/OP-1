@@ -50,6 +50,12 @@ La tabla original sigue incompleta; las entradas de prueba no sustituyen los tre
 valores cifrados. REA apoya consultas de lectura/procedencia; la verificación de
 instrucciones Blackfin de esta etapa usa GNU y Binutils.
 
+La [ruta Core de disparo/liberación](cluster246-core-routing.md) añade 131.072
+muestras y 1.024 pools completos con seis slots intercalados y RNG compartido.
+Note-on exige coincidencia del sonido cargado/seleccionado; release no la exige.
+El orden de eventos, pitch y renders es explícito del harness, sin completar
+asignación, cadencia, ruteo ADSR ni mezcla de salida originales.
+
 ## Efectos y filtros
 
 | Objetivo | Estado |

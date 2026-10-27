@@ -65,3 +65,14 @@ from the verified kernel. See docs/punch246-native.md.
 it read-only from the exact operator DB into a new file. `manual-sound-targets.json`
 records the two exercise recipes and PDF hash, not a claim of implemented
 original sounds. REA inventory evidence is summarized separately under docs/firmware.
+
+## Cluster Core callback probes
+
+`cluster-routing.s.in` and `scripts/verify-cluster246-routing.py` call the original
+Core factory, note-on and release routes and explicitly schedule interleaved
+Cluster renders. Only counts 1, 4, 5, 6 and 7 use verified normalization values;
+unknown-count placeholders are never selected. All six objects, shared context,
+RNG, Core pointers and source sound controls are compared after each record.
+This is not the original allocator, cadence, ADSR or mixer. The original private
+instruction image is supplied by the operator and never distributed.
+[Contract, evidence and reproduction](../../docs/cluster246-core-routing.md).

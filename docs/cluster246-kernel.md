@@ -16,6 +16,11 @@ también están contrastadas bajo un contrato de ocho palabras fuente suministra
 Esto cierra la lógica observada de esa rutina, sin recuperar los tres valores L1
 que siguen cifrados ni completar la integración del instrumento.
 
+La [ampliación de rutas Core y voces intercaladas](cluster246-core-routing.md)
+contrasta el disparo condicionado al sonido cargado/seleccionado, la liberación sin
+esa condición y otras 131.072 muestras conservando el estado de los seis slots y
+su RNG compartido. El scheduler, ADSR y mezclador completos siguen pendientes.
+
 ## Contrato reconstruido
 
 | Entrada/estado | Alcance |

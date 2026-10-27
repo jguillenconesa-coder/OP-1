@@ -1,0 +1,182 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Independent explicit scheduler, not a reconstruction of original audio cadence.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P1.H = inputs;
+P1.L = inputs;
+
+imm32 P2, 0x01baa91c
+P3 = 4;
+LSETUP(norm,norm_end) LC0 = P3;
+norm:
+R0 = [P1++];
+norm_end: [P2++] = R0;
+
+imm32 P2, 0x0106a954
+P3 = 32;
+LSETUP(damping,damping_end) LC0 = P3;
+damping:
+R0 = [P1++];
+damping_end: [P2++] = R0;
+imm32 P1, 0x018b6688
+imm32 P2, 0x0101e5e8
+P3 = 8192;
+LSETUP(sine,sine_end) LC0 = P3;
+sine:
+R0 = [P1++];
+sine_end: W[P2++] = R0;
+R0 = 4;
+imm32 P0, 0x01967960
+CALL (P0);
+P4.H = records;
+P4.L = records;
+P5.H = results;
+P5.L = results;
+probe_loop:
+R0 = [P4];
+CC = BITTST(R0, 0);
+IF !CC JUMP no_load;
+P1 = P4;
+P1 += 16;
+imm32 P2, 0xffb00000
+P3 = 162;
+LSETUP(pool_in,pool_in_end) LC0 = P3;
+pool_in:
+R0 = [P1++];
+pool_in_end: [P2++] = R0;
+
+imm32 P2, 0x01baa92c
+P3 = 8;
+LSETUP(context_in,context_in_end) LC0 = P3;
+context_in:
+R0 = [P1++];
+context_in_end: [P2++] = R0;
+R0 = [P1];
+imm32 P2, 0xff802bc8
+[P2] = R0;
+no_load:
+R0 = [P4 + 8];
+imm32 P1, 0x01aaac0c
+[P1] = R0;
+R0 = [P4 + 12];
+imm32 P1, 0xff8016d4
+[P1] = R0;
+P1 = 700;
+P1 = P4 + P1;
+imm32 P2, 0xff8013c4
+P3 = 32;
+LSETUP(knobs_in,knobs_in_end) LC0 = P3;
+knobs_in:
+R0 = [P1++];
+knobs_in_end: [P2++] = R0;
+
+imm32 P2, 0xff801950
+P3 = 128;
+LSETUP(pitch_in,pitch_in_end) LC0 = P3;
+pitch_in:
+R0 = [P1++];
+pitch_in_end: [P2++] = R0;
+R0 = [P4];
+CC = BITTST(R0, 1);
+IF !CC JUMP no_factory;
+R0 = 4;
+imm32 P0, 0x01967960
+CALL (P0);
+no_factory:
+R0 = -1;
+[P5] = R0;
+R0 = [P4];
+CC = BITTST(R0, 2);
+IF !CC JUMP no_note;
+R0 = [P4 + 4];
+imm32 P0, 0x01967854
+CALL (P0);
+[P5] = R0;
+no_note:
+R0 = [P4];
+CC = BITTST(R0, 3);
+IF !CC JUMP no_release;
+R0 = [P4 + 4];
+imm32 P0, 0x019678f0
+CALL (P0);
+no_release:
+R0 = [P4 + 4];
+R1 = 108;
+R0 *= R1;
+imm32 R1, 0xffb00000
+R0 = R0 + R1;
+R1 = [P4 + 8];
+R1 <<= 4;
+imm32 R2, 0xff8013c4
+R2 = R1 + R2;
+R1 = P5;
+R1 += 4;
+imm32 P0, 0x01960288
+CALL (P0);
+R0 = [P4];
+CC = BITTST(R0, 5);
+IF !CC JUMP no_decay;
+imm32 P0, 0x0196089c
+CALL (P0);
+no_decay:
+imm32 P1, 0xffb00000
+P2 = 260;
+P2 = P5 + P2;
+P3 = 162;
+LSETUP(pool_out,pool_out_end) LC0 = P3;
+pool_out:
+R0 = [P1++];
+pool_out_end: [P2++] = R0;
+imm32 P1, 0x01baa92c
+
+P3 = 8;
+LSETUP(context_out,context_out_end) LC0 = P3;
+context_out:
+R0 = [P1++];
+context_out_end: [P2++] = R0;
+imm32 P1, 0xff802bc8
+R0 = [P1];
+[P2++] = R0;
+imm32 P1, 0x01aaad18
+
+P3 = 6;
+LSETUP(pointers_out,pointers_out_end) LC0 = P3;
+pointers_out:
+R0 = [P1++];
+pointers_out_end: [P2++] = R0;
+imm32 P1, 0x01aaac0c
+R0 = [P1];
+[P2++] = R0;
+imm32 P1, 0xff8016d4
+R0 = [P1];
+[P2++] = R0;
+imm32 P1, 0xff8013c4
+
+P3 = 32;
+LSETUP(knobs_out,knobs_out_end) LC0 = P3;
+knobs_out:
+R0 = [P1++];
+knobs_out_end: [P2++] = R0;
+P5 = P2;
+P0 = 1340;
+P4 = P4 + P0;
+R0 = P4;
+R1.H = records_end;
+R1.L = records_end;
+CC = R0 == R1;
+IF !CC JUMP probe_loop;
+R0.H = io_args;
+R0.L = io_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+io_args: .long 1,results,@BYTES@
+inputs: .incbin "@WORK@/inputs.bin"
+.set records, inputs+144
+records_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

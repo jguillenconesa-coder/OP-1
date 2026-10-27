@@ -1,0 +1,69 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "core_note_on": "0x01967854",
+  "core_release": "0x019678f0",
+  "core_factory": "0x01967960",
+  "runtime_cluster_type": 4,
+  "producer_pointers": "0x01aaad18",
+  "loaded_sound": "0x01aaac0c",
+  "selected_sound": "0xff8016d4",
+  "sound_controls": "0xff8013c4",
+  "render": "0x01960288",
+  "independent_cases": 256,
+  "continuous_streams": 12,
+  "blocks_per_stream": 64,
+  "rendered_blocks": 1024,
+  "samples": 131072,
+  "full_pool_bytes": 648,
+  "context_bytes": 32,
+  "rng_bytes": 4,
+  "routing_bytes": 160,
+  "artifacts": {
+    "cluster246-routing-input.bin": {
+      "bytes": 1372304,
+      "sha256": "a8692a41913fdb56a4949e2707cde0208b951e465ab6763f1552d57a06b55749"
+    },
+    "cluster246-routing-output.bin": {
+      "bytes": 1130496,
+      "sha256": "c8b6d329c6f14a8f38b5daa9c57cbfa59ed27bd384bdacfad8c4601866782db9"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "model": "GNU BF524 with documented D-register deferred-writeback patch; not hardware timing",
+  "limitations": [
+    "Harness explicitly schedules events and one selected voice render per record. Not the original allocator, cadence, note/pitch preparation, envelope routing, mixing or decimation.",
+    "Only known normalization counts 1,4,5,6,7 selected; counts 2,3,8 unresolved. Known tables supplied explicitly.",
+    "Only valid original voice indices and sound slots tested. C++ invalid-input guards are adapter behavior, not original assert emulation.",
+    "No plugin integration, presets or installer changes."
+  ],
+  "validation": {
+    "base_commit": "676dca20f777cf1c3c183d13dc9c23329907c540",
+    "private_oracle_runs": 2,
+    "all_numeric_fixtures_reproduced": true,
+    "branches": {
+      "note_on_accepted": 304,
+      "note_on_rejected": 152,
+      "release_with_mismatched_sound": 42,
+      "record_factory_calls": 157,
+      "startup_factory_calls": 1
+    },
+    "native_core_ctest_suites_passed": 17,
+    "native_ctest_total_seconds": 2.87,
+    "windows_wine": "MSVC-target Windows cross-build and cluster246_routing test passed under Wine; not native Windows/Ableton/ASIO validation",
+    "sanitizers": "Routing test passed ASan+UBSan; LeakSanitizer disabled because sandbox ptrace prevents its operation",
+    "plugin_integration": false,
+    "source_hashes": {
+      "Source/Cluster246.h": "b4201d47d4a25a18a4ac6b38b9ecaf077373dfc4eabdd986986b32367733e135",
+      "Source/Cluster246Routing.h": "690c8dd956be29103cfc32ec481f4efcfc4b900afd72c3dc06eb54b055498131",
+      "Tests/Cluster246RoutingTests.cpp": "5599de66b819f3992fbd6189d9123e941f33e6bdf255acf220d7ce2cb837c963",
+      "scripts/verify-cluster246-routing.py": "932d393481c9a496e0ce58ac73c6be35db0a8ebb7219b14e674e49f4989ba4fc",
+      "research/blackfin/cluster-routing.s.in": "0cf25ad062aef5ed4b44539a3c8177920631db0cd73174c4e98ac072ecaf329d",
+      "research/blackfin/voice-contract.ld": "56392dfc7b84df5f3552546615b4a95e7fcbd8d3deb5ebf2838e624b8e0d196d"
+    },
+    "rea_support": "rea-cluster-routing-support.json"
+  }
+}
