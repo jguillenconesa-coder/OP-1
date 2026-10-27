@@ -1,0 +1,120 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "known_normalization_mask": "0x79",
+  "observed_entries": [
+    {
+      "count": 1,
+      "payload_offset": 308,
+      "offset_mod24": 20,
+      "float32_bits": "0x3f000000",
+      "float32_value": 0.5,
+      "q15": 16384
+    },
+    {
+      "count": 4,
+      "payload_offset": 320,
+      "offset_mod24": 8,
+      "float32_bits": "0x3e000000",
+      "float32_value": 0.125,
+      "q15": 4096
+    },
+    {
+      "count": 5,
+      "payload_offset": 324,
+      "offset_mod24": 12,
+      "float32_bits": "0x3dcccccd",
+      "float32_value": 0.10000000149011612,
+      "q15": 3276
+    },
+    {
+      "count": 6,
+      "payload_offset": 328,
+      "offset_mod24": 16,
+      "float32_bits": "0x3daaaaab",
+      "float32_value": 0.0833333358168602,
+      "q15": 2730
+    },
+    {
+      "count": 7,
+      "payload_offset": 332,
+      "offset_mod24": 20,
+      "float32_bits": "0x3d924925",
+      "float32_value": 0.0714285746216774,
+      "q15": 2340
+    }
+  ],
+  "unresolved_counts": [
+    2,
+    3,
+    8
+  ],
+  "no_key_recovered": true,
+  "no_full_L1_decryption_claimed": true,
+  "layout_model": "Community OP-1 XTEA format: first 8 bytes of each complete 24-byte group encrypted; remaining 16 unchanged. Only unchanged words used.",
+  "factory": "0x019607e4",
+  "pool_base": "0xffb00000",
+  "pool_slots": 6,
+  "slot_stride": 108,
+  "factory_cases": 60,
+  "reset": "0x01960664",
+  "scalar_conversion": "0x01aa7014",
+  "known_normalization_render_blocks": 640,
+  "known_normalization_samples": 81920,
+  "artifacts": {
+    "cluster246-init-input.bin": {
+      "bytes": 39876,
+      "sha256": "f9215509d71ffc6b8bbbccca636d68347674b93ceb5314e30e08c9a700da4a26"
+    },
+    "cluster246-init-output.bin": {
+      "bytes": 45860,
+      "sha256": "b8911717fb7a6f1ecf4cf527ba3539189a51e31a7d77fc2f4fe7427fceb6f6c6"
+    },
+    "cluster246-known-input.bin": {
+      "bytes": 519680,
+      "sha256": "40889704bcc6cc30a8832274b7c69c1017bedd9542d8aefba52e57b5b22ecb77"
+    },
+    "cluster246-known-output.bin": {
+      "bytes": 256160,
+      "sha256": "8959b58bc836bc1c7f235f6e05657d4d8818eb889a29fda01aea737c5c2d6d79"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "limitations": [
+    "Three normalization counts remain unknown; no inferred coefficients are used.",
+    "Factory slots do not implement the complete allocator/cadence; no plugin integration or full instrument equivalence claimed."
+  ],
+  "references": [
+    {
+      "url": "https://github.com/sualk/op1-decryptor/blob/20f86baa116b4c7b1da7e0d4e3a24f171c76767b/README.md",
+      "scope": "Description of unchanged 16 bytes in each 24-byte group; no decryptor code copied or key used"
+    },
+    {
+      "url": "https://github.com/BertBrandstifter/op1-sdk/blob/ae1945a9c61468f0e0d7cfdd5dd60c2cf9731ff1/docs/internals.md",
+      "scope": "Existing SDK internals reference already credited in CREDITS.md; local documentation describes the same partial-encryption layout"
+    }
+  ],
+  "validation": {
+    "private_oracle_runs": 2,
+    "native_core_ctest_suites_passed": 15,
+    "windows_wine": "cluster246 and cluster246_init suites passed",
+    "sanitizers": "New initialization/known-normalization suite passed ASan and UBSan; LeakSanitizer disabled because sandbox ptrace prevents its operation",
+    "previous_kernel_samples_rechecked": 262144,
+    "additional_known_normalization_samples": 81920,
+    "total_render_samples_checked": 344064,
+    "preset_or_video_inputs_used": false,
+    "plugin_integration": false,
+    "base_commit": "e7f7d7ea6e7fb23723c07bc8741f8933ed38daf7",
+    "source_hashes": {
+      "Source/Cluster246.h": "4a0a4339354f271679e8717572a077f5d1589396b539285ae519c893096acfdd",
+      "Tests/Cluster246InitTests.cpp": "3bd64d183bf1f6f3546869332edd3ac22d1301a589434c509be0e5a4a4d2c4ff",
+      "Tests/Cluster246Tests.cpp": "bce7c039789933b7224c4fe71ff50036a6817456088d6b6bc930c4d25feb198e",
+      "scripts/verify-cluster246-init.py": "2fe6ee2a7e6477a19f578ac3985289357360cc560282214fa9d191e6ac65d484",
+      "research/blackfin/cluster-init.s.in": "f3b27a8eac85a123341d872fe2fa974c2198313a6cd37a4ff4552528839969c7",
+      "research/blackfin/cluster-stream.s.in": "093de483fdff81bb6b0e35a0b8477d270ba5a7049b4057a4dec3be10ac4a4a29"
+    }
+  }
+}

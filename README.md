@@ -12,6 +12,8 @@
 
 **Trabajo activo: DSP del firmware.** [Plan por componentes](docs/firmware-dsp-workplan.md): motores, filtros, envolventes y moduladores. [Cluster](docs/cluster246-kernel.md) ya tiene un núcleo aislado contrastado; falta resolver su normalización L1 e integración. Presets, bancos y comparación con vídeo quedan aplazados.
 
+**Avance de Cluster:** [cinco normalizaciones y constructor de seis slots contrastados](docs/cluster246-normalization.md). Faltan tres entradas de normalización; el motor aún no se integra en el plugin.
+
 **Banco adicional:** [16 estudios del núcleo Phase / 13 WAV únicos](docs/phase-core-studies.md), compatibles con 0.7.0. Controles extraídos del firmware y renders contrastados con el núcleo original simulado; siguen siendo estudios experimentales sin el resto del preset original.
 
 ## Descargar

@@ -34,7 +34,7 @@
     }
   ],
   "normalization": {
-    "status": "Unresolved original values",
+    "status": "Five readable source words converted by original helper; counts 2,3,8 unresolved",
     "entries": 8,
     "float_source": "0xff900524",
     "conversion": "0x01aa7014",
@@ -46,7 +46,63 @@
       "bytes": 656,
       "flags": "0xad812406"
     },
-    "input_contract": "Oracle injects explicit synthetic coefficient vectors; their values are not claimed to be original."
+    "input_contract": "Original broad stress fixtures inject synthetic normalization. Additional known-count fixtures use only readable/converted entries; unknown entries are placeholders and never selected.",
+    "known_counts": [
+      1,
+      4,
+      5,
+      6,
+      7
+    ],
+    "unknown_counts": [
+      2,
+      3,
+      8
+    ],
+    "known_mask": "0x79",
+    "observed_entries": [
+      {
+        "count": 1,
+        "payload_offset": 308,
+        "offset_mod24": 20,
+        "float32_bits": "0x3f000000",
+        "float32_value": 0.5,
+        "q15": 16384
+      },
+      {
+        "count": 4,
+        "payload_offset": 320,
+        "offset_mod24": 8,
+        "float32_bits": "0x3e000000",
+        "float32_value": 0.125,
+        "q15": 4096
+      },
+      {
+        "count": 5,
+        "payload_offset": 324,
+        "offset_mod24": 12,
+        "float32_bits": "0x3dcccccd",
+        "float32_value": 0.10000000149011612,
+        "q15": 3276
+      },
+      {
+        "count": 6,
+        "payload_offset": 328,
+        "offset_mod24": 16,
+        "float32_bits": "0x3daaaaab",
+        "float32_value": 0.0833333358168602,
+        "q15": 2730
+      },
+      {
+        "count": 7,
+        "payload_offset": 332,
+        "offset_mod24": 20,
+        "float32_bits": "0x3d924925",
+        "float32_value": 0.0714285746216774,
+        "q15": 2340
+      }
+    ],
+    "layout_model": "Community OP-1 XTEA format: first 8 bytes of each complete 24-byte group encrypted; remaining 16 unchanged. Only unchanged words used."
   },
   "damping": {
     "source_float": "0x018befb0",
@@ -83,5 +139,14 @@
   "state_bytes": 108,
   "shared_context_bytes": 32,
   "shared_random_seed_bytes": 4,
-  "integration_status": "Not exposed in plugin; original normalization, scheduling, voice preparation and output integration still pending."
+  "integration_status": "Not exposed in plugin; three original normalization coefficients, complete scheduling, voice preparation and output integration remain pending.",
+  "factory": {
+    "function": "0x019607e4",
+    "pool_base": "0xffb00000",
+    "slots": 6,
+    "stride_bytes": 108,
+    "vtable_tag": "0x0190f67c",
+    "cases_compared": 60,
+    "scope": "Object construction and reset only; full allocator/scheduling not implemented"
+  }
 }

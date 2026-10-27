@@ -1,0 +1,110 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Independent scalar/factory probe; unknown normalization entries are never read.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+@NORMALIZATION@
+P0.H = result_ptr;
+P0.L = result_ptr;
+P1.H = results;
+P1.L = results;
+[P0] = P1;
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1.H = records;
+P1.L = records;
+[P0] = P1;
+probe_loop:
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+imm32 P2, 0xffb00000
+P3 = 162;
+LSETUP(copy_pool,copy_pool_end) LC0 = P3;
+copy_pool:
+R0 = [P1++];
+copy_pool_end: [P2++] = R0;
+R0 = [P1++];
+P0.H = index_word;
+P0.L = index_word;
+[P0] = R0;
+P1 += 8;
+R1 = [P1];
+imm32 P0, 0xff802bc8
+[P0] = R1;
+imm32 P0, 0x019607e4
+CALL (P0);
+P0.H = voice_ptr;
+P0.L = voice_ptr;
+[P0] = R0;
+P0.H = result_ptr;
+P0.L = result_ptr;
+P1 = [P0];
+[P1++] = R0;
+imm32 P2, 0xffb00000
+P3 = 162;
+LSETUP(save_pool,save_pool_end) LC0 = P3;
+save_pool:
+R0 = [P2++];
+save_pool_end: [P1++] = R0;
+[P0] = P1;
+P0.H = voice_ptr;
+P0.L = voice_ptr;
+R0 = [P0];
+P0.H = input_ptr;
+P0.L = input_ptr;
+R1 = [P0];
+R2 = 652;
+R1 = R1 + R2;
+imm32 P0, 0x01960664
+CALL (P0);
+P0.H = result_ptr;
+P0.L = result_ptr;
+P1 = [P0];
+P2.H = voice_ptr;
+P2.L = voice_ptr;
+P2 = [P2];
+P3 = 27;
+LSETUP(save_reset,save_reset_end) LC0 = P3;
+save_reset:
+R0 = [P2++];
+save_reset_end: [P1++] = R0;
+imm32 P2, 0xff802bc8
+R0 = [P2];
+[P1++] = R0;
+[P0] = P1;
+P0.H = input_ptr;
+P0.L = input_ptr;
+R0 = [P0];
+R1 = 664;
+R0 = R0 + R1;
+[P0] = R0;
+R1.H = records_end;
+R1.L = records_end;
+CC = R0 == R1;
+IF !CC JUMP probe_loop;
+R0.H = norm_args;
+R0.L = norm_args;
+P0 = 5;
+EXCPT 0;
+R0.H = io_args;
+R0.L = io_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+norm_args: .long 1,norm_results,20
+io_args: .long 1,results,@BYTES@
+input_ptr: .long 0
+result_ptr: .long 0
+voice_ptr: .long 0
+index_word: .long 0
+norm_results: .long 0x79
+.space 16
+inputs: .incbin "@WORK@/inputs.bin"
+.set records,inputs+36
+records_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

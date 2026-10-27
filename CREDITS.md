@@ -145,3 +145,14 @@ BF524 simulator patch and source notices apply. The count-normalization values
 in the probes are explicitly synthetic caller inputs; the original L1 table and
 complete instrument integration are not claimed. No preset/video data is used
 for this component. See the [active firmware DSP workplan](docs/firmware-dsp-workplan.md).
+
+## Cluster normalization layout and factory delta
+
+The [initialization delta](docs/cluster246-normalization.md) uses the documented
+OP-1 partial-encryption layout described in
+[sualk/op1-decryptor's README](https://github.com/sualk/op1-decryptor/blob/20f86baa116b4c7b1da7e0d4e3a24f171c76767b/README.md)
+and the previously credited op1-sdk internals. No decryptor implementation is
+copied or bundled, and no encryption key is recovered or distributed. Five
+unchanged scalar words are converted using the original helper in the private
+oracle; the remaining three entries stay unknown. The independent constructor
+and fixture harness additionally verify the original six-slot object factory.

@@ -8,6 +8,8 @@ Version 0.13.0 adds **[Value 246 Voice](docs/value-voice246-native.md)**: indepe
 
 **Active work: firmware DSP reconstruction.** The [component workplan](docs/firmware-dsp-workplan.md) prioritizes engines, filters, envelopes and modulators. [Cluster](docs/cluster246-kernel.md) has a validated isolated coefficient-parameterized kernel; original L1 normalization and full integration remain pending. Presets, sound banks and video matching are deferred.
 
+**Cluster progress:** [five readable normalization entries and the six-slot factory checked](docs/cluster246-normalization.md). Three normalization entries and full plugin integration remain unresolved.
+
 Version 0.8.0 added optional **[Phase 246 CORE](docs/phase246-native.md)**: a playable independent Pd reconstruction at a fixed 88.2 kHz internal clock with 16 additional raw-control patches. Its core is tested against original instructions in the GNU simulator; NCO, envelope, modulation and output filtering are ours. Existing Phase presets remain available.
 
 Version 0.7.0 added four stable **Screen: Knob 1 Blue / 2 Green / 3 White / 4 Orange** host parameters. Map them once and the assignments follow the current display across sets 1–4. Old mappings to individual sound parameters keep their original destination. **PURGE BANK** permanently deletes the selected imported bank (or all imported banks with All banks selected), unloads its active audio, and clears its library references after confirmation. Factory sounds, source ZIPs and already saved projects are preserved. Close other instances first. Reimporting an identical manifest replaces validated copies and repairs missing audio without accumulating directories.

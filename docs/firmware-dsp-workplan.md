@@ -36,13 +36,15 @@ concreta; no se rellena con constantes o algoritmos supuestamente originales.
 | Estado de 108 bytes, reset/release, RNG y contexto compartido | 2.048 bloques / 262.144 muestras; estado completo contrastado. |
 | Rangos de los cuatro controles | Contrastados con el inicializador original. |
 | 24 coeficientes de amortiguación | Conversión original float → Q31 contrastada. |
-| Ocho coeficientes de normalización | Pendientes: inicializador lee `0xff900524`, dentro de L1 CALLBACK\|INDIRECT sin imagen descifrada validada. Las pruebas inyectan valores sintéticos identificados. |
+| Normalización | Cinco entradas legibles convertidas por el helper original; faltan las de 2, 3 y 8 osciladores. Otras 81.920 muestras contrastadas con las entradas conocidas. No se extrapolan las desconocidas. |
+| Factoría de objetos | Seis slots de 108 bytes: 60 casos contrastados de construcción/reset, vecinos, relleno y RNG. No completa el asignador/cadencia. |
 | Cadencia, preparación de nota, envolvente/ruteo y salida completos | Pendientes. |
 | Integración en el selector del plugin | Pendiente; el núcleo aún no se expone como motor original completo. |
 
 El siguiente paso de **este bloque** es resolver la procedencia/inicialización de
-la normalización y contrastar el contrato completo antes de conectarlo al plugin.
-[Contrato, alcance y reproducción de Cluster](cluster246-kernel.md).
+las tres entradas restantes de normalización y contrastar el contrato completo
+antes de conectarlo al plugin. [Avance de normalización/inicialización](cluster246-normalization.md) ·
+[Contrato y reproducción del núcleo](cluster246-kernel.md).
 
 ## Cola de componentes
 

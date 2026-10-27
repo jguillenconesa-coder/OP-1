@@ -2,6 +2,7 @@
 #pragma once
 #include "ReferenceDsp.h"
 #include <cstddef>
+#include <optional>
 
 namespace pocket::reference {
 // Isolated rev246 Cluster kernel. Initialisation coefficients MUST be supplied
@@ -34,6 +35,29 @@ struct Cluster246State {
     std::array<int16_t,8> gains{};
     uint8_t released=0,padding107=0;
 };
+inline constexpr size_t cluster246FactorySlots=6;
+// Only unchanged words in the documented partial-encryption layout. Missing
+// counts deliberately return no value; no 0.5/count extrapolation is applied.
+inline std::optional<int16_t> cluster246ObservedNormalization(int count) noexcept {
+    switch(count){
+        case 1:return 16384;
+        case 4:return 4096;
+        case 5:return 3276;
+        case 6:return 2730;
+        case 7:return 2340;
+        default:return std::nullopt;
+    }
+}
+inline bool cluster246ConstructSlot(std::array<Cluster246State,cluster246FactorySlots>& pool,int index) noexcept {
+    if(index<0||index>=int(pool.size()))return false;
+    auto& state=pool[size_t(index)];
+    state.tag=0x0190f67cu;
+    for(auto& oscillator:state.oscillators){oscillator.phase=0x80000000u;oscillator.feedback=0;}
+    state.detune.fill(0);state.gains.fill(0);
+    state.field84=state.field86=state.normalization=0;state.released=0;
+    // The original constructor leaves oscillator padding and byte 107 intact.
+    return true;
+}
 static_assert(sizeof(Cluster246State)==108);
 static_assert(offsetof(Cluster246State,detune)==68);
 static_assert(offsetof(Cluster246State,gains)==90);

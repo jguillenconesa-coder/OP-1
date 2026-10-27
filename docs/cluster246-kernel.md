@@ -5,10 +5,11 @@ actualización de visualización. El C++ coincide con **262.144 muestras y 2.048
 estados completos** ejecutados a partir de las instrucciones originales aisladas.
 Se comparan también el contexto compartido y la semilla RNG.
 
-**Falta la normalización original de L1 y la integración completa.** El motor no
-se añade todavía al selector del plugin. Las pruebas de render inyectan sus ocho
-coeficientes de normalización; esos valores no se presentan como datos recuperados.
-No se han usado presets ni el vídeo para implementar o ajustar este núcleo.
+**Faltan tres entradas de normalización de L1 y la integración completa.** El motor
+no se añade todavía al selector del plugin. Las pruebas iniciales inyectan ocho
+coeficientes identificados como sintéticos. La [ampliación de inicialización](cluster246-normalization.md)
+añade cinco entradas legibles convertidas por el helper original, 81.920 muestras
+con esos valores y el constructor de seis slots. No se han usado presets ni vídeo.
 
 ## Contrato reconstruido
 
@@ -17,7 +18,7 @@ No se han usado presets ni el vídeo para implementar o ajustar este núcleo.
 | Cuatro controles signed16 | Número de osciladores, morph/realimentación y controles de la actualización de desviaciones, según las operaciones observadas. No se atribuyen nombres originales a todos los campos. |
 | 128 incrementos de fase uint32 | Entradas del llamador; no se reconstruye aún la preparación original de nota. |
 | Tabla seno de 8.192 muestras | Misma fuente previamente contrastada; copiada por el harness a su destino runtime. |
-| Ocho coeficientes de normalización signed16 | Entradas sintéticas explícitas en las pruebas; valores originales pendientes. |
+| Ocho coeficientes de normalización signed16 | Pruebas iniciales con entradas sintéticas; ampliación con cinco entradas legibles. Las de 2, 3 y 8 osciladores siguen pendientes. |
 | Tabla de amortiguación | Pruebas de estrés con 32 palabras arbitrarias; 24 palabras originales Q31 verificadas separadamente y usadas en las secuencias continuas. |
 | Objeto de 108 bytes | Ocho fases/feedbacks, desviaciones y ganancias por oscilador, campos auxiliares y flag de release; se conservan también bytes de relleno. |
 | Contexto compartido | Ocho pesos, ocho valores de visualización y semilla LCG de 32 bits; no se transforma en un estado por voz sin validar el ruteo. |
@@ -45,8 +46,10 @@ La normalización se inicializa en **`0x019608e0`**, que lee ocho floats de
 **`0xff900524`** y los convierte con `0x01aa7014` a la tabla de `0x01baa91c`.
 La fuente pertenece al bloque LDR en offset `0x1fe870`, destino `0xff9003f0`,
 656 bytes, flags `0xad812406` (**CALLBACK|INDIRECT**). No se dispone de su imagen
-descifrada validada. No se interpretan los bytes de ese payload como coeficientes,
-ni se rellena el hueco suponiendo una fórmula de normalización.
+descifrada completa validada. El formato documentado deja intactos 16 de cada
+24 bytes: la ampliación usa solo cinco floats situados en esas franjas y contrasta
+su conversión. Los tres floats en las franjas cifradas siguen desconocidos; no se
+rellenan suponiendo una fórmula de normalización. [Detalle](cluster246-normalization.md).
 
 [Contrato numérico y direcciones](../research/blackfin/cluster246-contract.json) ·
 [Evidencia y hashes](firmware/cluster246-validation.json).

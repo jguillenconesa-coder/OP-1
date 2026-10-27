@@ -27,7 +27,7 @@ del plugin. Ese selector mantiene su orden para conservar automatizaciones.
 | 1 | Digital | Núcleo reconstruido, 262.144 muestras / 2.048 estados; integración, mezcla y voz propias. 16 presets CORE. |
 | 2 | Dr. Wave | Ruta candidata localizada; render y tablas pendientes de oráculos/port. |
 | 3 | String | Modelo Karplus–Strong propio afinado; pendiente el waveguide original y todos sus controles. |
-| 4 | Cluster | Núcleo aislado de ocho osciladores, reset/release/display: 262.144 muestras y 2.048 estados/contextos contrastados con normalización suministrada. 24 coeficientes originales de amortiguación verificados. Normalización L1 e integración completa pendientes; [contrato](cluster246-kernel.md). |
+| 4 | Cluster | Núcleo aislado: 262.144 muestras con coeficientes de prueba y 81.920 con cinco normalizaciones legibles convertidas por el helper original. 24 coeficientes de amortiguación y 60 casos de factoría/reset de seis slots contrastados. Faltan tres normalizaciones y la integración completa; [avance](cluster246-normalization.md). |
 | 5 | Pulse | Render localizado en L1 cifrada (`0xffa04b88`), sin imagen descifrada validada. Port pendiente; [bloqueo](firmware/pulse246-l1-blocker.json). |
 | 6 | Synth sampler | Reproductor propio con CLEAN, raíz/loop/trim; banco de audio importable. No es el render original completo con sus cuatro controles secundarios. |
 | 7 | Phase | Núcleo Pd y ADSR contrastados; NCO, salida, mezcla y asignación propios. 16 presets CORE. |
