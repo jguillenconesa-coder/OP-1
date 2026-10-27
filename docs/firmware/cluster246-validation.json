@@ -1,0 +1,64 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "model": "GNU BF524 with documented D-register deferred writeback patch; not hardware validation",
+  "damping_source": "0x018befb0",
+  "damping_conversion": "0x01aa6fd0",
+  "verified_damping_words": 24,
+  "render": "0x01960288",
+  "reset": "0x01960664",
+  "release": "0x01960248",
+  "display_decay": "0x0196089c",
+  "self_bytes": 108,
+  "context_bytes": 32,
+  "random_seed_bytes": 4,
+  "independent_blocks": 512,
+  "stream_blocks": 1536,
+  "blocks": 2048,
+  "samples": 262144,
+  "coefficient_contract": "512 raw-kernel stress blocks with injected normalization/damping; 1536 continuous blocks with verified original damping and fixed synthetic count coefficients per stream. No original/default L1 normalization values claimed.",
+  "l1_dependency": {
+    "address": "0xff900524",
+    "ldr_block_offset": "0x1fe870",
+    "flags": "0xad812406",
+    "status": "CALLBACK|INDIRECT payload has no validated decrypted image; original initialization coefficients pending"
+  },
+  "artifacts": {
+    "cluster246-input.bin": {
+      "bytes": 1662976,
+      "sha256": "9d72afda3b6da38ea931209c7b868f064abcb8350831aaf2fb6a17f8e793df67",
+      "matches_committed_fixture": true
+    },
+    "cluster246-output.bin": {
+      "bytes": 819360,
+      "sha256": "9a5dc7233d36d7fd038baffa525f2a95d109ab8317e680d0962db9ec93cd0276",
+      "matches_committed_fixture": true
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "patch_sha256": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+  "limitations": [
+    "Isolated coefficient-parameterized kernel, reset/release/display callbacks only; no plugin integration or original default coefficient table claimed.",
+    "Original note preparation, allocation, cadence, envelope/routing/output and hardware timing remain pending. No preset or video data used."
+  ],
+  "validation": {
+    "private_final_oracle_runs": 2,
+    "native_core_ctest_suites_passed": 14,
+    "windows_cluster_suite": "MSVC-target build; all kernel/state/context/coefficient fixtures passed under Wine",
+    "sanitizers": "ASan + UBSan passed; LeakSanitizer disabled because sandbox ptrace prevents its operation",
+    "plugin_integration": false,
+    "new_presets": 0,
+    "preset_or_video_inputs_used": false,
+    "base_commit": "258b44f4e9af4adaca715fb2a4f6111486563795",
+    "source_hashes": {
+      "Source/Cluster246.h": "91fef369f7cd42b2baa09d51e5e6ccccc079d749bb9b99a48d174ae2b96eae59",
+      "Tests/Cluster246Tests.cpp": "bce7c039789933b7224c4fe71ff50036a6817456088d6b6bc930c4d25feb198e",
+      "scripts/verify-cluster246.py": "c8b01727336eae6763a183d603a6c6c910caeb0899b3892b3624cf6bffd19493",
+      "research/blackfin/cluster-stream.s.in": "093de483fdff81bb6b0e35a0b8477d270ba5a7049b4057a4dec3be10ac4a4a29",
+      "research/blackfin/cluster246-contract.json": "11fca32641af5e619431ea8d31220f4e9acebbc06ad2b88d64c2fa5cbef006da"
+    }
+  }
+}

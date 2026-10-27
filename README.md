@@ -10,9 +10,7 @@
 
 **Nuevo en 0.13.0:** [Value 246 Voice](docs/value-voice246-native.md), modulación por voz de los cuatro controles Phase/Digital o de su ADSR. Cinco variantes adicionales, con los mismos mandos MIDI del set 4 y estados antiguos conservados. [Cobertura completa y pendientes](docs/original-op1-coverage.md).
 
-**Referencia de presets:** [índice de 169 nombres y categorías con tiempos de pantalla](docs/preset-video-index.md), revisado a partir de los 21 segmentos definitivos aportados. Comparación acústica pendiente.
-
-**Comparación en curso:** [primer piloto espectral de Sugar y Pure](docs/preset-audio-pilot.md), con gráficas, mediciones y herramientas reproducibles. Detecta diferencias; todavía no valida el sonido completo ni modifica el DSP.
+**Trabajo activo: DSP del firmware.** [Plan por componentes](docs/firmware-dsp-workplan.md): motores, filtros, envolventes y moduladores. [Cluster](docs/cluster246-kernel.md) ya tiene un núcleo aislado contrastado; falta resolver su normalización L1 e integración. Presets, bancos y comparación con vídeo quedan aplazados.
 
 **Banco adicional:** [16 estudios del núcleo Phase / 13 WAV únicos](docs/phase-core-studies.md), compatibles con 0.7.0. Controles extraídos del firmware y renders contrastados con el núcleo original simulado; siguen siendo estudios experimentales sin el resto del preset original.
 
@@ -89,6 +87,8 @@ En Windows configura con `cmake -S . -B build -A x64`. `packaging\windows\build.
 - [Cómo contribuir](CONTRIBUTING.md)
 
 ## Alcance, créditos y licencia
+
+Referencias conservadas para una etapa posterior: [índice de la demo de presets](docs/preset-video-index.md) y [piloto espectral Sugar/Pure](docs/preset-audio-pilot.md). No son el frente de trabajo activo.
 
 Pocket One se aproxima a la distribución de controles y al flujo creativo del OP-1; **no es una emulación completa ni se ha demostrado equivalencia sonora**. Faltan cinta larga de seis minutos, todos los secuenciadores originales, radio, data takes y más motores y mejoras de antialiasing. No importa proyectos/presets originales. El fundamental del motor de cuerda no responde todavía a pitch bend.
 

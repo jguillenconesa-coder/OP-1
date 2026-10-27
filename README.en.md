@@ -6,9 +6,7 @@ An OP-1-inspired **VST3 instrument and standalone application**, written in C++1
 
 Version 0.13.0 adds **[Value 246 Voice](docs/value-voice246-native.md)**: independent per-voice modulation of Phase/Digital controls or common ADSR. Five additional studies reuse the set-4 MIDI knobs; old FX parameters, mappings and projects are preserved. Other engines/routes and hardware matching remain pending; [full coverage](docs/original-op1-coverage.md).
 
-**Preset reference:** [169 visually reviewed names/categories with screen timestamps](docs/preset-video-index.md), indexed from the definitive 21-segment upload. Acoustic matching remains pending.
-
-**Comparison in progress:** [conditional Sugar/Pure spectral pilot](docs/preset-audio-pilot.md), with exportable figures, measurements and reproducible tools. Differences remain; full-patch equivalence and runtime DSP retuning are not claimed.
+**Active work: firmware DSP reconstruction.** The [component workplan](docs/firmware-dsp-workplan.md) prioritizes engines, filters, envelopes and modulators. [Cluster](docs/cluster246-kernel.md) has a validated isolated coefficient-parameterized kernel; original L1 normalization and full integration remain pending. Presets, sound banks and video matching are deferred.
 
 Version 0.8.0 added optional **[Phase 246 CORE](docs/phase246-native.md)**: a playable independent Pd reconstruction at a fixed 88.2 kHz internal clock with 16 additional raw-control patches. Its core is tested against original instructions in the GNU simulator; NCO, envelope, modulation and output filtering are ours. Existing Phase presets remain available.
 

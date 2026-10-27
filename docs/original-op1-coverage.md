@@ -5,6 +5,10 @@ ejecución y sonidos documentados. La versión 0.13.0 **todavía no es una répl
 completa**. Esta matriz distingue un núcleo contrastado de una aproximación
 propia o una función pendiente; cambiar el nombre de un modelo no completa un port.
 
+**Prioridad activa: reconstrucción del DSP del firmware.** Presets, bancos y vídeo
+quedan aplazados. El [plan de trabajo por componentes](firmware-dsp-workplan.md)
+mantiene un único bloque activo: Cluster, con sus dependencias y pruebas explícitas.
+
 Fuentes: manual v2.2 suministrado por el usuario, 56 páginas, y firmware rev246
 inventariado. Las páginas 53–54 del PDF muestran motores y efectos; 47–50, LFO;
 51–52, los ejercicios de sonidos. Se revisaron las páginas como imágenes cuando
@@ -23,7 +27,7 @@ del plugin. Ese selector mantiene su orden para conservar automatizaciones.
 | 1 | Digital | Núcleo reconstruido, 262.144 muestras / 2.048 estados; integración, mezcla y voz propias. 16 presets CORE. |
 | 2 | Dr. Wave | Ruta candidata localizada; render y tablas pendientes de oráculos/port. |
 | 3 | String | Modelo Karplus–Strong propio afinado; pendiente el waveguide original y todos sus controles. |
-| 4 | Cluster | Ruta candidata localizada; osciladores/mezcla original pendientes. |
+| 4 | Cluster | Núcleo aislado de ocho osciladores, reset/release/display: 262.144 muestras y 2.048 estados/contextos contrastados con normalización suministrada. 24 coeficientes originales de amortiguación verificados. Normalización L1 e integración completa pendientes; [contrato](cluster246-kernel.md). |
 | 5 | Pulse | Render localizado en L1 cifrada (`0xffa04b88`), sin imagen descifrada validada. Port pendiente; [bloqueo](firmware/pulse246-l1-blocker.json). |
 | 6 | Synth sampler | Reproductor propio con CLEAN, raíz/loop/trim; banco de audio importable. No es el render original completo con sus cuatro controles secundarios. |
 | 7 | Phase | Núcleo Pd y ADSR contrastados; NCO, salida, mezcla y asignación propios. 16 presets CORE. |
@@ -97,14 +101,18 @@ presets originales supuestamente reproducidos en el navegador.
 
 ## Orden de trabajo verificable
 
-1. Calibrar display/raw y cadencia/ruteo de Helicopter; contrastar con audio real.
-   Extender Value a otros motores, drum y controles auxiliares; comprobar los demás LFO.
-2. Avanzar FM/DrWave/Cluster y filtros internos; mantener explícito el bloqueo de
-   datos L1 donde exista. Completar modos de ejecución y controles secundarios.
-3. Spring/Tremolo/Tombola para Singing Birds y los demás FX/motores en la matriz.
-4. Aplicar cada patch de fábrica al disponer de todos sus componentes; contrastar
-   niveles, envolventes, modulación y mezcla, además del núcleo aislado.
-5. Comparación acústica con salidas reales del aparato y validación Windows/ASIO.
+1. Cerrar el contrato de Cluster: normalización L1, inicialización y dependencias
+   originales; integrar solo cuando estén verificadas.
+2. Continuar los motores y sus filtros/rutas internas por dependencias, con tablas,
+   muestras y estado completo contrastados antes de cada integración.
+3. Completar envolventes auxiliares/específicas, moduladores y destinos pendientes,
+   además de preparación/asignación de voz, modos de ejecución y salida originales.
+4. Validar cada integración en el motor de audio: tasas, cambios de controles,
+   note-off/pánico, sesiones/MIDI y trabajo del callback, junto con Windows/ASIO.
+5. Presets, recetas de sonidos y comparación con vídeo en una etapa posterior.
+
+El [plan DSP](firmware-dsp-workplan.md) define los criterios de cierre y registra
+los bloqueos sin sustituir datos desconocidos por valores supuestamente originales.
 
 Una coincidencia de oráculo bajo el modelo GNU documentado no certifica la máquina
 completa, el reloj físico, su latencia ni ausencia de dropouts. El proyecto conserva

@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "engine": "Cluster",
+  "revision": 246,
+  "scope": "Isolated kernel observations, not a complete original engine. No preset/audio-reference work in this stage.",
+  "render": "0x01960288",
+  "reset": "0x01960664",
+  "release": "0x01960248",
+  "display_decay": "0x0196089c",
+  "control_ranges": [
+    {
+      "min": 3072,
+      "max": 17408,
+      "scale": 14336,
+      "kind": 0
+    },
+    {
+      "min": 0,
+      "max": 32767,
+      "scale": 32767,
+      "kind": 0
+    },
+    {
+      "min": 512,
+      "max": 24064,
+      "scale": 23552,
+      "kind": 0
+    },
+    {
+      "min": 3,
+      "max": 1638,
+      "scale": 1635,
+      "kind": 0
+    }
+  ],
+  "normalization": {
+    "status": "Unresolved original values",
+    "entries": 8,
+    "float_source": "0xff900524",
+    "conversion": "0x01aa7014",
+    "initializer": "0x019608e0",
+    "runtime_q15": "0x01baa91c",
+    "ldr_payload": {
+      "header_offset": "0x1fe870",
+      "address": "0xff9003f0",
+      "bytes": 656,
+      "flags": "0xad812406"
+    },
+    "input_contract": "Oracle injects explicit synthetic coefficient vectors; their values are not claimed to be original."
+  },
+  "damping": {
+    "source_float": "0x018befb0",
+    "conversion": "0x01aa6fd0",
+    "runtime_q31": "0x0106a954",
+    "entries": 24,
+    "verified_q31": [
+      117867096,
+      503108000,
+      816113920,
+      1201772928,
+      1494041600,
+      1606483072,
+      1717771776,
+      1791209088,
+      1857389568,
+      1912090240,
+      1949449344,
+      1976580480,
+      1997176448,
+      2026371712,
+      2046071936,
+      2070966912,
+      2086048896,
+      2106329344,
+      2116543360,
+      2126806912,
+      2135053696,
+      2141259648,
+      2143332352,
+      2145406976
+    ]
+  },
+  "state_bytes": 108,
+  "shared_context_bytes": 32,
+  "shared_random_seed_bytes": 4,
+  "integration_status": "Not exposed in plugin; original normalization, scheduling, voice preparation and output integration still pending."
+}

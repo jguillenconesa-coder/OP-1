@@ -134,3 +134,14 @@ preset observations already credited. It does not establish complete patch or
 recording-chain equivalence. The analysis additionally uses separately installed
 SciPy and Matplotlib; these are research dependencies, not plugin runtime or
 installer additions.
+
+## Cluster rev246 isolated kernel
+
+The independently written [Cluster reconstruction](docs/cluster246-kernel.md)
+uses the operator-supplied rev246 firmware only as a private instruction oracle.
+The committed fixtures contain numerical test results and scalar observations,
+not the firmware, original instructions or L1 payload. The same documented GNU
+BF524 simulator patch and source notices apply. The count-normalization values
+in the probes are explicitly synthetic caller inputs; the original L1 table and
+complete instrument integration are not claimed. No preset/video data is used
+for this component. See the [active firmware DSP workplan](docs/firmware-dsp-workplan.md).

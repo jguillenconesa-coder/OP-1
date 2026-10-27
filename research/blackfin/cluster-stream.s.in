@@ -1,0 +1,189 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Independent harness. Coefficient tables are explicit test inputs, not recovered L1 data.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+imm32 P0, 0x01a1e914
+CALL (P0);
+@COEFFICIENTS@
+R0.H = range_args;
+R0.L = range_args;
+P0 = 5;
+EXCPT 0;
+R0.H = damping_args;
+R0.L = damping_args;
+P0 = 5;
+EXCPT 0;
+imm32 P0, 0x018b6688
+imm32 P1, 0x0101e5e8
+P2 = 8192;
+LSETUP(copy_sine,copy_sine_end) LC0 = P2;
+copy_sine:
+R0 = [P0++];
+copy_sine_end: W[P1++] = R0;
+P0.H = inputs;
+P0.L = inputs;
+P1.H = input_ptr;
+P1.L = input_ptr;
+[P1] = P0;
+P0.H = results;
+P0.L = results;
+P1.H = result_ptr;
+P1.L = result_ptr;
+[P1] = P0;
+probe_loop:
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P4 = 808;
+P4 = P1 + P4;
+R0 = [P4];
+CC = BITTST(R0, 0);
+IF !CC JUMP copy_pitch;
+P2.H = state;
+P2.L = state;
+P3 = 27;
+LSETUP(copy_state,copy_state_end) LC0 = P3;
+copy_state:
+R0 = [P1++];
+copy_state_end: [P2++] = R0;
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P4 = 772;
+P1 = P1 + P4;
+imm32 P2, 0xff802bc8
+R0 = [P1++];
+[P2] = R0;
+imm32 P2, 0x01baa92c
+P3 = 8;
+LSETUP(copy_context,copy_context_end) LC0 = P3;
+copy_context:
+R0 = [P1++];
+copy_context_end: [P2++] = R0;
+copy_pitch:
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P4 = 116;
+P1 = P1 + P4;
+imm32 P2, 0xff801950
+P3 = 128;
+LSETUP(copy_increments,copy_increments_end) LC0 = P3;
+copy_increments:
+R0 = [P1++];
+copy_increments_end: [P2++] = R0;
+imm32 P2, 0x01baa91c
+P3 = 4;
+LSETUP(copy_norm,copy_norm_end) LC0 = P3;
+copy_norm:
+R0 = [P1++];
+copy_norm_end: [P2++] = R0;
+imm32 P2, 0x0106a954
+P3 = 32;
+LSETUP(copy_damping,copy_damping_end) LC0 = P3;
+copy_damping:
+R0 = [P1++];
+copy_damping_end: [P2++] = R0;
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P4 = 808;
+P4 = P1 + P4;
+R0 = [P4];
+CC = BITTST(R0, 1);
+IF !CC JUMP release_state;
+R0.H = state;
+R0.L = state;
+R1 = P1;
+R3 = 108;
+R1 = R1 + R3;
+imm32 P0, 0x01960664
+CALL (P0);
+release_state:
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P4 = 808;
+P4 = P1 + P4;
+R0 = [P4];
+CC = BITTST(R0, 2);
+IF !CC JUMP render;
+R0.H = state;
+R0.L = state;
+imm32 P0, 0x01960248
+CALL (P0);
+render:
+R0.H = state;
+R0.L = state;
+P0.H = result_ptr;
+P0.L = result_ptr;
+R1 = [P0];
+P0.H = input_ptr;
+P0.L = input_ptr;
+R2 = [P0];
+R3 = 108;
+R2 = R2 + R3;
+imm32 P0, 0x01960288
+CALL (P0);
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P4 = 808;
+P4 = P1 + P4;
+R0 = [P4];
+CC = BITTST(R0, 3);
+IF !CC JUMP save_state;
+imm32 P0, 0x0196089c
+CALL (P0);
+save_state:
+P0.H = result_ptr;
+P0.L = result_ptr;
+P1 = [P0];
+P4 = 256;
+P2 = P1 + P4;
+P3.H = state;
+P3.L = state;
+P4 = 27;
+LSETUP(save_self,save_self_end) LC0 = P4;
+save_self:
+R0 = [P3++];
+save_self_end: [P2++] = R0;
+imm32 P3, 0x01baa92c
+P4 = 8;
+LSETUP(save_context,save_context_end) LC0 = P4;
+save_context:
+R0 = [P3++];
+save_context_end: [P2++] = R0;
+imm32 P3, 0xff802bc8
+R0 = [P3];
+[P2++] = R0;
+[P0] = P2;
+P0.H = input_ptr;
+P0.L = input_ptr;
+R0 = [P0];
+R1 = 812;
+R0 = R0 + R1;
+[P0] = R0;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF !CC JUMP probe_loop;
+R0.H = io_args;
+R0.L = io_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+range_args: .long 1,0x01de5990,64
+damping_args: .long 1,0x0106a954,96
+io_args: .long 1,results,@BYTES@
+input_ptr: .long 0
+result_ptr: .long 0
+state: .space 108
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"
