@@ -1,0 +1,810 @@
+{
+  "schema": 1,
+  "scope": "Dependency triage for the 32 native Phase/Digital CORE presets. Empty unsupported-family lists do not certify full routing or patch equivalence. Offline pilot renderer omits ALL FX/LFO, even implemented optional families.",
+  "presets": [
+    {
+      "family": "digital",
+      "name": "auto rptr",
+      "inventory_id": 1,
+      "stored_keyboard_octave": 1,
+      "active_fx": "nitro",
+      "active_lfo": "element",
+      "unported_active_fx_lfo_families": [
+        "FX nitro",
+        "LFO element"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 6,
+        "local_pts_seconds": 38.052995,
+        "video_seconds": 800.666667,
+        "sampled_frame_ordinal": 20,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "booooh",
+      "inventory_id": 2,
+      "stored_keyboard_octave": -2,
+      "active_fx": "cwo",
+      "active_lfo": null,
+      "unported_active_fx_lfo_families": [
+        "FX cwo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 6,
+        "local_pts_seconds": 60.052995,
+        "video_seconds": 822.666667,
+        "sampled_frame_ordinal": 31,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "daylight",
+      "inventory_id": 3,
+      "stored_keyboard_octave": 0,
+      "active_fx": "delay",
+      "active_lfo": null,
+      "unported_active_fx_lfo_families": [
+        "FX delay"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 6,
+        "local_pts_seconds": 74.052995,
+        "video_seconds": 836.666667,
+        "sampled_frame_ordinal": 38,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "didg",
+      "inventory_id": 4,
+      "stored_keyboard_octave": -1,
+      "active_fx": "punch",
+      "active_lfo": "value",
+      "unported_active_fx_lfo_families": [],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 6,
+        "local_pts_seconds": 96.052995,
+        "video_seconds": 858.666667,
+        "sampled_frame_ordinal": 49,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "forgotten",
+      "inventory_id": 5,
+      "stored_keyboard_octave": -1,
+      "active_fx": "cwo",
+      "active_lfo": null,
+      "unported_active_fx_lfo_families": [
+        "FX cwo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 6,
+        "local_pts_seconds": 130.052995,
+        "video_seconds": 892.666667,
+        "sampled_frame_ordinal": 66,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "glenn",
+      "inventory_id": 6,
+      "stored_keyboard_octave": -1,
+      "active_fx": "delay",
+      "active_lfo": "value",
+      "unported_active_fx_lfo_families": [
+        "FX delay"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 6,
+        "local_pts_seconds": 158.052995,
+        "video_seconds": 920.666667,
+        "sampled_frame_ordinal": 80,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "low end",
+      "inventory_id": 7,
+      "stored_keyboard_octave": 0,
+      "active_fx": null,
+      "active_lfo": "value",
+      "unported_active_fx_lfo_families": [],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 7,
+        "local_pts_seconds": 44.052018,
+        "video_seconds": 961.333333,
+        "sampled_frame_ordinal": 23,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "lullaby time",
+      "inventory_id": 8,
+      "stored_keyboard_octave": 0,
+      "active_fx": "delay",
+      "active_lfo": "element",
+      "unported_active_fx_lfo_families": [
+        "FX delay",
+        "LFO element"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 7,
+        "local_pts_seconds": 58.052018,
+        "video_seconds": 975.333333,
+        "sampled_frame_ordinal": 30,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "organbratto",
+      "inventory_id": 9,
+      "stored_keyboard_octave": 0,
+      "active_fx": "spring",
+      "active_lfo": "tremolo",
+      "unported_active_fx_lfo_families": [
+        "FX spring",
+        "LFO tremolo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 7,
+        "local_pts_seconds": 108.052018,
+        "video_seconds": 1025.333333,
+        "sampled_frame_ordinal": 55,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "princess",
+      "inventory_id": 10,
+      "stored_keyboard_octave": 1,
+      "active_fx": "spring",
+      "active_lfo": "tremolo",
+      "unported_active_fx_lfo_families": [
+        "FX spring",
+        "LFO tremolo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 20.05,
+        "video_seconds": 1092.0,
+        "sampled_frame_ordinal": 11,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "queff bass",
+      "inventory_id": 11,
+      "stored_keyboard_octave": 0,
+      "active_fx": "nitro",
+      "active_lfo": "random",
+      "unported_active_fx_lfo_families": [
+        "FX nitro",
+        "LFO random"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 30.05,
+        "video_seconds": 1102.0,
+        "sampled_frame_ordinal": 16,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "recognizer",
+      "inventory_id": 12,
+      "stored_keyboard_octave": -1,
+      "active_fx": "delay",
+      "active_lfo": "element",
+      "unported_active_fx_lfo_families": [
+        "FX delay",
+        "LFO element"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 36.05,
+        "video_seconds": 1108.0,
+        "sampled_frame_ordinal": 19,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "sugar",
+      "inventory_id": 13,
+      "stored_keyboard_octave": 1,
+      "active_fx": null,
+      "active_lfo": null,
+      "unported_active_fx_lfo_families": [],
+      "isolated_fx_lfo_candidate": true,
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 72.05,
+        "video_seconds": 1144.0,
+        "sampled_frame_ordinal": 37,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "theremono",
+      "inventory_id": 14,
+      "stored_keyboard_octave": 1,
+      "active_fx": "spring",
+      "active_lfo": "tremolo",
+      "unported_active_fx_lfo_families": [
+        "FX spring",
+        "LFO tremolo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 88.05,
+        "video_seconds": 1160.0,
+        "sampled_frame_ordinal": 45,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "tomorrow",
+      "inventory_id": 15,
+      "stored_keyboard_octave": 0,
+      "active_fx": "nitro",
+      "active_lfo": "tremolo",
+      "unported_active_fx_lfo_families": [
+        "FX nitro",
+        "LFO tremolo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 106.05,
+        "video_seconds": 1178.0,
+        "sampled_frame_ordinal": 54,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "digital",
+      "name": "violinist",
+      "inventory_id": 16,
+      "stored_keyboard_octave": 0,
+      "active_fx": "spring",
+      "active_lfo": "tremolo",
+      "unported_active_fx_lfo_families": [
+        "FX spring",
+        "LFO tremolo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 8,
+        "local_pts_seconds": 126.05,
+        "video_seconds": 1198.0,
+        "sampled_frame_ordinal": 64,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "bass phase",
+      "inventory_id": 97,
+      "stored_keyboard_octave": -2,
+      "active_fx": "punch",
+      "active_lfo": "value",
+      "unported_active_fx_lfo_families": [],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 70.047005,
+        "video_seconds": 2219.333333,
+        "sampled_frame_ordinal": 36,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "bubble",
+      "inventory_id": 98,
+      "stored_keyboard_octave": 1,
+      "active_fx": "spring",
+      "active_lfo": "tremolo",
+      "unported_active_fx_lfo_families": [
+        "FX spring",
+        "LFO tremolo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 72.047005,
+        "video_seconds": 2221.333333,
+        "sampled_frame_ordinal": 37,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "classic lfo",
+      "inventory_id": 99,
+      "stored_keyboard_octave": 0,
+      "active_fx": "spring",
+      "active_lfo": "value",
+      "unported_active_fx_lfo_families": [
+        "FX spring"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 80.047005,
+        "video_seconds": 2229.333333,
+        "sampled_frame_ordinal": 41,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "hold me",
+      "inventory_id": 100,
+      "stored_keyboard_octave": -2,
+      "active_fx": "cwo",
+      "active_lfo": "value",
+      "unported_active_fx_lfo_families": [
+        "FX cwo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 86.047005,
+        "video_seconds": 2235.333333,
+        "sampled_frame_ordinal": 44,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "jangle",
+      "inventory_id": 101,
+      "stored_keyboard_octave": 0,
+      "active_fx": "grid",
+      "active_lfo": "tremolo",
+      "unported_active_fx_lfo_families": [
+        "FX grid",
+        "LFO tremolo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 104.047005,
+        "video_seconds": 2253.333333,
+        "sampled_frame_ordinal": 53,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "kitt",
+      "inventory_id": 102,
+      "stored_keyboard_octave": 1,
+      "active_fx": "cwo",
+      "active_lfo": null,
+      "unported_active_fx_lfo_families": [
+        "FX cwo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 120.047005,
+        "video_seconds": 2269.333333,
+        "sampled_frame_ordinal": 61,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "lil critter",
+      "inventory_id": 103,
+      "stored_keyboard_octave": -3,
+      "active_fx": "nitro",
+      "active_lfo": "tremolo",
+      "unported_active_fx_lfo_families": [
+        "FX nitro",
+        "LFO tremolo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 15,
+        "local_pts_seconds": 146.047005,
+        "video_seconds": 2295.333333,
+        "sampled_frame_ordinal": 74,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "pass band",
+      "inventory_id": 104,
+      "stored_keyboard_octave": -1,
+      "active_fx": "cwo",
+      "active_lfo": "tremolo",
+      "unported_active_fx_lfo_families": [
+        "FX cwo",
+        "LFO tremolo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 8.052995,
+        "video_seconds": 2306.666667,
+        "sampled_frame_ordinal": 5,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "pure",
+      "inventory_id": 105,
+      "stored_keyboard_octave": -2,
+      "active_fx": null,
+      "active_lfo": "element",
+      "unported_active_fx_lfo_families": [
+        "LFO element"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 12.052995,
+        "video_seconds": 2310.666667,
+        "sampled_frame_ordinal": 7,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "reflection",
+      "inventory_id": 106,
+      "stored_keyboard_octave": -1,
+      "active_fx": "cwo",
+      "active_lfo": "value",
+      "unported_active_fx_lfo_families": [
+        "FX cwo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 16.052995,
+        "video_seconds": 2314.666667,
+        "sampled_frame_ordinal": 9,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "roar bass",
+      "inventory_id": 107,
+      "stored_keyboard_octave": -2,
+      "active_fx": "punch",
+      "active_lfo": "value",
+      "unported_active_fx_lfo_families": [],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 24.052995,
+        "video_seconds": 2322.666667,
+        "sampled_frame_ordinal": 13,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "rownd bass",
+      "inventory_id": 108,
+      "stored_keyboard_octave": -3,
+      "active_fx": null,
+      "active_lfo": "bend",
+      "unported_active_fx_lfo_families": [
+        "LFO bend"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 28.052995,
+        "video_seconds": 2326.666667,
+        "sampled_frame_ordinal": 15,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "schain bass",
+      "inventory_id": 109,
+      "stored_keyboard_octave": -3,
+      "active_fx": "nitro",
+      "active_lfo": "element",
+      "unported_active_fx_lfo_families": [
+        "FX nitro",
+        "LFO element"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 40.052995,
+        "video_seconds": 2338.666667,
+        "sampled_frame_ordinal": 21,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "spring pad",
+      "inventory_id": 110,
+      "stored_keyboard_octave": -1,
+      "active_fx": "spring",
+      "active_lfo": "value",
+      "unported_active_fx_lfo_families": [
+        "FX spring"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 46.052995,
+        "video_seconds": 2344.666667,
+        "sampled_frame_ordinal": 24,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "valentines",
+      "inventory_id": 111,
+      "stored_keyboard_octave": 0,
+      "active_fx": "cwo",
+      "active_lfo": null,
+      "unported_active_fx_lfo_families": [
+        "FX cwo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 62.052995,
+        "video_seconds": 2360.666667,
+        "sampled_frame_ordinal": 32,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    },
+    {
+      "family": "phase",
+      "name": "werkin it",
+      "inventory_id": 112,
+      "stored_keyboard_octave": -3,
+      "active_fx": "cwo",
+      "active_lfo": null,
+      "unported_active_fx_lfo_families": [
+        "FX cwo"
+      ],
+      "isolated_fx_lfo_candidate": false,
+      "screen_observation": {
+        "segment": 16,
+        "local_pts_seconds": 94.052995,
+        "video_seconds": 2392.666667,
+        "sampled_frame_ordinal": 48,
+        "visually_reviewed": true,
+        "review_method": "Selected label and category inspected on private category contact sheet"
+      },
+      "remaining_shared_confounds": [
+        "Auxiliary envelope fields and play mode",
+        "Original note preparation, output filters, mixing and recording chain",
+        "No numeric readback of recorded patch settings"
+      ]
+    }
+  ]
+}

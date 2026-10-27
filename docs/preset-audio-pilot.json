@@ -1,0 +1,514 @@
+{
+  "schema": 1,
+  "scope": "Conditional harmonic measurements, not a fidelity percentage or MIDI mapping validation",
+  "render_scope": "Engine + stored oscillator/common ADSR + own output/rate adapter; all FX/LFO and PluginProcessor master/EQ/tape omitted",
+  "runtime_dsp_changed": false,
+  "envelope_note_on_off_timing_validated": false,
+  "reference_media_redistributed": false,
+  "cases_sha256": "9d199b69726541c89d5ae91dcb4cc8c400f21d17ce44942dff21f001d00ccab4",
+  "manifest_sha256": "1206db08995104d87c49db0da173e74d4edc900d7957837de6ce9d5211276b9f",
+  "renderer_source_sha256": "bee12e33e471cc015a09371200baee37c56e0b7bc58f823011619f47e633f462",
+  "analysis_source_sha256": "8fa5c3ee22443fb08ad230a12a7cefe123da44fe8399e2fb891b95fb4b17c7de",
+  "sample_rate": 44100,
+  "results": [
+    {
+      "case": {
+        "id": "digital-sugar-C5",
+        "family": "digital",
+        "name": "sugar",
+        "preset_index": 12,
+        "segment": 8,
+        "video_start_seconds": 1141.35,
+        "video_end_seconds": 1141.85,
+        "hypothesized_midi_note": 72,
+        "render_velocity": 100,
+        "render_gate_seconds": 2,
+        "render_duration_seconds": 2.5,
+        "render_window_start_seconds": 0.4,
+        "harmonics": 12,
+        "confounds": [
+          "Unknown recording gain, EQ and signal chain",
+          "Original auxiliary ADSR/play mode and note preparation unvalidated",
+          "Same-name 2021 patch parameters not read back numerically",
+          "CORE render omits the PluginProcessor master/EQ/tape signal chain"
+        ],
+        "purpose": "Lowest-dependency stored Digital patch: FX and LFO disabled in rev246"
+      },
+      "reference": {
+        "f0_hypothesis_hz": 523.69328,
+        "cents_from_hypothesized_equal_tempered_note": 1.4623,
+        "harmonic_levels_db_relative_to_first": [
+          0.0,
+          -8.7087,
+          -27.6628,
+          -10.6866,
+          -24.8782,
+          -23.0107,
+          -24.2371,
+          -24.2231,
+          -27.5224,
+          -22.0396,
+          -36.5749,
+          -22.6679
+        ],
+        "nonharmonic_band_energy_fraction": 0.061013,
+        "fundamental_relative_to_strongest_peak_db": 0.0,
+        "harmonic_grid_compatible": true,
+        "grid_gate_scope": "Heuristic eligibility gate, not proof of one voice or a recovered MIDI note",
+        "harmonic_band_half_width_hz": 5.0,
+        "rms_dbfs": -33.1042,
+        "strongest_peaks": [
+          {
+            "hz": 523.6942,
+            "db_relative_to_peak": 0.0
+          },
+          {
+            "hz": 1047.3043,
+            "db_relative_to_peak": -9.7961
+          },
+          {
+            "hz": 2092.5058,
+            "db_relative_to_peak": -10.6289
+          },
+          {
+            "hz": 519.3203,
+            "db_relative_to_peak": -12.6782
+          },
+          {
+            "hz": 528.7411,
+            "db_relative_to_peak": -15.9387
+          },
+          {
+            "hz": 515.2828,
+            "db_relative_to_peak": -19.5063
+          },
+          {
+            "hz": 5232.4842,
+            "db_relative_to_peak": -20.2713
+          },
+          {
+            "hz": 6279.7045,
+            "db_relative_to_peak": -20.8013
+          }
+        ]
+      },
+      "core_render": {
+        "f0_hypothesis_hz": 523.257298,
+        "cents_from_hypothesized_equal_tempered_note": 0.0204,
+        "harmonic_levels_db_relative_to_first": [
+          0.0,
+          -3.7721,
+          -8.6705,
+          -0.2928,
+          -13.5154,
+          -16.4979,
+          -17.0434,
+          -21.9186,
+          -20.1011,
+          -20.5115,
+          -22.8083,
+          -10.0392
+        ],
+        "nonharmonic_band_energy_fraction": 0.002893,
+        "fundamental_relative_to_strongest_peak_db": 0.0,
+        "harmonic_grid_compatible": true,
+        "grid_gate_scope": "Heuristic eligibility gate, not proof of one voice or a recovered MIDI note",
+        "harmonic_band_half_width_hz": 5.0,
+        "rms_dbfs": -42.6389,
+        "strongest_peaks": [
+          {
+            "hz": 523.2737,
+            "db_relative_to_peak": 0.0
+          },
+          {
+            "hz": 2093.0105,
+            "db_relative_to_peak": -0.3126
+          },
+          {
+            "hz": 1046.5473,
+            "db_relative_to_peak": -3.7854
+          },
+          {
+            "hz": 1569.821,
+            "db_relative_to_peak": -8.6856
+          },
+          {
+            "hz": 6279.0316,
+            "db_relative_to_peak": -10.1112
+          },
+          {
+            "hz": 2616.2842,
+            "db_relative_to_peak": -13.6224
+          },
+          {
+            "hz": 3139.3896,
+            "db_relative_to_peak": -16.5748
+          },
+          {
+            "hz": 3662.8315,
+            "db_relative_to_peak": -17.3458
+          }
+        ]
+      },
+      "stereo_channel_correlation": 0.99999608,
+      "render_wav_sha256": "72ed8fb75ad5bf792fc89a5384e3a92f53d167e163e11fc063ef7df98669d69c",
+      "spectral_comparison_eligible": true,
+      "render_minus_reference_harmonics_db": [
+        0.0,
+        4.9366,
+        18.9923,
+        10.3938,
+        11.3628,
+        6.5128,
+        7.1937,
+        2.3045,
+        7.4213,
+        1.5281,
+        13.7666,
+        12.6287
+      ]
+    },
+    {
+      "case": {
+        "id": "phase-pure-A2",
+        "family": "phase",
+        "name": "pure",
+        "preset_index": 8,
+        "segment": 16,
+        "video_start_seconds": 2310.1,
+        "video_end_seconds": 2310.9,
+        "hypothesized_midi_note": 45,
+        "render_velocity": 100,
+        "render_gate_seconds": 2,
+        "render_duration_seconds": 2.5,
+        "render_window_start_seconds": 0.4,
+        "harmonics": 16,
+        "confounds": [
+          "Element LFO active in stored patch; omitted by CORE render",
+          "Unknown recording gain, EQ and signal chain",
+          "Original auxiliary ADSR/play mode and note preparation unvalidated",
+          "Same-name 2021 patch parameters not read back numerically",
+          "CORE render omits the PluginProcessor master/EQ/tape signal chain"
+        ],
+        "purpose": "Phase pilot with a stable 110 Hz harmonic grid; not an isolated original core"
+      },
+      "reference": {
+        "f0_hypothesis_hz": 109.999234,
+        "cents_from_hypothesized_equal_tempered_note": -0.0121,
+        "harmonic_levels_db_relative_to_first": [
+          0.0,
+          0.3003,
+          -7.3472,
+          -0.8047,
+          -3.9875,
+          -5.6769,
+          -7.2116,
+          -18.1336,
+          -6.6856,
+          -10.6844,
+          -12.3743,
+          -16.7479,
+          -18.0322,
+          -24.7238,
+          -22.2426,
+          -23.0803
+        ],
+        "nonharmonic_band_energy_fraction": 0.055234,
+        "fundamental_relative_to_strongest_peak_db": -0.1653,
+        "harmonic_grid_compatible": true,
+        "grid_gate_scope": "Heuristic eligibility gate, not proof of one voice or a recovered MIDI note",
+        "harmonic_band_half_width_hz": 3.125,
+        "rms_dbfs": -55.5406,
+        "strongest_peaks": [
+          {
+            "hz": 220.0004,
+            "db_relative_to_peak": 0.0
+          },
+          {
+            "hz": 109.9792,
+            "db_relative_to_peak": -0.1653
+          },
+          {
+            "hz": 439.9587,
+            "db_relative_to_peak": -0.9608
+          },
+          {
+            "hz": 549.9799,
+            "db_relative_to_peak": -4.2439
+          },
+          {
+            "hz": 660.0011,
+            "db_relative_to_peak": -5.9213
+          },
+          {
+            "hz": 990.0227,
+            "db_relative_to_peak": -6.9016
+          },
+          {
+            "hz": 770.0223,
+            "db_relative_to_peak": -7.3991
+          },
+          {
+            "hz": 329.9795,
+            "db_relative_to_peak": -7.4915
+          }
+        ]
+      },
+      "core_render": {
+        "f0_hypothesis_hz": 109.999999,
+        "cents_from_hypothesized_equal_tempered_note": -0.0,
+        "harmonic_levels_db_relative_to_first": [
+          0.0,
+          1.3231,
+          2.7041,
+          3.3033,
+          2.4517,
+          0.6902,
+          -0.2175,
+          -1.7849,
+          -3.4004,
+          -5.0998,
+          -7.3975,
+          -7.9018,
+          -9.0068,
+          -11.6527,
+          -15.2804,
+          -19.2796
+        ],
+        "nonharmonic_band_energy_fraction": 0.000206,
+        "fundamental_relative_to_strongest_peak_db": -3.3048,
+        "harmonic_grid_compatible": true,
+        "grid_gate_scope": "Heuristic eligibility gate, not proof of one voice or a recovered MIDI note",
+        "harmonic_band_half_width_hz": 3.125,
+        "rms_dbfs": -35.4952,
+        "strongest_peaks": [
+          {
+            "hz": 440.0007,
+            "db_relative_to_peak": 0.0
+          },
+          {
+            "hz": 329.9795,
+            "db_relative_to_peak": -0.6007
+          },
+          {
+            "hz": 549.9799,
+            "db_relative_to_peak": -0.853
+          },
+          {
+            "hz": 220.0004,
+            "db_relative_to_peak": -1.9802
+          },
+          {
+            "hz": 660.0011,
+            "db_relative_to_peak": -2.6131
+          },
+          {
+            "hz": 109.9792,
+            "db_relative_to_peak": -3.3048
+          },
+          {
+            "hz": 769.9802,
+            "db_relative_to_peak": -3.5222
+          },
+          {
+            "hz": 880.0014,
+            "db_relative_to_peak": -5.0882
+          }
+        ]
+      },
+      "stereo_channel_correlation": 0.99998202,
+      "render_wav_sha256": "c7394d773941209410c2a3536f86d9aa51d998204dd148c6ac6cd0084e21f4d2",
+      "spectral_comparison_eligible": true,
+      "render_minus_reference_harmonics_db": [
+        0.0,
+        1.0228,
+        10.0513,
+        4.108,
+        6.4392,
+        6.3671,
+        6.9941,
+        16.3487,
+        3.2852,
+        5.5846,
+        4.9768,
+        8.8461,
+        9.0254,
+        13.0711,
+        6.9622,
+        3.8007
+      ]
+    },
+    {
+      "case": {
+        "id": "digital-sugar-polyphonic-reject",
+        "family": "digital",
+        "name": "sugar",
+        "preset_index": 12,
+        "segment": 8,
+        "video_start_seconds": 1134.4,
+        "video_end_seconds": 1134.8,
+        "hypothesized_midi_note": 52,
+        "render_velocity": 100,
+        "render_gate_seconds": 2,
+        "render_duration_seconds": 2.5,
+        "render_window_start_seconds": 0.4,
+        "harmonics": 12,
+        "confounds": [
+          "Multiple simultaneous pitches: unsuitable for a monophonic match"
+        ],
+        "purpose": "Negative control: autocorrelation gives an apparent E3 period for a chord",
+        "expect_spectral_rejection": true
+      },
+      "reference": {
+        "f0_hypothesis_hz": 166.542112,
+        "cents_from_hypothesized_equal_tempered_note": 18.0602,
+        "harmonic_levels_db_relative_to_first": [
+          0.0,
+          -4.6437,
+          36.8636,
+          32.7746,
+          2.7656,
+          1.6895,
+          0.4943,
+          -0.1775,
+          -1.0908,
+          -3.881,
+          -11.9659,
+          -7.4862
+        ],
+        "nonharmonic_band_energy_fraction": 0.620142,
+        "fundamental_relative_to_strongest_peak_db": -41.7206,
+        "harmonic_grid_compatible": false,
+        "grid_gate_scope": "Heuristic eligibility gate, not proof of one voice or a recovered MIDI note",
+        "harmonic_band_half_width_hz": 6.250354,
+        "rms_dbfs": -39.5918,
+        "strongest_peaks": [
+          {
+            "hz": 493.9178,
+            "db_relative_to_peak": 0.0
+          },
+          {
+            "hz": 659.202,
+            "db_relative_to_peak": -1.07
+          },
+          {
+            "hz": 987.7516,
+            "db_relative_to_peak": -5.2573
+          },
+          {
+            "hz": 2636.8921,
+            "db_relative_to_peak": -6.1542
+          },
+          {
+            "hz": 784.0273,
+            "db_relative_to_peak": -8.2211
+          },
+          {
+            "hz": 1318.4881,
+            "db_relative_to_peak": -12.3399
+          },
+          {
+            "hz": 3136.025,
+            "db_relative_to_peak": -14.7266
+          },
+          {
+            "hz": 5926.6777,
+            "db_relative_to_peak": -16.0366
+          }
+        ]
+      },
+      "core_render": {
+        "f0_hypothesis_hz": 164.808196,
+        "cents_from_hypothesized_equal_tempered_note": -0.0586,
+        "harmonic_levels_db_relative_to_first": [
+          0.0,
+          -3.3738,
+          -8.8213,
+          0.1645,
+          -13.5392,
+          -15.4189,
+          -15.4257,
+          -18.7117,
+          -21.0679,
+          -20.1087,
+          -23.5158,
+          -9.8483
+        ],
+        "nonharmonic_band_energy_fraction": 0.000526,
+        "fundamental_relative_to_strongest_peak_db": -0.1708,
+        "harmonic_grid_compatible": true,
+        "grid_gate_scope": "Heuristic eligibility gate, not proof of one voice or a recovered MIDI note",
+        "harmonic_band_half_width_hz": 6.250354,
+        "rms_dbfs": -41.9934,
+        "strongest_peaks": [
+          {
+            "hz": 659.2861,
+            "db_relative_to_peak": 0.0
+          },
+          {
+            "hz": 164.7795,
+            "db_relative_to_peak": -0.1708
+          },
+          {
+            "hz": 329.6431,
+            "db_relative_to_peak": -3.5377
+          },
+          {
+            "hz": 494.4225,
+            "db_relative_to_peak": -8.9877
+          },
+          {
+            "hz": 1977.7742,
+            "db_relative_to_peak": -9.9864
+          },
+          {
+            "hz": 823.9815,
+            "db_relative_to_peak": -13.6517
+          },
+          {
+            "hz": 1153.6245,
+            "db_relative_to_peak": -15.6097
+          },
+          {
+            "hz": 988.9292,
+            "db_relative_to_peak": -15.6353
+          }
+        ]
+      },
+      "stereo_channel_correlation": 1.0,
+      "render_wav_sha256": "e0ea24dee936e18034a346c508fd939437deed09d12a16e779931f14b1b9139b",
+      "spectral_comparison_eligible": false,
+      "render_minus_reference_harmonics_db": null
+    }
+  ],
+  "validation": {
+    "renderer_checks": 18,
+    "invalid_invocations_rejected": 9,
+    "external_wav_decoder": "SciPy and ffprobe pcm_f32le",
+    "windows_wine_sugar": {
+      "sample_frames": 110250,
+      "max_abs_linux_difference": 0.0,
+      "rms_linux_difference": 0.0
+    },
+    "numerical_pilot_reproduced": true,
+    "native_core_ctest_suites_passed": 13,
+    "analysis_self_test": "Analytic pitch, known harmonic amplitude, gain invariance, chord and silence rejection passed",
+    "windows_tool_build": "MSVC-target cross build, execution under Wine; not native Ableton/ASIO validation",
+    "base_commit": "4adab76dd13c56f9f8914df25ce2872e5a481d9f",
+    "environment": {
+      "python": "3.12.14",
+      "numpy": "2.3.5",
+      "scipy": "1.17.0",
+      "matplotlib": "3.10.8",
+      "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers"
+    },
+    "source_hashes": {
+      "Tools/PresetStudyRender.cpp": "bee12e33e471cc015a09371200baee37c56e0b7bc58f823011619f47e633f462",
+      "scripts/compare-preset-audio.py": "8fa5c3ee22443fb08ad230a12a7cefe123da44fe8399e2fb891b95fb4b17c7de",
+      "Source/Engine.h": "6d87ff49df4a622fcb07a6fccb3180c6339ce590f8cf0bde50d13bf90608a5e0",
+      "Source/Phase246.h": "7c73a8ce25fc61231050ab142f6291ee1c9239c7ad799c9567a1a3cce02e3938",
+      "Source/Digital246.h": "04812199cca6ff40f270523ce2af32af0f461c430914e7c8b0201fc248f1396b",
+      "Source/Digital246Voice.h": "975c7eaea09bbe47f146a3784bdad929d86ac3ca030f3d032d5233c3a6580991"
+    }
+  }
+}

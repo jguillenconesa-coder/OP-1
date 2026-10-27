@@ -25,6 +25,10 @@ diagnósticos de señal sirven para reproducir el acceso al material; no constit
 una escucha crítica, comparación de timbre, identificación MIDI o calibración DSP.
 **No se han ajustado motores ni presets del plugin a partir de este índice.**
 
+Tras este inventario se midió el [piloto espectral Sugar/Pure](preset-audio-pilot.md).
+Incluye diferencias cuantificadas y un control descartado por polifonía; la
+equivalencia de los patches completos sigue pendiente.
+
 [Datos del índice](../research/blackfin/preset-video-index.json) ·
 [Segmentos, hashes, alineación y audio](../research/blackfin/preset-video-segments.json) ·
 [Cobertura DSP](original-op1-coverage.md)

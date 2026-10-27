@@ -116,3 +116,10 @@ obtenido del lote definitivo de 21 segmentos. Se ha decodificado su audio y
 alineado el vídeo mediante paquetes compartidos. Sigue pendiente la comparación
 acústica con notas/FX/LFO documentados; identificar un nombre no completa un port.
 Los lotes descartados a petición del usuario permanecen excluidos.
+
+El [piloto espectral Sugar/Pure](preset-audio-pilot.md) mide dos ventanas bajo
+hipótesis de nota explícitas y rechaza otra por polifonía. Se conservan diferencias
+de hasta decenas de dB en determinados armónicos relativos; la grabación y las
+rutas incompletas impiden atribuirlas a un algoritmo concreto. Se añade una
+[tabla de dependencias de los 32 presets CORE](../research/blackfin/preset-audio-readiness.json).
+No se han retocado motores, filtros ni envolventes a partir de este piloto.

@@ -55,8 +55,9 @@ espera; filtros/interpolación siguen teniendo su retardo de grupo.
 La comparación con 0.12 produce **1.867.776 muestras idénticas** en las rutas previas:
 seis motores, Phase/Digital con ambas envolventes y variantes Punch/Value FX.
 No valida cada proyecto ni el sonido completo del OP-1. La [demo aportada](preset-listening-reference.md)
-queda pendiente del lote definitivo de segmentos. Los lotes descartados a petición
-del usuario no se usan para contrastar el DSP; no se afirma comparación auditiva.
+ya tiene un índice de los 21 segmentos definitivos y un piloto espectral separado;
+la equivalencia del patch completo y la comparación específica de Value siguen
+pendientes. Los lotes descartados a petición del usuario permanecen excluidos.
 
 ## Reproducción
 

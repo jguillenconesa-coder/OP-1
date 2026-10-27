@@ -11,7 +11,7 @@
       "title_verified": false,
       "preset_names_verified": true,
       "comparisons_completed": false,
-      "status": "Definitive 21-segment replacement downloaded, hashed and aligned on 2026-10-27. 169 synth screen selections in 11 categories visually reviewed against rev246 names; full audio decoded. Acoustic comparison and note annotations pending.",
+      "status": "Definitive batch indexed: 169 synth screen selections in 11 categories. Conditional Sugar/Pure harmonic pilot completed, one polyphonic control rejected. Full-patch acoustic matching and note-on/off annotations remain pending; no runtime DSP retuning.",
       "attachment": {
         "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés).mp4",
         "transfer_attempted_utc": "2026-10-26",
@@ -40,6 +40,16 @@
         "audio_decoded": true,
         "critical_listening_or_timbre_comparison_completed": false,
         "original_media_published": false
+      },
+      "comparison_scope": "comparisons_completed refers to complete patch matching, not the conditional spectral pilot",
+      "conditional_spectral_pilot": {
+        "report": "../../docs/preset-audio-pilot.json",
+        "documentation": "../../docs/preset-audio-pilot.md",
+        "measured_windows": 2,
+        "rejected_polyphonic_windows": 1,
+        "note_hypotheses_not_midi_transcription": true,
+        "all_fx_lfo_and_plugin_master_chain_omitted": true,
+        "runtime_dsp_changed": false
       }
     }
   ]

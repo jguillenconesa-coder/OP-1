@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "scope": "Conditional spectral pilot. Notes are inferred from audio, not recovered MIDI; screen names alone do not prove identical raw parameters or signal chain. No runtime DSP adjustments.",
+  "cases": [
+    {
+      "id": "digital-sugar-C5",
+      "family": "digital",
+      "name": "sugar",
+      "preset_index": 12,
+      "segment": 8,
+      "video_start_seconds": 1141.35,
+      "video_end_seconds": 1141.85,
+      "hypothesized_midi_note": 72,
+      "render_velocity": 100,
+      "render_gate_seconds": 2,
+      "render_duration_seconds": 2.5,
+      "render_window_start_seconds": 0.4,
+      "harmonics": 12,
+      "confounds": [
+        "Unknown recording gain, EQ and signal chain",
+        "Original auxiliary ADSR/play mode and note preparation unvalidated",
+        "Same-name 2021 patch parameters not read back numerically",
+        "CORE render omits the PluginProcessor master/EQ/tape signal chain"
+      ],
+      "purpose": "Lowest-dependency stored Digital patch: FX and LFO disabled in rev246"
+    },
+    {
+      "id": "phase-pure-A2",
+      "family": "phase",
+      "name": "pure",
+      "preset_index": 8,
+      "segment": 16,
+      "video_start_seconds": 2310.1,
+      "video_end_seconds": 2310.9,
+      "hypothesized_midi_note": 45,
+      "render_velocity": 100,
+      "render_gate_seconds": 2,
+      "render_duration_seconds": 2.5,
+      "render_window_start_seconds": 0.4,
+      "harmonics": 16,
+      "confounds": [
+        "Element LFO active in stored patch; omitted by CORE render",
+        "Unknown recording gain, EQ and signal chain",
+        "Original auxiliary ADSR/play mode and note preparation unvalidated",
+        "Same-name 2021 patch parameters not read back numerically",
+        "CORE render omits the PluginProcessor master/EQ/tape signal chain"
+      ],
+      "purpose": "Phase pilot with a stable 110 Hz harmonic grid; not an isolated original core"
+    },
+    {
+      "id": "digital-sugar-polyphonic-reject",
+      "family": "digital",
+      "name": "sugar",
+      "preset_index": 12,
+      "segment": 8,
+      "video_start_seconds": 1134.4,
+      "video_end_seconds": 1134.8,
+      "hypothesized_midi_note": 52,
+      "render_velocity": 100,
+      "render_gate_seconds": 2,
+      "render_duration_seconds": 2.5,
+      "render_window_start_seconds": 0.4,
+      "harmonics": 12,
+      "confounds": [
+        "Multiple simultaneous pitches: unsuitable for a monophonic match"
+      ],
+      "purpose": "Negative control: autocorrelation gives an apparent E3 period for a chord",
+      "expect_spectral_rejection": true
+    }
+  ]
+}

@@ -124,3 +124,13 @@ or drum-kit coverage. No video, decoded audio or screenshots are distributed.
 The local analysis tool uses separately installed FFmpeg/ffprobe, Tesseract,
 Python, NumPy and Pillow. These research tools are not added to the plugin or
 bundled in its installers. See the index for reproduction and review limits.
+
+## Conditional spectral pilot and study renderer
+
+The Sugar/Pure [pilot](docs/preset-audio-pilot.md) publishes computed magnitudes
+and an offline renderer for our current Engine/core integration, not original
+audio. It uses the definitive user-supplied reference above and the rev246 numeric
+preset observations already credited. It does not establish complete patch or
+recording-chain equivalence. The analysis additionally uses separately installed
+SciPy and Matplotlib; these are research dependencies, not plugin runtime or
+installer additions.

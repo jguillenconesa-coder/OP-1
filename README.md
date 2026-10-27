@@ -12,6 +12,8 @@
 
 **Referencia de presets:** [índice de 169 nombres y categorías con tiempos de pantalla](docs/preset-video-index.md), revisado a partir de los 21 segmentos definitivos aportados. Comparación acústica pendiente.
 
+**Comparación en curso:** [primer piloto espectral de Sugar y Pure](docs/preset-audio-pilot.md), con gráficas, mediciones y herramientas reproducibles. Detecta diferencias; todavía no valida el sonido completo ni modifica el DSP.
+
 **Banco adicional:** [16 estudios del núcleo Phase / 13 WAV únicos](docs/phase-core-studies.md), compatibles con 0.7.0. Controles extraídos del firmware y renders contrastados con el núcleo original simulado; siguen siendo estudios experimentales sin el resto del preset original.
 
 ## Descargar

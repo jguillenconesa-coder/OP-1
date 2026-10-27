@@ -43,3 +43,10 @@ con hashes, método y datos numéricos. Sus tiempos son observaciones de pantall
 no inicios de notas ni intervalos completos de sonido. La comparación de timbre,
 notas/velocidades y calibración del plugin sigue pendiente; no se han ajustado
 presets ni DSP a partir de este índice. No se publica el vídeo, audio ni fotogramas.
+
+Después del índice se completó un [primer piloto espectral](preset-audio-pilot.md)
+con Sugar y Pure y un pasaje polifónico descartado. Se publican magnitudes
+calculadas y un renderizador de estudio, sin material audiovisual original.
+Persisten diferencias grandes en algunos armónicos; faltan la cadena completa,
+parámetros de la grabación y anotación de notas/pulsaciones. No se aplica una
+corrección DSP a partir de esos casos ni se afirma equivalencia de timbre.
