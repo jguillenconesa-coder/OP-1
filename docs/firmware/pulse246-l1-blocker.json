@@ -1,0 +1,20 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "engine_id": 5,
+  "factory": "0x01a0df54",
+  "voice_vtable": "0x19111cc",
+  "render_slot": "0x19111e0",
+  "render_pointer": "0xffa04b88",
+  "containing_ldr_blocks": [
+    {
+      "file_offset": "0x206214",
+      "flags": "0xaddb2406",
+      "address": "0xffa00000",
+      "bytes": 49076,
+      "callback": true,
+      "indirect": true
+    }
+  ],
+  "status": "Render is in CALLBACK|INDIRECT L1 payload. No validated decrypted image/key available. No Pulse DSP port or sonic equivalence claimed.",
+  "evidence_scope": "Plaintext factory/vtable pointer and inventoried LDR flags; encrypted payload was not treated as instructions."
+}

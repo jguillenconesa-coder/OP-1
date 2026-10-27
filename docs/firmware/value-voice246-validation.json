@@ -1,0 +1,47 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "model": "GNU 13.1 BF524 with documented local D-register writeback patch; not hardware validation",
+  "process": "0x019cfaf8 (synth instrument/first four ENV parameters only)",
+  "note_reset": "0x019cfd5a",
+  "range_helper": "0x01a1dfec / 0x019f69b0",
+  "range_initializer": "0x01a1e914",
+  "instrument_types": [
+    1,
+    7
+  ],
+  "digital_ranges": "0x01de58d0",
+  "phase_ranges": "0x01de5a50",
+  "envelope_ranges": "0x01de5710",
+  "tempo_float_multiply": "0x01aa55a0",
+  "tempo_float_to_integer": "0x01aa4dbc",
+  "tempo_constant_float32": 1662149.125,
+  "tempo_setter_calls": "0x01a5e850 / 0x01a5e908 / 0x01a5e972",
+  "independent_cases": 2048,
+  "stream_cases": 2048,
+  "cases": 4096,
+  "full_self_bytes": 12,
+  "full_display_bytes": 32,
+  "target_words": 8,
+  "artifacts": {
+    "value-voice246-input.bin": {
+      "bytes": 393216,
+      "sha256": "8db5de5324cc776b9af61a98679310c1f54a0056543bac972ab65302f8b1c3d6",
+      "matches_committed_fixture": true
+    },
+    "value-voice246-output.bin": {
+      "bytes": 278680,
+      "sha256": "40cc223d033413dd9a1e6609056e5f1a97f3a29be3588f7befb829e9884b68f8",
+      "matches_committed_fixture": true
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "patch_sha256": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+  "limitations": [
+    "Instrument kinds 0 and ENV kind 1, native Digital/Phase, first four coloured parameters only. Other types, auxiliary controls, play modes and drum destinations are not reconstructed.",
+    "The integrated 64-sample / 44.1 kHz control clock is an assumption; isolated results do not establish complete instrument timing or acoustic fidelity."
+  ]
+}

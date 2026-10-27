@@ -1,14 +1,14 @@
-# Pocket One 0.12.0
+# Pocket One 0.13.0
 
 **Sintetizador VST3 y aplicación independiente inspirados en el Teenage Engineering OP-1.** Interfaz gris, pantalla animada, cuatro mandos azul/verde/blanco/naranja y teclado de dos octavas. Implementación independiente; no contiene firmware, muestras de fábrica ni gráficos originales.
 
-[English manual](README.en.md) · [Créditos](CREDITS.md) · [Licencia](LICENSE) · [Notas de versión](docs/releases/v0.12.0.md)
+[English manual](README.en.md) · [Créditos](CREDITS.md) · [Licencia](LICENSE) · [Notas de versión](docs/releases/v0.13.0.md)
 
 ![Interfaz y pantalla animada de Pocket One](docs/screen-animation.gif)
 
 [Navegador de presets y muestras](docs/sound-browser.png) · [Guía de botones](docs/buttons-and-browser.md) · [Captura estática](docs/interface.png) · [Distribución y animaciones inspiradas en OTTO](docs/hardware-interface.md)
 
-**Nuevo en 0.12.0:** [Value 246 FX](docs/value246-native.md), LFO reconstruido que modula los cuatro colores de Punch con los mismos mandos MIDI del set 4. Tres presets adicionales, incluido **Helicopter (manual study)**; fase free/retrigger y controles guardados en sesión/slots. Se conservan los sonidos anteriores. [Cobertura completa y pendientes](docs/original-op1-coverage.md).
+**Nuevo en 0.13.0:** [Value 246 Voice](docs/value-voice246-native.md), modulación por voz de los cuatro controles Phase/Digital o de su ADSR. Cinco variantes adicionales, con los mismos mandos MIDI del set 4 y estados antiguos conservados. [Cobertura completa y pendientes](docs/original-op1-coverage.md).
 
 **Banco adicional:** [16 estudios del núcleo Phase / 13 WAV únicos](docs/phase-core-studies.md), compatibles con 0.7.0. Controles extraídos del firmware y renders contrastados con el núcleo original simulado; siguen siendo estudios experimentales sin el resto del preset original.
 
@@ -16,17 +16,17 @@
 
 | Paquete | Descarga |
 | --- | --- |
-| Instalador Windows 10/11 x64 | [Pocket-One-0.12.0-Windows-x64-Setup.exe](https://github.com/jguillenconesa-coder/Tiny-one/raw/refs/heads/main/downloads/v0.12.0/Pocket-One-0.12.0-Windows-x64-Setup.exe) |
-| Windows portable: aplicación y VST3 | [ZIP](downloads/v0.12.0/Pocket-One-0.12.0-Windows-x64-portable.zip) |
-| Linux x86_64: aplicación y VST3 | [TAR.GZ](downloads/v0.12.0/Pocket-One-0.12.0-linux-x86_64.tar.gz) |
-| Fuentes completas con JUCE | [Código fuente correspondiente](downloads/v0.12.0/Pocket-One-0.12.0-corresponding-source.tar.gz) |
-| Kit de compilación del proyecto | [ZIP](downloads/v0.12.0/Pocket-One-0.12.0-Windows-build-kit.zip) |
-| WAVs originales del banco de fábrica (CC0) | [ZIP de 28 muestras](downloads/v0.12.0/Pocket-One-0.12.0-Factory-Samples.zip) |
-| Integridad de las descargas | [SHA256SUMS.txt](downloads/v0.12.0/SHA256SUMS.txt) |
+| Instalador Windows 10/11 x64 | [Pocket-One-0.13.0-Windows-x64-Setup.exe](https://github.com/jguillenconesa-coder/Tiny-one/raw/refs/heads/main/downloads/v0.13.0/Pocket-One-0.13.0-Windows-x64-Setup.exe) |
+| Windows portable: aplicación y VST3 | [ZIP](downloads/v0.13.0/Pocket-One-0.13.0-Windows-x64-portable.zip) |
+| Linux x86_64: aplicación y VST3 | [TAR.GZ](downloads/v0.13.0/Pocket-One-0.13.0-linux-x86_64.tar.gz) |
+| Fuentes completas con JUCE | [Código fuente correspondiente](downloads/v0.13.0/Pocket-One-0.13.0-corresponding-source.tar.gz) |
+| Kit de compilación del proyecto | [ZIP](downloads/v0.13.0/Pocket-One-0.13.0-Windows-build-kit.zip) |
+| WAVs originales del banco de fábrica (CC0) | [ZIP de 28 muestras](downloads/v0.13.0/Pocket-One-0.13.0-Factory-Samples.zip) |
+| Integridad de las descargas | [SHA256SUMS.txt](downloads/v0.13.0/SHA256SUMS.txt) |
 
-También se ha configurado la creación de una [release de GitHub](https://github.com/jguillenconesa-coder/Tiny-one/releases) al publicar la etiqueta `v0.12.0`. Los archivos versionados de `downloads/v0.12.0` permiten descargarlos directamente desde el repositorio.
+También se ha configurado la creación de una [release de GitHub](https://github.com/jguillenconesa-coder/Tiny-one/releases) al publicar la etiqueta `v0.13.0`. Los archivos versionados de `downloads/v0.13.0` permiten descargarlos directamente desde el repositorio.
 
-**Versión preliminar.** El instalador no tiene firma digital. Catorce suites Linux y dieciséis suites Windows bajo Wine, más instalación/desinstalación y carga del VST3 instalado. La validación nativa en Ableton/ASIO Windows real sigue pendiente. La release no incluye un instalador de macOS; CI genera sus artefactos de compilación.
+**Versión preliminar.** El instalador no tiene firma digital. Quince suites Linux y diecisiete suites Windows bajo Wine, más instalación/desinstalación y carga del VST3 instalado. La validación nativa en Ableton/ASIO Windows real sigue pendiente. La release no incluye un instalador de macOS; CI genera sus artefactos de compilación.
 
 ## Instalar en Windows
 

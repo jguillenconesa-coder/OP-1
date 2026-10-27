@@ -1,7 +1,7 @@
 # Objetivo: OP-1 original completo
 
 La meta es cubrir motores, filtros, efectos, envolventes, modulación, modos de
-ejecución y sonidos documentados. La versión 0.12.0 **todavía no es una réplica
+ejecución y sonidos documentados. La versión 0.13.0 **todavía no es una réplica
 completa**. Esta matriz distingue un núcleo contrastado de una aproximación
 propia o una función pendiente; cambiar el nombre de un modelo no completa un port.
 
@@ -24,7 +24,7 @@ del plugin. Ese selector mantiene su orden para conservar automatizaciones.
 | 2 | Dr. Wave | Ruta candidata localizada; render y tablas pendientes de oráculos/port. |
 | 3 | String | Modelo Karplus–Strong propio afinado; pendiente el waveguide original y todos sus controles. |
 | 4 | Cluster | Ruta candidata localizada; osciladores/mezcla original pendientes. |
-| 5 | Pulse | Pendiente aislar y reconstruir el motor de doble tren de pulsos. |
+| 5 | Pulse | Render localizado en L1 cifrada (`0xffa04b88`), sin imagen descifrada validada. Port pendiente; [bloqueo](firmware/pulse246-l1-blocker.json). |
 | 6 | Synth sampler | Reproductor propio con CLEAN, raíz/loop/trim; banco de audio importable. No es el render original completo con sus cuatro controles secundarios. |
 | 7 | Phase | Núcleo Pd y ADSR contrastados; NCO, salida, mezcla y asignación propios. 16 presets CORE. |
 | 8 | Drum sampler | Kit propio de 24 pads con edición y bancos; falta el render/envolvente dinámica original. |
@@ -62,10 +62,10 @@ a otras funciones no extienden esa evidencia al resto del aparato.
 | ADSR común | Núcleo, tablas y callbacks contrastados; 2.621.440 muestras / 20.480 estados. |
 | Cuatro campos ADSR adicionales y ruteo | Inventariados; falta reconstruir su efecto completo. |
 | Envolventes D-synth / D-box / drum dinámica | Pendientes. No quedan completadas por portar el ADSR común. |
-| Value LFO y destino parámetro/color | Ruta FX contrastada: 4.096 estados/display/buffers completos; cuatro colores de Punch disponibles. Destinos de voz/ENV pendientes; reloj del adaptador propio. |
+| Value LFO y destino parámetro/color | FX: 4.096 llamadas contrastadas. Voice: 4.096 llamadas instrument/primeros cuatro ADSR para Digital/Phase; estado independiente por voz. Otros motores, drum y auxiliares pendientes; reloj/allocator propios. |
 | Random / Tremolo | Pendientes los originales. Hay LFO propio seno/triángulo/cuadrado. |
 | Element / MIDI / Bend / Crank | Pendientes algoritmos y ruteo originales. Las fuentes físicas necesitarán una integración definida para un plugin. Recibir notas/CC normales no implementa estos LFO. |
-| Retrigger / free | Callback de fase Value FX contrastado e integrado. Pendiente para el resto de LFO/rutas. |
+| Retrigger / free | Callbacks Value FX y synth/ENV contrastados; integración por voz conserva fase al reutilizar, pausa voces inactivas. Resto de LFO/rutas y allocator originales pendientes. |
 | Poly / mono / legato / unison / portamento | Polifonía propia de ocho voces. Modos y asignación originales pendientes. |
 | Octavas del teclado | Interfaz ampliada a −4…+4, guardada en sesión/slot/clipboard, limitada a notas MIDI 0–127. No altera MIDI externo ni implementa aún octave de todos los patches originales. |
 | Secuenciadores | Secuenciación/arpegios propios disponibles; Endless, Pattern, Finger, Tombola, Sketch y Crank originales requieren revisión individual. Tombola bloquea completar Singing Birds. |
@@ -90,15 +90,15 @@ esa distinción en [manual-sound-targets.json](../research/blackfin/manual-sound
 | Singing birds, §16.4, PDF 52 | Infraestructura MIDI/ADSR | FM original, Spring, Tremolo, mono/portamento, Tombola y calibración. |
 
 Actualmente se ofrecen 25 sonidos Factory propios, 16 Phase CORE, 16 Digital CORE
-y 3 variantes **246 CORE + Punch**, más 3 **246 Value FX Studies**. Los bancos importados son adicionales. Las
+y 3 variantes **246 CORE + Punch**, más 3 **246 Value FX Studies** y 5 **246 Value Voice Studies**. Los bancos importados son adicionales. Las
 entradas anteriores conservan su comportamiento anterior; Punch no se
-activa al abrir un proyecto previo; Value también se carga apagado. Los registros pendientes no aparecen como
+activa al abrir un proyecto previo; Value y Value Voice también se cargan apagados cuando faltan en el estado. Los registros pendientes no aparecen como
 presets originales supuestamente reproducidos en el navegador.
 
 ## Orden de trabajo verificable
 
 1. Calibrar display/raw y cadencia/ruteo de Helicopter; contrastar con audio real.
-   Extender Value a voz/ENV y comprobar los demás LFO.
+   Extender Value a otros motores, drum y controles auxiliares; comprobar los demás LFO.
 2. Avanzar FM/DrWave/Cluster y filtros internos; mantener explícito el bloqueo de
    datos L1 donde exista. Completar modos de ejecución y controles secundarios.
 3. Spring/Tremolo/Tombola para Singing Birds y los demás FX/motores en la matriz.
@@ -109,3 +109,7 @@ presets originales supuestamente reproducidos en el navegador.
 Una coincidencia de oráculo bajo el modelo GNU documentado no certifica la máquina
 completa, el reloj físico, su latencia ni ausencia de dropouts. El proyecto conserva
 ambos tipos de evidencia por separado y mantiene sonidos/versiones anteriores.
+
+La [demo de presets aportada](preset-listening-reference.md) sigue pendiente de
+comparación con el lote definitivo de segmentos. Los lotes descartados a petición
+del usuario no se usan para indexar ni comparar esta implementación.

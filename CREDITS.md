@@ -98,3 +98,16 @@ records. The OP-1 manual §16.3 informs the additional Helicopter study, whose r
 positions and output remain uncalibrated against hardware. Original firmware,
 opcodes, DB, manual illustrations and recordings are not distributed. Public
 op1-sdk references and all previous tool attributions continue to apply.
+
+## Value instrument / ADSR routes (0.13.0)
+
+The user-supplied rev246 image provides numeric observations for independent
+Digital/Phase Value routing and common ADSR modulation. GNU BF524 with the
+documented local model patch executes the isolated originals; no original
+instructions or simulator are distributed. The per-voice clock/allocator, UI,
+harness and tests are independently written project code. Four additional
+variants use inventoried factory controls; missing original FX and mix/play-mode
+behavior remain explicit. The supplied preset-demo MP4 could not be transferred
+because of the tool's 32 MiB limit; no audio/screens are copied or claimed as
+verified for the active reference. Superseded segmented batches are excluded at
+the user's request. Existing dependency/reference notices remain valid.

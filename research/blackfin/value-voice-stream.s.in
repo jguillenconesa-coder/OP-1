@@ -1,0 +1,178 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+imm32 P0, 0x01a1e914
+CALL (P0);
+imm32 P0, 0x018b6688
+imm32 P1, 0x0101e5e8
+P2 = 8192;
+LSETUP(copy_sine,copy_sine_end) LC0 = P2;
+copy_sine:
+R0 = [P0++];
+copy_sine_end: W[P1++] = R0;
+R0.H = range_args;
+R0.L = range_args;
+P0 = 5;
+EXCPT 0;
+R0.H = phase_range_args;
+R0.L = phase_range_args;
+P0 = 5;
+EXCPT 0;
+R0.H = value_range_args;
+R0.L = value_range_args;
+P0 = 5;
+EXCPT 0;
+P0.H = inputs;
+P0.L = inputs;
+P1.H = input_ptr;
+P1.L = input_ptr;
+[P1] = P0;
+P0.H = results;
+P0.L = results;
+P1.H = result_ptr;
+P1.L = result_ptr;
+[P1] = P0;
+probe_loop:
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P4 = 88;
+P4 = P1 + P4;
+R0 = [P4];
+CC = R0 == 0;
+IF CC JUMP copy_targets;
+P2.H = state;
+P2.L = state;
+P3 = 3;
+LSETUP(copy_state,copy_state_end) LC0 = P3;
+copy_state:
+R0 = [P1++];
+copy_state_end: [P2++] = R0;
+imm32 P2, 0x01dd5d04
+P3 = 8;
+LSETUP(copy_display,copy_display_end) LC0 = P3;
+copy_display:
+R0 = [P1++];
+copy_display_end: [P2++] = R0;
+copy_targets:
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P4 = 60;
+P1 = P1 + P4;
+imm32 P2, 0xff801724
+P3 = 4;
+LSETUP(copy_target,copy_target_end) LC0 = P3;
+copy_target:
+R0 = [P1++];
+copy_target_end: [P2++] = R0;
+R0 = [P1++];
+imm32 P2, 0x01aadad4
+[P2] = R0;
+R0 = [P1++];
+R0 = [P1];
+imm32 P2, 0xff8016e4
+[P2] = R0;
+imm32 P2, 0xff8016e4
+[P2] = R0;
+imm32 P2, 0xff8016d4
+R0 = 0;
+[P2++] = R0;
+[P2] = R0;
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P4 = 92;
+P1 = P1 + P4;
+R1 = [P1];
+imm32 R0, 0x49cae629
+imm32 P0, 0x01aa55a0
+CALL (P0);
+imm32 P0, 0x01aa4dbc
+CALL (P0);
+P0.H = result_ptr;
+P0.L = result_ptr;
+P1 = [P0];
+[P1 + 64] = R0;
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+P4 = 88;
+P4 = P1 + P4;
+R2 = [P4];
+R0.H = state;
+R0.L = state;
+R1 = P1;
+R1 += 44;
+CC = R2 == 2;
+IF !CC JUMP process;
+imm32 P0, 0x019cfd5a
+CALL (P0);
+process:
+P0.H = input_ptr;
+P0.L = input_ptr;
+P1 = [P0];
+R0.H = state;
+R0.L = state;
+R1 = P1;
+R1 += 44;
+P4 = 80;
+P1 = P1 + P4;
+R2 = [P1];
+imm32 P0, 0x019cfaf8
+CALL (P0);
+P0.H = result_ptr;
+P0.L = result_ptr;
+P2 = [P0];
+[P2 + 60] = R0;
+P1.H = state;
+P1.L = state;
+P3 = 3;
+LSETUP(save_state,save_state_end) LC0 = P3;
+save_state:
+R0 = [P1++];
+save_state_end: [P2++] = R0;
+imm32 P1, 0x01dd5d04
+P3 = 8;
+LSETUP(save_display,save_display_end) LC0 = P3;
+save_display:
+R0 = [P1++];
+save_display_end: [P2++] = R0;
+imm32 P1, 0xff801724
+P3 = 4;
+LSETUP(save_target,save_target_end) LC0 = P3;
+save_target:
+R0 = [P1++];
+save_target_end: [P2++] = R0;
+P2 += 8;
+[P0] = P2;
+P0.H = input_ptr;
+P0.L = input_ptr;
+R0 = [P0];
+R1 = 96;
+R0 = R0 + R1;
+[P0] = R0;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF !CC JUMP probe_loop;
+R0.H = io_args;
+R0.L = io_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+range_args: .long 1,0x01de58d0,64
+phase_range_args: .long 1,0x01de5a50,64
+value_range_args: .long 1,0x01de5710,24
+io_args: .long 1,results,@BYTES@
+input_ptr: .long 0
+result_ptr: .long 0
+state: .space 12
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

@@ -9,6 +9,7 @@
 #include "Digital246Voice.h"
 #include "Punch246Effect.h"
 #include "Value246Fx.h"
+#include "ValueVoice246Control.h"
 #include "StringVoice.h"
 
 namespace pocket {
@@ -22,6 +23,8 @@ struct Parameters {
     bool punch246=false;std::array<int16_t,4> punch246Controls{{6000,15000,20000,28000}};
     bool value246=false,value246Free=false,value246Destination=true;
     int value246Speed=1000,value246Amount=4000,value246Colour=0;uint32_t value246Tempo=199457888;
+    bool valueVoice246=false,valueVoice246Envelope=false,valueVoice246Free=false;
+    int valueVoice246Speed=1000,valueVoice246Amount=4000,valueVoice246Colour=0;
     std::array<PadSettings,kitCapacity> pads{};
     float tone=.45f,color=.35f,envelope=.35f,effect=.2f,volume=.7f;
     float attack=.02f,decay=.2f,sustain=.8f,release=.3f;
@@ -35,7 +38,7 @@ class Engine {
 public:
     static constexpr int polyphony=8;
     void prepare(double rate) { sampleRate=std::max(8000.0,rate); smoothing=float(1-std::exp(-1.0/(sampleRate*.012))); cachedCutoff=-1;stringRetune=1-std::exp(-1/(sampleRate*.003));phaseConfig.prepare(sampleRate);punchEffect.prepare(sampleRate);valueEffect.prepare(sampleRate);reset(); }
-    void reset() { voices={}; delayValid=0; write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1;cleanMix=0;modulatedFilterMix=0;cleanInitialized=false;phaseControlsInitialized=false;digitalControlsInitialized=false;nativeEnvelopeActive=false;nativeDigitalActive=false;punchEffect.reset();valueEffect.reset();valueActive=false;punchMix=0;punchActive=false; }
+    void reset() { voices={}; delayValid=0; write=0; filter=0; current={}; lfoPhase=0; bends.fill(1); pedals.fill(false); cachedAttack=cachedDecay=cachedRelease=cachedMacro=-1;cleanMix=0;modulatedFilterMix=0;cleanInitialized=false;phaseControlsInitialized=false;digitalControlsInitialized=false;nativeEnvelopeActive=false;nativeDigitalActive=false;punchEffect.reset();valueEffect.reset();valueActive=valueVoiceActive=false;punchMix=0;punchActive=false; }
     void setSample(Sample data) { sample=std::move(data); voices={}; }
     void swapSample(Sample& data) {std::swap(sample,data);voices={};}
     void swapKit(Kit& data,int count=8) {kit.swap(data);kitCount=count==24?24:8;voices={};}
@@ -58,7 +61,7 @@ public:
         Voice* v=nullptr;
         for(auto& candidate:voices) if(!candidate.active) { v=&candidate; break; }
         if(!v) v=&*std::min_element(voices.begin(),voices.end(),[](auto& a,auto& b){return a.age<b.age;});
-        *v={}; v->active=true; v->keyDown=true; v->note=note; v->channel=channel;
+        const auto valueState=v->valueVoice;*v={};v->valueVoice=valueState;v->valueVoice.noteOn();v->active=true; v->keyDown=true; v->note=note; v->channel=channel;
         v->velocity=std::clamp(velocity,0.f,1.f); v->age=++age;
         v->frequency=440.0*std::pow(2.0,(note-69)/12.0);
 
@@ -76,6 +79,7 @@ public:
         for(const auto& v:voices) if(v.active) {
             ++out.active;out.envelope=std::max(out.envelope,v.level);
             if(v.age>=latest) {latest=v.age;out.stage=nativeEnvelopeActive?(nativeDigitalActive?v.digital246.output.envelopeStage():v.phase246.envelopeStage()):v.released?4:v.stage==0?1:std::abs(v.level-currentSustain)>.005f?2:3;
+                if(valueVoiceActive)out.lfo=v.valueVoice.phase();
                 const size_t length=mode==5?kit[size_t(kitSlot(v.note,kitCount))].frames.size():sample.frames.size();
                 if(length) out.progress=std::clamp(float(v.samplePosition/double(length))+(mode==3?current.tone*.9f:0.f),0.f,1.f);
             }
@@ -86,6 +90,8 @@ public:
         const bool nativePhase=target.engine==1&&target.phase246;
         const bool nativeDigital=target.engine==0&&target.digital246;
         const bool nativeCore=nativePhase||nativeDigital;
+        const bool nativeValueVoice=target.valueVoice246&&nativeCore;
+        valueVoiceActive=nativeValueVoice;
         nativeDigitalActive=nativeDigital;nativeEnvelopeActive=(nativePhase&&target.phase246Envelope)||(nativeDigital&&target.digital246Envelope);
         if(nativePhase){for(size_t i=0;i<4;++i){if(!phaseControlsInitialized)phaseWords[i]=target.phase246Controls[i];else phaseWords[i]+=smoothing*(target.phase246Controls[i]-phaseWords[i]);phaseRaw[i]=int16_t(std::clamp(phaseWords[i],0.f,32767.f)+.5f);}phaseControlsInitialized=true;}
         else phaseControlsInitialized=false;
@@ -100,7 +106,7 @@ public:
         follow(current.delayTime,target.delayTime); follow(current.feedback,target.feedback);
         const auto& p=current;currentSustain=target.sustain;
         lfoPhase+=std::clamp(double(target.lfoRate),.05,20.0)/sampleRate; lfoPhase-=std::floor(lfoPhase);
-        const double lfo=(target.value246?0:target.lfoDepth)*(target.lfoShape==1 ? 1-4*std::abs(lfoPhase-.5) : target.lfoShape==2 ? (lfoPhase<.5?1:-1) : std::sin(2*pi*lfoPhase));
+        const double lfo=(target.value246||nativeValueVoice?0:target.lfoDepth)*(target.lfoShape==1 ? 1-4*std::abs(lfoPhase-.5) : target.lfoShape==2 ? (lfoPhase<.5?1:-1) : std::sin(2*pi*lfoPhase));
         const double pitchMod=target.lfoDestination==0?lfo*2:0;
         const double pitchFactor=pitchMod==0?1:std::exp2(pitchMod/12);
         const double kitPitch=target.engine==5?std::exp2((p.tone-.5)*2):1;
@@ -124,13 +130,18 @@ public:
             v.phase+=frequency/sampleRate; v.phase-=std::floor(v.phase);
             v.modPhase+=frequency*(1+std::round(p.color*7))/sampleRate; v.modPhase-=std::floor(v.modPhase);
             float s=0, amplitude=v.level;
+            std::array<int16_t,4> modulated{};
+            if(nativeValueVoice){
+                const auto& base=target.valueVoice246Envelope?(nativeDigital?target.digital246Adsr:target.phase246Adsr):(nativeDigital?digitalRaw:phaseRaw);
+                modulated=v.valueVoice.next(true,target.valueVoice246Envelope,target.valueVoice246Free,target.valueVoice246Speed,target.valueVoice246Amount,target.valueVoice246Colour,nativeDigital?1:7,target.value246Tempo,44100./(64*sampleRate),base,phaseConfig.table);
+            }else if(v.valueVoice.active)v.valueVoice.reset();
             if(nativeDigital){
-                s=v.digital246.next(frequency,digitalCoefficients,phaseConfig,nativeEnvelopeActive?&target.digital246Adsr:nullptr,v.released);
+                s=v.digital246.next(frequency,nativeValueVoice&&!target.valueVoice246Envelope?reference::Digital246Coefficients(modulated):digitalCoefficients,phaseConfig,nativeEnvelopeActive?(nativeValueVoice&&target.valueVoice246Envelope?&modulated:&target.digital246Adsr):nullptr,v.released);
                 if(nativeEnvelopeActive){amplitude=1;v.level=v.digital246.output.envelopeLevel();if(v.digital246.output.envelopeDone())v.active=false;}
             }
             else if(target.engine==0) s=float(std::sin(2*pi*v.phase+p.tone*7*(.25+.75*v.level)*std::sin(2*pi*v.modPhase)));
             else if(nativePhase){
-                s=v.phase246.next(frequency,phaseCoefficients,phaseConfig,nativeEnvelopeActive?&target.phase246Adsr:nullptr,v.released);
+                s=v.phase246.next(frequency,nativeValueVoice&&!target.valueVoice246Envelope?reference::PdCoefficients(modulated):phaseCoefficients,phaseConfig,nativeEnvelopeActive?(nativeValueVoice&&target.valueVoice246Envelope?&modulated:&target.phase246Adsr):nullptr,v.released);
                 if(nativeEnvelopeActive){amplitude=1;v.level=v.phase246.envelopeLevel();if(v.phase246.envelopeDone())v.active=false;}
             }
             else if(target.engine==1) {
@@ -187,20 +198,20 @@ public:
         follow(cleanMix,((target.sampleClean&&(target.engine==3||target.engine==5))||nativeCore)?1.f:0.f);
         // CLEAN bypasses the implicit tone filter, but an explicitly selected
         // FILTER LFO must still be audible. Ramp its insertion to avoid a jump.
-        follow(modulatedFilterMix,!target.value246&&target.lfoDestination==1&&target.lfoDepth>0?1.f:0.f);
+        follow(modulatedFilterMix,!target.value246&&!nativeValueVoice&&target.lfoDestination==1&&target.lfoDepth>0?1.f:0.f);
         const float cleanInput=sum+(filter-sum)*modulatedFilterMix;
         const float legacyDriven=std::tanh(filter*(1+p.drive*12))/(1+p.drive*2);
         const float cleanDriven=p.drive<.000001f?cleanInput:std::tanh(cleanInput*(1+p.drive*12))/(1+p.drive*2);
         float driven=legacyDriven+(cleanDriven-legacyDriven)*cleanMix;
-        valueActive=target.value246;
+        valueActive=target.value246&&!nativeValueVoice;
         if(target.punch246||punchActive){
             for(size_t i=0;i<4;++i){if(!punchActive)punchWords[i]=target.punch246Controls[i];else punchWords[i]+=smoothing*(target.punch246Controls[i]-punchWords[i]);punchRaw[i]=int16_t(std::lround(std::clamp(punchWords[i],0.f,32767.f)));}
             punchActive=true;follow(punchMix,target.punch246?1.f:0.f);
-            const auto modulated=valueEffect.next(target.value246,target.value246Destination&&target.punch246,target.value246Free,target.value246Speed,target.value246Amount,target.value246Colour,target.value246Tempo,punchRaw,phaseConfig.table);
+            const auto modulated=valueEffect.next(valueActive,target.value246Destination&&target.punch246,target.value246Free,target.value246Speed,target.value246Amount,target.value246Colour,target.value246Tempo,punchRaw,phaseConfig.table);
             const auto processed=punchEffect.next(driven,modulated,phaseConfig.table);driven+=punchMix*(processed-driven);
             if(!target.punch246&&punchMix<.000001f){punchMix=0;punchActive=false;punchEffect.reset();}
         }
-        else valueEffect.next(target.value246,false,target.value246Free,target.value246Speed,target.value246Amount,target.value246Colour,target.value246Tempo,target.punch246Controls,phaseConfig.table);
+        else valueEffect.next(valueActive,false,target.value246Free,target.value246Speed,target.value246Amount,target.value246Colour,target.value246Tempo,target.punch246Controls,phaseConfig.table);
         const auto lag=std::clamp(size_t(sampleRate*p.delayTime),size_t(1),delay.size()-1);
         const float echo=lag<=delayValid?delay[(write+delay.size()-lag)%delay.size()]:0;
         delay[write]=std::tanh(driven+echo*std::clamp(p.feedback,0.f,.85f)); write=(write+1)%delay.size();if(delayValid<delay.size())++delayValid;
@@ -214,12 +225,13 @@ private:
         StringVoice string;
         Phase246Voice phase246;
         Digital246Voice digital246;
+        ValueVoice246Control valueVoice;
         uint64_t age=0; float velocity=0,level=0,lastNoise=0;
         double phase=0,modPhase=0,frequency=440,samplePosition=0,time=0,drumPhase=0;
     };
     Phase246Config phaseConfig;bool phaseControlsInitialized=false,digitalControlsInitialized=false,nativeEnvelopeActive=false,nativeDigitalActive=false;
     Punch246Effect punchEffect;float punchMix=0;bool punchActive=false;
-    Value246Fx valueEffect;bool valueActive=false;
+    Value246Fx valueEffect;bool valueActive=false,valueVoiceActive=false;
     std::array<float,4> punchWords{};std::array<int16_t,4> punchRaw{};
     std::array<float,4> phaseWords{};std::array<int16_t,4> phaseRaw{};
     std::array<float,4> digitalWords{};std::array<int16_t,4> digitalRaw{};

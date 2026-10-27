@@ -83,3 +83,11 @@ documented observations from operator-supplied rev246 firmware. REA's SQLite
 inventory is separate evidence. No original firmware instructions, manual images,
 DB snapshot, audio or simulator binary are shipped. Tool-source patch terms and
 all prior dependency notices remain unchanged.
+
+## Value instrument / ADSR (0.13.0)
+
+The independent routing kernel, adapter, UI and harness retain AGPL-3.0-only.
+Numeric observations have the rev246 provenance documented in
+docs/value-voice246-native.md. Firmware instructions/images, DB snapshots,
+recordings, video frames and tool executables are excluded. Content from
+the discarded batches is not distributed or used as DSP validation.

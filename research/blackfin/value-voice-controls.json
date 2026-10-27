@@ -1,0 +1,172 @@
+{
+  "schema": 1,
+  "database_sha256": "be4572298fe9dc83b106d5c4eaf1cc972280d97f028f3eaebc0c76dc68ac9cf0",
+  "scope": "Additional oscillator/common ADSR/Value instrument studies; original FX, auxiliary envelope controls, octave, play mode and full mixing are not reconstructed. No video comparison completed.",
+  "stored_patches": [
+    {
+      "id": 6,
+      "name": "glenn",
+      "type": "digital",
+      "knobs": [
+        16359,
+        24320,
+        -7169,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "adsr": [
+        64,
+        8640,
+        32767,
+        16320,
+        12271,
+        8896,
+        4000,
+        4000
+      ],
+      "fx_type": "delay",
+      "fx_active": true,
+      "lfo_type": "value",
+      "lfo_active": true,
+      "lfo_params": [
+        10240,
+        1010,
+        2704,
+        1440,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "name": "low end",
+      "type": "digital",
+      "knobs": [
+        17408,
+        8840,
+        -1000,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "adsr": [
+        64,
+        16320,
+        18943,
+        11200,
+        2048,
+        5568,
+        4000,
+        4000
+      ],
+      "fx_type": "cwo",
+      "fx_active": false,
+      "lfo_type": "value",
+      "lfo_active": true,
+      "lfo_params": [
+        3048,
+        3344,
+        2000,
+        2000,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 99,
+      "name": "classic lfo",
+      "type": "phase",
+      "knobs": [
+        32767,
+        29491,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "adsr": [
+        64,
+        15808,
+        19456,
+        3648,
+        2048,
+        6560,
+        4000,
+        4000
+      ],
+      "fx_type": "spring",
+      "fx_active": true,
+      "lfo_type": "value",
+      "lfo_active": true,
+      "lfo_params": [
+        2536,
+        20072,
+        2000,
+        6800,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 100,
+      "name": "hold me",
+      "type": "phase",
+      "knobs": [
+        0,
+        29491,
+        0,
+        32767,
+        0,
+        0,
+        0,
+        0
+      ],
+      "adsr": [
+        9280,
+        8640,
+        12800,
+        3648,
+        14336,
+        64,
+        4000,
+        4000
+      ],
+      "fx_type": "cwo",
+      "fx_active": true,
+      "lfo_type": "value",
+      "lfo_active": true,
+      "lfo_params": [
+        7680,
+        15383,
+        1024,
+        15360,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "authored_envelope_study": {
+    "name": "Release tide (ENV study)",
+    "base_phase_core": "pure",
+    "speed": 12288,
+    "amount": 16000,
+    "destination": "ADSR",
+    "colour": "Release",
+    "free_phase": false
+  }
+}

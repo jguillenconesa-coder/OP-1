@@ -1,5 +1,13 @@
 # Historial de cambios
 
+## 0.13.0
+
+- Value 246 por voz para Phase/Digital y ADSR: 4.096 estados/display/buffers contrastados.
+- Cinco variantes adicionales; parámetros al final, migración 0.12 y MIDI contextual.
+- Cola conservadora al modular Release y audio independiente de bloques.
+- Pulse: render localizado en L1 cifrada; demo MP4 pendiente por límite de 32 MiB.
+- [Guía y límites](value-voice246-native.md).
+
 ## 0.12.0
 
 - Value 246 FX: 4.096 estados/display/buffers contrastados; modulación de los cuatro colores de Punch.

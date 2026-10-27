@@ -11,7 +11,21 @@
       "title_verified": false,
       "preset_names_verified": false,
       "comparisons_completed": false,
-      "status": "Reference recorded; audio and preset/time alignment required before drawing sonic conclusions"
+      "status": "Awaiting definitive replacement batch. User explicitly asked to ignore segmented batches supplied so far; they are excluded from indexing and sonic comparisons.",
+      "attachment": {
+        "filename": "🔴 Every Single OP-1 Preset (2021) (720p_30fps_H264-128kbit_AAC-inglés).mp4",
+        "transfer_attempted_utc": "2026-10-26",
+        "transfer_result": "Download tool refused: file exceeds executor transfer limit of 32 MiB",
+        "local_path": null,
+        "frames_inspected": 0,
+        "audio_decoded": false,
+        "needed": "Smaller excerpts below 32 MiB to identify on-screen names and align with audio"
+      },
+      "superseded_batches": {
+        "ignored_at_user_request": true,
+        "date_utc": "2026-10-27",
+        "used_for_dsp_or_sound_matching": false
+      }
     }
   ]
 }

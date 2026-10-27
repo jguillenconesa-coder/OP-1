@@ -1,0 +1,126 @@
+{
+  "version": "0.13.0",
+  "date_utc": "2026-10-27",
+  "linux_suites_passed": 15,
+  "windows_wine_suites_passed": 17,
+  "functional_execution": "Pure suites, plugin integration and realtime suites executed in groups. The initial audible-modulation assertion targeted an already-finished attack stage; it was corrected to exercise active sustain/gain stages and rerun successfully on both platforms.",
+  "value_voice_calls_compared": 4096,
+  "value_voice_independent_cases": 2048,
+  "value_voice_stream_cases": 2048,
+  "value_fx_calls_still_matching": 4096,
+  "full_self_bytes": 12,
+  "full_display_bytes": 32,
+  "target_words": 8,
+  "voice_scope": "Digital and Phase, first four instrument / common ADSR controls only. Other engines, auxiliary fields, drum, play mode and full allocator remain pending.",
+  "private_voice_reproductions": 2,
+  "sanitizers": "ASan and UBSan passed; LeakSanitizer disabled because sandbox ptrace prevents its operation.",
+  "reference_model": "GNU 13.1 BF524 with documented local D-register deferred writeback patch; not hardware validation",
+  "control_clock_calls_per_second": 689.0625,
+  "clock_status": "Own per-voice integration assumption; inactive voices pause; FREE retains phase on reuse. Not a measured original allocator/cadence.",
+  "legacy_audio_regression": {
+    "baseline": "b52a69b10ebba31010f75135c06698eb8c049b4a",
+    "configurations": 76,
+    "rates": [
+      44100,
+      48000,
+      96000
+    ],
+    "samples": 1867776,
+    "bytes_each": 7471104,
+    "identical": true,
+    "sha256": "57a328c3fc20f4bffc2056f65e4ea93debee371c805ba90d19d1ce1cc6fa8784",
+    "harness": "Tools/LegacyEngineRender.cpp",
+    "scope": "Same GCC -O2 harness against 0.12/current headers: six legacy engines, 16 Phase and 16 Digital with both envelopes, three Punch and three Value FX variants; notes/bend/FILTER LFO/note-off; new Voice mode disabled. Not every project."
+  },
+  "integration_workloads": 48,
+  "clock_rates_tested": [
+    8000,
+    22050,
+    44100,
+    48000,
+    88200,
+    96000,
+    192000
+  ],
+  "preset_rate_combinations": 15,
+  "built_in_sounds": 68,
+  "additional_voice_studies": 5,
+  "modulated_release_host_tail": "Conservatively uses slowest possible release coefficient while original ADSR / Release modulation is active.",
+  "pulse_render": "0xffa04b88 in CALLBACK|INDIRECT L1 payload; no validated decrypted image, no Pulse port claimed.",
+  "video_reference": {
+    "url": "https://www.youtube.com/watch?v=P84SBtIDdSM",
+    "status": "User requested ignoring submitted segmented batches and will supply definitive replacements; discarded batches excluded from indexing/comparison.",
+    "sonic_comparison_completed": false,
+    "firmware_port_depends_on_video": false
+  },
+  "native_ableton_asio_validated": false,
+  "standalone_main_window_confirmed_in_wine": false,
+  "installer_validation": "Isolated Wine install/hash/source/version/module/manifest/uninstall checks; main standalone GUI startup remains separate.",
+  "installer_sha256": "See downloads/v0.13.0/SHA256SUMS.txt; installer embeds this report so its hash is external.",
+  "linux_realtime": {
+    "version": "0.13.0",
+    "platform": "Linux x86_64 Release / shared cloud VM",
+    "workloads": 96,
+    "callbacks": 49152,
+    "reported_latency_samples": 0,
+    "tracked_heap_calls": 0,
+    "deadline_overruns": 3,
+    "worst_p99_budget_percent": 26.014650000000007,
+    "value_voice_p99_budget_percent": 23.924400000000006,
+    "preset_legend": {
+      "-1": "Phase 246 + reconstructed envelope",
+      "-2": "Phase 246 + previous envelope",
+      "-3": "Digital 246 + reconstructed envelope",
+      "-4": "Digital 246 + previous envelope",
+      "-5": "Digital 246 + original envelope + Punch",
+      "-6": "Phase 246 + original envelope + Punch",
+      "-7": "Digital Helicopter study + Punch + Value FX",
+      "-8": "Phase roar bass + Punch + Value FX",
+      "-9": "Digital glenn + per-voice Value Instrument/ENV automation",
+      "-10": "Phase Release tide + per-voice Value Instrument/ENV automation"
+    },
+    "scope": "Eight voices, oscillator/ADSR/Punch/Value FX and per-voice Instrument/ENV automation, MIDI/GUI/SysEx, tape/capture, FX/EQ and sequencers; final platform benchmarks sequential without concurrent project builds/tests. Shared VM timings do not certify hardware, native Windows/ASIO, round-trip latency or zero dropouts."
+  },
+  "windows_wine_realtime": {
+    "version": "0.13.0",
+    "platform": "Windows x64 under Wine / shared cloud VM",
+    "workloads": 96,
+    "callbacks": 49152,
+    "reported_latency_samples": 0,
+    "tracked_heap_calls": 0,
+    "deadline_overruns": 0,
+    "worst_p99_budget_percent": 24.075000000000003,
+    "value_voice_p99_budget_percent": 18.585,
+    "preset_legend": {
+      "-1": "Phase 246 + reconstructed envelope",
+      "-2": "Phase 246 + previous envelope",
+      "-3": "Digital 246 + reconstructed envelope",
+      "-4": "Digital 246 + previous envelope",
+      "-5": "Digital 246 + original envelope + Punch",
+      "-6": "Phase 246 + original envelope + Punch",
+      "-7": "Digital Helicopter study + Punch + Value FX",
+      "-8": "Phase roar bass + Punch + Value FX",
+      "-9": "Digital glenn + per-voice Value Instrument/ENV automation",
+      "-10": "Phase Release tide + per-voice Value Instrument/ENV automation"
+    },
+    "scope": "Eight voices, oscillator/ADSR/Punch/Value FX and per-voice Instrument/ENV automation, MIDI/GUI/SysEx, tape/capture, FX/EQ and sequencers; final platform benchmarks sequential without concurrent project builds/tests. Shared VM timings do not certify hardware, native Windows/ASIO, round-trip latency or zero dropouts."
+  },
+  "binaries": {
+    "windows_standalone": {
+      "bytes": 10985472,
+      "sha256": "4f8815bcf79c4480285ae2875f260cffeb5a2c903beb19833a1af7eeaf82bf66"
+    },
+    "windows_vst3": {
+      "bytes": 11560960,
+      "sha256": "3f3d5987bb86f20950994f291e62af7b497c689f9a3dd5da87f7d1d8cd367da9"
+    },
+    "linux_standalone": {
+      "bytes": 13863128,
+      "sha256": "65668610604fc40e8d257794e77b80e0bea28832af9e40c218576e760fbe9f8c"
+    },
+    "linux_vst3": {
+      "bytes": 14476408,
+      "sha256": "7a2a6314651883c49dfd62b19d80b10e1c5053a484bc8fb95c792eb33c33656a"
+    }
+  }
+}

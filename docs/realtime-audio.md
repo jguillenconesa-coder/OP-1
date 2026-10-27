@@ -192,3 +192,26 @@ el bloque 64/128/256. El reloj/alineación de la máquina física siguen pendien
 [Datos Linux 0.12.0](releases/v0.12.0-linux-realtime.json) ·
 [Datos Wine 0.12.0](releases/v0.12.0-windows-wine-realtime.json) ·
 [Evidencia completa](releases/v0.12.0-validation.json).
+
+## Medición 0.13.0: Value por voz
+
+Se ejecutaron **96 cargas / 49.152 callbacks por plataforma**, incluyendo ocho
+voces con modulación Instrument/ADSR, automatización, MIDI, cinta y efectos,
+a 48/96 kHz y bloques 64/128/256. Las mediciones finales fueron secuenciales,
+sin compilar ni ejecutar otras pruebas del proyecto en paralelo.
+
+| Entorno | Peor p99 / presupuesto | Peor p99 con Value Voice | Sobrepasos de plazo |
+| --- | --- | --- | --- |
+| Linux, VM compartida | 26,01% | 23,92% | 3 |
+| Windows x64 bajo Wine | 24,08% | 18,59% | 0 |
+
+No hubo llamadas de heap monitorizadas en el callback. Se declaran 0 muestras
+de latencia añadida; esto no mide ASIO ni latencia de ida y vuelta. Los filtros
+y la interpolación conservan su retardo de grupo. Tres sobrepasos en Linux y
+cero en esta ejecución Wine no certifican ausencia de dropouts en el equipo real.
+Al modular Release, el host recibe una cola conservadora que contempla el
+coeficiente de release más lento. STOP/CC120 conserva el corte inmediato.
+
+[Linux](releases/v0.13.0-linux-realtime.json) ·
+[Windows/Wine](releases/v0.13.0-windows-wine-realtime.json) ·
+[Evidencia completa](releases/v0.13.0-validation.json).
