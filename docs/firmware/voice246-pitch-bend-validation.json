@@ -1,0 +1,92 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "routine": "0x01a84efa",
+  "routine_end_exclusive": "0x01a84f8c",
+  "routine_sha256": "3d72f4df0aca52ce80f73f6dba0b70740670154c03d238e8302d6944860f249b",
+  "records": 65792,
+  "independent_unsigned_byte_pairs": 65536,
+  "valid_midi_pairs": 16384,
+  "continuous_calls": 256,
+  "control_image_bytes": 16,
+  "source_image_bytes": 32,
+  "pitch_register_words": 6,
+  "artifacts": {
+    "voice246-pitch-bend-input.bin": {
+      "bytes": 2105344,
+      "sha256": "c8c1d40634eaf34a89b1679834c5f656802d6655868cda9d841d06a4121a9472"
+    },
+    "voice246-pitch-bend-output.bin": {
+      "bytes": 4737024,
+      "sha256": "4f09bf8fa0212e2382affc586e648382d357ec45c760737f2e274316584840f7"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/build-deferred/sim/bfin/run": "26799ba2bd15737b66f6ca1dc333e59c1dd16aaaea249c96e020839dda5013c6"
+  },
+  "limitations": [
+    "Complete decoder only; source packet has exactly three readable message bytes. Invalid-length original exception paths are not executed.",
+    "Status byte is an explicit ignored input to this decoder; original dispatcher, channel filtering and Core gating are not reconstructed.",
+    "No pitch coefficient, render-buffer writer, Dr. Wave integration, audio samples or original bend-to-frequency mapping established.",
+    "GNU BF524 deferred D-register model, not hardware/latency validation; no firmware, instructions or ELF distributed."
+  ],
+  "validation": {
+    "core_ctest_suites_passed": 27,
+    "full_juce_ctest_suites_passed": 29,
+    "independent_reproduction": "Two fresh private directories agree byte for byte on inputs and all original output.",
+    "sanitizers": "ASan + UBSan passed; LeakSanitizer disabled for sandbox ptrace limitation.",
+    "windows_macos": "Not run locally; native CI required.",
+    "audio_samples": 0,
+    "plugin_runtime_unchanged": true
+  },
+  "source_hashes": {
+    "Source/Voice246PitchBend.h": "2b63b17d85922e20152fe9705d0d96ea3a6fa697c1e522b73a01779aee0e2141",
+    "Tests/Voice246PitchBendTests.cpp": "376e3bfe0dab50c98d6828817ce1c7097ef17018e9d507ace4c81f946039ae97",
+    "research/blackfin/voice-pitch-bend.s.in": "acb5663a090847452a04eda92cc21d3f8f2b45b27aef23d3ce068c016d5cbe1b",
+    "scripts/verify-voice246-pitch-bend.py": "9f024416b6a5a08c5c72e5ba1ca53db467ad599913551ff1deb6f90c4b648ba4",
+    "CMakeLists.txt": "3587d3d7eafc00b79c5d6c0b2e62bd8349e6974cb15ccdf40fa1884e5e89ba79"
+  },
+  "rea": {
+    "version": "6.8.0",
+    "provider": "gnu.objdump",
+    "symbol": "voice246_bend (synthetic)",
+    "private_evidence_sha256": "504854baaa62e9f898668766f81bb463466c06f90820f23c090b54e1d98856e4",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "scope": "Static disassembly via configured GNU objdump; raw instructions/ELF remain private. No dynamic dispatch or decryption claim."
+  },
+  "directed_examples": [
+    {
+      "byte1": 0,
+      "byte2": 0,
+      "signed16_control": -16384
+    },
+    {
+      "byte1": 127,
+      "byte2": 63,
+      "signed16_control": -2
+    },
+    {
+      "byte1": 0,
+      "byte2": 64,
+      "signed16_control": 0
+    },
+    {
+      "byte1": 127,
+      "byte2": 127,
+      "signed16_control": 32764
+    },
+    {
+      "byte1": 0,
+      "byte2": 128,
+      "signed16_control": -32768
+    },
+    {
+      "byte1": 255,
+      "byte2": 255,
+      "signed16_control": -32260
+    }
+  ]
+}

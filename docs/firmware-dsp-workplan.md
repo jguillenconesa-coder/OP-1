@@ -46,6 +46,7 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | Eventos Core y seis voces | Factoría tipo interno 2, note-on condicionado al sonido seleccionado y release sin esa condición; 61.568 muestras adicionales junto al render completo. 194 disparos aceptados, 86 rechazados, 122 releases y pools previos al render contrastados. Release de motor no equivale a release ADSR. |
 | Activación VoiceCtl | Tabla de 128 notas, pitch, velocidad y actividad contrastados con afinación explícita. 427 activaciones aceptadas / 85 bloqueadas y 61.568 muestras posteriores con pitch mantenido por el harness; no es el proveedor de pitch original. |
 | Actualización de pitch VoiceCtl `0x01a85cbe` | 512 llamadas con listas de 0–128 entradas: destino selectivo, inactivo y broadcast contrastados, más 61.568 muestras posteriores. Afinación y copia del registro al buffer siguen explícitas del harness; otras rutas de pitch y el relevo original al render permanecen pendientes. |
+| Entrada de pitch bend VoiceCtl `0x01a84efa` | 65.536 parejas de bytes y 256 llamadas continuas contrastadas, incluida la preservación de seis registros de pitch. Control signed16 y tres flags; consumidor candidato en L1 parcialmente cifrada. No establece bend → frecuencia ni añade audio/integración. |
 | Cadencia externa, voz completa e integración | Referencia candidata al contador en L1 junto a franjas cifradas; proveedor/cadencia aún sin verificar. Faltan también asignación/pitch/ADSR y salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
 
 [Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
@@ -63,6 +64,10 @@ relevo al buffer del render. La [actualización selectiva/broadcast](drwave246-p
 ya está contrastada; la referencia candidata al relevo está en L1 parcialmente cifrada.
 La activación inicial está contrastada con afinación explícita;
 esa entrada no recupera la calibración original ni suple el relevo ADSR pendiente.
+
+La [entrada de pitch bend](drwave246-pitch-bend-input.md) está contrastada como
+decodificador independiente. Su control no se conecta a los registros de pitch
+ni al render con una fórmula supuesta; su consumidor original sigue pendiente.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

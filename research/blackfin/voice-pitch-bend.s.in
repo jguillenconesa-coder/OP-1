@@ -1,0 +1,83 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own caller for the complete original decoder. No MIDI dispatch or render.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P4.H = inputs;
+P4.L = inputs;
+P5.H = results;
+P5.L = results;
+record_loop:
+R0 = [P4];
+CC = BITTST(R0,0);
+IF !CC JUMP preserve_control;
+P1 = P4;
+P1 += 8;
+imm32 P2, 0xff801048
+P3 = 4;
+LSETUP(control_in,control_in_end) LC0 = P3;
+control_in: R0 = [P1++];
+control_in_end: [P2++] = R0;
+R0 = [P4 + 24];
+imm32 P2, 0xff8012d4
+P3 = 6;
+LSETUP(register_in,register_in_end) LC0 = P3;
+register_in: [P2++] = R0;
+register_in_end: R0 += 1;
+preserve_control:
+R0 = [P4 + 24];
+imm32 P2, 0x02f02000
+P3 = 8;
+LSETUP(source_in,source_in_end) LC0 = P3;
+source_in: [P2++] = R0;
+source_in_end: NOP;
+imm32 P1, 0x02f02000
+R0 = [P4 + 4];
+[P1 + 4] = R0;
+R0 = [P4 + 28];
+[P1 + 8] = R0;
+imm32 R0, 0x02f02004
+[P1 + 12] = R0;
+R0 += 3;
+[P1 + 16] = R0;
+R0 += 1;
+[P1 + 20] = R0;
+imm32 R0, 0x02f02008
+imm32 P0, 0x01a84efa
+CALL (P0);
+imm32 P1, 0xff801048
+P2 = P5;
+P3 = 4;
+LSETUP(control_out,control_out_end) LC0 = P3;
+control_out: R0 = [P1++];
+control_out_end: [P2++] = R0;
+imm32 P1, 0x02f02000
+P3 = 8;
+LSETUP(source_out,source_out_end) LC0 = P3;
+source_out: R0 = [P1++];
+source_out_end: [P2++] = R0;
+imm32 P1, 0xff8012d4
+P3 = 6;
+LSETUP(register_out,register_out_end) LC0 = P3;
+register_out: R0 = [P1++];
+register_out_end: [P2++] = R0;
+P5 = P2;
+P4 += 32;
+R0 = P4;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF !CC JUMP record_loop;
+R0.H = result_args;
+R0.L = result_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+result_args: .long 1,results,@BYTES@
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"
