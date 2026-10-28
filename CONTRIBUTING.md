@@ -2,6 +2,9 @@
 
 Consulta primero [README](README.md), [créditos](CREDITS.md), [avisos de terceros](THIRD_PARTY_NOTICES.md) y [limitaciones y pruebas](docs/validation.md).
 
+Para incorporarte con tu propia cuenta de Codex, consulta la
+[guía de colaboración y el prompt de inicio](docs/collaborating-with-codex.md).
+
 1. Compila para el sistema que vayas a probar. El VST3 de Linux no funciona en Windows/macOS.
 2. Ejecuta las suites CTest existentes. En Windows incluye la prueba que carga el módulo VST3.
 3. Para cambios de audio, verifica señal, afinación, estabilidad, liberación de notas y recuperación de estado según lo que modifiques.
