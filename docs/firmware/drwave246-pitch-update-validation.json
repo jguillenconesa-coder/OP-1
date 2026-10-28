@@ -1,0 +1,86 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "source_fixture_sha256": "fcd9b57a1a67ab0adeea60477803fad001dcfb300773c99113ce7e37191c2bee",
+  "pitch_update": "0x01a85cbe",
+  "records": 512,
+  "independent_cases": 256,
+  "continuous_streams": 4,
+  "calls_per_stream": 64,
+  "coverage": {
+    "empty_lists": 4,
+    "broadcast_records": 248,
+    "selective_records": 255,
+    "updates_after_rejected_activation": 83,
+    "list_lengths": 129,
+    "voice_slots": 6
+  },
+  "artifacts": {
+    "drwave246-pitch-update-overrides.bin": {
+      "bytes": 1445888,
+      "sha256": "2c3ccbc1421f9f05110379778b2cb49b3a5a447d2f9b79704a96a59a8eabe607"
+    },
+    "drwave246-pitch-update-output.bin": {
+      "bytes": 6384128,
+      "sha256": "25a9e65d91dff2d477993b1a65a9cbb1aad62c13c74984365bdeb3a24441b309"
+    }
+  },
+  "routine_sha256": "3b44da9a14ee3f70aae533c3c1dd002988218904ebd2ce73e3a8cd08ad25b103",
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/build-deferred/sim/bfin/run": "26799ba2bd15737b66f6ca1dc333e59c1dd16aaaea249c96e020839dda5013c6"
+  },
+  "limitations": [
+    "Explicit tuning; no original/default calibration.",
+    "Register pitch is held by the harness in the following render buffer, not by a recovered original writer.",
+    "List entries, count, events, voice and counter are explicit test inputs; allocator, clock, ADSR, output and plugin integration remain pending.",
+    "GNU BF524 with documented deferred D-register patch; not hardware validation."
+  ],
+  "validation": {
+    "independent_reproduction": "Two fresh private runs agree byte for byte on overrides and full output; a third metadata-enhanced run also agrees.",
+    "core_suites_passed": 26,
+    "full_juce_suites_passed": 28,
+    "sanitizers": "ASan + UBSan passed activation and pitch-update oracles; LeakSanitizer disabled for sandbox ptrace limitation.",
+    "windows_wine": "Not run in this review.",
+    "hardware_daw_asio": "Not run.",
+    "prior_activation_oracle": "Reproduced original fixtures byte for byte using uploaded rev246 and newly built GNU tools.",
+    "source_hashes": {
+      "Source/Voice246PitchUpdate.h": "7dcbcd05cd415e4c84eb6422cb6b6d4bd2c2684a1fe1924b71905615ad34939f",
+      "Tests/DrWave246ActivationTests.cpp": "e9f4bab93df6b1a30282fec446f1d566ef8178b23dd07bf8de1dac2b11ccb86f",
+      "scripts/verify-drwave246-pitch-update.py": "69f8faf298ea101c6c09310f4cd850d3e8f1b0af8b7cf915823bc5a70e38e26f"
+    }
+  },
+  "toolchain": {
+    "source": "RTEMS/sourceware-mirror-binutils-gdb",
+    "tag": "gdb-13.1-release",
+    "commit": "4f3e26ac6ee31f7bc4b04abd8bdb944e7f1fc5d2",
+    "patch_sha256": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325"
+  },
+  "rea": {
+    "version": "6.8.0",
+    "scope": "Configured GNU objdump capability, ELF header and synthetic-symbol disassembly evidence; private raw evidence contains original instructions and is not distributed. Not DSP execution or decryption.",
+    "observations": {
+      "rea-blackfin-capabilities.json": {
+        "evidence_sha256": "14e4d1acfc827372847dbca603cc97b58456efbe7d62cc284b1d7fbad6abfee1",
+        "provider": "gnu.objdump",
+        "exit_code": 0,
+        "output_truncated": false,
+        "artifact_changed": null
+      },
+      "rea-sdram-headers.json": {
+        "evidence_sha256": "815c9b4e7a144466d74cb3fa339f963268909d939de8d5bf3d35835d038a9a31",
+        "provider": "gnu.objdump",
+        "exit_code": 0,
+        "output_truncated": false,
+        "artifact_changed": false
+      },
+      "rea-voice-pitch-disassembly.json": {
+        "evidence_sha256": "50b1b6455e0169fe4545c66c334110b36004f8a6819a8a9233c813e3ad74c543",
+        "provider": "gnu.objdump",
+        "exit_code": 0,
+        "output_truncated": false,
+        "artifact_changed": false
+      }
+    }
+  }
+}

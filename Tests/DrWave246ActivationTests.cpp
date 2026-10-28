@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "DrWave246Activation.h"
+#include "Voice246PitchUpdate.h"
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -17,12 +18,16 @@ void put32(uint8_t* p,uint32_t x){put16(p,uint16_t(x));put16(p+2,uint16_t(x>>16)
 }
 int main(int argc,char** argv){try{
     check(argc==2,"Expected fixture directory");const std::string dir=argv[1];
-    const auto base=read(dir+"/drwave246-kernel-input.bin"),events=read(dir+"/drwave246-activation-overrides.bin"),oracle=read(dir+"/drwave246-activation-output.bin"),sineData=read(dir+"/verified-sine.bin");
-    check(base.size()==512*9316&&events.size()==512*232&&oracle.size()==512+327680+512*9244&&sineData.size()>=16384,"Incomplete activation fixtures");
+    for(const bool pitchUpdate:{false,true}){
+    const std::string prefix=pitchUpdate?"drwave246-pitch-update":"drwave246-activation";
+    const size_t eventBytes=pitchUpdate?2824:232,resultBytes=pitchUpdate?11828:9244;
+    const auto base=read(dir+"/drwave246-kernel-input.bin"),events=read(dir+"/"+prefix+"-overrides.bin"),oracle=read(dir+"/"+prefix+"-output.bin"),sineData=read(dir+"/verified-sine.bin");
+    check(base.size()==512*9316&&events.size()==512*eventBytes&&oracle.size()==512+327680+512*resultBytes&&sineData.size()>=16384,"Incomplete activation fixtures");
     std::array<int16_t,8192> sine{};for(size_t i=0;i<8192;++i)sine[i]=s16(sineData.data()+i*2);
     for(size_t i=0;i<128;++i)check(uint32_t(voice246NotePitch[i])==u32(oracle.data()+i*4),"Original note-table copy differs");
     Voice246Registers registers;std::array<uint8_t,64> registerImages{};std::array<bool,128> lookupUsed{};
     size_t explicitNotes=0,largeIgnoredIndices=0;
+    std::array<bool,129> listCounts{};size_t broadcasts=0,selective=0,ignored=0;
     DrWave246WaveBank bank;DrWave246Waves waves;DrWave246Runtime runtime;DrWave246Context initial;
     drWave246InitializeShared(waves,initial,runtime.settings);drWave246BuildWaveBank(bank,runtime.settings,sine);
     check(std::memcmp(&bank,oracle.data()+512,sizeof(bank))==0&&std::memcmp(&bank,oracle.data()+oracle.size()-sizeof(bank),sizeof(bank))==0,"Routing base banks differ/changed");
@@ -31,7 +36,7 @@ int main(int argc,char** argv){try{
     std::array<bool,6> voices{},updateVoices{},resetVoices{};std::array<bool,8> soundsUsed{};
     std::array<bool,6> spectra{};std::array<bool,3> transforms{};
     for(size_t test=0;test<512;++test){
-        const auto* p=base.data()+test*9316;const auto* a=events.data()+test*232;const auto* e=oracle.data()+512+163840+test*9244;
+        const auto* p=base.data()+test*9316;const auto* a=events.data()+test*eventBytes;const auto* e=oracle.data()+512+163840+test*resultBytes;
         const auto action=u32(a),slot=u32(a+4),counter=u32(a+8),loaded=u32(a+12),selected=u32(a+16),enabled=u32(p+12);
         check(slot<6&&loaded<8&&selected<8,"Invalid activation fixture index");voices[slot]=true;soundsUsed[loaded]=true;
         if(action&1){
@@ -53,6 +58,21 @@ int main(int argc,char** argv){try{
             if(note.explicitPitch){++explicitNotes;if(note.noteIndex>=128)++largeIgnoredIndices;}
             else lookupUsed[note.noteIndex]=true;
         }else ++rejected;
+        if(pitchUpdate){
+            const auto* u=a+232;const auto count=u32(u+2584);check(count<=128,"Invalid update list count");listCounts[count]=true;
+            std::array<Voice246PitchEntry,128> entries{};
+            for(size_t i=0;i<128;++i){
+                const auto* row=u+24+i*20;
+                entries[i]={{u32(row),u32(row+4),u32(row+8),signedPhase(u32(row+12))},signedPhase(u32(row+16))};
+                if(i<count){if(entries[i].voice==-2)++broadcasts;else if(entries[i].voice>=0&&entries[i].note.noteIndex==u32(u))++selective;else ++ignored;}
+            }
+            auto pitchWord=signedPhase(u32(u+12));const auto previousActive=registers.active;const auto previousVelocity=registers.velocity;
+            check(voice246UpdatePitch(registers,u32(u),pitchWord,signedPhase(u32(u+4)),entries.data(),count),"Valid pitch update rejected");
+            check(uint32_t(pitchWord)==u32(e+9248),"Original tuned update scalar differs");
+            check(u32(u+8)==u32(e+9244)&&u32(u+16)==u32(e+9252),"Pitch scalar guards changed");
+            check(std::memcmp(u+20,e+9256,2572)==0,"Original pitch update changed list/count/guards");
+            check(registers.active==previousActive&&registers.velocity==previousVelocity,"Pitch update activated voice or changed velocity");
+        }
         check(u32(e+8784)==0xffffffff,"Harness reserved return field changed");
         for(size_t i=0;i<6;++i){registerImages[i]=registers.active[i];put16(registerImages.data()+8+i*2,uint16_t(registers.velocity[i]));put32(registerImages.data()+32+i*4,uint32_t(registers.pitch[i]));}
         check(std::memcmp(registerImages.data(),e+9164,64)==0,"VoiceCtl registers/neighbor bytes differ");
@@ -92,5 +112,14 @@ int main(int argc,char** argv){try{
     for(int sound:{-1,8})check(!drWave246ActivateNote(pool,registers,{},0x40000000,sound,0,0)&&!drWave246ActivateNote(pool,registers,{},0x40000000,0,sound,0),"Invalid sound accepted");
     for(uint32_t index:{128u,0xffffffffu})check(!drWave246ActivateNote(pool,registers,{index,0,0,0},0x40000000,0,0,0),"Invalid lookup accepted");
     check(std::memcmp(pool.data(),old.data(),sizeof(pool))==0&&registers.active==previous.active&&registers.velocity==previous.velocity&&registers.pitch==previous.pitch,"Invalid activation mutated pool/registers");
-    std::cout<<"PASS: 128 note-table words, "<<(updated+readOnly)*128<<" VoiceCtl/Dr. Wave samples; "<<accepted<<" accepted / "<<rejected<<" gated, "<<explicitNotes<<" explicit pitches ("<<largeIgnoredIndices<<" ignored large indices); "<<updated<<" updates / "<<readOnly<<" reads / "<<inactive<<" inactive\n";
+    if(pitchUpdate){
+        for(bool used:listCounts)check(used,"Missing pitch update list length");
+        check(broadcasts&&selective&&ignored,"Missing pitch update selection branch");
+        int32_t value=123;Voice246PitchEntry invalid;invalid.voice=6;
+        check(!voice246UpdatePitch(registers,0,value,0,nullptr,1)&&!voice246UpdatePitch(registers,0,value,0,&invalid,129),"Invalid update list accepted");
+        for(int index:{-3,6}){invalid.voice=index;check(!voice246UpdatePitch(registers,0,value,0,&invalid,1),"Invalid update voice accepted");}
+        check(value==123&&registers.pitch==previous.pitch&&registers.active==previous.active&&registers.velocity==previous.velocity,"Invalid update mutated input/registers");
+    }
+    std::cout<<"PASS: "<<prefix<<", 128 note-table words, "<<(updated+readOnly)*128<<" VoiceCtl/Dr. Wave samples; "<<accepted<<" accepted / "<<rejected<<" gated, "<<explicitNotes<<" explicit pitches ("<<largeIgnoredIndices<<" ignored large indices); "<<updated<<" updates / "<<readOnly<<" reads / "<<inactive<<" inactive\n";
+    }
 }catch(const std::exception& error){std::cerr<<error.what()<<'\n';return 1;}}
