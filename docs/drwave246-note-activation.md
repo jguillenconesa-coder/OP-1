@@ -114,3 +114,7 @@ La ampliación posterior [contrasta la actualización selectiva/broadcast de
 pitch](drwave246-pitch-update.md) con listas de 0–128 entradas y el render
 posterior. No sustituye el mantenimiento de pitch del harness por el proveedor
 original; las demás rutas de pitch y el relevo L1 siguen pendientes.
+
+La [ampliación del índice de afinación](drwave246-tuning-index.md) ejecuta
+su setter antes de la activación y contrasta el consumo desde una tabla de
+coeficientes explícitos. Recupera el cálculo del índice, no la calibración.

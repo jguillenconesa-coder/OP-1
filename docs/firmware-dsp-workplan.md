@@ -47,6 +47,7 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | Activación VoiceCtl | Tabla de 128 notas, pitch, velocidad y actividad contrastados con afinación explícita. 427 activaciones aceptadas / 85 bloqueadas y 61.568 muestras posteriores con pitch mantenido por el harness; no es el proveedor de pitch original. |
 | Actualización de pitch VoiceCtl `0x01a85cbe` | 512 llamadas con listas de 0–128 entradas: destino selectivo, inactivo y broadcast contrastados, más 61.568 muestras posteriores. Afinación y copia del registro al buffer siguen explícitas del harness; otras rutas de pitch y el relevo original al render permanecen pendientes. |
 | Entrada de pitch bend VoiceCtl `0x01a84efa` | 65.536 parejas de bytes y 256 llamadas continuas contrastadas, incluida la preservación de seis registros de pitch. Control signed16 y tres flags; consumidor candidato en L1 parcialmente cifrada. No establece bend → frecuencia ni añade audio/integración. |
+| Índice de afinación VoiceCtl `0x01a842f0` | Setter contrastado con estrés signed32, 4.577 parejas de controles y 256 llamadas continuas. Otras 61.568 muestras verifican activación/render con coeficientes explícitos en índices calculados; no recupera los valores originales de la tabla ni el escritor del buffer. |
 | Cadencia externa, voz completa e integración | Referencia candidata al contador en L1 junto a franjas cifradas; proveedor/cadencia aún sin verificar. Faltan también asignación/pitch/ADSR y salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
 
 [Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
@@ -68,6 +69,11 @@ esa entrada no recupera la calibración original ni suple el relevo ADSR pendien
 La [entrada de pitch bend](drwave246-pitch-bend-input.md) está contrastada como
 decodificador independiente. Su control no se conecta a los registros de pitch
 ni al render con una fórmula supuesta; su consumidor original sigue pendiente.
+
+El [setter del índice de afinación](drwave246-tuning-index.md) ya está
+contrastado junto a su consumo en la activación. Falta el productor de los
+coeficientes de las 2400 entradas: el índice 1200 no proporciona por sí solo
+una calibración. El relevo L1 y las demás rutas de pitch permanecen pendientes.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

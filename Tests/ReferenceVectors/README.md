@@ -1,5 +1,28 @@
 # Isolated original-instruction reference vectors
 
+## VoiceCtl tuning-index setter and Dr. Wave consumption
+
+`voice246-tuning-index-input.bin` has 70,369 little-endian 32-byte records:
+uint32 reload, signed32 coarse/fine, a 16-byte index/neighbor image, and an
+unused uint32 word. `voice246-tuning-index-output.bin` has the resulting
+16-byte image per record. Its index is at image offset 8 (`0x018c2184`).
+There are 65,536 independent signed32 stress cases, 4,577 independent control
+pairs, then 256 continuous calls with neighbors reloaded only at stream start.
+
+`drwave246-tuning-index-overrides.bin` has 512 records of 240 bytes: the prior
+232 activation override bytes followed by signed32 coarse/fine. The original
+setter runs before activation. The harness stores explicit tuning at the
+computed table index; the 2400-word test table starts at zero and persists.
+
+`drwave246-tuning-index-output.bin` has the 512-byte copied note table and
+163,840-byte base banks, then 512 records of 9,272 bytes, the final 9,600-byte
+test coefficient table, and the unchanged base banks. Each record starts with
+the 9,244-byte activation result, then the 16-byte index/neighbor image and
+three words (coefficient before/at/after the selected index). Index neighbors
+are explicit sentinels `0x11112222`, `0x33334444`, index, `0x77778888`.
+This recovers index arithmetic/consumption, not original coefficient values.
+[Contract, evidence and reproduction](../../docs/drwave246-tuning-index.md).
+
 ## VoiceCtl pitch bend input
 
 `voice246-pitch-bend-input.bin` contains 65,792 little-endian 32-byte records:

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "DrWave246Activation.h"
 #include "Voice246PitchUpdate.h"
+#include "Voice246TuningIndex.h"
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -18,16 +19,18 @@ void put32(uint8_t* p,uint32_t x){put16(p,uint16_t(x));put16(p+2,uint16_t(x>>16)
 }
 int main(int argc,char** argv){try{
     check(argc==2,"Expected fixture directory");const std::string dir=argv[1];
-    for(const bool pitchUpdate:{false,true}){
-    const std::string prefix=pitchUpdate?"drwave246-pitch-update":"drwave246-activation";
-    const size_t eventBytes=pitchUpdate?2824:232,resultBytes=pitchUpdate?11828:9244;
+    for(int profile=0;profile<3;++profile){
+    const bool pitchUpdate=profile==1,indexedTuning=profile==2;
+    const std::string prefix=indexedTuning?"drwave246-tuning-index":pitchUpdate?"drwave246-pitch-update":"drwave246-activation";
+    const size_t eventBytes=indexedTuning?240:pitchUpdate?2824:232,resultBytes=indexedTuning?9272:pitchUpdate?11828:9244;
     const auto base=read(dir+"/drwave246-kernel-input.bin"),events=read(dir+"/"+prefix+"-overrides.bin"),oracle=read(dir+"/"+prefix+"-output.bin"),sineData=read(dir+"/verified-sine.bin");
-    check(base.size()==512*9316&&events.size()==512*eventBytes&&oracle.size()==512+327680+512*resultBytes&&sineData.size()>=16384,"Incomplete activation fixtures");
+    check(base.size()==512*9316&&events.size()==512*eventBytes&&oracle.size()==512+327680+512*resultBytes+(indexedTuning?9600:0)&&sineData.size()>=16384,"Incomplete activation fixtures");
     std::array<int16_t,8192> sine{};for(size_t i=0;i<8192;++i)sine[i]=s16(sineData.data()+i*2);
     for(size_t i=0;i<128;++i)check(uint32_t(voice246NotePitch[i])==u32(oracle.data()+i*4),"Original note-table copy differs");
     Voice246Registers registers;std::array<uint8_t,64> registerImages{};std::array<bool,128> lookupUsed{};
     size_t explicitNotes=0,largeIgnoredIndices=0;
     std::array<bool,129> listCounts{};size_t broadcasts=0,selective=0,ignored=0;
+    std::array<int32_t,2400> tuningTable{};
     DrWave246WaveBank bank;DrWave246Waves waves;DrWave246Runtime runtime;DrWave246Context initial;
     drWave246InitializeShared(waves,initial,runtime.settings);drWave246BuildWaveBank(bank,runtime.settings,sine);
     check(std::memcmp(&bank,oracle.data()+512,sizeof(bank))==0&&std::memcmp(&bank,oracle.data()+oracle.size()-sizeof(bank),sizeof(bank))==0,"Routing base banks differ/changed");
@@ -51,7 +54,15 @@ int main(int argc,char** argv){try{
         DrWave246SoundControls sounds;for(size_t sound=0;sound<8;++sound)for(size_t i=0;i<8;++i)sounds[sound][i]=s16(a+20+sound*16+i*2);
         if(action&2){drWave246CoreConstruct(pool);++factories;}
         const Voice246Note note{u32(a+148),u32(a+152),u32(a+156),signedPhase(u32(a+160))};
-        const bool activated=drWave246ActivateNote(pool,registers,note,signedPhase(u32(a+164)),int(loaded),int(selected),int(slot));
+        auto tuningWord=signedPhase(u32(a+164));
+        if(indexedTuning){
+            const auto index=voice246TuningIndex(signedPhase(u32(a+232)),signedPhase(u32(a+236)));
+            check(index>=1&&index<2400,"Indexed activation outside explicit table");
+            tuningTable[index]=tuningWord;tuningWord=tuningTable[index];
+            check(u32(e+9244)==0x11112222&&u32(e+9248)==0x33334444&&u32(e+9252)==index&&u32(e+9256)==0x77778888,"Original tuning index/neighbors differ");
+            check(u32(e+9260)==uint32_t(tuningTable[index-1])&&u32(e+9264)==uint32_t(tuningWord)&&u32(e+9268)==uint32_t(index+1<2400?tuningTable[index+1]:0),"Original indexed coefficient/adjacent words differ");
+        }
+        const bool activated=drWave246ActivateNote(pool,registers,note,tuningWord,int(loaded),int(selected),int(slot));
         check(activated==(loaded==selected),"VoiceCtl acceptance differs");
         if(activated){
             ++accepted;resetVoices[slot]=true;
@@ -105,6 +116,7 @@ int main(int argc,char** argv){try{
     for(bool used:voices)check(used,"Missing rendered voice");for(bool used:updateVoices)check(used,"Missing updated voice");
     for(bool used:resetVoices)check(used,"Missing accepted note-on voice");for(bool used:soundsUsed)check(used,"Missing loaded sound");
     for(bool used:spectra)check(used,"Missing routed spectrum");for(bool used:transforms)check(used,"Missing routed transform");
+    if(indexedTuning)check(std::memcmp(tuningTable.data(),oracle.data()+512+163840+512*resultBytes,9600)==0,"Original explicit tuning table differs");
     check(accepted&&rejected&&explicitNotes&&largeIgnoredIndices&&factories,"Missing activation route");
     for(bool used:lookupUsed)check(used,"Missing accepted table note");
     const auto old=pool;const auto previous=registers;

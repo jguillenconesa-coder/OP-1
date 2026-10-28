@@ -1,0 +1,117 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "setter": "0x01a842f0",
+  "setter_end_exclusive": "0x01a8430e",
+  "setter_sha256": "7b3bf0024aef2ee408d7dbed2c46154b5ad8edef56543c3e0f2160495d1a1455",
+  "stress_cases": 65536,
+  "coarse_fine_cartesian_cases": 4577,
+  "continuous_setter_calls": 256,
+  "activation_records": 512,
+  "activation_independent_cases": 256,
+  "activation_streams": 4,
+  "calls_per_stream": 64,
+  "audio_samples": 61568,
+  "artifacts": {
+    "voice246-tuning-index-input.bin": {
+      "bytes": 2251808,
+      "sha256": "f4fe7410bc28249798a367bbe976bba784cc5a11dccbba902ed76144a8f85560"
+    },
+    "voice246-tuning-index-output.bin": {
+      "bytes": 1125904,
+      "sha256": "b1db0e5cb2d5f28a14a1456d38ebf01da4a9e465bf5058d04e8e93f600550868"
+    },
+    "drwave246-tuning-index-overrides.bin": {
+      "bytes": 122880,
+      "sha256": "dafc89890d3a1452535cdf717341b50ce3cd10910f8b302863e846beeaf23e7a"
+    },
+    "drwave246-tuning-index-output.bin": {
+      "bytes": 5085056,
+      "sha256": "a944ea6d0c33cd056059c8025a92c48bc12e388ee84e6b2213a031e31e6486de"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/build-deferred/sim/bfin/run": "26799ba2bd15737b66f6ca1dc333e59c1dd16aaaea249c96e020839dda5013c6"
+  },
+  "limitations": [
+    "Original index setter and activation/render consumers only; upstream control objects reviewed statically, not executed.",
+    "Test coefficient table starts at zero and receives explicit tuning words at computed indices. No original coefficient calibration recovered.",
+    "Prepared register pitch remains held by the harness in the render buffer; original writer, cadence, allocator, ADSR/output and plugin integration remain pending.",
+    "Full signed32 stress is isolated to the setter; activation only uses bounded indices 1..2399.",
+    "GNU BF524 with documented deferred D-register patch, not hardware/latency validation. Firmware, instructions and ELF stay private."
+  ],
+  "validation": {
+    "core_ctest_suites_passed": 28,
+    "full_juce_ctest_suites_passed": 30,
+    "independent_reproduction": "Two fresh private runs agree byte for byte on both probes and all four public fixtures.",
+    "sanitizers": "Setter and expanded activation comparators passed ASan+UBSan; LeakSanitizer disabled for sandbox ptrace limitation.",
+    "windows_macos": "Not run locally; native CI required.",
+    "plugin_runtime_unchanged": true,
+    "bounded_table_indices_covered_by_standalone_setter": 2399,
+    "final_explicit_table_words_compared": 2400,
+    "distinct_activation_indices": 462
+  },
+  "source_hashes": {
+    "Source/Voice246TuningIndex.h": "95fb21e101764f9589341223e221dc98b760fc084e802fab4f38746a7f00d4f9",
+    "Tests/Voice246TuningIndexTests.cpp": "80c8d9ddbd2b7e75b4a07b879f30b5862eb28bbae334fe2fb781e5b0ea2f2d6d",
+    "Tests/DrWave246ActivationTests.cpp": "ed37c026d571596943859e212a43a5acea24b7794d0dfe683a7f66c81ffaa523",
+    "research/blackfin/voice-tuning-index.s.in": "f1a5aa00c9af354a9218495d282fdf373bee909294fc2dc7f9d97644688e91a4",
+    "scripts/verify-voice246-tuning-index.py": "94e468f1d5bce5f447b4a8d71e3f8c39da01795eec294e791dca6fab1788579f",
+    "CMakeLists.txt": "a990052857365eb84a29a6fc38cd8d4981df7a262c7a5501c880cbae2d3c57e9"
+  },
+  "rea": {
+    "version": "6.8.0",
+    "provider": "gnu.objdump",
+    "symbol": "voice246_tuning_index (synthetic)",
+    "private_evidence_sha256": "bf8023641bc07b71fbdcdda40cd8187eee5fcd07549c7280d5531b9f6f489e53",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "scope": "Static setter disassembly via GNU objdump, not upstream control-object execution or table calibration. Original bytes remain private."
+  },
+  "directed_activation_examples": [
+    {
+      "coarse": -11,
+      "fine": -99,
+      "index": 1,
+      "explicit_coefficient": 1073741824
+    },
+    {
+      "coarse": 11,
+      "fine": 99,
+      "index": 2399,
+      "explicit_coefficient": 1073741824
+    },
+    {
+      "coarse": 0,
+      "fine": 0,
+      "index": 1200,
+      "explicit_coefficient": 1073741824
+    },
+    {
+      "coarse": -11,
+      "fine": 99,
+      "index": 199,
+      "explicit_coefficient": 1073741824
+    },
+    {
+      "coarse": 11,
+      "fine": -99,
+      "index": 2201,
+      "explicit_coefficient": 1073741824
+    },
+    {
+      "coarse": -1,
+      "fine": 99,
+      "index": 1199,
+      "explicit_coefficient": 1073741824
+    },
+    {
+      "coarse": 1,
+      "fine": -99,
+      "index": 1201,
+      "explicit_coefficient": 1073741824
+    }
+  ]
+}
