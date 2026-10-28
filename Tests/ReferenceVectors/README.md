@@ -93,6 +93,29 @@ output is preserved, not counted as audio. The external counter/schedule and
 pitch are explicit; original allocator, pitch calibration, ADSR and output remain
 separate dependencies. The oracles use the documented patched GNU BF524 model.
 
+## Dr. Wave counter-consumer delta
+
+`drwave246-counter-output.bin`: 131,072 little-endian records of 8 bytes,
+each containing the original dispatch remainder (uint32) and preserved source
+DWORD. Records 0–65,535 cover every raw counter word with upper16 zero; the
+second pass repeats with upper16 `0xffff`. The fragment is exactly
+`[0x0197c89a,0x0197c8ca)` from the private image, with a caller/return supplied
+by the harness. This output is not audio and does not establish clock cadence.
+
+`drwave246-counter-overrides.bin`: 512 × 12 bytes of uint32 action, slot and
+counter DWORD. Apply each triple at offsets 0–11 of the corresponding existing
+`drwave246-kernel-input.bin` record. All remaining source bytes are reused.
+The first 256 records are independent; two 128-call streams explicitly share
+each counter across six calls, starting at 32758 and 65526. Their action reload
+bit is set only at the start; constructor/reset/release events are retained.
+This is a test clock.
+
+`drwave246-counter-render-output.bin`: same format as the previous complete-render
+output, from unmodified original render calls. 79 updates, 402 read-only calls,
+31 inactive returns: 61,568 additional samples with complete state/cache/guard
+comparison. All six slots, six spectral variants and three transforms are used.
+[Contract, reproduction and blocked L1 provider](../../docs/drwave246-counter.md).
+
 ## Earlier vectors
 
 Generated with GNU Binutils 2.44 (bfin-elf) and GNU GDB 13.1 Blackfin simulator,

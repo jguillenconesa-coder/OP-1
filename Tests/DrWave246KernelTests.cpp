@@ -15,7 +15,18 @@ uint32_t u32(const uint8_t* p){return uint32_t(u16(p))|(uint32_t(u16(p+2))<<16);
 }
 int main(int argc,char** argv){try{
     check(argc==2,"Expected fixture directory");const std::string dir=argv[1];
-    const auto input=read(dir+"/drwave246-kernel-input.bin"),oracle=read(dir+"/drwave246-kernel-output.bin"),sineData=read(dir+"/verified-sine.bin");
+    const auto sourceInput=read(dir+"/drwave246-kernel-input.bin"),sineData=read(dir+"/verified-sine.bin");
+    check(sourceInput.size()==512*9316,"Incomplete source kernel input");
+    const auto dispatch=read(dir+"/drwave246-counter-output.bin"),overrides=read(dir+"/drwave246-counter-overrides.bin");
+    check(dispatch.size()==131072*8&&overrides.size()==512*12,"Incomplete counter fixtures");
+    for(size_t i=0;i<131072;++i){
+        check(drWave246UpdateSlot(uint16_t(i))==u32(dispatch.data()+i*8),"Original low16 dispatch differs");
+        check(u32(dispatch.data()+i*8+4)==(uint32_t(i&65535)|(i>=65536?0xffff0000u:0)),"Original counter/neighbor changed");
+    }
+    for(bool extended:{false,true}){
+    auto input=sourceInput;
+    const auto oracle=read(dir+(extended?"/drwave246-counter-render-output.bin":"/drwave246-kernel-output.bin"));
+    if(extended)for(size_t i=0;i<512;++i)std::memcpy(input.data()+i*9316,overrides.data()+i*12,12);
     check(input.size()==512*9316&&oracle.size()==327680+512*8784&&sineData.size()>=16384,"Incomplete kernel fixtures");
     std::array<int16_t,8192> sine{};for(size_t i=0;i<8192;++i)sine[i]=s16(sineData.data()+i*2);
     DrWave246WaveBank bank;DrWave246Waves waves;DrWave246Runtime runtime;
@@ -79,7 +90,7 @@ int main(int argc,char** argv){try{
         check(std::memcmp(pool.data(),oldPool.data(),216)==0&&waves==oldWaves&&std::memcmp(&runtime,&oldRuntime,sizeof(runtime))==0&&out==before,"Rejected kernel call mutated state/output");
     };
     runtime.settings.modeAndReady|=0x100;
-    for(int counter:{-1,32768})rejected({{0,0,0,0}},counter);
+    for(int counter:{-1,65536})rejected({{0,0,0,0}},counter);
     for(const auto controls:{std::array<int16_t,4>{{-1,0,0,0}},{{24576,0,0,0}},{{0,-1,0,0}},{{0,0,-1,0}},{{0,0,0,-1}}})rejected(controls,0);
     pool[0].phase[0]=0x1000000;rejected({{0,0,0,0}},0);pool=previousPool;
     pool[0].slot=6;rejected({{0,0,0,0}},0);pool=previousPool;
@@ -89,5 +100,6 @@ int main(int argc,char** argv){try{
     runtime.settings.modeAndReady&=0xffff00ffu;
     std::array<int16_t,128> untouched{};untouched.fill(234);const auto oldOutput=untouched;const auto disabledRuntime=runtime;
     check(drWave246Block(pool[0],waves,runtime,bank,sine,{{-1,-1,-1,-1}},{},-1,untouched)==DrWave246ReadResult::inactive&&untouched==oldOutput&&waves==previousWaves&&std::memcmp(&runtime,&disabledRuntime,sizeof(runtime))==0,"Inactive early return mutated state/output");
-    std::cout<<"PASS: "<<(updated+readOnly)*128<<" complete original Dr. Wave samples; "<<updated<<" updates, "<<readOnly<<" reads, "<<inactive<<" inactive; six families, three transforms and "<<inversionWraps<<" inversion wraps\n";
+    std::cout<<(extended?"Counter boundary streams: ":"Original render regression: ")<<"PASS: "<<(updated+readOnly)*128<<" complete original Dr. Wave samples; "<<updated<<" updates, "<<readOnly<<" reads, "<<inactive<<" inactive; six families, three transforms and "<<inversionWraps<<" inversion wraps\n";
+    }
 }catch(const std::exception& error){std::cerr<<error.what()<<'\n';return 1;}}

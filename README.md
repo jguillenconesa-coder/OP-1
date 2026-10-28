@@ -12,6 +12,8 @@
 
 **Trabajo activo: DSP del firmware.** [Dr. Wave conecta su render aislado completo](docs/drwave246-kernel.md): controles, mezcla espectral, actualización de ondas y cinco osciladores coinciden con 61.568 muestras originales simuladas. Faltan cadencia externa, asignación/pitch/ADSR, salida e integración. [Plan por componentes](docs/firmware-dsp-workplan.md); [Cluster](docs/cluster246-kernel.md) conserva sus bloqueos de normalización, afinación y relevo L1. Presets y bancos de samples siguen aplazados.
 
+**Contador de Dr. Wave:** [consumo completo de 16 bits contrastado](docs/drwave246-counter.md), con 131.072 ejecuciones y otras 61.568 muestras de render al cruzar sus límites. El proveedor del reloj sigue pendiente en L1 parcialmente cifrada.
+
 **Tablas base de Dr. Wave:** [seis bancos / 320 ondas generados](docs/drwave246-wavebank.md) desde el seno contrastado. Coinciden 1.474.560 muestras de tabla en 18 inicializaciones y se usan en el oráculo del render completo.
 
 **Transformaciones de Dr. Wave:** [tres callbacks reconstruidos](docs/drwave246-wave-transform.md) coinciden con 131.072 palabras y sus cachés. El render completo contrasta su orden real; seis mezcladores espectrales añaden 196.608 palabras verificadas separadamente.

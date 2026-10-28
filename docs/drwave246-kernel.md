@@ -10,6 +10,12 @@ pitch, habilitación y eventos del harness son explícitos. Faltan el scheduler
 original, calibración de nota, asignación, ADSR, mezcla y adaptación de salida.
 El instalador no cambia y los presets siguen aplazados.
 
+**Ampliación del contador:** el [consumidor de 16 bits](drwave246-counter.md) está
+contrastado exhaustivamente, también con el bit alto activo. Otras 61.568 muestras
+de render verifican cruces de 32767/32768 y 65535/0, con 79 actualizaciones.
+El comparador conserva ambos oráculos: 123.136 muestras de render completo.
+La referencia candidata al proveedor en L1 sigue sin resolver su cadencia.
+
 ## Flujo reconstruido
 
 ```mermaid

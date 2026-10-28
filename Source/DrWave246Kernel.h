@@ -50,10 +50,10 @@ inline DrWave246ReadResult drWave246Block(DrWave246State& state,DrWave246Waves& 
         const std::array<int16_t,4>& controls,const std::array<uint32_t,128>& pitch,
         int updateCounter,std::array<int16_t,128>& output) noexcept {
     if(!(runtime.settings.modeAndReady&0xff00))return DrWave246ReadResult::inactive;
-    if(state.slot>=6||updateCounter<0||updateCounter>32767||controls[3]<0)return DrWave246ReadResult::unsupported;
+    if(state.slot>=6||updateCounter<0||updateCounter>65535||controls[3]<0)return DrWave246ReadResult::unsupported;
     for(auto phase:state.phase)if(phase>0xffffff)return DrWave246ReadResult::unsupported;
     if(runtime.transform.reciprocalInitialized&&runtime.transform.reciprocalSeed!=drWave246ReciprocalSeed)return DrWave246ReadResult::unsupported;
-    const bool updating=int(state.slot)==updateCounter%6;
+    const bool updating=state.slot==drWave246UpdateSlot(uint16_t(updateCounter));
     if(updating&&(controls[0]<0||controls[0]>=24576||controls[1]<0||controls[2]<0||state.field32>=0x02000000||
         runtime.settings.referenceGain!=32768||runtime.settings.outputGain<0||runtime.settings.outputGain>262144))
         return DrWave246ReadResult::unsupported;

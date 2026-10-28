@@ -42,12 +42,14 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | Transformación de ondas | Tres callbacks completos contrastados: retención por grupos, extremo fijo y repetición; 131.072 palabras / 512 llamadas, seis ondas y cachés compartidas. La palabra Q16 y la elección de callback son entradas explícitas. |
 | Mezcla espectral | Seis callbacks: 768 llamadas / 196.608 palabras, bancos generados y preservados, reemplazo/adición y seis slots contrastados. |
 | Render completo, actualización y controles | 61.568 muestras / 512 registros: 240 actualizaciones, 241 lecturas activas y 31 retornos inactivos. Preparación de cuatro controles, dos familias, inversión de 25 bits, blanco opcional, retención común y cinco osciladores contrastados juntos. |
-| Cadencia externa, voz completa e integración | Siguiente paso: verificar proveedor del contador/cadencia, asignación/pitch/ADSR y contrato de salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
+| Consumo del contador externo | Los 65.536 valores raw contrastados dos veces con vecinos distintos; el resto es sin signo. 61.568 muestras adicionales de render completo cruzan los límites 32767/32768 y 65535/0. El adaptador admite toda la palabra; no establece el reloj original. |
+| Cadencia externa, voz completa e integración | Referencia candidata al contador en L1 junto a franjas cifradas; proveedor/cadencia aún sin verificar. Faltan también asignación/pitch/ADSR y salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
 
 [Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
 [Generación de los seis bancos base](drwave246-wavebank.md) ·
 [Tres transformaciones de la onda de voz](drwave246-wave-transform.md) ·
-[Mezcla espectral y render aislado completo](drwave246-kernel.md).
+[Mezcla espectral y render aislado completo](drwave246-kernel.md) ·
+[Contador de 16 bits y dependencia del proveedor](drwave246-counter.md).
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

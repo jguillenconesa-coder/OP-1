@@ -256,3 +256,15 @@ update order and shared caches are checked; the external scheduler, allocation,
 pitch calibration/provider, ADSR, output and plugin integration are not inferred.
 The existing reader shares its inner loop with the complete adapter and retains
 its regression oracle. No WHEEL synthesis or new REA L1 decryption is used.
+
+## Dr. Wave counter-consumer reconstruction
+
+The [16-bit dispatch extension](docs/drwave246-counter.md) is independently
+checked against every input word, twice with different neighbor halfwords,
+by inserting the exact private dispatch fragment in an own bounded caller.
+A separate oracle calls the entire original render unmodified across explicit
+counter boundaries; previous fixtures remain unchanged. Only numerical results,
+own code and metadata are published. The partially encrypted L1 reference is
+recorded as a candidate, without inventing its missing pointer/store/flow.
+The 8-of-24 format fact uses the already credited community documentation;
+no new REA decryption, recovered clock or hardware timing is claimed.

@@ -21,7 +21,7 @@ siguen usando ondas sintéticas y no completan la actualización de voz.
 | --- | --- |
 | Render `0x0197c870` | Procesa bloques mono de 128 muestras signed16. |
 | Byte en `0x01cc1865` | Si es cero, retorna sin escribir salida, fases ni contexto de lectura. El adaptador conserva ese comportamiento, sin limpiar el buffer. |
-| Contador en `0x01ab8bac` | Su resto módulo seis designa el slot que toma la ruta de actualización de onda. Se contrasta aquí el dominio no negativo signed16, 0–32767. No es la selección de sonido del usuario. |
+| Contador en `0x01ab8bac` | Su resto módulo seis designa el slot que toma la ruta de actualización de onda. Este oráculo conserva 0–32767; la [ampliación posterior](drwave246-counter.md) contrasta todos los valores raw 0–65535 y extiende el adaptador. No es la selección de sonido del usuario. |
 | Slot del objeto | En esta etapa solo se ejecutan los otros cinco slots; la rama del slot de actualización se rechaza antes de mutar datos. |
 | Objeto de 36 bytes | Vtable en offset 0; palabra preservada en 4; cinco fases en 8–24; slot en 28; campo auxiliar en 32. |
 | Ondas en `0x01cea08c` | Seis buffers separados por 1.024 bytes; cada lectura usa una palabra de 32 bits. Las seis ondas del harness son sintéticas. |

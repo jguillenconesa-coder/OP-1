@@ -1,0 +1,108 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "source_fixture_sha256": "fcd9b57a1a67ab0adeea60477803fad001dcfb300773c99113ce7e37191c2bee",
+  "original_dispatch_fragment": [
+    "0x0197c89a",
+    "0x0197c8ca"
+  ],
+  "fragment_end_exclusive": true,
+  "exhaustive_counter_words": 65536,
+  "neighbor_halfwords": [
+    0,
+    65535
+  ],
+  "fragment_calls": 131072,
+  "original_complete_render": "0x0197c870",
+  "render_records": 512,
+  "counts": {
+    "updated": 79,
+    "read_only": 402,
+    "inactive": 31
+  },
+  "audio_samples": 61568,
+  "high_bit_active_calls": 239,
+  "high_bit_wave_updates": 39,
+  "independent_cases": 256,
+  "explicit_streams": 2,
+  "calls_per_stream": 128,
+  "stream_start_words": [
+    32758,
+    65526
+  ],
+  "test_calls_per_counter_word": 6,
+  "base_banks_unchanged": true,
+  "artifacts": {
+    "drwave246-counter-output.bin": {
+      "bytes": 1048576,
+      "sha256": "88c36dac55256decb4baf34551539218c16b5e55178ca6fccbac4cf89030ce18"
+    },
+    "drwave246-counter-overrides.bin": {
+      "bytes": 6144,
+      "sha256": "4abfa31574b37491ad26464b72b13a0adc3b20af1b0e7ee7ba304e7f1da63e47"
+    },
+    "drwave246-counter-render-output.bin": {
+      "bytes": 4825088,
+      "sha256": "aa1116168b989498b86019211c9153e53f95ab0bc938825644c300db595617f1"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "model": "GNU BF524 with documented D-register deferred-writeback patch; not hardware validation",
+  "limitations": [
+    "Fragment output is only the counter consumer, not the full render. The 512-call second oracle runs the unmodified complete render.",
+    "The six calls per test word and its increment/wrap are caller inputs, not verified original cadence.",
+    "Candidate L1 writer is partly encrypted. No original scheduler, allocator, pitch calibration/provider, ADSR, output or plugin integration claimed.",
+    "The adapter accepts int counters 0..65535, rejecting out-of-domain ints. Only low16 of the original counter DWORD are consumed; upper16 remain unchanged."
+  ],
+  "validation": {
+    "independent_reproduction": "Two new private directories; exhaustive dispatch and complete-render observations match byte for byte.",
+    "native_core_ctest_suites_passed": 24,
+    "native_ctest_total_seconds": 3.64,
+    "windows_wine": "MSVC-target cross-build: complete kernel (both datasets and exhaustive dispatch) and reader regression passed under Wine. No native Windows/Ableton/ASIO timing validation.",
+    "sanitizers": "Expanded kernel comparator passed ASan+UBSan. LeakSanitizer disabled due to sandbox ptrace limitation.",
+    "complete_render_samples_across_both_datasets": 123136,
+    "additional_inversion_wraps": 3,
+    "source_hashes": {
+      "Source/DrWave246.h": "a98063b94e23857d7863ea92b3ba35cbe82591ddcf7ebd654094bfaf00078aa6",
+      "Source/DrWave246Kernel.h": "31699ebf42c9705cbe7ed90f53b4c33033e9a0e46052c842b2344eeb24739bbb",
+      "Source/DrWave246Spectral.h": "a216f1fdd92b1512e7e9968b7096fa1b83f00163fb221995b6b355ba1cd7402d",
+      "Source/DrWave246WaveTransform.h": "4a978bbea471ef60ccfab83213a1977553af14bcc28d7209bd30066cb505d4a3",
+      "Source/DrWave246WaveBank.h": "001316372cb37a05cb2286da761c99472c94ba2629407d626cf57786f21bc4d5",
+      "Source/ReferenceDsp.h": "6f237e97236494636a71ae47582b4b9b0f75357176bdf102a45c87d230808acd",
+      "Tests/DrWave246KernelTests.cpp": "e8fb5494a4142a5835635b87b2056b921ee2dc48e330197bb6a7f88222d4a493",
+      "Tests/DrWave246Tests.cpp": "af6a242b4df2ad5b908d7ee0fd54ee2e5e9fda9ac60aa3331eeeb0bafe02073d",
+      "scripts/verify-drwave246-counter.py": "b745c17448198e9d300b118ee5e914ffd17c8b8f80490a4c6dfef9e637423105",
+      "research/blackfin/drwave-counter.s.in": "daf6733442a5e8263fa75ba7c0a5e0fe0678db52bdc9809b03c1c096772dd2fa",
+      "research/blackfin/drwave-kernel.s.in": "7b52d82f0c4088f4dfba8a222dd1d9ddd8e57cff6e1dc867055d567af5850766",
+      "research/blackfin/voice-contract.ld": "56392dfc7b84df5f3552546615b4a95e7fcbd8d3deb5ebf2838e624b8e0d196d"
+    },
+    "unchanged_plugin_runtime": true,
+    "runtime_linkage": "Only isolated core tests reach these Dr. Wave adapters. No instrument executable, installer, host/MIDI parameter IDs, presets or samples changed.",
+    "stream_state_reload_events": 2
+  },
+  "static_provider_candidate": {
+    "status": "Candidate only: pointer high half, writeback and reachable flow not recovered; no original cadence claimed.",
+    "ldr_header_offset": "0x206214",
+    "destination": "0xffa00000",
+    "payload_bytes": 49076,
+    "flags": "0xaddb2406",
+    "low_half_materialization": "0xffa01814",
+    "parallel_signed_word_read_group": "0xffa01824",
+    "register_increment": "0xffa0182e",
+    "ciphertext_intervals_end_exclusive": [
+      [
+        "0xffa01818",
+        "0xffa01820"
+      ],
+      [
+        "0xffa01830",
+        "0xffa01838"
+      ]
+    ],
+    "ciphertext_profile_source": "Previously credited community 8-of-24 format documentation, not a recovered key.",
+    "execution_of_candidate": false
+  }
+}

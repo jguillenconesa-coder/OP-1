@@ -42,6 +42,9 @@ inline std::array<uint32_t,5> drWave246Increments(uint32_t pitch,int16_t orange)
     return result;
 }
 enum class DrWave246ReadResult { rendered,inactive,unsupported };
+// The original signed word load is followed by unsigned low-half products.
+// Its dispatch remainder therefore covers all 16 bits, including 0x8000..ffff.
+inline constexpr unsigned drWave246UpdateSlot(uint16_t counter) noexcept {return counter%6u;}
 namespace drwave246_detail {
 // Preconditions are checked by the bounded reader or complete-kernel adapter.
 inline void readPrepared(DrWave246State& state,DrWave246Context& context,const DrWave246Waves& waves,
@@ -66,9 +69,9 @@ inline DrWave246ReadResult drWave246ReadBlock(DrWave246State& state,DrWave246Con
         const std::array<uint32_t,128>& pitch,int updateCounter,bool enabled,
         std::array<int16_t,128>& output) noexcept {
     if(!enabled)return DrWave246ReadResult::inactive;
-    // Counter % 6 designates a different route which constructs/changes waves.
-    // Reject it before mutation until that route is reconstructed and tested.
-    if(state.slot>=6||updateCounter<0||updateCounter>32767||int(state.slot)==updateCounter%6||controls[3]<0)
+    // This reader-only adapter excludes wave updates. The complete render
+    // adapter in DrWave246Kernel.h handles that separately verified route.
+    if(state.slot>=6||updateCounter<0||updateCounter>65535||state.slot==drWave246UpdateSlot(uint16_t(updateCounter))||controls[3]<0)
         return DrWave246ReadResult::unsupported;
     for(auto phase:state.phase)if(phase>0x00ffffff)return DrWave246ReadResult::unsupported;
     if(context.initialized&&context.reciprocalSeed!=drWave246ReciprocalSeed)

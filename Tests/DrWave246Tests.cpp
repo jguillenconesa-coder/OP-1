@@ -61,7 +61,7 @@ int main(int argc,char** argv){try{
     for(bool slot:used)check(slot,"Missing rendered slot");for(bool index:indices)check(index,"Missing initial wave index");
     const auto previous=pool[0];const auto previousContext=context;
     std::array<uint32_t,128> pitch{};std::array<int16_t,128> output{};output.fill(123);const auto originalOutput=output;
-    for(int counter:{-1,0,6,32768})check(drWave246ReadBlock(pool[0],context,waves,{{0,0,0,0}},pitch,counter,true,output)==DrWave246ReadResult::unsupported,"Unsupported update counter accepted");
+    for(int counter:{-1,0,6,65536})check(drWave246ReadBlock(pool[0],context,waves,{{0,0,0,0}},pitch,counter,true,output)==DrWave246ReadResult::unsupported,"Unsupported update counter accepted");
     check(drWave246ReadBlock(pool[0],context,waves,{{0,0,0,-1}},pitch,1,true,output)==DrWave246ReadResult::unsupported,"Negative orange accepted");
     check(std::memcmp(&pool[0],&previous,36)==0&&context.increments==previousContext.increments&&context.initialized==previousContext.initialized&&context.reciprocalSeed==previousContext.reciprocalSeed&&context.wavePointer==previousContext.wavePointer&&output==originalOutput,"Rejected route mutated data");
     pool[0].phase[0]=0x01000000;const auto invalid=pool[0];

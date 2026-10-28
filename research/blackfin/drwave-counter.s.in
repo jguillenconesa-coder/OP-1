@@ -1,0 +1,45 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own bounded caller of the exact position-independent dispatch fragment.
+// The original fragment is inserted from the user's private SDRAM image.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P0.H = object;
+P0.L = object;
+[SP + 0x3c] = P0;
+P5.H = results;
+P5.L = results;
+R7 = 0;
+counter_loop:
+R0 = R7;
+CC = BITTST(R7,16);
+IF !CC JUMP low_neighbor;
+R0.H = 0xffff;
+low_neighbor:
+imm32 P1, 0x01ab8bac
+[P1] = R0;
+CALL dispatch_fragment;
+[P5++] = R0;
+imm32 P1, 0x01ab8bac
+R0 = [P1];
+[P5++] = R0;
+R7 += 1;
+imm32 R0, 131072
+CC = R7 == R0;
+IF !CC JUMP counter_loop;
+R0.H = result_args;
+R0.L = result_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.align 4
+dispatch_fragment:
+.incbin "@WORK@/sdram.bin", 0x0097c89a, 0x30
+RTS;
+.data
+.align 4
+object: .long 0,0,0,0,0,0,0,3,0
+result_args: .long 1,results,1048576
+results: .space 1048576
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"
