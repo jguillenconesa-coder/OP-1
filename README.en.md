@@ -8,7 +8,9 @@ Version 0.13.0 adds **[Value 246 Voice](docs/value-voice246-native.md)**: indepe
 
 **Active work: firmware DSP reconstruction.** The [component workplan](docs/firmware-dsp-workplan.md) prioritizes engines, filters, envelopes and modulators. [Dr. Wave](docs/drwave246-reader.md) now has an isolated five-oscillator reader/mixer checked against 241,920 samples using explicit synthetic waves; control-driven wave updates and full engine integration remain pending. [Cluster](docs/cluster246-kernel.md) retains its checked kernel and unresolved normalization, tuning and L1 handoff dependencies. Presets, sample banks and video matching are deferred.
 
-**Dr. Wave base tables:** [six banks / 320 generated waves](docs/drwave246-wavebank.md) from the verified sine, matching 1,474,560 table samples across 18 initializations. Control-driven combination/transformation and plugin integration remain pending.
+**Dr. Wave base tables:** [six banks / 320 generated waves](docs/drwave246-wavebank.md) from the verified sine, matching 1,474,560 table samples across 18 initializations. Their connection to spectral mixing and complete control dispatch remains pending before engine integration.
+
+**Dr. Wave transforms:** [three reconstructed callbacks](docs/drwave246-wave-transform.md), covering scatter/hold, clamped and repeated reads, match 131,072 wave words and complete cache state. Spectral mixing and full control-driven dispatch remain pending before engine integration.
 
 **Cluster progress:** [Core note-on/release routing and six interleaved slots](docs/cluster246-core-routing.md) checked against another 131,072 samples with shared RNG. The [five observed normalization entries](docs/cluster246-normalization.md) and [shared initialization with REA support](docs/cluster246-shared-init.md) remain available. Three normalization entries and full integration remain unresolved.
 

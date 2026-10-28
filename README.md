@@ -12,7 +12,9 @@
 
 **Trabajo activo: DSP del firmware.** [Plan por componentes](docs/firmware-dsp-workplan.md): motores, filtros, envolventes y moduladores. [Dr. Wave](docs/drwave246-reader.md) tiene lectura y mezcla de cinco osciladores contrastadas con 241.920 muestras y ondas sintéticas; falta actualizar las ondas según los controles e integrar el motor completo. [Cluster](docs/cluster246-kernel.md) conserva sus pruebas y bloqueos de normalización, afinación y relevo L1. Presets, bancos de samples y comparación con vídeo quedan aplazados.
 
-**Tablas base de Dr. Wave:** [seis bancos / 320 ondas generados](docs/drwave246-wavebank.md) desde el seno contrastado. Coinciden 1.474.560 muestras de tabla en 18 inicializaciones; falta la combinación/transformación de estas ondas según los controles y la integración en el plugin.
+**Tablas base de Dr. Wave:** [seis bancos / 320 ondas generados](docs/drwave246-wavebank.md) desde el seno contrastado. Coinciden 1.474.560 muestras de tabla en 18 inicializaciones; falta conectarlas a la mezcla espectral y al despacho completo de controles antes de integrar el motor.
+
+**Transformaciones de Dr. Wave:** [tres callbacks reconstruidos](docs/drwave246-wave-transform.md) —retención por grupos, extremo fijo y repetición— coinciden con 131.072 palabras de onda y sus cachés. Falta completar la mezcla espectral y el despacho según los controles antes de integrar el motor.
 
 **Avance de Cluster:** [disparo, liberación y seis slots intercalados](docs/cluster246-core-routing.md), contrastados con 131.072 muestras adicionales y un RNG compartido. Se conservan las [cinco normalizaciones observadas](docs/cluster246-normalization.md) y la [inicialización compartida con apoyo de REA](docs/cluster246-shared-init.md). Tres normalizaciones y la integración completa siguen pendientes.
 

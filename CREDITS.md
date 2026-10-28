@@ -230,3 +230,15 @@ and ELF are not included. Non-default gains are explicit stress inputs. The
 scheduled control-driven wave update and full engine integration remain pending;
 these generated base tables alone do not implement that route. No WHEEL synthesis
 code or new REA decompilation/decryption is used for this delta.
+
+## Dr. Wave wave-buffer transforms
+
+The [three transform reconstructions](docs/drwave246-wave-transform.md) are
+independently written from private observations of the operator-supplied rev246
+SDRAM routines, executed unmodified using the credited GNU BF524 model and
+D-register patch. Internal Q16 words, synthetic wave buffers and callback order
+are explicit inputs; no knob mapping, spectral mixer or complete voice update
+is inferred. Numerical fixtures include shared caches, lazy flags, guards and
+unmodified neighboring voices/configuration. Original instructions, firmware,
+SDRAM and ELF remain private. No presets, WHEEL DSP, or new REA L1 decryption
+or decompilation are used or distributed for this delta.

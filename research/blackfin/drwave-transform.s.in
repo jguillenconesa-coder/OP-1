@@ -1,0 +1,144 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own explicit caller. Original SDRAM instructions/ELF remain private.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P4.H = records;
+P4.L = records;
+P5.H = results;
+P5.L = results;
+record_loop:
+R0 = [P4];
+CC = BITTST(R0,0);
+IF !CC JUMP no_reload;
+P1.H = waves;
+P1.L = waves;
+imm32 P2, 0x01cea08c
+P3 = 1536;
+LSETUP(pool_in,pool_in_end) LC0 = P3;
+pool_in: R0 = [P1++];
+pool_in_end: [P2++] = R0;
+P0 = 1040;
+P1 = P4 + P0;
+imm32 P2, 0x01cc1870
+P3 = 520;
+LSETUP(cache_in,cache_in_end) LC0 = P3;
+cache_in: R0 = [P1++];
+cache_in_end: [P2++] = R0;
+R0 = [P1];
+imm32 P2, 0x01b60eec
+[P2] = R0;
+no_reload:
+R0 = [P4];
+CC = BITTST(R0,2);
+IF !CC JUMP no_clear;
+R0 = 0;
+imm32 P1, 0x01cc1874
+[P1++] = R0;
+[P1] = R0;
+imm32 P1, 0x01b60eec
+[P1] = R0;
+no_clear:
+R0 = [P4 + 8];
+R0 <<= 10;
+imm32 R1, 0x01cea08c
+R0 = R0 + R1;
+imm32 P1, 0xff906a94
+[P1] = R0;
+R1 = [P4];
+CC = BITTST(R1,1);
+IF !CC JUMP no_wave;
+P2 = R0;
+P1 = P4;
+P1 += 16;
+P3 = 256;
+LSETUP(wave_in,wave_in_end) LC0 = P3;
+wave_in: R0 = [P1++];
+wave_in_end: [P2++] = R0;
+no_wave:
+// Configuration is an explicit private object, not a recovered allocation.
+P0 = 3124;
+P1 = P4 + P0;
+imm32 P2, 0x02f00000
+P3 = 8;
+LSETUP(config_in,config_in_end) LC0 = P3;
+config_in: R0 = [P1++];
+config_in_end: [P2++] = R0;
+imm32 R0, 0x02f00000
+imm32 P1, 0xff906a90
+[P1] = R0;
+// Pool canaries are refreshed every call, independently of state reload.
+P0 = 3156;
+P1 = P4 + P0;
+imm32 P2, 0x01cea07c
+P3 = 4;
+LSETUP(guard_pre,guard_pre_end) LC0 = P3;
+guard_pre: R0 = [P1++];
+guard_pre_end: [P2++] = R0;
+imm32 P2, 0x01ceb88c
+P3 = 4;
+LSETUP(guard_post,guard_post_end) LC0 = P3;
+guard_post: R0 = [P1++];
+guard_post_end: [P2++] = R0;
+R0 = [P4 + 4];
+CC = R0 == 0;
+IF !CC JUMP check_clamp;
+imm32 P0, 0x0197a8a0
+CALL (P0);
+JUMP transformed;
+check_clamp:
+CC = R0 == 1;
+IF !CC JUMP repeat;
+imm32 P0, 0x0197ab74
+CALL (P0);
+JUMP transformed;
+repeat:
+imm32 P0, 0x0197ac88
+CALL (P0);
+transformed:
+imm32 P1, 0x01cea07c
+P2 = P5;
+P3 = 1544;
+LSETUP(pool_out,pool_out_end) LC0 = P3;
+pool_out: R0 = [P1++];
+pool_out_end: [P2++] = R0;
+imm32 P1, 0x01cc1870
+P3 = 520;
+LSETUP(cache_out,cache_out_end) LC0 = P3;
+cache_out: R0 = [P1++];
+cache_out_end: [P2++] = R0;
+imm32 P1, 0x01b60eec
+R0 = [P1];
+[P2++] = R0;
+imm32 P1, 0x02f00000
+P3 = 8;
+LSETUP(config_out,config_out_end) LC0 = P3;
+config_out: R0 = [P1++];
+config_out_end: [P2++] = R0;
+imm32 P1, 0xff906a90
+R0 = [P1++];
+[P2++] = R0;
+R0 = [P1];
+[P2++] = R0;
+P5 = P2;
+P0 = 3188;
+P4 = P4 + P0;
+R0 = P4;
+R1.H = records_end;
+R1.L = records_end;
+CC = R0 == R1;
+IF !CC JUMP record_loop;
+R0.H = io_args;
+R0.L = io_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+io_args: .long 1,results,@BYTES@
+waves: .incbin "@WORK@/inputs.bin",0,6144
+records: .incbin "@WORK@/inputs.bin",6144
+records_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

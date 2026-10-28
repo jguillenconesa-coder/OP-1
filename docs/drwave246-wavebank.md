@@ -87,6 +87,11 @@ instrucciones, imagen SDRAM y ELF originales permanecen privados.
 [Evidencia y hashes](firmware/drwave246-wavebank-validation.json) ·
 [Plan activo](firmware-dsp-workplan.md).
 
+La [ampliación de tres transformaciones de voz](drwave246-wave-transform.md)
+contrasta los callbacks de retención, extremo fijo y repetición con palabras Q16
+explícitas. La combinación espectral y el despacho completos siguen pendientes;
+los fixtures de tablas base de esta página conservan su alcance original.
+
 ## Reproducción privada
 
 ```bash

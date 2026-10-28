@@ -1,0 +1,77 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "functions": {
+    "scatter_hold": "0x0197a8a0",
+    "clamp": "0x0197ab74",
+    "repeat": "0x0197ac88"
+  },
+  "explicit_word_domain": [
+    0,
+    65536
+  ],
+  "configuration_pointer": "0xff906a90",
+  "wave_pointer": "0xff906a94",
+  "private_configuration_object": "0x02f00000",
+  "scatter_config_offset": 12,
+  "clamp_repeat_config_offset": 20,
+  "rate_constants": [
+    458752,
+    458752,
+    458752
+  ],
+  "cache_region": {
+    "start": "0x01cc1870",
+    "bytes": 2080,
+    "includes_guards": true
+  },
+  "reciprocal_init_flag": "0x01b60eec",
+  "independent_cases": 256,
+  "continuous_streams": 4,
+  "blocks_per_stream": 64,
+  "cases": 512,
+  "transformed_wave_words": 131072,
+  "artifacts": {
+    "drwave246-transform-input.bin": {
+      "bytes": 1638400,
+      "sha256": "07283bfd02939db285194c024bcdcf66004972af37b9873bf43bd562ac46adbd"
+    },
+    "drwave246-transform-output.bin": {
+      "bytes": 4249600,
+      "sha256": "963820dec243264cf05cc9c31e3d48dbd387c61163bacf0d21e4aec258647a01"
+    }
+  },
+  "model": "GNU BF524 with documented D-register deferred-writeback patch; not hardware validation",
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "limitations": [
+    "The internal word and choice/order of three transform callbacks are explicit inputs; the original knob conversion and complete wave-update dispatcher remain pending.",
+    "No spectral-family mixing, original voice scheduler, pitch provider, ADSR, output or plugin integration is completed by these transforms.",
+    "The supported nonnegative Q16 domain avoids out-of-range addressing branches. No arbitrary-word emulation or hardware timing claim."
+  ],
+  "validation": {
+    "independent_reproduction": "Two private output directories; full inputs and original outputs agree byte for byte.",
+    "mode_counts": {
+      "scatter_hold": 171,
+      "clamp": 171,
+      "repeat": 170
+    },
+    "native_core_ctest_suites_passed": 22,
+    "native_ctest_total_seconds": 3.68,
+    "windows_wine": "MSVC-target cross-build and drwave246_transform test passed under Wine; not native Windows/Ableton/ASIO validation.",
+    "sanitizers": "New transform test passed ASan+UBSan; LeakSanitizer disabled because of sandbox ptrace limitation.",
+    "source_hashes": {
+      "Source/DrWave246WaveTransform.h": "4a978bbea471ef60ccfab83213a1977553af14bcc28d7209bd30066cb505d4a3",
+      "Source/DrWave246.h": "b2680ccd6d4fbd8ddb60df013197ce5a6492b61e11e9a7c8e68471fac3941b3c",
+      "Source/ReferenceDsp.h": "6f237e97236494636a71ae47582b4b9b0f75357176bdf102a45c87d230808acd",
+      "Tests/DrWave246TransformTests.cpp": "7b7e0627249873b27149241e763191430e9571bcd7af62c64b3bb205b804ea4e",
+      "scripts/verify-drwave246-transform.py": "33607c80da81bddb044222d29aa74b5466d36be57aae9ee446540a64d9ec620a",
+      "research/blackfin/drwave-transform.s.in": "c8724aaa995dc22297417dae6af423df979166e372933e81c042b048b0edb353",
+      "research/blackfin/voice-contract.ld": "56392dfc7b84df5f3552546615b4a95e7fcbd8d3deb5ebf2838e624b8e0d196d"
+    },
+    "unchanged_plugin_runtime": true,
+    "runtime_linkage": "New header is only included by drwave246_transform_tests. Instrument executable, selector, MIDI/host parameter IDs and presets unchanged."
+  }
+}

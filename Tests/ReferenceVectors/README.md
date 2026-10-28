@@ -40,6 +40,26 @@ verified source supplied by the harness, not an execution of its full initialize
 
 [Contract, reproduction and limitations](../../docs/drwave246-wavebank.md).
 
+## Dr. Wave three-transform delta
+
+`drwave246-transform-input.bin` starts with a 6,144-byte synthetic six-wave pool,
+then 512 records of 3,188 bytes. A record contains four uint32 words (action,
+mode, slot, explicit Q16 word); 256 wave words; 2,080 bytes of guarded caches;
+the uint32 reciprocal-init flag; 32 configuration bytes; and 32 pool-guard bytes.
+Action bits reload the pool/caches, replace the current wave, and clear the
+three lazy-init flags, respectively. Modes 0/1/2 call the original scatter/hold,
+clamped and repeated read transforms. The first 256 calls are independent;
+four streams of 64 calls then preserve shared state between calls.
+
+`drwave246-transform-output.bin` has 512 records of 8,300 bytes: a guarded
+six-wave pool (6,176 bytes), guarded caches (2,080), reciprocal-init flag (4),
+configuration (32), and the two global pointers (8). All values are little
+endian. The selected configuration word uses offset 12 for mode 0 and offset
+20 for modes 1/2. Inputs are explicit in [0,65536], not normalized knob values.
+
+The model includes the documented D-register deferred-writeback patch.
+[Scope and reproduction](../../docs/drwave246-wave-transform.md).
+
 ## Earlier vectors
 
 Generated with GNU Binutils 2.44 (bfin-elf) and GNU GDB 13.1 Blackfin simulator,
