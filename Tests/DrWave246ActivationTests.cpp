@@ -3,6 +3,7 @@
 #include "Voice246PitchUpdate.h"
 #include "Voice246TuningIndex.h"
 #include "Voice246TuningTable.h"
+#include "DrWave246PitchRefresh.h"
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -20,10 +21,10 @@ void put32(uint8_t* p,uint32_t x){put16(p,uint16_t(x));put16(p+2,uint16_t(x>>16)
 }
 int main(int argc,char** argv){try{
     check(argc==2,"Expected fixture directory");const std::string dir=argv[1];
-    for(int profile=0;profile<4;++profile){
-    const bool pitchUpdate=profile==1,indexedTuning=profile>=2,generatedTuning=profile==3;
-    const std::string prefix=generatedTuning?"drwave246-tuning-table":indexedTuning?"drwave246-tuning-index":pitchUpdate?"drwave246-pitch-update":"drwave246-activation";
-    const size_t eventBytes=indexedTuning?240:pitchUpdate?2824:232,resultBytes=indexedTuning?9272:pitchUpdate?11828:9244;
+    for(int profile=0;profile<5;++profile){
+    const bool refresh=profile==4,pitchUpdate=profile==1,indexedTuning=profile>=2,generatedTuning=profile>=3;
+    const std::string prefix=refresh?"drwave246-pitch-refresh":generatedTuning?"drwave246-tuning-table":indexedTuning?"drwave246-tuning-index":pitchUpdate?"drwave246-pitch-update":"drwave246-activation";
+    const size_t eventBytes=refresh?2980:indexedTuning?240:pitchUpdate?2824:232,resultBytes=refresh?12168:indexedTuning?9272:pitchUpdate?11828:9244;
     const auto base=read(dir+"/drwave246-kernel-input.bin"),events=read(dir+"/"+prefix+"-overrides.bin"),oracle=read(dir+"/"+prefix+"-output.bin"),sineData=read(dir+"/verified-sine.bin");
     check(base.size()==512*9316&&events.size()==512*eventBytes&&oracle.size()==512+327680+512*resultBytes+(indexedTuning?9600:0)&&sineData.size()>=16384,"Incomplete activation fixtures");
     std::array<int16_t,8192> sine{};for(size_t i=0;i<8192;++i)sine[i]=s16(sineData.data()+i*2);
@@ -33,6 +34,8 @@ int main(int argc,char** argv){try{
     std::array<bool,129> listCounts{};size_t broadcasts=0,selective=0,ignored=0;
     std::array<int32_t,2400> tuningTable{};
     if(generatedTuning)voice246BuildTuningTable(tuningTable);
+    std::array<Adsr246State,6> envelopes{};std::array<uint8_t,160> envelopeImage{};uint32_t random=0;
+    std::array<bool,16> refreshModes{};size_t refreshEmpty=0,refreshDisabled=0;
     DrWave246WaveBank bank;DrWave246Waves waves;DrWave246Runtime runtime;DrWave246Context initial;
     drWave246InitializeShared(waves,initial,runtime.settings);drWave246BuildWaveBank(bank,runtime.settings,sine);
     check(std::memcmp(&bank,oracle.data()+512,sizeof(bank))==0&&std::memcmp(&bank,oracle.data()+oracle.size()-sizeof(bank),sizeof(bank))==0,"Routing base banks differ/changed");
@@ -51,6 +54,13 @@ int main(int argc,char** argv){try{
             std::memcpy(runtime.configuration.data(),p+9004,32);runtime.wavePointer=u32(p+9036);runtime.transform.reciprocalInitialized=u32(p+9040);
             std::memcpy(registerImages.data(),a+168,64);
             for(size_t i=0;i<6;++i){registers.active[i]=a[168+i];registers.velocity[i]=s16(a+176+i*2);registers.pitch[i]=signedPhase(u32(a+200+i*4));}
+            if(refresh){
+                random=u32(a+244);std::memcpy(envelopeImage.data(),a+248,160);
+                for(size_t i=0;i<6;++i){const auto* state=a+256+i*24;auto& env=envelopes[i];
+                    env.stage=u32(state);env.blocks=u32(state+4);env.level=signedPhase(u32(state+8));
+                    env.field12=u32(state+12);env.field16=u32(state+16);env.gain=u32(state+20);
+                }
+            }
         }
         runtime.settings.modeAndReady=(runtime.settings.modeAndReady&0xffff00ffu)|((enabled&255)<<8);
         DrWave246SoundControls sounds;for(size_t sound=0;sound<8;++sound)for(size_t i=0;i<8;++i)sounds[sound][i]=s16(a+20+sound*16+i*2);
@@ -66,13 +76,47 @@ int main(int argc,char** argv){try{
             check(u32(e+9244)==0x11112222&&u32(e+9248)==0x33334444&&u32(e+9252)==index&&u32(e+9256)==0x77778888,"Original tuning index/neighbors differ");
             check(u32(e+9260)==uint32_t(tuningTable[index-1])&&u32(e+9264)==uint32_t(tuningWord)&&u32(e+9268)==uint32_t(index+1<2400?tuningTable[index+1]:0),"Original indexed coefficient/adjacent words differ");
         }
-        const bool activated=drWave246ActivateNote(pool,registers,note,tuningWord,int(loaded),int(selected),int(slot));
-        check(activated==(loaded==selected),"VoiceCtl acceptance differs");
-        if(activated){
-            ++accepted;resetVoices[slot]=true;
-            if(note.explicitPitch){++explicitNotes;if(note.noteIndex>=128)++largeIgnoredIndices;}
-            else lookupUsed[note.noteIndex]=true;
-        }else ++rejected;
+        auto countNote=[&](const Voice246Note& n,size_t voice){
+            if(loaded==selected){++accepted;resetVoices[voice]=true;
+                if(n.explicitPitch){++explicitNotes;if(n.noteIndex>=128)++largeIgnoredIndices;}
+                else {check(n.noteIndex<128,"Unexpected lookup index");lookupUsed[n.noteIndex]=true;}
+            }else ++rejected;
+        };
+        if(refresh){
+            const auto count=u32(a+2972);check(count<=128,"Invalid refresh count");listCounts[count]=true;
+            std::array<Voice246PitchEntry,128> entries{};
+            for(size_t i=0;i<128;++i){const auto* row=a+412+i*20;
+                entries[i]={{u32(row),u32(row+4),u32(row+8),signedPhase(u32(row+12))},signedPhase(u32(row+16))};
+            }
+            const auto modeWord=s16(a+240);check(modeWord!=sounds[selected][4],"Refresh fixture lost independent common/Core modes");
+            const auto mode=int(floorDivide(modeWord,4096));refreshModes[size_t(mode+8)]=true;
+            if(count==0)++refreshEmpty;
+            if(mode==4)++refreshDisabled;
+            if(count&&mode!=4){
+                if(mode==0){for(size_t i=0;i<count;++i)if(entries[i].voice>=0)countNote(entries[i].note,size_t(entries[i].voice));}
+                else for(int voice=0;voice<(mode==3?6:1);++voice)countNote(entries[count-1].note,size_t(voice));
+            }
+            const auto index=voice246TuningIndex(signedPhase(u32(a+232)),signedPhase(u32(a+236)));
+            check(drWave246RefreshPitch(pool,registers,envelopes,random,entries.data(),count,modeWord,tuningTable,index,int(loaded),int(selected)),"Valid refresh rejected");
+            for(size_t i=0;i<6;++i){auto* state=envelopeImage.data()+8+i*24;const auto& env=envelopes[i];
+                put32(state,env.stage);put32(state+4,env.blocks);put32(state+8,uint32_t(env.level));
+                put32(state+12,env.field12);put32(state+16,env.field16);put32(state+20,env.gain);
+            }
+            for(size_t i=0;i<160;++i)if(envelopeImage[i]!=e[9272+i]){
+                std::cerr<<"Refresh case "<<test<<", mode "<<mode<<", count "<<count<<", ADSR byte "<<i<<", got "<<unsigned(envelopeImage[i])<<", expected "<<unsigned(e[9272+i])<<'\n';
+                throw std::runtime_error("Original refresh ADSR states/guards differ");
+            }
+            check(random==u32(e+9432)&&u32(e+9436)==0x31415926,"Original refresh RNG/neighbor differs");
+            check(std::memcmp(a+408,e+9440,2572)==0,"Original refresh changed list/count/guards");
+            for(size_t i=0;i<6;++i)check(u32(e+12012+i*4)==0,"Auxiliary Core module became present");
+            check(u32(e+12036)==1,"Original refresh changed ADSR initialization flag");
+            std::array<uint8_t,128> commonParameters{};std::memcpy(commonParameters.data(),a+20,128);
+            put16(commonParameters.data()+selected*16+8,uint16_t(modeWord));
+            check(std::memcmp(commonParameters.data(),e+12040,128)==0,"Original refresh changed common sound parameters");
+        }else{
+            const bool activated=drWave246ActivateNote(pool,registers,note,tuningWord,int(loaded),int(selected),int(slot));
+            check(activated==(loaded==selected),"VoiceCtl acceptance differs");countNote(note,size_t(slot));
+        }
         if(pitchUpdate){
             const auto* u=a+232;const auto count=u32(u+2584);check(count<=128,"Invalid update list count");listCounts[count]=true;
             std::array<Voice246PitchEntry,128> entries{};
@@ -123,6 +167,26 @@ int main(int argc,char** argv){try{
     if(indexedTuning)check(std::memcmp(tuningTable.data(),oracle.data()+512+163840+512*resultBytes,9600)==0,"Original explicit tuning table differs");
     check(accepted&&rejected&&explicitNotes&&largeIgnoredIndices&&factories,"Missing activation route");
     for(bool used:lookupUsed)check(used,"Missing accepted table note");
+    if(refresh){
+        for(bool used:refreshModes)check(used,"Missing signed mode nibble");
+        for(bool used:listCounts)check(used,"Missing refresh list count");
+        check(refreshEmpty&&refreshDisabled,"Missing refresh early return");
+        const auto savedPool=pool;const auto savedRegisters=registers;const auto savedEnvelopes=envelopes;const auto savedRandom=random;
+        Voice246PitchEntry invalid;invalid.voice=0;
+        check(!drWave246RefreshPitch(pool,registers,envelopes,random,nullptr,1,0,tuningTable,0,0,0),"Null refresh list accepted");
+        check(!drWave246RefreshPitch(pool,registers,envelopes,random,&invalid,129,0,tuningTable,0,0,0),"Oversized refresh list accepted");
+        check(!drWave246RefreshPitch(pool,registers,envelopes,random,&invalid,1,0,tuningTable,2400,0,0),"Invalid refresh tuning index accepted");
+        for(int sound:{-1,8})check(!drWave246RefreshPitch(pool,registers,envelopes,random,&invalid,1,0,tuningTable,0,sound,0)&&!drWave246RefreshPitch(pool,registers,envelopes,random,&invalid,1,0,tuningTable,0,0,sound),"Invalid refresh sound accepted");
+        invalid.voice=6;check(!drWave246RefreshPitch(pool,registers,envelopes,random,&invalid,1,0,tuningTable,0,0,0),"Invalid poly refresh voice accepted");
+        invalid.voice=0;invalid.note.noteIndex=128;
+        check(!drWave246RefreshPitch(pool,registers,envelopes,random,&invalid,1,0,tuningTable,0,0,0)&&!drWave246RefreshPitch(pool,registers,envelopes,random,&invalid,1,4096,tuningTable,0,0,0),"Invalid refresh lookup accepted");
+        // Original early-return routes do not inspect a note or tuning entry.
+        check(drWave246RefreshPitch(pool,registers,envelopes,random,nullptr,0,0,tuningTable,2400,0,0)&&drWave246RefreshPitch(pool,registers,envelopes,random,&invalid,1,16384,tuningTable,2400,0,0),"Refresh early-return precedence changed");
+        check(std::memcmp(pool.data(),savedPool.data(),sizeof(pool))==0&&registers.active==savedRegisters.active&&registers.velocity==savedRegisters.velocity&&registers.pitch==savedRegisters.pitch&&random==savedRandom,"Rejected/no-op refresh mutated pool/registers/RNG");
+        for(size_t i=0;i<6;++i){const auto& a=envelopes[i];const auto& b=savedEnvelopes[i];
+            check(a.stage==b.stage&&a.blocks==b.blocks&&a.level==b.level&&a.field12==b.field12&&a.field16==b.field16&&a.gain==b.gain&&a.frame==b.frame&&a.retriggerStep==b.retriggerStep&&a.finished==b.finished,"Rejected/no-op refresh mutated ADSR");
+        }
+    }
     const auto old=pool;const auto previous=registers;
     for(int voice:{-1,6})check(!drWave246ActivateNote(pool,registers,{},0x40000000,0,0,voice),"Invalid voice accepted");
     for(int sound:{-1,8})check(!drWave246ActivateNote(pool,registers,{},0x40000000,sound,0,0)&&!drWave246ActivateNote(pool,registers,{},0x40000000,0,sound,0),"Invalid sound accepted");

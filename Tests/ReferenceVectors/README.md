@@ -1,5 +1,25 @@
 # Isolated original-instruction reference vectors
 
+## Dr. Wave complete VoiceCtl pitch refresh
+
+`drwave246-pitch-refresh-overrides.bin`: 512 little-endian 2,980-byte records.
+Offsets 0–239 retain generated-table activation overrides. Offset 240 holds
+the low signed16 mode word in a uint32, 244 the RNG seed, 248 a 160-byte
+guarded six-ADSR image, 408 a 2,572-byte guarded list image. List entries start
+at 412; count is at 2972, final guard at 2976. Seed/ADSR reload only on action
+bit 0; lists and parameters refresh every record. Common sound parameters
+start from controls at offset 20, with the selected mode replaced by the word
+at 240. The selected Core mode deliberately differs from that common mode.
+
+`drwave246-pitch-refresh-output.bin`: note-table header (512 bytes), base banks
+(163,840), 512 × 12,168-byte records, generated tuning table (9,600), same banks.
+Each record retains the 9,272-byte indexed-activation result, then guarded ADSR
+at 9272, RNG/neighbor at 9432, full guarded list at 9440, six null auxiliary
+Core pointers at 12012, ADSR initialization flag at 12036, and preserved common
+sound parameters at 12040. The source note at result offset 9228 is a retained
+unused harness field; refresh reads the list instead. The RNG neighbor is
+`0x31415926`. [Contract, evidence and scope](../../docs/drwave246-pitch-refresh.md).
+
 ## VoiceCtl generated tuning table
 
 `voice246-tuning-table-output.bin` contains three little-endian 9,624-byte

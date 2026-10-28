@@ -1,0 +1,82 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "refresh": "0x01a854cc",
+  "end_exclusive": "0x01a856bc",
+  "routine_sha256": "ce07f44ded2aaabe796b80dcb262483b7eab81e7aae7e8bedcb0638243c61326",
+  "records": 512,
+  "independent_cases": 256,
+  "continuous_streams": 4,
+  "calls_per_stream": 64,
+  "audio_samples": 61568,
+  "coverage": {
+    "empty_lists": 4,
+    "disabled_mode_records": 32,
+    "poly_records": 31,
+    "single_voice_records": 414,
+    "six_voice_records": 31,
+    "accepted_core_events": 1850,
+    "rejected_core_events": 369,
+    "adsr_note_callbacks": 2219,
+    "rng_advances": 507,
+    "poly_gain_writes": 1619,
+    "signed_mode_nibbles": 16,
+    "list_lengths": 129,
+    "accepted_lookup_notes": 128
+  },
+  "artifacts": {
+    "drwave246-pitch-refresh-overrides.bin": {
+      "bytes": 1525760,
+      "sha256": "f1afe3a84fa4e2bc6fd272fc85d5d1b56ac82ec06bca9581a2ae2778b2010fb5"
+    },
+    "drwave246-pitch-refresh-output.bin": {
+      "bytes": 6567808,
+      "sha256": "9776879a9c5a8ab18093a1d2a4797979672994d381bfa49a1e876a25924e0d89"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/build-deferred/sim/bfin/run": "26799ba2bd15737b66f6ca1dc333e59c1dd16aaaea249c96e020839dda5013c6"
+  },
+  "limitations": [
+    "Complete refresh with explicitly absent auxiliary Core modules and explicitly initialized six-object ADSR pool; not the full instrument graph.",
+    "Common and Core sound parameters are explicit inputs, with deliberately different selected-mode words to verify the common-mode source.",
+    "ADSR note callbacks and a gain write are exercised, not ADSR rendering or the L1 handoff.",
+    "Lists, controls, shared RNG initialization and render ordering remain harness inputs. The allocator and cadence are not recovered.",
+    "Generated tuning table is original; register pitch is still held in the render buffer by own harness code.",
+    "GNU BF524 deferred D-register model, not hardware/DAW/ASIO timing. Original bytes and ELF remain private."
+  ],
+  "validation": {
+    "core_ctest_suites_passed": 29,
+    "full_juce_ctest_suites_passed": 31,
+    "independent_reproduction": "Two fresh final private runs agree byte for byte on expanded inputs, overrides and all original output.",
+    "sanitizers": "Expanded activation/refresh comparator passed ASan+UBSan; LeakSanitizer disabled for sandbox ptrace limitation.",
+    "windows_macos": "Not run locally; native CI required.",
+    "retained_prior_oracles": 4,
+    "plugin_runtime_unchanged": true,
+    "common_core_mode_words_distinct_in_records": 512,
+    "invalid_input_and_noop_guards": "Invalid sounds, list size/pointer, lookup/index/voice rejected before mutation; empty/disabled modes preserve state without consulting a note/tuning word."
+  },
+  "source_hashes": {
+    "Source/DrWave246PitchRefresh.h": "35036f828a2521c14b7df69011e979ba2ae23178f4768ff0cccb3a53fc1a06e7",
+    "Source/DrWave246Activation.h": "af5f1bf35089f84575845eef6b933b3c9c47c1149255ad3d3204ff1459a4566e",
+    "Source/Voice246PitchUpdate.h": "7dcbcd05cd415e4c84eb6422cb6b6d4bd2c2684a1fe1924b71905615ad34939f",
+    "Source/Voice246TuningTable.h": "321d8a90e893f9972929f1d0aff64b0ccf7849b8367b5ab8c19bbfabd47cf89f",
+    "Source/Envelope246.h": "08d0039239e1ffef2d503abe5b3493613161709ebaf14d0cb00015a0c4b7157c",
+    "Tests/DrWave246ActivationTests.cpp": "bd3d231c736951f7a438287f9719896378472e98be5c45c5a69bdf2178d2d214",
+    "scripts/verify-drwave246-pitch-refresh.py": "75b171ac628f8b594d71cc6fbdce7461f5dfab7e3eb8515c8d90c5e03eff6b59",
+    "scripts/verify-voice246-tuning-table.py": "dfb893dbdbeeda18fa21c2302cab348c76d1fc6b9b4f1a8f1a210a23182c2e04",
+    "scripts/verify-voice246-tuning-index.py": "94e468f1d5bce5f447b4a8d71e3f8c39da01795eec294e791dca6fab1788579f",
+    "research/blackfin/drwave-activation.s.in": "16a5102f6e8f9d76721664de4c5a100496687d7b808758e8315b3b9e1129e8d4"
+  },
+  "rea": {
+    "version": "6.8.0",
+    "provider": "gnu.objdump",
+    "symbol": "voice246_refresh (synthetic)",
+    "private_evidence_sha256": "8b6a843c8f1f3bf0de62db45daf4c6175f2d669cd396ab4c53a90ec87f358771",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "scope": "Static complete-refresh disassembly; original raw evidence and ELF remain private. Auxiliary-present contexts and external call cadence are not validated."
+  }
+}

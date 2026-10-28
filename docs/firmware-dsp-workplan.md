@@ -49,6 +49,7 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | Entrada de pitch bend VoiceCtl `0x01a84efa` | 65.536 parejas de bytes y 256 llamadas continuas contrastadas, incluida la preservación de seis registros de pitch. Control signed16 y tres flags; consumidor candidato en L1 parcialmente cifrada. No establece bend → frecuencia ni añade audio/integración. |
 | Índice de afinación VoiceCtl `0x01a842f0` | Setter contrastado con estrés signed32, 4.577 parejas de controles y 256 llamadas continuas. Otras 61.568 muestras verifican activación/render con coeficientes explícitos en índices calculados; no recupera los valores originales de la tabla ni el escritor del buffer. |
 | Productor de la tabla común de afinación | Cola SDRAM `0x01a85454` contrastada: 2400 coeficientes, tres precargas y otras 61.568 muestras de activación/render sin overrides de coeficiente. Se omite el setup previo; escritor del buffer y cadencia siguen pendientes. |
+| Refresh de pitch VoiceCtl `0x01a854cc` | Rutina completa contrastada con tabla generada, seis ADSR, lista/una/seis voces, gates Core y RNG; 61.568 muestras posteriores. Módulos auxiliares Core explícitamente ausentes; render ADSR y escritor del buffer siguen pendientes. |
 | Cadencia externa, voz completa e integración | Referencia candidata al contador en L1 junto a franjas cifradas; proveedor/cadencia aún sin verificar. Faltan también asignación/pitch/ADSR y salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
 
 [Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
@@ -76,6 +77,11 @@ El [setter del índice](drwave246-tuning-index.md) y el
 junto a su consumo en la activación de Dr. Wave. La tabla deja de ser una entrada
 de coeficientes explícitos en el nuevo ensayo. Setup completo, calibración física,
 relevo L1 y demás rutas de pitch permanecen pendientes.
+
+La [repreparación de pitch por lista/modo](drwave246-pitch-refresh.md) ya está
+contrastada en el contexto acotado de módulos Core auxiliares ausentes. Incluye
+callbacks ADSR y RNG compartido, sin completar render/relevo ADSR, asignador,
+cadencia, salida ni el escritor original del buffer. Se mantiene Dr. Wave activo.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 
