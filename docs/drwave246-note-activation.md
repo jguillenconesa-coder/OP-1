@@ -109,3 +109,8 @@ consumo desde el buffer del render. La calibración, el
 continúan separados y sin completar. Presets, bancos e interfaz siguen aplazados.
 [Evidencia y hashes](firmware/drwave246-activation-validation.json) ·
 [Plan activo](firmware-dsp-workplan.md).
+
+La ampliación posterior [contrasta la actualización selectiva/broadcast de
+pitch](drwave246-pitch-update.md) con listas de 0–128 entradas y el render
+posterior. No sustituye el mantenimiento de pitch del harness por el proveedor
+original; las demás rutas de pitch y el relevo L1 siguen pendientes.

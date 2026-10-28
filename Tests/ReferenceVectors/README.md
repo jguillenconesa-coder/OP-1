@@ -1,5 +1,24 @@
 # Isolated original-instruction reference vectors
 
+## Dr. Wave VoiceCtl pitch update delta
+
+`drwave246-pitch-update-overrides.bin` contains 512 little-endian 2,824-byte
+records. The first 232 bytes reuse the activation overrides. The appended
+2,592 bytes contain uint32 query identity, signed32 explicit tuning, a guarded
+signed32 mutable pitch (three words), and a 643-word list image: guard, 128
+20-byte entries, uint32 count, guard. Entries hold the 16-byte note argument and
+a signed32 voice: -2 broadcasts, -1 ignores, 0–5 writes on matching identity.
+
+`drwave246-pitch-update-output.bin` retains the activation layout's 512-byte
+note table and 163,840-byte base banks before 512 records of 11,828 bytes,
+then the same banks. Each record starts with the activation result's 9,244
+bytes and appends the 12-byte guarded scalar and 2,572-byte full list image.
+All lengths 0–128 occur. There are 256 independent cases and four 64-call
+streams; each call receives an explicit new list and tuning word. The original
+routine runs after activation and before the harness holds the resulting
+register pitch for Dr. Wave. This does not reconstruct the render-buffer writer.
+[Contract, evidence and reproduction](../../docs/drwave246-pitch-update.md).
+
 ## Dr. Wave reader delta
 
 `drwave246-reader-input.bin` has 6,144 bytes of six own synthetic 256-word wave
