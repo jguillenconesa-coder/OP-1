@@ -1,5 +1,22 @@
 # Isolated original-instruction reference vectors
 
+## VoiceCtl pitch bend input
+
+`voice246-pitch-bend-input.bin` contains 65,792 little-endian 32-byte records:
+uint32 reload action; four bytes (status, data1, data2, trailing guard); a
+16-byte control/neighbor image for `0xff801048`; uint32 guard/register seed;
+and uint32 opaque vector field. The first 65,536 records exhaust every unsigned
+data-byte pair independently. The last 256 form one continuous control/register
+stream, reloaded only at its start. Source/message guards refresh each call.
+
+`voice246-pitch-bend-output.bin` contains 72 bytes per record: the full 16-byte
+control image, a 32-byte source/vector image, then six preserved pitch words.
+The source image has the seed at offsets 0/24/28, four message bytes at 4,
+opaque field at 8, and begin/end/capacity at 12/16/20. Those pointers are
+`0x02f02004`, `0x02f02007`, `0x02f02008`. Register words initialize as seed+i.
+These are control observations, not rendered audio or a recovered buffer writer.
+[Contract, evidence and reproduction](../../docs/drwave246-pitch-bend-input.md).
+
 ## Dr. Wave VoiceCtl pitch update delta
 
 `drwave246-pitch-update-overrides.bin` contains 512 little-endian 2,824-byte
