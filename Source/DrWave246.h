@@ -42,6 +42,25 @@ inline std::array<uint32_t,5> drWave246Increments(uint32_t pitch,int16_t orange)
     return result;
 }
 enum class DrWave246ReadResult { rendered,inactive,unsupported };
+namespace drwave246_detail {
+// Preconditions are checked by the bounded reader or complete-kernel adapter.
+inline void readPrepared(DrWave246State& state,DrWave246Context& context,const DrWave246Waves& waves,
+                         int16_t orange,uint32_t pitch,std::array<int16_t,128>& output) noexcept {
+    context.wavePointer=0x01cea08c+state.slot*1024;
+    context.increments=drWave246Increments(pitch,orange);
+    if(!context.initialized){context.initialized=1;context.reciprocalSeed=drWave246ReciprocalSeed;}
+    const auto& wave=waves[state.slot];
+    for(auto& sample:output){
+        uint32_t sum=0;
+        for(size_t i=0;i<5;++i){
+            sum+=wave[state.phase[i]>>16]>>4;
+            state.phase[i]=(state.phase[i]+context.increments[i])&0x00ffffff;
+        }
+        const uint32_t word=sum&65535;
+        sample=int16_t(word<32768?int32_t(word):int32_t(word)-65536);
+    }
+}
+}
 inline DrWave246ReadResult drWave246ReadBlock(DrWave246State& state,DrWave246Context& context,
         const DrWave246Waves& waves,const std::array<int16_t,4>& controls,
         const std::array<uint32_t,128>& pitch,int updateCounter,bool enabled,
@@ -54,22 +73,7 @@ inline DrWave246ReadResult drWave246ReadBlock(DrWave246State& state,DrWave246Con
     for(auto phase:state.phase)if(phase>0x00ffffff)return DrWave246ReadResult::unsupported;
     if(context.initialized&&context.reciprocalSeed!=drWave246ReciprocalSeed)
         return DrWave246ReadResult::unsupported;
-    context.wavePointer=0x01cea08c+state.slot*1024;
-    context.increments=drWave246Increments(pitch[0],controls[3]);
-    if(!context.initialized){
-        context.initialized=1;
-        context.reciprocalSeed=drWave246ReciprocalSeed;
-    }
-    const auto& wave=waves[state.slot];
-    for(auto& sample:output){
-        uint32_t sum=0;
-        for(size_t i=0;i<5;++i){
-            sum+=wave[state.phase[i]>>16]>>4;
-            state.phase[i]=(state.phase[i]+context.increments[i])&0x00ffffff;
-        }
-        const uint32_t word=sum&65535;
-        sample=int16_t(word<32768?int32_t(word):int32_t(word)-65536);
-    }
+    drwave246_detail::readPrepared(state,context,waves,controls[3],pitch[0],output);
     return DrWave246ReadResult::rendered;
 }
 }

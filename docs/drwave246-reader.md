@@ -5,9 +5,10 @@ de afinación, lectura y mezcla de ondas explícitas, reset y construcción de s
 objetos. El C++ coincide con **241.920 muestras**, 2.048 pools completos y el
 estado compartido de las instrucciones originales bajo GNU BF524.
 
-**La generación y actualización de las ondas sigue pendiente.** Esta prueba
-suministra seis buffers sintéticos propios; no recupera las ondas originales ni
-añade Dr. Wave al selector del plugin. Los presets continúan aplazados.
+**Este oráculo de lectura usa seis buffers sintéticos propios.** La posterior
+[reconstrucción del render aislado completo](drwave246-kernel.md) conecta bancos,
+mezcla espectral y actualización de ondas. Los fixtures de esta página mantienen
+su alcance de lector y no añaden Dr. Wave al plugin. Los presets siguen aplazados.
 
 La [ampliación de generación de tablas base](drwave246-wavebank.md) reconstruye
 después los seis bancos originales de arranque, con 1.474.560 muestras de tabla

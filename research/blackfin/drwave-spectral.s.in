@@ -1,0 +1,119 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own explicit spectral-callback caller. Original instructions stay private.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+imm32 P1, 0x018b6688
+imm32 P2, 0x0101e5e8
+P3 = 8192;
+LSETUP(sine,sine_end) LC0 = P3;
+sine: R0 = [P1++];
+sine_end: W[P2++] = R0;
+imm32 P0, 0x0197d774
+CALL (P0);
+imm32 R0, 0x01cea08c
+imm32 P1, 0xff906a94
+[P1] = R0;
+imm32 P0, 0x0197cdec
+CALL (P0);
+R0.H = bank_args;
+R0.L = bank_args;
+P0 = 5;
+EXCPT 0;
+P4.H = records;
+P4.L = records;
+P5.H = results;
+P5.L = results;
+record_loop:
+R0 = [P4 + 12];
+CC = BITTST(R0,0);
+IF !CC JUMP no_reload;
+P1.H = waves;
+P1.L = waves;
+imm32 P2, 0x01cea08c
+P3 = 1536;
+LSETUP(pool_in,pool_in_end) LC0 = P3;
+pool_in: R0 = [P1++];
+pool_in_end: [P2++] = R0;
+no_reload:
+R0 = [P4 + 8];
+R0 <<= 10;
+imm32 R1, 0x01cea08c
+R0 = R0 + R1;
+imm32 P1, 0xff906a94
+[P1] = R0;
+R1 = [P4 + 12];
+CC = BITTST(R1,1);
+IF !CC JUMP no_wave;
+P2 = R0;
+P1 = P4;
+P1 += 32;
+P3 = 256;
+LSETUP(wave_in,wave_in_end) LC0 = P3;
+wave_in: R0 = [P1++];
+wave_in_end: [P2++] = R0;
+no_wave:
+P1 = P4;
+P1 += 16;
+imm32 P2, 0x01cc1864
+P3 = 4;
+LSETUP(settings_in,settings_in_end) LC0 = P3;
+settings_in: R0 = [P1++];
+settings_in_end: [P2++] = R0;
+P0 = 1056;
+P1 = P4 + P0;
+// The 16 bytes before the pool are the last base-bank words: preserve them.
+imm32 P2, 0x01ceb88c
+P3 = 4;
+LSETUP(post,post_end) LC0 = P3;
+post: R0 = [P1++];
+post_end: [P2++] = R0;
+P0 = [P4 + 4];
+P1.H = callbacks;
+P1.L = callbacks;
+P1 = P1 + (P0 << 2);
+P0 = [P1];
+R0 = [P4];
+CALL (P0);
+imm32 P1, 0x01cea07c
+P2 = P5;
+P3 = 1544;
+LSETUP(pool_out,pool_out_end) LC0 = P3;
+pool_out: R0 = [P1++];
+pool_out_end: [P2++] = R0;
+imm32 P1, 0x01cc1864
+P3 = 4;
+LSETUP(settings_out,settings_out_end) LC0 = P3;
+settings_out: R0 = [P1++];
+settings_out_end: [P2++] = R0;
+imm32 P1, 0xff906a94
+R0 = [P1];
+[P2++] = R0;
+P5 = P2;
+P0 = 1072;
+P4 = P4 + P0;
+R0 = P4;
+R1.H = records_end;
+R1.L = records_end;
+CC = R0 == R1;
+IF !CC JUMP record_loop;
+R0.H = result_args;
+R0.L = result_args;
+P0 = 5;
+EXCPT 0;
+R0.H = bank_args;
+R0.L = bank_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+callbacks: .long 0x0197ae28,0x0197b1bc,0x0197b55c,0x0197b944,0x0197bd20,0x0197c1b0
+bank_args: .long 1,0x01cc208c,163840
+result_args: .long 1,results,@BYTES@
+waves: .incbin "@WORK@/inputs.bin",0,6144
+records: .incbin "@WORK@/inputs.bin",6144
+records_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

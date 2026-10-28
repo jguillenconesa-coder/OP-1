@@ -7,9 +7,10 @@ originales, más el estado completo de seis ondas, cachés, flags, configuració
 guardas en 512 llamadas independientes o continuas.
 
 Es un bloque separado de la [generación de las 320 tablas base](drwave246-wavebank.md)
-y de la [lectura de cinco osciladores](drwave246-reader.md). **Falta conectar la
-conversión de controles, mezcla de familias espectrales y despacho original**;
-las funciones nuevas solo se usan desde pruebas y todavía no cambian el plugin.
+y de la [lectura de cinco osciladores](drwave246-reader.md). El posterior [render
+aislado completo](drwave246-kernel.md) conecta controles y mezcla espectral y
+contrasta su orden real. Los fixtures de esta página conservan su alcance de
+callbacks independientes; todavía no cambia el plugin.
 
 ## Contrato contrastado
 

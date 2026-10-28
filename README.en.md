@@ -6,11 +6,11 @@ An OP-1-inspired **VST3 instrument and standalone application**, written in C++1
 
 Version 0.13.0 adds **[Value 246 Voice](docs/value-voice246-native.md)**: independent per-voice modulation of Phase/Digital controls or common ADSR. Five additional studies reuse the set-4 MIDI knobs; old FX parameters, mappings and projects are preserved. Other engines/routes and hardware matching remain pending; [full coverage](docs/original-op1-coverage.md).
 
-**Active work: firmware DSP reconstruction.** The [component workplan](docs/firmware-dsp-workplan.md) prioritizes engines, filters, envelopes and modulators. [Dr. Wave](docs/drwave246-reader.md) now has an isolated five-oscillator reader/mixer checked against 241,920 samples using explicit synthetic waves; control-driven wave updates and full engine integration remain pending. [Cluster](docs/cluster246-kernel.md) retains its checked kernel and unresolved normalization, tuning and L1 handoff dependencies. Presets, sample banks and video matching are deferred.
+**Active work: firmware DSP reconstruction.** [Dr. Wave's complete isolated render](docs/drwave246-kernel.md) connects controls, spectral mixing, wave updates and five oscillators, matching 61,568 original simulated samples. External scheduling, allocation/pitch/ADSR, output and integration remain pending. The [component workplan](docs/firmware-dsp-workplan.md) retains [Cluster's](docs/cluster246-kernel.md) normalization, tuning and L1 handoff blockers. Presets and sample banks remain deferred.
 
-**Dr. Wave base tables:** [six banks / 320 generated waves](docs/drwave246-wavebank.md) from the verified sine, matching 1,474,560 table samples across 18 initializations. Their connection to spectral mixing and complete control dispatch remains pending before engine integration.
+**Dr. Wave base tables:** [six banks / 320 generated waves](docs/drwave246-wavebank.md) from the verified sine, matching 1,474,560 table samples across 18 initializations and now used in the complete-render oracle.
 
-**Dr. Wave transforms:** [three reconstructed callbacks](docs/drwave246-wave-transform.md), covering scatter/hold, clamped and repeated reads, match 131,072 wave words and complete cache state. Spectral mixing and full control-driven dispatch remain pending before engine integration.
+**Dr. Wave transforms:** [three reconstructed callbacks](docs/drwave246-wave-transform.md) match 131,072 wave words and cache state; the complete render verifies their actual order. Six spectral callbacks add 196,608 separately checked words.
 
 **Cluster progress:** [Core note-on/release routing and six interleaved slots](docs/cluster246-core-routing.md) checked against another 131,072 samples with shared RNG. The [five observed normalization entries](docs/cluster246-normalization.md) and [shared initialization with REA support](docs/cluster246-shared-init.md) remain available. Three normalization entries and full integration remain unresolved.
 

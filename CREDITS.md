@@ -242,3 +242,17 @@ is inferred. Numerical fixtures include shared caches, lazy flags, guards and
 unmodified neighboring voices/configuration. Original instructions, firmware,
 SDRAM and ELF remain private. No presets, WHEEL DSP, or new REA L1 decryption
 or decompilation are used or distributed for this delta.
+
+## Dr. Wave spectral callbacks and complete isolated render
+
+The [spectral and complete-render reconstructions](docs/drwave246-kernel.md) are
+independently written from private observations of the user-supplied rev246
+SDRAM routines. Their oracles execute the original base-bank initializer, six
+spectral callbacks and entire render unmodified under the previously credited
+GNU BF524 model and D-register patch. Only own source/harnesses, numerical test
+fixtures and metadata are published. Presets, firmware, original instructions,
+SDRAM images and ELF remain private. Full raw-control preparation, internal
+update order and shared caches are checked; the external scheduler, allocation,
+pitch calibration/provider, ADSR, output and plugin integration are not inferred.
+The existing reader shares its inner loop with the complete adapter and retains
+its regression oracle. No WHEEL synthesis or new REA L1 decryption is used.

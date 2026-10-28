@@ -60,6 +60,39 @@ endian. The selected configuration word uses offset 12 for mode 0 and offset
 The model includes the documented D-register deferred-writeback patch.
 [Scope and reproduction](../../docs/drwave246-wave-transform.md).
 
+## Dr. Wave spectral callbacks and complete-render delta
+
+`drwave246-spectral-input.bin` has a synthetic 6,144-byte wave pool followed by
+768 records of 1,072 bytes: argument, callback index, slot and action (four
+uint32); 16 shared-setting bytes; 256 wave words; and a 16-byte trailing guard.
+Actions reload all waves or replace the current wave. The first 384 records are
+independent, followed by six streams of 64. Callback indices 0–5 select the six
+functions listed in the [kernel contract](../../docs/drwave246-kernel.md).
+
+`drwave246-spectral-output.bin` starts/ends with the 163,840 generated base-bank
+bytes. Between them are 768 records of 6,196 bytes: the last 16 bank bytes as a
+readonly leading guard, six waves, trailing guard, shared settings and wave
+pointer. The callbacks must preserve the entire bank and all other voices.
+
+`drwave246-kernel-input.bin` has 512 records of 9,316 bytes: four uint32 words
+(action, slot, external counter image, enabled byte image); four signed16 controls;
+128 pitch words; a 216-byte six-object pool; six wave buffers (6,144 bytes);
+2,088 shared settings/cache bytes; five increments (20 bytes); 32 configuration
+bytes; wave pointer and reciprocal-init flag (four bytes each); and a guarded
+272-byte output image. Action bits reload state, construct, reset and release
+the current slot. The enabled byte and counter are explicitly set every call.
+There are 256 independent records and four streams of 64.
+
+`drwave246-kernel-output.bin` starts/ends with the generated base-bank bytes.
+Each of the 512 intervening records has 8,784 bytes: guarded output (272), pool
+(216), waves (6,144), shared settings/caches (2,088), increments (20), configuration
+(32), wave pointer (4), reciprocal flag (4) and counter with adjacent bytes (4).
+All fields are little endian. Of these calls, 240 update a wave, 241 read without
+updating, and 31 return inactive. There are 61,568 active audio samples; inactive
+output is preserved, not counted as audio. The external counter/schedule and
+pitch are explicit; original allocator, pitch calibration, ADSR and output remain
+separate dependencies. The oracles use the documented patched GNU BF524 model.
+
 ## Earlier vectors
 
 Generated with GNU Binutils 2.44 (bfin-elf) and GNU GDB 13.1 Blackfin simulator,

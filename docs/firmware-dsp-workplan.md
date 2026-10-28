@@ -40,12 +40,14 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | Objetos y contexto compartido | 2.048 pools de seis slots; 293 construcciones, 121 resets y 187 releases; cinco incrementos, semillas y puntero compartidos contrastados. |
 | Generación de tablas base | Seis bancos / 320 ondas generados desde el seno contrastado; 18 secuencias de arranque y 1.474.560 muestras de tabla coinciden con las rutinas originales. Valores predeterminados y preservación de memoria compartida contrastados. |
 | Transformación de ondas | Tres callbacks completos contrastados: retención por grupos, extremo fijo y repetición; 131.072 palabras / 512 llamadas, seis ondas y cachés compartidas. La palabra Q16 y la elección de callback son entradas explícitas. |
-| Rama de actualización de ondas | Siguiente paso: reconstruir la combinación espectral, preparación de controles y despacho completo para conectar tablas, transformaciones y lector. El render contrastado sigue limitado a los otros slots y al retorno inactivo. |
-| Cadencia, voz completa e integración | Pendientes; el nuevo núcleo solo se usa desde pruebas. No cambia el instalador. |
+| Mezcla espectral | Seis callbacks: 768 llamadas / 196.608 palabras, bancos generados y preservados, reemplazo/adición y seis slots contrastados. |
+| Render completo, actualización y controles | 61.568 muestras / 512 registros: 240 actualizaciones, 241 lecturas activas y 31 retornos inactivos. Preparación de cuatro controles, dos familias, inversión de 25 bits, blanco opcional, retención común y cinco osciladores contrastados juntos. |
+| Cadencia externa, voz completa e integración | Siguiente paso: verificar proveedor del contador/cadencia, asignación/pitch/ADSR y contrato de salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
 
 [Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
 [Generación de los seis bancos base](drwave246-wavebank.md) ·
-[Tres transformaciones de la onda de voz](drwave246-wave-transform.md).
+[Tres transformaciones de la onda de voz](drwave246-wave-transform.md) ·
+[Mezcla espectral y render aislado completo](drwave246-kernel.md).
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

@@ -26,7 +26,7 @@ del plugin. Ese selector mantiene su orden para conservar automatizaciones.
 | --- | --- | --- |
 | 0 | FM de cuatro operadores | FM propio de dos osciladores disponible. Se contrastaron campos de control; falta el render original y validar tablas L1 cifradas. |
 | 1 | Digital | Núcleo reconstruido, 262.144 muestras / 2.048 estados; integración, mezcla y voz propias. 16 presets CORE. |
-| 2 | Dr. Wave | Lectura/mezcla aisladas: 241.920 muestras y 2.048 pools. Seis bancos base / 320 ondas: 1.474.560 muestras de tabla. Tres transformaciones de onda: 131.072 palabras y 512 llamadas con cachés. Mezcla espectral, controles/despacho completos, cadencia e integración pendientes; [lectura](drwave246-reader.md) · [tablas](drwave246-wavebank.md) · [transformaciones](drwave246-wave-transform.md). |
+| 2 | Dr. Wave | Render aislado completo: 61.568 muestras con actualización, controles y cinco osciladores; seis mezcladores / 196.608 palabras contrastados aparte. Se conservan los oráculos de lector, 320 tablas y tres transformaciones. Cadencia externa, asignación/pitch/ADSR, salida e integración pendientes; [núcleo completo](drwave246-kernel.md). |
 | 3 | String | Modelo Karplus–Strong propio afinado; pendiente el waveguide original y todos sus controles. |
 | 4 | Cluster | Núcleo aislado: 262.144 muestras con coeficientes de prueba y 81.920 con cinco normalizaciones legibles convertidas por el helper original. 24 coeficientes de amortiguación y 60 casos de factoría/reset de seis slots contrastados. Faltan tres normalizaciones y la integración completa; [avance](cluster246-normalization.md). |
 | 5 | Pulse | Render localizado en L1 cifrada (`0xffa04b88`), sin imagen descifrada validada. Port pendiente; [bloqueo](firmware/pulse246-l1-blocker.json). |
@@ -125,7 +125,7 @@ presets originales supuestamente reproducidos en el navegador.
 
 ## Orden de trabajo verificable
 
-1. Completar generación de ondas y contrato de Dr. Wave. Cluster queda pendiente
+1. Verificar cadencia externa y contrato de integración de Dr. Wave. Cluster queda pendiente
    de sus tres normalizaciones, afinación y relevo L1; integrar cada motor solo
    cuando estén verificadas sus dependencias.
 2. Continuar los motores y sus filtros/rutas internas por dependencias, con tablas,

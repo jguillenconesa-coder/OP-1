@@ -1,0 +1,88 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "original_render": "0x0197c870",
+  "original_wave_update": "0x0197c668",
+  "records": 512,
+  "counts": {
+    "updated": 240,
+    "read_only": 241,
+    "inactive": 31
+  },
+  "audio_samples": 61568,
+  "independent_cases": 256,
+  "continuous_streams": 4,
+  "blocks_per_stream": 64,
+  "controls_domain": [
+    [
+      0,
+      24575
+    ],
+    [
+      0,
+      32767
+    ],
+    [
+      0,
+      32767
+    ],
+    [
+      0,
+      32767
+    ]
+  ],
+  "phase_inversion_state_bits": 25,
+  "bank_initializer": "0x0197cdec",
+  "base_banks_unchanged": true,
+  "base_bank_bytes": 163840,
+  "model": "GNU BF524 with documented D-register deferred-writeback patch; not hardware validation",
+  "artifacts": {
+    "drwave246-kernel-input.bin": {
+      "bytes": 4769792,
+      "sha256": "fcd9b57a1a67ab0adeea60477803fad001dcfb300773c99113ce7e37191c2bee"
+    },
+    "drwave246-kernel-output.bin": {
+      "bytes": 4825088,
+      "sha256": "29c5dae89d47b2b073437b618f0e73a19d5bd266ac05a4f271f3623d003631ab"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "limitations": [
+    "Complete isolated render, including scheduled wave update, for the tested nonnegative control domain. Wider green/white words are stress coverage, not a claim about physical knob ranges.",
+    "The external update counter, active flag, callbacks, pitch buffer and schedule are explicit inputs. No original allocator, pitch calibration/provider, ADSR, output conversion, physical timing or plugin integration claimed.",
+    "Sine source words are explicitly copied by the harness; full original sine initialization is not executed."
+  ],
+  "validation": {
+    "independent_reproduction": "Two new private output directories; full inputs and original outputs agree byte for byte.",
+    "native_core_ctest_suites_passed": 24,
+    "native_ctest_total_seconds": 4.21,
+    "windows_wine": "MSVC-target cross-build; new spectral/kernel tests and reused reader test passed under Wine. Not native Windows/Ableton/ASIO validation.",
+    "sanitizers": "Both new tests passed ASan+UBSan; LeakSanitizer disabled because of sandbox ptrace limitation.",
+    "coverage": {
+      "updated_slots": 6,
+      "spectral_variants": 6,
+      "transform_callbacks": 3,
+      "blue_sections": 3,
+      "green_modes": 4,
+      "white_modes": 4,
+      "inversion_wraps": 12
+    },
+    "source_hashes": {
+      "Source/DrWave246.h": "9ed577b01ebe2d42c43b36f31c8558a462c943bab188ec85e6bfd0d11413a2ca",
+      "Source/DrWave246WaveBank.h": "001316372cb37a05cb2286da761c99472c94ba2629407d626cf57786f21bc4d5",
+      "Source/DrWave246WaveTransform.h": "4a978bbea471ef60ccfab83213a1977553af14bcc28d7209bd30066cb505d4a3",
+      "Source/DrWave246Spectral.h": "a216f1fdd92b1512e7e9968b7096fa1b83f00163fb221995b6b355ba1cd7402d",
+      "Source/ReferenceDsp.h": "6f237e97236494636a71ae47582b4b9b0f75357176bdf102a45c87d230808acd",
+      "research/blackfin/voice-contract.ld": "56392dfc7b84df5f3552546615b4a95e7fcbd8d3deb5ebf2838e624b8e0d196d",
+      "Tests/DrWave246KernelTests.cpp": "6de6d34a77aa022ab836bdb6235177b7881ae2b97319accf6838acf10d49ec01",
+      "scripts/verify-drwave246-kernel.py": "60fcc0ef182d53b924bbd7fdbeb97e7164b542360d07d27e67e73cafb22c008b",
+      "research/blackfin/drwave-kernel.s.in": "7b52d82f0c4088f4dfba8a222dd1d9ddd8e57cff6e1dc867055d567af5850766",
+      "Source/DrWave246Kernel.h": "716db9fc54d87410a6b78d6f121f84011887bb455995fb5e86e120fedf8aa5ac"
+    },
+    "unchanged_plugin_runtime": true,
+    "runtime_linkage": "New headers are reached only by pure-core tests. Reader body shared with complete isolated adapter; original reader regression still passes. No instrument executable, selector, MIDI/host parameter IDs or presets changed."
+  }
+}

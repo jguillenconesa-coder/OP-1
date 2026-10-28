@@ -6,10 +6,10 @@ aisladas y el C++ coinciden en **1.474.560 muestras de tabla**, procedentes de
 18 inicializaciones con ganancia predeterminada o explícita de prueba.
 
 Estas tablas se calculan sumando armónicos a partir del seno ya contrastado.
-No se copian presets ni muestras de fábrica. **Todavía falta reconstruir la
-combinación y transformación de estas tablas durante la actualización de voz**;
-ese paso es distinto de generar los bancos base. El plugin y el instalador no
-cambian con este avance.
+No se copian presets ni muestras de fábrica. La posterior [reconstrucción del
+render aislado completo](drwave246-kernel.md) conecta estas tablas a la mezcla
+espectral y actualización. Los fixtures de esta página conservan su alcance de
+inicialización. El plugin y el instalador siguen sin cambiar.
 
 ## Secuencia observada
 
@@ -87,10 +87,10 @@ instrucciones, imagen SDRAM y ELF originales permanecen privados.
 [Evidencia y hashes](firmware/drwave246-wavebank-validation.json) ·
 [Plan activo](firmware-dsp-workplan.md).
 
-La [ampliación de tres transformaciones de voz](drwave246-wave-transform.md)
-contrasta los callbacks de retención, extremo fijo y repetición con palabras Q16
-explícitas. La combinación espectral y el despacho completos siguen pendientes;
-los fixtures de tablas base de esta página conservan su alcance original.
+Los oráculos de [transformaciones](drwave246-wave-transform.md) y del [render
+aislado completo](drwave246-kernel.md) contrastan después los callbacks, la mezcla
+espectral y su despacho interno. Los fixtures de tablas base de esta página
+conservan su alcance original; la integración en el plugin sigue pendiente.
 
 ## Reproducción privada
 
