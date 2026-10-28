@@ -2,6 +2,7 @@
 #include "DrWave246Activation.h"
 #include "Voice246PitchUpdate.h"
 #include "Voice246TuningIndex.h"
+#include "Voice246TuningTable.h"
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -19,9 +20,9 @@ void put32(uint8_t* p,uint32_t x){put16(p,uint16_t(x));put16(p+2,uint16_t(x>>16)
 }
 int main(int argc,char** argv){try{
     check(argc==2,"Expected fixture directory");const std::string dir=argv[1];
-    for(int profile=0;profile<3;++profile){
-    const bool pitchUpdate=profile==1,indexedTuning=profile==2;
-    const std::string prefix=indexedTuning?"drwave246-tuning-index":pitchUpdate?"drwave246-pitch-update":"drwave246-activation";
+    for(int profile=0;profile<4;++profile){
+    const bool pitchUpdate=profile==1,indexedTuning=profile>=2,generatedTuning=profile==3;
+    const std::string prefix=generatedTuning?"drwave246-tuning-table":indexedTuning?"drwave246-tuning-index":pitchUpdate?"drwave246-pitch-update":"drwave246-activation";
     const size_t eventBytes=indexedTuning?240:pitchUpdate?2824:232,resultBytes=indexedTuning?9272:pitchUpdate?11828:9244;
     const auto base=read(dir+"/drwave246-kernel-input.bin"),events=read(dir+"/"+prefix+"-overrides.bin"),oracle=read(dir+"/"+prefix+"-output.bin"),sineData=read(dir+"/verified-sine.bin");
     check(base.size()==512*9316&&events.size()==512*eventBytes&&oracle.size()==512+327680+512*resultBytes+(indexedTuning?9600:0)&&sineData.size()>=16384,"Incomplete activation fixtures");
@@ -31,6 +32,7 @@ int main(int argc,char** argv){try{
     size_t explicitNotes=0,largeIgnoredIndices=0;
     std::array<bool,129> listCounts{};size_t broadcasts=0,selective=0,ignored=0;
     std::array<int32_t,2400> tuningTable{};
+    if(generatedTuning)voice246BuildTuningTable(tuningTable);
     DrWave246WaveBank bank;DrWave246Waves waves;DrWave246Runtime runtime;DrWave246Context initial;
     drWave246InitializeShared(waves,initial,runtime.settings);drWave246BuildWaveBank(bank,runtime.settings,sine);
     check(std::memcmp(&bank,oracle.data()+512,sizeof(bank))==0&&std::memcmp(&bank,oracle.data()+oracle.size()-sizeof(bank),sizeof(bank))==0,"Routing base banks differ/changed");
@@ -58,7 +60,9 @@ int main(int argc,char** argv){try{
         if(indexedTuning){
             const auto index=voice246TuningIndex(signedPhase(u32(a+232)),signedPhase(u32(a+236)));
             check(index>=1&&index<2400,"Indexed activation outside explicit table");
-            tuningTable[index]=tuningWord;tuningWord=tuningTable[index];
+            if(!generatedTuning)tuningTable[index]=tuningWord;
+            else check(u32(a+164)==0xdeadbeef,"Generated-table fixture lost poisoned explicit override");
+            tuningWord=tuningTable[index];
             check(u32(e+9244)==0x11112222&&u32(e+9248)==0x33334444&&u32(e+9252)==index&&u32(e+9256)==0x77778888,"Original tuning index/neighbors differ");
             check(u32(e+9260)==uint32_t(tuningTable[index-1])&&u32(e+9264)==uint32_t(tuningWord)&&u32(e+9268)==uint32_t(index+1<2400?tuningTable[index+1]:0),"Original indexed coefficient/adjacent words differ");
         }

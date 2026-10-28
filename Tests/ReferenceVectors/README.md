@@ -1,5 +1,21 @@
 # Isolated original-instruction reference vectors
 
+## VoiceCtl generated tuning table
+
+`voice246-tuning-table-output.bin` contains three little-endian 9,624-byte
+records: guard, 2400 generated coefficient words, guard, then a 16-byte
+index/neighbor image. Guards and index image preserve the preload pattern
+(0, `0xa5a5a5a5`, `0xffffffff`); all table entries agree. The own caller skips
+module/event setup and supplies a frame for the original tail at its SDRAM address.
+
+`drwave246-tuning-table-overrides.bin` retains 512 × 240-byte indexed activation
+records. The obsolete coefficient field at offset 164 is `0xdeadbeef` and is
+not written to the generated table. `drwave246-tuning-table-output.bin` retains
+the indexed-activation layout: 512-byte note table, 163,840-byte base banks,
+512 × 9,272-byte results, generated 9,600-byte tuning table, unchanged base banks.
+Coefficients are generated; register-to-render-buffer copying remains explicit
+held-pitch harness code. [Contract and evidence](../../docs/drwave246-tuning-table.md).
+
 ## VoiceCtl tuning-index setter and Dr. Wave consumption
 
 `voice246-tuning-index-input.bin` has 70,369 little-endian 32-byte records:
