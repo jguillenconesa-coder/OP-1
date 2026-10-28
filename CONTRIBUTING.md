@@ -4,6 +4,8 @@ Consulta primero [README](README.md), [créditos](CREDITS.md), [avisos de tercer
 
 Para incorporarte con tu propia cuenta de Codex, consulta la
 [guía de colaboración y el prompt de inicio](docs/collaborating-with-codex.md).
+Si el entorno nuevo no tiene el firmware ni Blackfin, sigue la
+[preparación DSP entre cuentas](docs/new-account-dsp-setup.md).
 
 1. Compila para el sistema que vayas a probar. El VST3 de Linux no funciona en Windows/macOS.
 2. Ejecuta las suites CTest existentes. En Windows incluye la prueba que carga el módulo VST3.

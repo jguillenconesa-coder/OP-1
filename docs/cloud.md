@@ -16,6 +16,14 @@ To capture the editor, launch `/workspace/op1-system/root/usr/bin/Xvfb :77 -scre
 
 The cloud machine has no physical audio output for listening. Test the native VST3 in a local DAW before relying on it for recording. Cross-platform CI is provided but must run on GitHub to establish Windows/macOS builds.
 
+## DSP research in a new account
+
+Private firmware and tools are not transferred by cloning the repository or by
+copying `/workspace` paths from another session. The
+[new-account DSP setup](new-account-dsp-setup.md) builds pinned GNU Blackfin tools
+from public sources and extracts the verified LDR from a separately supplied
+private firmware file. It does not require downloading a local handoff artifact.
+
 ## Windows cross build
 
 The prepared Microsoft SDK/CRT, LLVM 19, NSIS 3.11 and Wine 10 are retained under `/workspace/windows-tools`; the host JUCE package is in `/workspace/juce-installed`. Run `bash scripts/windows-setup.sh` to refresh the cross build and installer. Use a separate shell sourced with `scripts/windows-env.sh` for incremental Windows builds; it removes the Linux header/library overlays. `bash scripts/verify-windows.sh` runs four Windows tests and an isolated install/uninstall check, starting/stopping its own virtual display only when one is required. It refuses to overwrite an existing test installation.

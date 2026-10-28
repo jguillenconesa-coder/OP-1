@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "scope": "Reproducible research-tool setup for a new account, without a downloadable private handoff artifact.",
+  "validation_host": "Linux x86_64; separate stock/patched sources and builds, no system-wide installation.",
+  "official_https_downloads_sha256_verified": true,
+  "build": {
+    "sources": {
+      "binutils": {
+        "url": "https://ftp.gnu.org/gnu/binutils/binutils-2.44.tar.xz",
+        "sha256": "ce2017e059d63e67ddb9240e9d4ec49c2893605035cd60e92ad53177f4377237"
+      },
+      "gdb": {
+        "url": "https://ftp.gnu.org/gnu/gdb/gdb-13.1.tar.xz",
+        "sha256": "115ad5c18d69a6be2ab15882d365dda2a2211c14f480b3502c6eba576e2e95a0"
+      }
+    },
+    "patch_sha256": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "binaries": {
+      "bfin-elf-as": "35e1e641c36d21464cd438830bb9dd4dd05873867fc53acaa0dbd857d44de2e1",
+      "bfin-elf-ld": "0c86f671cd091879cb3ae899c573b827a9b816c6010a9d22047e22d4bd232110",
+      "bfin-elf-objdump": "937bfbdcccf633ea6949dcf6cc820b51d75bf89535bc69ec5affc40de61b94db",
+      "run-stock": "01d457c88885e1815585991af68797c5706758ea23e93b5d53dc616acc05bd67",
+      "run-parallel": "1df61f309e2a3465dac357781bde0c3abdaf6e451f30c776a9aaa1525f6081fd"
+    },
+    "scope": "GNU research tools only; no original firmware, boot, model/hardware equivalence or plugin integration validation.",
+    "parallel_model_probes": {
+      "stock": [
+        "0x7",
+        "0x7",
+        "0x3",
+        "0x3",
+        "0x77778888",
+        "0x77778888",
+        "0x4321",
+        "0x43214321",
+        "0x0",
+        "0x0"
+      ],
+      "dreg_deferred": [
+        "0x11112222",
+        "0x7",
+        "0x33334444",
+        "0x3",
+        "0x55556666",
+        "0x77778888",
+        "0x1234",
+        "0x43214321",
+        "0x13572468",
+        "0x0"
+      ]
+    }
+  },
+  "private_input_preparation": {
+    "container_sha256": "c5315218f825f143b415ca554516541898abee843d3a236df0b54c04e1fb13a9",
+    "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+    "both_source_forms_tested": true,
+    "unknown_input_rejected_without_output": true
+  },
+  "original_drwave_regression": {
+    "script": "scripts/verify-drwave246-activation.py",
+    "records": 512,
+    "samples": 61568,
+    "counts": {
+      "accepted": 427,
+      "rejected": 85,
+      "accepted_explicit_pitch": 214,
+      "ignored_large_note_index": 27,
+      "factory": 51,
+      "updated": 79,
+      "read_only": 402,
+      "inactive": 31
+    },
+    "artifacts_match_versioned_fixtures": true,
+    "record_flag_used": false
+  },
+  "source_hashes": {
+    "scripts/setup-blackfin.py": "d08f027e702266be428936f9f62bcb5da6d00eecc7a07b9b7f6eb4c4fae03410",
+    "scripts/prepare-op1-private-input.py": "805b7694757acfb4cffe77e0d9c5d51a87f7c6f5adb30af2b1cf95a39e30b528",
+    "scripts/verify-drwave246-activation.py": "60a12c75fd86354eb964f1225b1092cbc294326871f6df4c3176fe08442435da",
+    "research/blackfin/parallel-dreg.s": "fa497f90a8831e052976221fbeade5cb9a8c2e93f94dffed8e678636337ead60",
+    "research/blackfin/flat.ld": "5ec258b5c61c47654fa068f44cfea33457f9718c85b3e3270fa6809aa837a2f3",
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325"
+  },
+  "limitations": [
+    "Successful setup requires compatible POSIX build dependencies and HTTPS access to ftp.gnu.org. Windows/macOS builds are not claimed.",
+    "Original firmware must be separately provided in the new account; no cross-account filesystem access or artifact export is created.",
+    "Research tools and numeric tests do not establish full firmware boot, L1 decryption, physical timing or DAW compatibility. No instrument runtime or installer changed."
+  ]
+}

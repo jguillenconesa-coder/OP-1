@@ -1,18 +1,20 @@
 # Colaborar en Tiny-one con Codex
 
-El repositorio es `jguillenconesa-coder/Tiny-one` y permanece privado. La invitación
-de GitHub y el acceso de Codex son dos pasos distintos. Cada colaborador utiliza
+El repositorio es `jguillenconesa-coder/Tiny-one` y es público. Leerlo o clonarlo
+no requiere invitación; para publicar directamente hace falta acceso de escritura,
+o se puede colaborar desde un fork con pull requests. Cada colaborador utiliza
 su propia cuenta y su propio entorno; el historial de este chat y los archivos
 privados de investigación no se transfieren con el repositorio.
 
 ## Acceso inicial
 
-1. El propietario abre [Settings → Collaborators](https://github.com/jguillenconesa-coder/Tiny-one/settings/access),
+1. Para dar escritura directa, el propietario abre [Settings → Collaborators](https://github.com/jguillenconesa-coder/Tiny-one/settings/access),
    pulsa **Add people** y busca el usuario de GitHub o correo del colaborador.
    Comprueba la identidad del destinatario y envía la invitación. El rol de
    colaborador permite aportar código; no hace falta conceder administración.
-2. El colaborador acepta la invitación con su cuenta de GitHub y comprueba que
-   puede abrir el [repositorio privado](https://github.com/jguillenconesa-coder/Tiny-one).
+2. Si se envió una invitación para escritura, el colaborador la acepta con su
+   cuenta de GitHub. El [repositorio público](https://github.com/jguillenconesa-coder/Tiny-one)
+   también permite colaborar mediante un fork sin esa invitación.
 3. En Codex conecta esa misma cuenta de GitHub y comprueba que puede seleccionar
    Tiny-one. Si no aparece, revisa la autorización de la aplicación GitHub; como
    alternativa, abre un clon local con Codex.
@@ -65,11 +67,13 @@ en `/workspace/OP-1`; no deben ejecutarse tal cual en una computadora Windows.
   Los fixtures versionados permiten ejecutar regresiones sin ellos. Recrear los
   oráculos originales exige obtener por separado los archivos y herramientas
   indicados en su documentación, fuera del control de versiones.
+  Si no puedes descargar un artefacto local de otra cuenta, utiliza la
+  [preparación reproducible de Blackfin y del LDR privado](new-account-dsp-setup.md).
 
 ## Prompt para pegar en su Codex
 
 ```text
-Colabora conmigo en el repositorio privado
+Colabora conmigo en el repositorio público
 https://github.com/jguillenconesa-coder/Tiny-one.
 Usa mi propia cuenta de GitHub. Si aún no tienes un checkout, clona el repositorio
 con mis credenciales configuradas; si ya existe, respeta los cambios locales.
@@ -93,7 +97,8 @@ especialmente su contador de 16 bits. Comprueba los PR abiertos para evitar
 duplicar trabajo. Documenta cualquier discrepancia con un caso reproducible;
 corrige solo fallos demostrados dentro de un alcance acotado.
 
-Trabaja en una rama collab/<tarea> y prepara un pull request contra main.
+Trabaja en una rama collab/<tarea> y prepara un pull request contra main;
+si no tengo permisos de escritura, usa un fork con mi cuenta de GitHub.
 Conserva IDs de automatización/MIDI, sesiones y nombres claros de controles.
 No introduzcas asignaciones dinámicas, bloqueos ni operaciones de disco en el
 callback de audio. Ejecuta las pruebas apropiadas al cambio y comunica resultados
@@ -111,5 +116,6 @@ Puedes publicar tu rama y abrir un PR; no hagas push directo a main, merge ni
 release sin que te lo pidamos explícitamente.
 ```
 
-El prompt orienta el trabajo; no concede acceso al repositorio ni instala o
-autentica Codex. La invitación y la conexión de cuentas deben estar completadas.
+El prompt orienta el trabajo; no instala ni autentica Codex. Leer el repositorio
+público no exige invitación. Para publicar cambios, utiliza una cuenta con acceso
+de escritura o un fork y pull requests.
