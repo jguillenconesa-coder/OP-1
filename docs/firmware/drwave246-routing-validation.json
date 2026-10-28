@@ -1,0 +1,93 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "source_fixture_sha256": "fcd9b57a1a67ab0adeea60477803fad001dcfb300773c99113ce7e37191c2bee",
+  "core_factory": "0x01967960",
+  "core_note_on": "0x01967854",
+  "core_release": "0x019678f0",
+  "runtime_drwave_type": 2,
+  "voice_constructor": "0x0197ada8",
+  "voice_reset": "0x0197a826",
+  "voice_release": "0x0197a838",
+  "render": "0x0197c870",
+  "producer_pointers": "0x01aaad18",
+  "loaded_sound": "0x01aaac0c",
+  "selected_sound": "0xff8016d4",
+  "sound_controls": "0xff8013c4",
+  "records": 512,
+  "independent_cases": 256,
+  "continuous_streams": 4,
+  "calls_per_stream": 64,
+  "counts": {
+    "factory": 51,
+    "accepted_note": 194,
+    "rejected_note": 86,
+    "release": 122,
+    "release_sound_mismatch": 39,
+    "updated": 79,
+    "read_only": 402,
+    "inactive": 31
+  },
+  "audio_samples": 61568,
+  "base_banks_unchanged": true,
+  "full_pool_bytes": 216,
+  "pre_render_pool_bytes": 216,
+  "additional_routing_bytes": 164,
+  "artifacts": {
+    "drwave246-routing-overrides.bin": {
+      "bytes": 75776,
+      "sha256": "a17c2dd0c07411a38882afd374b262ac8105bf9ea8074491d2151380fbab336a"
+    },
+    "drwave246-routing-output.bin": {
+      "bytes": 5019648,
+      "sha256": "f5f37c0bd27835f3c8f5dda71830d7cebf3a766e5094cfce83198bcb3e6a31ad"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "model": "GNU BF524 with documented D-register deferred-writeback patch; not hardware validation",
+  "limitations": [
+    "Core callbacks and Dr. Wave render run unmodified, but event order, one rendered voice per call, counter and pitch are explicit harness inputs.",
+    "Only valid six voice/eight sound indices are sent to the original routines. C++ guards do not emulate original assertions.",
+    "Valid Dr. Wave vtable tags are explicitly supplied when loading synthetic object pools. This is not recovered original allocation.",
+    "Common ADSR, original counter provider/cadence, tuning/pitch provider, allocator, output conversion and plugin integration remain pending.",
+    "No firmware, instructions, private ELF, presets or installer are published by this delta."
+  ],
+  "validation": {
+    "independent_reproduction": "Two new private directories; overrides and original full observations match byte for byte.",
+    "native_core_ctest_suites_passed": 25,
+    "native_ctest_total_seconds": 4.68,
+    "windows_wine": "New routing test cross-compiled for Windows/MSVC and passed under Wine; not physical Windows/Ableton/ASIO timing validation.",
+    "sanitizers": "New routing test passed ASan+UBSan; LeakSanitizer disabled due to sandbox ptrace limitation.",
+    "accepted_note_followed_by_render": {
+      "wave_update": 33,
+      "read_only": 149,
+      "inactive": 12
+    },
+    "coverage": {
+      "voice_slots": 6,
+      "loaded_sound_slots": 8,
+      "spectral_variants": 6,
+      "transforms": 3,
+      "core_note_reset_slots": 6
+    },
+    "source_hashes": {
+      "Source/DrWave246Routing.h": "cf94b002b0f16b0eab77332b2368fbe3e4f9c383d2959a1fe903282f0e89b9bd",
+      "Source/DrWave246.h": "a98063b94e23857d7863ea92b3ba35cbe82591ddcf7ebd654094bfaf00078aa6",
+      "Source/DrWave246Kernel.h": "31699ebf42c9705cbe7ed90f53b4c33033e9a0e46052c842b2344eeb24739bbb",
+      "Source/DrWave246Spectral.h": "a216f1fdd92b1512e7e9968b7096fa1b83f00163fb221995b6b355ba1cd7402d",
+      "Source/DrWave246WaveBank.h": "001316372cb37a05cb2286da761c99472c94ba2629407d626cf57786f21bc4d5",
+      "Source/DrWave246WaveTransform.h": "4a978bbea471ef60ccfab83213a1977553af14bcc28d7209bd30066cb505d4a3",
+      "Source/ReferenceDsp.h": "6f237e97236494636a71ae47582b4b9b0f75357176bdf102a45c87d230808acd",
+      "Tests/DrWave246RoutingTests.cpp": "530cdca74f44cf6d45d25fa95ca363b723c4ad0a7ce5fbcae568af27a5dbe70f",
+      "scripts/verify-drwave246-routing.py": "f752d1e4593c5d9687551aea89ed924f3adb2e215dedd9ab94bca6c3d8d0fdfd",
+      "research/blackfin/drwave-routing.s.in": "244f58c1682cafca0525db63d29feb4111d4e92f8550764d05135b29f8d6ab81",
+      "research/blackfin/voice-contract.ld": "56392dfc7b84df5f3552546615b4a95e7fcbd8d3deb5ebf2838e624b8e0d196d",
+      "CMakeLists.txt": "8358ed9970f3d5124cfbeb1a823b16a0ad7fce8e64919fcd9c42dd8cf7bf62a9"
+    },
+    "unchanged_plugin_runtime": true,
+    "runtime_linkage": "New routing header is included only by the pure-core test. No instrument runtime, selectors, MIDI/host parameter IDs, presets, samples or installer changed."
+  }
+}

@@ -268,3 +268,15 @@ own code and metadata are published. The partially encrypted L1 reference is
 recorded as a candidate, without inventing its missing pointer/store/flow.
 The 8-of-24 format fact uses the already credited community documentation;
 no new REA decryption, recovered clock or hardware timing is claimed.
+
+## Dr. Wave Core event routing
+
+The [Core event adapters](docs/drwave246-core-routing.md) are independently
+written and checked against the original Core factory, note-on/release callbacks
+and full Dr. Wave render under the previously credited GNU BF524 model. Explicit
+event scheduling, pitch and valid synthetic vtable tags are harness inputs;
+common ADSR release and complete instrument integration are not inferred.
+REA 6.8.0 supplies a fresh read-only SQLite observation of `synth_types.id/type`
+to distinguish database ID 3 from runtime type 2. No preset rows, original code,
+firmware or private ELF are distributed by this delta. The previously credited
+GNU tools and deferred D-register patch remain the instruction-level oracle.

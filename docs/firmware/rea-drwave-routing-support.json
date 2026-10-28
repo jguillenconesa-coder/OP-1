@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "scope": "Read-only REA database identity support; original DSP/Core evidence comes from GNU instruction execution, not database IDs.",
+  "rea_version": "6.8.0",
+  "evidence_id": "ev_308bfcfcffd6cb4ccd80c061e036ae88eff9386192e72eabd00f7daa13ed1e3e",
+  "provider": {
+    "id": "sqlite",
+    "name": "REA SQLite database inspector",
+    "version": "SQLite 3.53.3"
+  },
+  "database_relative_path": "content/op1_factory.db",
+  "database_sha256": "be4572298fe9dc83b106d5c4eaf1cc972280d97f028f3eaebc0c76dc68ac9cf0",
+  "source_hash_unchanged_against_inventoried_database": true,
+  "table": "synth_types",
+  "columns": [
+    "id",
+    "type"
+  ],
+  "row_limit": 32,
+  "returned_rows": 10,
+  "truncated": false,
+  "observed_drwave_database_id": 3,
+  "separately_verified_runtime_type": 2,
+  "private_evidence_sha256": "e921da316cef3fd6072b90c22b66c47e43b243c1cb28f0fe9eeda3d960a528a9",
+  "limitations": [
+    "No preset rows queried or database distributed. Database identity does not prove DSP dispatch or sound equivalence.",
+    "No REA Blackfin decompilation, L1 decryption, scheduler or hardware timing claimed."
+  ]
+}

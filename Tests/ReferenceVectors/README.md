@@ -116,6 +116,31 @@ output, from unmodified original render calls. 79 updates, 402 read-only calls,
 comparison. All six slots, six spectral variants and three transforms are used.
 [Contract, reproduction and blocked L1 provider](../../docs/drwave246-counter.md).
 
+## Dr. Wave Core event routing delta
+
+`drwave246-routing-overrides.bin`: 512 little-endian records of 148 bytes:
+uint32 action, voice, counter DWORD, loaded sound, selected sound, then eight
+sounds × eight int16 controls. Use the first three DWORDs to override offsets
+0–11 of the corresponding `drwave246-kernel-input.bin` record, replace each
+synthetic pool tag at offset `536 + voice*36` with `0x0190fb2c`, then append loaded
+sound, selected sound and 128 control bytes. Expanded inputs are private and
+9,452 bytes per record. Action bits reload state, call the six-voice Core factory,
+call Core note-on and call Core release. Render reads controls from the loaded
+sound row; the old four control words at input offset 16 are unused in this oracle.
+
+`drwave246-routing-output.bin`: generated banks (163,840 bytes), 512 records of
+9,164 bytes, then the unchanged banks again. Each record's first 8,784 bytes
+follow the complete-render output format. Additional offsets: 8,784 note-on result
+(uint32, `0xffffffff` when not requested), 8,788 six original producer pointers,
+8,812 loaded sound, 8,816 selected sound, 8,820 controls (128 bytes), 8,948 pool
+after Core events and before render (216 bytes).
+
+256 independent cases and four 64-call streams; 51 in-record factories, 194
+accepted and 86 rejected note-ons, 122 releases including 39 mismatched sound IDs.
+79 wave updates, 402 read-only calls and 31 inactive returns give 61,568 additional
+audio samples. Event order, counter and pitch remain explicit test inputs.
+[Scope, provenance and reproduction](../../docs/drwave246-core-routing.md).
+
 ## Earlier vectors
 
 Generated with GNU Binutils 2.44 (bfin-elf) and GNU GDB 13.1 Blackfin simulator,

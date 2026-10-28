@@ -16,6 +16,11 @@ de render verifican cruces de 32767/32768 y 65535/0, con 79 actualizaciones.
 El comparador conserva ambos oráculos: 123.136 muestras de render completo.
 La referencia candidata al proveedor en L1 sigue sin resolver su cadencia.
 
+La [ampliación de eventos Core](drwave246-core-routing.md) añade otras 61.568
+muestras con seis objetos contrastados antes y después del render, factoría,
+disparos aceptados/rechazados y release. El ruteo de la envolvente común sigue
+pendiente; este callback de release de motor no modifica la voz.
+
 ## Flujo reconstruido
 
 ```mermaid
