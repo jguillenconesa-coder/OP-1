@@ -2,7 +2,11 @@
 param([string]$BuildDir = "build")
 $ErrorActionPreference = "Stop"
 $SourceDir = (Resolve-Path (Join-Path $PSScriptRoot "../..")).Path
-$Setup = Join-Path $SourceDir "dist/Pocket-One-0.6.0-Windows-x64-Setup.exe"
+$VersionEntries = @(Select-String -Path (Join-Path (Resolve-Path $BuildDir).Path "CMakeCache.txt") -Pattern '^CMAKE_PROJECT_VERSION:STATIC=([0-9]+\.[0-9]+\.[0-9]+)$')
+if ($VersionEntries.Count -ne 1) { throw "Expected one configured CMake project version. Reconfigure $BuildDir first." }
+$Version = $VersionEntries[0].Matches[0].Groups[1].Value
+$Setup = Join-Path $SourceDir "dist/Pocket-One-$Version-Windows-x64-Setup.exe"
+if (!(Test-Path $Setup)) { throw "Installer for configured version $Version is missing: $Setup. Build it first." }
 $Install = Join-Path $env:ProgramW6432 "Pocket Instruments/Pocket One"
 $Plugin = Join-Path $env:CommonProgramW6432 "VST3/Pocket One.vst3/Contents/x86_64-win/Pocket One.vst3"
 $Registry = "HKLM:/Software/Microsoft/Windows/CurrentVersion/Uninstall/PocketOne"

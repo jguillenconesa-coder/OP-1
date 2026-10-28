@@ -3,6 +3,9 @@ $ErrorActionPreference = "Stop"
 $SourceDir = (Resolve-Path (Join-Path $PSScriptRoot "../..")).Path
 $Log = Join-Path (Resolve-Path $BuildDir).Path "installer-build.log"
 try {
+    $VersionEntries = @(Select-String -Path (Join-Path (Resolve-Path $BuildDir).Path "CMakeCache.txt") -Pattern '^CMAKE_PROJECT_VERSION:STATIC=([0-9]+\.[0-9]+\.[0-9]+)$')
+    if ($VersionEntries.Count -ne 1) { throw "Expected one configured CMake project version. Reconfigure $BuildDir first." }
+    $Version = $VersionEntries[0].Matches[0].Groups[1].Value
     $Artifacts = Join-Path (Resolve-Path $BuildDir).Path "PocketOne_artefacts/$Configuration"
     foreach ($Item in @("VST3/Pocket One.vst3/Contents/x86_64-win/Pocket One.vst3", "Standalone/Pocket One.exe")) {
         if (!(Test-Path (Join-Path $Artifacts $Item))) { throw "Missing Windows build product: $Item" }
@@ -12,7 +15,7 @@ try {
     if (!(Test-Path $Nsis)) { throw "Install NSIS 3.11+ (for example: choco install nsis)." }
     $OutputDir = Join-Path $SourceDir "dist"
     New-Item -ItemType Directory -Force $OutputDir | Out-Null
-    & $Nsis "/DPATH_SEP=\" "/DARTIFACT_DIR=$Artifacts" "/DSOURCE_DIR=$SourceDir" "/DOUTPUT_DIR=$OutputDir" (Join-Path $PSScriptRoot "PocketOne.nsi") 2>&1 | Tee-Object -FilePath $Log
+    & $Nsis "/DPATH_SEP=\" "/DVERSION=$Version" "/DARTIFACT_DIR=$Artifacts" "/DSOURCE_DIR=$SourceDir" "/DOUTPUT_DIR=$OutputDir" (Join-Path $PSScriptRoot "PocketOne.nsi") 2>&1 | Tee-Object -FilePath $Log
     $CompilerExit = $LASTEXITCODE
     if ($CompilerExit -ne 0) { throw "NSIS failed with exit code $CompilerExit" }
 } catch {
