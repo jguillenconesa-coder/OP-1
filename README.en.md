@@ -8,7 +8,7 @@ Version 0.13.0 adds **[Value 246 Voice](docs/value-voice246-native.md)**: indepe
 
 **Active work: firmware DSP reconstruction.** [Dr. Wave's complete isolated render](docs/drwave246-kernel.md) connects controls, spectral mixing, wave updates and five oscillators, matching 61,568 original simulated samples. External scheduling, allocation/pitch/ADSR, output and integration remain pending. The [component workplan](docs/firmware-dsp-workplan.md) retains [Cluster's](docs/cluster246-kernel.md) normalization, tuning and L1 handoff blockers. Presets and sample banks remain deferred.
 
-**Dr. Wave voices:** [Core factory and events verified](docs/drwave246-core-routing.md) against another 61,568 samples and pre-render voice pools. Engine release does not replace the pending common ADSR route.
+**Dr. Wave voices:** [Core factory and events verified](docs/drwave246-core-routing.md) against another 61,568 samples and pre-render voice pools. [VoiceCtl activation](docs/drwave246-note-activation.md) adds pitch, velocity and activity with explicit tuning and another 61,568 samples. Engine release does not replace the pending common ADSR route.
 
 **Dr. Wave counter:** [all 16 consumer bits verified](docs/drwave246-counter.md), with 131,072 fragment calls and another 61,568 full-render samples crossing counter boundaries. The original clock provider remains pending in partially encrypted L1.
 

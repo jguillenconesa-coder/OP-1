@@ -21,6 +21,10 @@ muestras con seis objetos contrastados antes y después del render, factoría,
 disparos aceptados/rechazados y release. El ruteo de la envolvente común sigue
 pendiente; este callback de release de motor no modifica la voz.
 
+La [activación VoiceCtl](drwave246-note-activation.md) añade otras 61.568 muestras,
+con preparación de pitch/velocidad/actividad y regresión del helper común de
+Cluster. Afinación y mantenimiento del pitch son entradas explícitas del ensayo.
+
 ## Flujo reconstruido
 
 ```mermaid

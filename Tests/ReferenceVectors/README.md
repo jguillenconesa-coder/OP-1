@@ -141,6 +141,34 @@ accepted and 86 rejected note-ons, 122 releases including 39 mismatched sound ID
 audio samples. Event order, counter and pitch remain explicit test inputs.
 [Scope, provenance and reproduction](../../docs/drwave246-core-routing.md).
 
+## Dr. Wave VoiceCtl activation delta
+
+`drwave246-activation-overrides.bin`: 512 little-endian records of 232 bytes.
+Offsets 0–147 follow the Core routing override format (action, voice, counter,
+loaded/selected sounds and 128 control bytes). Only action bits 0 load and 1
+Core factory are used; every record calls VoiceCtl exactly once. Offsets 148–163
+contain the four source note words, 164 signed32 explicit tuning, 168–231 the
+two 32-byte register images for `0xff80105c` and `0xff8012d4`.
+
+Expand each record from the existing kernel input as in the Core routing oracle,
+then append the note/tuning/register bytes. Expanded inputs are private, 9,536
+bytes each. Initial pool tags are explicitly made valid Dr. Wave tags. The old
+source pitch array is unused: the harness fills the render buffer with the
+selected voice's registered pitch after activation, even following rejection.
+
+`drwave246-activation-output.bin`: 512 bytes from the original bounded 128-note
+copy, then generated banks (163,840 bytes), 512 records of 9,244 bytes, and the
+unchanged banks. Each record's first 9,164 bytes follow Core routing output;
+offset 8,784 is a reserved `0xffffffff`, not a VoiceCtl return value. Offset
+9,164 contains the two register images (64 bytes), 9,228 the unchanged source
+note (16 bytes). The pool at 8,948 is after activation and before render.
+
+256 independent cases and four 64-call streams: 427 accepted, 85 gated, 214
+accepted explicit pitches (27 ignore an out-of-range note index), all 128 lookup
+notes accepted, and 61,568 additional active audio samples. Tuning and held pitch
+are explicit test inputs; original calibration, pitch provider and ADSR remain
+pending. [Contract and reproduction](../../docs/drwave246-note-activation.md).
+
 ## Earlier vectors
 
 Generated with GNU Binutils 2.44 (bfin-elf) and GNU GDB 13.1 Blackfin simulator,

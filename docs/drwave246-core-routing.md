@@ -96,7 +96,7 @@ plugin, y presets/bancos siguen aplazados.
 
 Sigue pendiente el [proveedor del contador en L1](drwave246-counter.md), además
 de preparación/calibración de pitch, asignación y ruteo ADSR/salida. El siguiente
-paso verificable es ampliar el contrato de activación VoiceCtl para Dr. Wave,
-manteniendo explícita cualquier afinación o dependencia aún no recuperada.
+paso de activación ya tiene una [ampliación VoiceCtl contrastada](drwave246-note-activation.md),
+manteniendo explícita la afinación y sin completar las dependencias restantes.
 [Evidencias y hashes](firmware/drwave246-routing-validation.json) ·
 [Plan activo](firmware-dsp-workplan.md).

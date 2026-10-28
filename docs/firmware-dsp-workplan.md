@@ -44,6 +44,7 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | Render completo, actualización y controles | 61.568 muestras / 512 registros: 240 actualizaciones, 241 lecturas activas y 31 retornos inactivos. Preparación de cuatro controles, dos familias, inversión de 25 bits, blanco opcional, retención común y cinco osciladores contrastados juntos. |
 | Consumo del contador externo | Los 65.536 valores raw contrastados dos veces con vecinos distintos; el resto es sin signo. 61.568 muestras adicionales de render completo cruzan los límites 32767/32768 y 65535/0. El adaptador admite toda la palabra; no establece el reloj original. |
 | Eventos Core y seis voces | Factoría tipo interno 2, note-on condicionado al sonido seleccionado y release sin esa condición; 61.568 muestras adicionales junto al render completo. 194 disparos aceptados, 86 rechazados, 122 releases y pools previos al render contrastados. Release de motor no equivale a release ADSR. |
+| Activación VoiceCtl | Tabla de 128 notas, pitch, velocidad y actividad contrastados con afinación explícita. 427 activaciones aceptadas / 85 bloqueadas y 61.568 muestras posteriores con pitch mantenido por el harness; no es el proveedor de pitch original. |
 | Cadencia externa, voz completa e integración | Referencia candidata al contador en L1 junto a franjas cifradas; proveedor/cadencia aún sin verificar. Faltan también asignación/pitch/ADSR y salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
 
 [Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
@@ -51,13 +52,14 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 [Tres transformaciones de la onda de voz](drwave246-wave-transform.md) ·
 [Mezcla espectral y render aislado completo](drwave246-kernel.md) ·
 [Contador de 16 bits y dependencia del proveedor](drwave246-counter.md) ·
-[Factoría, disparo y release de seis voces](drwave246-core-routing.md).
+[Factoría, disparo y release de seis voces](drwave246-core-routing.md) ·
+[Preparación y activación VoiceCtl](drwave246-note-activation.md).
 
 La ruta candidata del proveedor del contador continúa bloqueada en L1
 parcialmente cifrada. El siguiente paso verificable del mismo componente es
-ampliar la activación VoiceCtl para Dr. Wave, separando las entradas de afinación
-explícitas de una calibración original aún no recuperada y sin suplir el relevo
-ADSR pendiente con un flujo inventado.
+contrastar las rutas de actualización del pitch de VoiceCtl y su consumo en el
+buffer del render. La activación inicial está contrastada con afinación explícita;
+esa entrada no recupera la calibración original ni suple el relevo ADSR pendiente.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

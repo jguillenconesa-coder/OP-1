@@ -1,0 +1,122 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "source_fixture_sha256": "fcd9b57a1a67ab0adeea60477803fad001dcfb300773c99113ce7e37191c2bee",
+  "voice_activation": "0x01a84414",
+  "core_note_on": "0x01967854",
+  "runtime_drwave_type": 2,
+  "render": "0x0197c870",
+  "note_table_source": "0x018c21b0",
+  "note_table_destination": "0x01dfe530",
+  "note_table_words": 128,
+  "bounded_copy_fragment": {
+    "start": "0x01a86700",
+    "end_exclusive": "0x01a8672e",
+    "sha256": "f879c0b4703370e0a161b0981a550cb67034ff532a960da84043a210eacdc4d1",
+    "scope": "Unmodified PC-relative loop with own appended RTS, not full initializer"
+  },
+  "tuning_index_address": "0x018c2184",
+  "observed_tuning_index": 1200,
+  "explicit_tuning_word_address": "0x027fd9e0",
+  "records": 512,
+  "independent_cases": 256,
+  "continuous_streams": 4,
+  "calls_per_stream": 64,
+  "counts": {
+    "accepted": 427,
+    "rejected": 85,
+    "accepted_explicit_pitch": 214,
+    "ignored_large_note_index": 27,
+    "factory": 51,
+    "updated": 79,
+    "read_only": 402,
+    "inactive": 31
+  },
+  "audio_samples": 61568,
+  "base_banks_unchanged": true,
+  "register_image_bytes": 64,
+  "source_note_bytes": 16,
+  "full_pool_bytes": 216,
+  "artifacts": {
+    "drwave246-activation-overrides.bin": {
+      "bytes": 118784,
+      "sha256": "701d4bda15428c01428e8bd1bff2fa975acd53d26bab0bd1454b4d32c8e33557"
+    },
+    "drwave246-activation-output.bin": {
+      "bytes": 5061120,
+      "sha256": "a2db992a75c4cb7c2780b122d716947c7e7add554ebb864aa05c3ef861fae1e5"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "20cdacff62c424265854a3c046a91be449f863af667507f2e6f0c6ed709aed1e",
+    "/workspace/blackfin-tools/build/ld/ld-new": "a8c7c7a8c433dfdf08750286a00e1d1fcd090450301e8b4bb48619383ebd5a41",
+    "/workspace/blackfin-sim/run-parallel": "5bf0c301348ad82ff945d41be3a15d652a447d5fab1b03ca6c483b18f1817a16"
+  },
+  "model": "GNU BF524 with documented D-register deferred-writeback patch; not hardware validation",
+  "limitations": [
+    "Tuning word is supplied explicitly at observed index 1200; no recovered original/default calibration.",
+    "Harness holds the prepared per-voice pitch word in all 128 source positions for the following render, including prior pitch after rejected activation. Not the original pitch provider.",
+    "Events, counter and one rendered voice per record are explicit test scheduling. Common ADSR handoff, allocator, clock, output and plugin integration remain pending.",
+    "Original activation has no defined return value; C++ bool only indicates adapter acceptance. Invalid-input guards are not original assert emulation.",
+    "Valid vtable tags are supplied on loading synthetic pools; no firmware, instructions or private ELF distributed."
+  ],
+  "validation": {
+    "independent_reproduction": "Two new private directories; activation overrides, note-table copy and full original output agree byte for byte.",
+    "native_core_ctest_suites_passed": 26,
+    "native_ctest_total_seconds": 4.43,
+    "windows_wine": "New Dr. Wave activation and existing Cluster activation regression cross-compiled for Windows/MSVC; both passed under Wine. No physical Windows/Ableton/ASIO timing validation.",
+    "sanitizers": "Both Dr. Wave and Cluster activation tests passed ASan+UBSan. LeakSanitizer disabled due to sandbox ptrace limitation.",
+    "coverage": {
+      "lookup_notes_accepted": 128,
+      "voice_slots": 6,
+      "sound_slots": 8,
+      "spectral_variants": 6,
+      "transforms": 3
+    },
+    "directed_examples": [
+      {
+        "case": 138,
+        "note_index": 69,
+        "explicit_pitch": 0,
+        "tuning_word": "0x40000000",
+        "prepared_pitch": 21426140
+      },
+      {
+        "case": 257,
+        "ignored_note_index": "0xffffffff",
+        "explicit_pitch": "0x80000000",
+        "tuning_word": "0x80000000",
+        "prepared_pitch": 2147483647
+      }
+    ],
+    "cluster_regression": {
+      "source_fixture_unchanged": true,
+      "records": 1024,
+      "samples": 131072,
+      "accepted": 768,
+      "gated": 256,
+      "explicit_pitch": 384
+    },
+    "source_hashes": {
+      "Source/Voice246Activation.h": "49f7a1355d12d03e6e2abae15d954d3a15a96a5ade56c089d972cda2f337b4ce",
+      "Source/DrWave246Activation.h": "af5f1bf35089f84575845eef6b933b3c9c47c1149255ad3d3204ff1459a4566e",
+      "Source/Cluster246Activation.h": "5b39abdb5a07a215deaa399ca55c6eedb449e84ef08c926c03f8251d975f2879",
+      "Source/Voice246NoteTable.h": "fd5c365d39491eb4939f47f55f229113484aecb0d48347057457390a55959383",
+      "Source/DrWave246Routing.h": "cf94b002b0f16b0eab77332b2368fbe3e4f9c383d2959a1fe903282f0e89b9bd",
+      "Source/DrWave246Kernel.h": "31699ebf42c9705cbe7ed90f53b4c33033e9a0e46052c842b2344eeb24739bbb",
+      "Source/DrWave246.h": "a98063b94e23857d7863ea92b3ba35cbe82591ddcf7ebd654094bfaf00078aa6",
+      "Source/DrWave246Spectral.h": "a216f1fdd92b1512e7e9968b7096fa1b83f00163fb221995b6b355ba1cd7402d",
+      "Source/DrWave246WaveTransform.h": "4a978bbea471ef60ccfab83213a1977553af14bcc28d7209bd30066cb505d4a3",
+      "Source/DrWave246WaveBank.h": "001316372cb37a05cb2286da761c99472c94ba2629407d626cf57786f21bc4d5",
+      "Source/ReferenceDsp.h": "6f237e97236494636a71ae47582b4b9b0f75357176bdf102a45c87d230808acd",
+      "Tests/DrWave246ActivationTests.cpp": "342aba1eab5bc0d3653cc966636b6f6732cba16e6b41609eb2bfd08e3eed95de",
+      "Tests/Cluster246ActivationTests.cpp": "3fc0975c5300f443613eeca3c2736ad5744d98aa5ebaf400dcf414f729b1bfed",
+      "scripts/verify-drwave246-activation.py": "60a12c75fd86354eb964f1225b1092cbc294326871f6df4c3176fe08442435da",
+      "scripts/verify-drwave246-routing.py": "f752d1e4593c5d9687551aea89ed924f3adb2e215dedd9ab94bca6c3d8d0fdfd",
+      "research/blackfin/drwave-activation.s.in": "16a5102f6e8f9d76721664de4c5a100496687d7b808758e8315b3b9e1129e8d4",
+      "research/blackfin/voice-contract.ld": "56392dfc7b84df5f3552546615b4a95e7fcbd8d3deb5ebf2838e624b8e0d196d",
+      "CMakeLists.txt": "164f8eb6d149d6457ae529f0eb1f12c87a19077ec2768ae0636b4dbeddb1576b"
+    },
+    "unchanged_plugin_runtime": true,
+    "runtime_linkage": "Shared register preparation is reached only from isolated activation tests. No instrument executable, installer, MIDI/host IDs, presets or sample bank changed."
+  }
+}

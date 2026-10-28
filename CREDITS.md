@@ -280,3 +280,16 @@ REA 6.8.0 supplies a fresh read-only SQLite observation of `synth_types.id/type`
 to distinguish database ID 3 from runtime type 2. No preset rows, original code,
 firmware or private ELF are distributed by this delta. The previously credited
 GNU tools and deferred D-register patch remain the instruction-level oracle.
+
+## Dr. Wave VoiceCtl activation and shared register preparation
+
+The [Dr. Wave activation](docs/drwave246-note-activation.md) is independently
+checked against original VoiceCtl, Core, constructor/reset and complete render
+instructions using the previously credited GNU model. The original bounded
+128-word note-table copy is re-executed privately, with an own return appended.
+Only numerical observations, own source/harnesses and metadata are published.
+Tuning and the held render pitch remain explicit inputs, not recovered original
+calibration or scheduling. Shared register preparation is extracted from the
+previous Cluster adapter; its unchanged fixtures still pass, including Windows
+under Wine and sanitizers. No firmware, original instructions, private ELF, new
+presets or L1 decryption are distributed or claimed by this delta.
