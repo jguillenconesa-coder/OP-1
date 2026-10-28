@@ -61,6 +61,11 @@ contrastar las rutas de actualización del pitch de VoiceCtl y su consumo en el
 buffer del render. La activación inicial está contrastada con afinación explícita;
 esa entrada no recupera la calibración original ni suple el relevo ADSR pendiente.
 
+La [auditoría del relevo de pitch](drwave246-pitch-handoff.md) separa los dos
+extremos ya contrastados de la copia propia `held_pitch` del ensayo, registra
+las regresiones reproducidas y concreta el experimento pendiente. No añade un
+proveedor de pitch ni una nueva ejecución de instrucciones originales.
+
 ## Cluster rev246: conservado con dependencias bloqueadas
 
 | Parte | Estado |
