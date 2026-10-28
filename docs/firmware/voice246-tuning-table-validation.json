@@ -1,0 +1,83 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "table_tail_entry": "0x01a85454",
+  "table_tail_end_exclusive": "0x01a854ca",
+  "tail_sha256": "7810a2ead780dadfb47bed35cd34a247fb91fc8a5dad354cd4a3a41494c8e472",
+  "constants_address": "0x01909764",
+  "binary64_constants": [
+    1200.0,
+    2.0,
+    2.0
+  ],
+  "table_words": 2400,
+  "preload_patterns": [
+    0,
+    2779096485,
+    4294967295
+  ],
+  "activation_records": 512,
+  "activation_independent_cases": 256,
+  "activation_streams": 4,
+  "calls_per_stream": 64,
+  "audio_samples": 61568,
+  "coefficient_examples": {
+    "0": "0x20000000",
+    "1200": "0x40000000",
+    "2399": "0x7fed1400"
+  },
+  "artifacts": {
+    "voice246-tuning-table-output.bin": {
+      "bytes": 28872,
+      "sha256": "2c6c48a9eac2ecc94d02fd9672f8715761951d42c89664a320b6a77280caca50"
+    },
+    "drwave246-tuning-table-overrides.bin": {
+      "bytes": 122880,
+      "sha256": "e1522b49f796e8ae40bfa16129ab8b80e298c09845441d33e1a63ca3f681a565"
+    },
+    "drwave246-tuning-table-output.bin": {
+      "bytes": 5085056,
+      "sha256": "e0cf061f98ed90213bffe2ff01c226ad66441a0100e56988109ebcd7c524e316"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/build-deferred/sim/bfin/run": "26799ba2bd15737b66f6ca1dc333e59c1dd16aaaea249c96e020839dda5013c6"
+  },
+  "limitations": [
+    "Own frame adapter enters only the original table-generating tail; module/event setup before it is not executed or reconstructed.",
+    "All tail and math-helper instructions execute at original SDRAM addresses without patching. No boot/scheduler validation.",
+    "Generated coefficients now feed activation; the register-to-render buffer copy is still explicit held-pitch harness code.",
+    "Original pitch writer, cadence, allocator, ADSR/output and plugin integration remain pending. No MIDI/automation/session changes.",
+    "GNU BF524 with documented deferred D-register patch, not hardware/latency validation. Original bytes and ELF remain private."
+  ],
+  "validation": {
+    "core_ctest_suites_passed": 29,
+    "full_juce_ctest_suites_passed": 31,
+    "independent_reproduction": "Two fresh private directories agree byte for byte on both probes and all three fixtures.",
+    "sanitizers": "Producer and expanded activation comparators passed ASan+UBSan; LeakSanitizer disabled for sandbox ptrace limitation.",
+    "windows_macos": "Not run locally; native CI required.",
+    "generated_coefficient_words_compared": 7200,
+    "final_generated_table_words_in_activation": 2400,
+    "plugin_runtime_unchanged": true
+  },
+  "source_hashes": {
+    "Source/Voice246TuningTable.h": "321d8a90e893f9972929f1d0aff64b0ccf7849b8367b5ab8c19bbfabd47cf89f",
+    "Tests/Voice246TuningTableTests.cpp": "b942b4a95128effa5485d9e105d1a13acbffa874d8af5e0c2665c502729ccba0",
+    "Tests/DrWave246ActivationTests.cpp": "7fbefd84e9c388af3ab3081adcd16e7342d044aa8a3ab88ce358b5b8793cdcb2",
+    "research/blackfin/voice-tuning-table.s.in": "ad7f5ec650c5241690beb8bf93ac6b21e3691251b31a58546f6326396dac3e24",
+    "scripts/verify-voice246-tuning-table.py": "dfb893dbdbeeda18fa21c2302cab348c76d1fc6b9b4f1a8f1a210a23182c2e04",
+    "CMakeLists.txt": "1918f63549a4e1d74e425b5dc2c99b4687a117b0f597247bc919cf02ed1fceda"
+  },
+  "rea": {
+    "version": "6.8.0",
+    "provider": "gnu.objdump",
+    "symbol": "voice246_table_tail (synthetic)",
+    "private_evidence_sha256": "a716658c710e7cd3d262105227ca22097b05804f91e8221e93e473de279452b3",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "scope": "Static original-tail disassembly, not module/event setup execution or whole-firmware boot. Raw bytes and ELF remain private.",
+    "setup_note": "Initial sandboxed REA call could not complete process-ownership cleanup; after diagnosis, a call with process metadata access completed successfully."
+  }
+}

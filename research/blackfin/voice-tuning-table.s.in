@@ -1,0 +1,62 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own caller. Skip module/event initialization and enter the original tail
+// at its original address with the documented frame layout. No instructions
+// within the table-generating tail or its math helpers are patched/relocated.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+SP += -64;
+P4.H = patterns;
+P4.L = patterns;
+P5.H = results;
+P5.L = results;
+record_loop:
+R0 = [P4];
+imm32 P1, 0x027fc71c
+P3 = 2402;
+LSETUP(fill_table,fill_table_end) LC0 = P3;
+fill_table: [P1++] = R0;
+fill_table_end: NOP;
+imm32 P1, 0x018c217c
+P3 = 4;
+LSETUP(fill_index,fill_index_end) LC0 = P3;
+fill_index: [P1++] = R0;
+fill_index_end: NOP;
+CALL build_tuning_table;
+imm32 P1, 0x027fc71c
+P2 = P5;
+P3 = 2402;
+LSETUP(table_out,table_out_end) LC0 = P3;
+table_out: R0 = [P1++];
+table_out_end: [P2++] = R0;
+imm32 P1, 0x018c217c
+P3 = 4;
+LSETUP(index_out,index_out_end) LC0 = P3;
+index_out: R0 = [P1++];
+index_out_end: [P2++] = R0;
+P5 = P2;
+P4 += 4;
+R0 = P4;
+R1.H = patterns_end;
+R1.L = patterns_end;
+CC = R0 == R1;
+IF !CC JUMP record_loop;
+R0.H = args;
+R0.L = args;
+P0 = 5;
+EXCPT 0;
+exit 0
+build_tuning_table:
+LINK 0;
+[--SP] = (R7:4, P5:3);
+SP += -16;
+imm32 P0, 0x01a85454
+JUMP (P0);
+.data
+.align 4
+args: .long 1,results,28872
+patterns: .long 0,0xa5a5a5a5,0xffffffff
+patterns_end:
+results: .space 28872
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

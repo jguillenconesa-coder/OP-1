@@ -48,6 +48,7 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | Actualización de pitch VoiceCtl `0x01a85cbe` | 512 llamadas con listas de 0–128 entradas: destino selectivo, inactivo y broadcast contrastados, más 61.568 muestras posteriores. Afinación y copia del registro al buffer siguen explícitas del harness; otras rutas de pitch y el relevo original al render permanecen pendientes. |
 | Entrada de pitch bend VoiceCtl `0x01a84efa` | 65.536 parejas de bytes y 256 llamadas continuas contrastadas, incluida la preservación de seis registros de pitch. Control signed16 y tres flags; consumidor candidato en L1 parcialmente cifrada. No establece bend → frecuencia ni añade audio/integración. |
 | Índice de afinación VoiceCtl `0x01a842f0` | Setter contrastado con estrés signed32, 4.577 parejas de controles y 256 llamadas continuas. Otras 61.568 muestras verifican activación/render con coeficientes explícitos en índices calculados; no recupera los valores originales de la tabla ni el escritor del buffer. |
+| Productor de la tabla común de afinación | Cola SDRAM `0x01a85454` contrastada: 2400 coeficientes, tres precargas y otras 61.568 muestras de activación/render sin overrides de coeficiente. Se omite el setup previo; escritor del buffer y cadencia siguen pendientes. |
 | Cadencia externa, voz completa e integración | Referencia candidata al contador en L1 junto a franjas cifradas; proveedor/cadencia aún sin verificar. Faltan también asignación/pitch/ADSR y salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
 
 [Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
@@ -70,10 +71,11 @@ La [entrada de pitch bend](drwave246-pitch-bend-input.md) está contrastada como
 decodificador independiente. Su control no se conecta a los registros de pitch
 ni al render con una fórmula supuesta; su consumidor original sigue pendiente.
 
-El [setter del índice de afinación](drwave246-tuning-index.md) ya está
-contrastado junto a su consumo en la activación. Falta el productor de los
-coeficientes de las 2400 entradas: el índice 1200 no proporciona por sí solo
-una calibración. El relevo L1 y las demás rutas de pitch permanecen pendientes.
+El [setter del índice](drwave246-tuning-index.md) y el
+[productor de las 2400 entradas](drwave246-tuning-table.md) ya están contrastados
+junto a su consumo en la activación de Dr. Wave. La tabla deja de ser una entrada
+de coeficientes explícitos en el nuevo ensayo. Setup completo, calibración física,
+relevo L1 y demás rutas de pitch permanecen pendientes.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 
@@ -108,10 +110,11 @@ antes de conectarlo al plugin. [Avance de normalización/inicialización](cluste
 La búsqueda de afinación ha identificado un inicializador en `0x01a866e4` que
 construye **2.400 palabras de cuatro bytes** desde `0x027fc720`, usando el callback
 `0x01a84388`: este solo escribe cero. El bloque LDR que cubre esa memoria también
-es un fill a cero. No se ha localizado y verificado la rutina que escribe los
-coeficientes de uso. Ese inicializador no proporciona una afinación válida.
-Junto con las tres normalizaciones y el relevo L1 cifrado, esta dependencia
-justifica pasar a Dr. Wave; Cluster mantiene los resultados ya contrastados.
+es un fill a cero. Ese callback no proporciona una afinación válida. La
+investigación posterior de Dr. Wave ha localizado y contrastado el productor en
+la cola `0x01a85454`: la tabla común ya se genera, sin completar el setup previo
+ni una nueva validación de su consumo por Cluster. Las tres normalizaciones y
+el relevo L1 cifrado siguen pendientes; Dr. Wave se mantiene como bloque activo.
 
 ## Cola de componentes
 

@@ -98,3 +98,7 @@ ctest --test-dir build-dsp -R '^(voice246_tuning_index|drwave246_activation)$' -
 La salida privada debe ser nueva y externa al checkout. `--record` regenera
 únicamente los cuatro fixtures de este avance.
 [Evidencia y hashes](firmware/voice246-tuning-index-validation.json).
+
+La [ampliación posterior del productor](drwave246-tuning-table.md) ya genera
+las 2400 palabras y contrasta su consumo sin overrides por caso. El ensayo
+de esta página conserva sus coeficientes explícitos como regresión separada.
