@@ -15,11 +15,17 @@ on:
   workflow_dispatch:
 jobs:
   build:
+    # Keep required check names stable when pinning the underlying runner image.
+    name: build (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-2022, macos-latest]
-    runs-on: ${{ matrix.os }}
+        include:
+          # ARM64, like macos-latest; avoid the moving latest image during queues.
+          - os: macos-latest
+            runner: macos-15
+    runs-on: ${{ matrix.runner || matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Linux dependencies
