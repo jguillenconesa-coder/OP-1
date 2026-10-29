@@ -526,3 +526,12 @@ semillas de entrada; el fixture de salida contiene todas las capturas numéricas
 el render Dr. Wave: 65.536 muestras de volumen y 61.568 de motor. Buffers
 entrantes, selección de mensajes y orden explícitos.
 [Contrato y reproducción](../../docs/drwave246-control-source-input.md).
+
+## Destino instrumento Dr. Wave
+
+`drwave246-control-instrument-overrides.bin` /
+`drwave246-control-instrument-output.bin`: rangos originales del tipo 2,
+2.048 decodificaciones y 512 callbacks instrumento, ocho selectores y
+61.568 muestras posteriores. Imagen completa de parámetros, rangos y
+contexto/estado/guardas; pitch/volumen/suavizado preservados.
+[Contrato](../../docs/drwave246-instrument-control-routing.md).
