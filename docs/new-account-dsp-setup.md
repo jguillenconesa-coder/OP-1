@@ -118,3 +118,13 @@ plugin. [Método del modelo](envelope246-research.md) ·
 [Estado activo](firmware-dsp-workplan.md).
 
 [Validación de descargas, compilación, modelos y oráculo](firmware/blackfin-setup-validation.json).
+
+## Modelo adicional para el modificador de volumen
+
+El [ensayo de volumen/pitch](drwave246-volume-buffer-modifier.md) requiere además
+`research/blackfin/gnu-13.1-halfword-writeback.patch`, aplicado después del primer
+parche. En un setup nuevo añade `--halfword-writeback` al comando de preparación.
+La opción verifica tres paquetes propios de mitades distintas, además de los
+cinco probes existentes. Sin ella se conserva el modelo anterior. El verificador
+de volumen rechaza modelos que pierden una escritura halfword; no regeneres
+fixtures para aceptar esa discrepancia. No se modifica firmware ni se valida L1.

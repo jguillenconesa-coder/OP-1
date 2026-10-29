@@ -1,0 +1,87 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "source_fixture_sha256": "fcd9b57a1a67ab0adeea60477803fad001dcfb300773c99113ce7e37191c2bee",
+  "original_callback": "0x019cce68",
+  "callback_end_exclusive": "0x019cd01c",
+  "original_render": "0x0197c870",
+  "records": 512,
+  "independent_cases": 256,
+  "continuous_streams": 4,
+  "calls_per_stream": 64,
+  "pitch_buffer_words_compared": 65536,
+  "active_audio_samples": 61568,
+  "counts": {
+    "applied": 459,
+    "inactive": 53,
+    "wave_update": 240,
+    "read_only": 241,
+    "render_inactive": 31
+  },
+  "routing_masks": 16,
+  "active_channel_counts": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "source_controls": "0x01dff13c",
+  "volume_state": "0x01dd5b3c",
+  "pitch_buffer": "0xff801950",
+  "amplitude_buffer": "0xff801d50",
+  "amplitude_samples_compared": 65536,
+  "routing_combinations": 81,
+  "base_banks_unchanged": true,
+  "artifacts": {
+    "control-volume246-overrides.bin": {
+      "bytes": 194560,
+      "sha256": "8be21bb9f500be819b8cf80c0cbed750aec3471fad0625f9182d4e7d0357f1ec"
+    },
+    "control-volume246-output.bin": {
+      "bytes": 5281792,
+      "sha256": "644ffdd3c982d6525faa900390d32f054257268090ab43cafa0dab1d594a793a"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/run-halfword-v2": "bb46511919cb7c87621de746d2f69a3a9b80d40f5a9065037a6f550fcc2cb8a5"
+  },
+  "model": "GNU BF524 with deferred D-register AND disjoint-halfword-load patches; not hardware validation",
+  "limitations": [
+    "The complete callback runs unmodified in bounded volume/pitch/disabled routes. Instrument/ENV routes excluded. Volume smoothing is preserved across explicit streams; buffers are supplied each call.",
+    "Incoming pitch buffer is explicit and generally nonconstant; modifier consumes it. This is not the missing original VoiceCtl-register-to-buffer producer.",
+    "The event order and render counter remain explicit. L1 handoff, original clock, ADSR/output and plugin integration are not completed.",
+    "Firmware, original instructions, disassembly and private ELF are not distributed."
+  ],
+  "patches": {
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "research/blackfin/gnu-13.1-halfword-writeback.patch": "4d3cd3764d85bb4b3ff330358d8417a2928ad0e9daff755fe643477cdfde1cf3"
+  },
+  "source_sha256": {
+    "Source/ControlVolume246.h": "cd718282c95a0dd72e6df48c41c9f4c5b2d5990b4f8976fc042b05ac142129af",
+    "Tests/ControlVolume246Tests.cpp": "346212d7e9ca8ff021764bad42e5021152bbefe7f8f4467a8baaa2e4dd9743c9",
+    "Source/ControlPitch246.h": "738524bbf636c48d25b255a97ad74e6585ab8e37ce15d528644873c41d350576",
+    "scripts/verify-control-pitch246.py": "00159a66162833526f8fb3d709ea35583f98549b024042846f326bb8d8f8d0fc",
+    "research/blackfin/control-volume246.s.in": "65d9efd4a24a32854e9fbe6389d2a3d572058df0dfb5178ab874fc21d0ec2929",
+    "research/blackfin/parallel-halfword.s": "5774b7dbba69f10b60f5a2fce7796915dbe8ff641e455e3e5e9b6846abdedf7e",
+    "scripts/verify-control-volume246.py": "547f17de1ef5d1a09f3d38ec83b5466a8e3e920d9986a6e10081a640758fff4f"
+  },
+  "repeat_byte_identical": true,
+  "halfword_model_comparison": "halfword-model-comparison.json",
+  "validation": {
+    "linux_core_suites": 33,
+    "linux_juce_suites": 35,
+    "asan_ubsan": "passed; leak detection disabled due ptrace",
+    "windows_macos": "pending CI; not locally executed",
+    "fresh_full_toolchain_setup": "not rerun; existing GNU simulator rebuilt; patch application and probes checked"
+  },
+  "rea": {
+    "version": "6.8.0",
+    "operation": "inspect-with-objdump/disassemble",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "private_evidence_sha256": "0d28a9b8aaf8d8f4d0814c05338afc891a3f8911d6cfc504339ce412478ee606"
+  }
+}

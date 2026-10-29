@@ -53,6 +53,7 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | Modificador de pitch de cuatro entradas `0x019cce68` | Ramas pitch/desactivadas contrastadas: 65.536 palabras y 61.568 muestras posteriores, 16 máscaras de canales y saturación serial. Consume un buffer ya lleno; fuentes, orden y contador explícitos. No completa su productor, otros destinos ni la identidad del módulo. |
 | Entrada de cuatro canales a parámetros ADSR | Callback `0x019cce68`, destino ENV 0–3, seguido del render ADSR: 1.024 llamadas / 131.072 muestras, estado y RNG contrastados. Parámetros iniciales/cadencia explícitos; auxiliar 4 y relevo por voz pendientes. |
 | Selector auxiliar ADSR en contexto Dr. Wave | Color 4 del mismo callback: rango original generado, liberación rápida de seis estados al cambiar nibble y 131.072 muestras ADSR contrastadas; pool completo y scratch dither compartido. Tipo 2 y pool inicializado explícitos; callbacks de tipo 4 y relevo por voz excluidos. |
+| Modificador de volumen/pitch en serie | 81 combinaciones, 65.536 muestras de volumen y 65.536 palabras de pitch; 61.568 muestras Dr. Wave posteriores. Cuatro suavizados compartidos contrastados con segundo parche GNU de cargas halfword, verificado con probes propios. Ambos buffers iniciales explícitos; no completa mezcla/salida. |
 | Cadencia externa, voz completa e integración | Referencia candidata al contador en L1 junto a franjas cifradas; proveedor/cadencia aún sin verificar. Faltan también asignación/pitch/ADSR y salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
 
 [Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
@@ -96,9 +97,11 @@ buffer o del relevo ADSR, conservando explícitas las entradas y la cadencia.
 La [entrada ENV de cuatro canales](drwave246-envelope-control-input.md) está contrastada
 junto al render ADSR común. El [color auxiliar 4 en contexto Dr. Wave](drwave246-envelope-mode-control.md)
 ya está contrastado con seis estados ADSR y scratch compartido; no se completa el relevo
-por voz, el llenado inicial de pitch ni la salida de Dr. Wave. El próximo límite
-legible es el destino de volumen del mismo callback sobre un buffer ya preparado,
-sin atribuirle el relevo ni la cadencia originales.
+por voz, el llenado inicial de pitch ni la salida de Dr. Wave. El [destino de volumen y las combinaciones con pitch](drwave246-volume-buffer-modifier.md)
+ya están contrastados sobre buffers preparados, con suavizado compartido y un
+segundo parche GNU acotado para cargas halfword. Se mantienen pendientes los
+productores iniciales, relevo por voz y salida. El siguiente contrato legible
+puede buscarse en las cuatro fuentes o en el destino instrumento del callback.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

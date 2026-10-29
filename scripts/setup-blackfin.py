@@ -68,6 +68,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--jobs',type=int,default=2)
+    p.add_argument('--halfword-writeback',action='store_true',help='Also merge disjoint halfword loads in the deferred queue (required for volume route)')
     p.add_argument('--binutils-archive',type=Path)
     p.add_argument('--gdb-archive',type=Path)
     args=p.parse_args();out=args.output.resolve()
@@ -89,6 +90,9 @@ def main():
         if result.returncode:raise RuntimeError(label+' failed; inspect '+str(log))
     patch=ROOT/'research/blackfin/gnu-13.1-dreg-writeback.patch'
     run('patch-gdb',['patch','--batch','--forward','-p1','-i',patch],out/'src-patched/gdb-13.1')
+    halfword_patch=ROOT/'research/blackfin/gnu-13.1-halfword-writeback.patch'
+    if args.halfword_writeback:
+        run('patch-halfword',['patch','--batch','--forward','-p1','-i',halfword_patch],out/'src-patched/gdb-13.1')
     configurations=[
         ('binutils',out/'src-binutils/binutils-2.44',['--target=bfin-elf','--disable-nls','--disable-werror','--disable-gdb','--enable-gas','--enable-ld','--disable-gprof','--disable-gold','--without-zstd'],['all-gas','all-ld','all-binutils']),
         ('stock',out/'src-stock/gdb-13.1',['--target=bfin-elf','--disable-gdb','--disable-gdbserver','--disable-binutils','--disable-gas','--disable-ld','--disable-gprof','--disable-nls','--enable-sim','--disable-werror','--without-zstd'],['all-sim']),
@@ -116,6 +120,16 @@ def main():
             'patch_sha256':sha(patch),'binaries':{name:sha(out/'bin'/name) for name in binaries},
             'parallel_model_probes':check_models(out),
             'scope':'GNU research tools only; no original firmware, boot, model/hardware equivalence or plugin integration validation.'}
+    if args.halfword_writeback:
+        probe=out/'model-check'
+        run('assemble-halfword',[out/'bin/bfin-elf-as','-I',out/'src-stock/gdb-13.1/sim/testsuite/bfin','-o',probe/'halfword.o',ROOT/'research/blackfin/parallel-halfword.s'],out)
+        run('link-halfword',[out/'bin/bfin-elf-ld','-T',ROOT/'research/blackfin/flat.ld','-o',probe/'halfword.elf',probe/'halfword.o'],out)
+        with (probe/'halfword.bin').open('wb') as stdout,(probe/'halfword.log').open('wb') as stderr:
+            subprocess.run([str(out/'bin/run-parallel'),'--model','bf524','--watch-cycles-int','9000000',str(probe/'halfword.elf')],check=True,timeout=60,stdout=stdout,stderr=stderr)
+        words=struct.unpack('<5I',(probe/'halfword.bin').read_bytes())
+        if words!=(0x1234,0x0200abcd,0x1234,0xabcd0300,0x2468abcd):raise RuntimeError('Disjoint-halfword packet probe failed')
+        report['halfword_patch_sha256']=sha(halfword_patch)
+        report['halfword_probe']=[hex(x) for x in words]
     (out/'build-evidence.json').write_text(json.dumps(report,indent=2)+'\n')
     print('PASS: Blackfin tools built. Source '+str(out/'blackfin-env.sh'),flush=True)
 if __name__=='__main__':main()
