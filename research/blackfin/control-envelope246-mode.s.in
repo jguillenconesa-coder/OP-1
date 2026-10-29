@@ -1,0 +1,251 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own bounded Dr. Wave ENV mode caller followed by original ADSR; explicit schedule.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+SP += -64;
+imm32 P0, 0x01a1e914
+CALL (P0);
+R0.H = range_args;
+R0.L = range_args;
+P0 = 5;
+EXCPT 0;
+imm32 P4, 0x018c13c4
+imm32 P5, 0x0106b3cc
+P3 = 256;
+coefficient_loop:
+R0 = [P4++];
+imm32 P0, 0x01aa6fd0
+CALL (P0);
+[P5++] = R0;
+P3 += -1;
+R0 = P3;
+CC = R0 == 0;
+IF !CC JUMP coefficient_loop;
+P4.H = inputs;
+P4.L = inputs;
+P5.H = results;
+P5.L = results;
+record_loop:
+R0 = [P4];
+CC = BITTST(R0,0);
+IF !CC JUMP keep_state;
+P1 = P4;
+P1 += 4;
+imm32 P2, 0x02f00000
+P3 = 8;
+LSETUP(state_in,state_in_end) LC0 = P3;
+state_in: R0 = [P1++];
+state_in_end: [P2++] = R0;
+R0 = [P4 + 36];
+imm32 P0, 0xff802bc8
+[P0] = R0;
+R0 = [P4 + 40];
+imm32 P0, 0x01b60534
+[P0] = R0;
+P0 = 448;
+P1 = P4 + P0;
+imm32 P2, 0xff8000d0
+P3 = 38;
+LSETUP(pool_in,pool_in_end) LC0 = P3;
+pool_in: R0 = [P1++];
+pool_in_end: [P2++] = R0;
+keep_state:
+P0 = 624;
+P1 = P4 + P0;
+imm32 P2, 0xff800164
+P3 = 129;
+LSETUP(dither_in,dither_in_end) LC0 = P3;
+dither_in: R0 = [P1++];
+dither_in_end: [P2++] = R0;
+P0 = 600;
+P1 = P4 + P0;
+R0 = [P1++];
+imm32 P2, 0x01de4c40
+[P2] = R0;
+R0 = [P1++];
+imm32 P2, 0x01ab3144
+[P2++] = R0;
+R0 = [P1++];
+[P2] = R0;
+R0 = [P1++];
+imm32 P2, 0x01b6053c
+[P2++] = R0;
+R0 = [P1];
+[P2] = R0;
+P1 = P4;
+P1 += 44;
+imm32 P2, 0xff801720
+P3 = 6;
+LSETUP(params_in,params_in_end) LC0 = P3;
+params_in: R0 = [P1++];
+params_in_end: [P2++] = R0;
+P0 = 88;
+P1 = P4 + P0;
+imm32 P2, 0x01dff138
+P3 = 6;
+LSETUP(sources_in,sources_in_end) LC0 = P3;
+sources_in: R0 = [P1++];
+sources_in_end: [P2++] = R0;
+P0 = 112;
+P1 = P4 + P0;
+P2.H = control_self;
+P2.L = control_self;
+P3 = 4;
+LSETUP(self_in,self_in_end) LC0 = P3;
+self_in: R0 = [P1++];
+self_in_end: [P2++] = R0;
+P0 = 136;
+P1 = P4 + P0;
+P2 = P5;
+P3 = 68;
+LSETUP(samples_in,samples_in_end) LC0 = P3;
+samples_in: R0 = [P1++];
+samples_in_end: [P2++] = R0;
+P0 = 408;
+P1 = P4 + P0;
+imm32 P2, 0x01de570c
+P3 = 10;
+LSETUP(ranges_in,ranges_in_end) LC0 = P3;
+ranges_in: R0 = [P1++];
+ranges_in_end: [P2++] = R0;
+R0.H = control_self;
+R0.L = control_self;
+P0 = 72;
+P0 = P4 + P0;
+R1 = P0;
+R2 = [P4 + 68];
+imm32 P0, 0x019cce68
+CALL (P0);
+P0 = 272;
+P0 = P5 + P0;
+[P0] = R0;
+imm32 P1, 0xff801720
+P0 = 276;
+P2 = P5 + P0;
+P3 = 6;
+LSETUP(params_out,params_out_end) LC0 = P3;
+params_out: R0 = [P1++];
+params_out_end: [P2++] = R0;
+imm32 P1, 0xff8000d0
+P0 = 440;
+P2 = P5 + P0;
+P3 = 38;
+LSETUP(pool_before,pool_before_end) LC0 = P3;
+pool_before: R0 = [P1++];
+pool_before_end: [P2++] = R0;
+R1 = P5;
+R1 += 8;
+imm32 R2, 0xff801724
+R3 = P4;
+R0 = 128 (X);
+R3 = R3 + R0;
+[SP + 12] = R3;
+P0 = 620;
+P0 = P4 + P0;
+R0 = [P0];
+R3 = 24;
+R0 *= R3;
+imm32 R3, 0xff8000d4
+R0 = R0 + R3;
+imm32 P0, 0x01912128
+CALL (P0);
+P0 = 300;
+P0 = P5 + P0;
+[P0] = R0;
+imm32 P1, 0x02f00000
+P0 = 304;
+P2 = P5 + P0;
+P3 = 8;
+LSETUP(state_out,state_out_end) LC0 = P3;
+state_out: R0 = [P1++];
+state_out_end: [P2++] = R0;
+imm32 P1, 0xff802bc8
+R0 = [P1];
+[P2++] = R0;
+imm32 P1, 0x01b60534
+R0 = [P1];
+[P2++] = R0;
+imm32 P1, 0x01dff138
+P0 = 344;
+P2 = P5 + P0;
+P3 = 6;
+LSETUP(sources_out,sources_out_end) LC0 = P3;
+sources_out: R0 = [P1++];
+sources_out_end: [P2++] = R0;
+P1.H = control_self;
+P1.L = control_self;
+P0 = 368;
+P2 = P5 + P0;
+P3 = 4;
+LSETUP(self_out,self_out_end) LC0 = P3;
+self_out: R0 = [P1++];
+self_out_end: [P2++] = R0;
+P0 = 72;
+P1 = P4 + P0;
+P0 = 384;
+P2 = P5 + P0;
+P3 = 4;
+LSETUP(controls_out,controls_out_end) LC0 = P3;
+controls_out: R0 = [P1++];
+controls_out_end: [P2++] = R0;
+imm32 P1, 0x01de570c
+P0 = 400;
+P2 = P5 + P0;
+P3 = 10;
+LSETUP(ranges_out,ranges_out_end) LC0 = P3;
+ranges_out: R0 = [P1++];
+ranges_out_end: [P2++] = R0;
+imm32 P1, 0xff8000d0
+P0 = 592;
+P2 = P5 + P0;
+P3 = 38;
+LSETUP(pool_after,pool_after_end) LC0 = P3;
+pool_after: R0 = [P1++];
+pool_after_end: [P2++] = R0;
+imm32 P1, 0x01de4c40
+R0 = [P1];
+[P2++] = R0;
+imm32 P1, 0x01ab3144
+R0 = [P1++];
+[P2++] = R0;
+R0 = [P1];
+[P2++] = R0;
+imm32 P1, 0x01b6053c
+R0 = [P1++];
+[P2++] = R0;
+R0 = [P1];
+[P2++] = R0;
+imm32 P1, 0xff800164
+P0 = 764;
+P2 = P5 + P0;
+P3 = 129;
+LSETUP(dither_out,dither_out_end) LC0 = P3;
+dither_out: R0 = [P1++];
+dither_out_end: [P2++] = R0;
+P0 = 1280;
+P5 = P5 + P0;
+P0 = 1140;
+P4 = P4 + P0;
+R0 = P4;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF CC JUMP records_done;
+JUMP.L record_loop;
+records_done:
+R0.H = result_args;
+R0.L = result_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+range_args: .long 1,0x01de5710,32
+control_self: .space 16
+result_args: .long 1,results,@BYTES@
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

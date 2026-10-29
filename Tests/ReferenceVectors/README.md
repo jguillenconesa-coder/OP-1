@@ -498,3 +498,10 @@ test convention. Tuning is supplied by the caller; counts 2/3/8 are never select
 estados independientes y ocho secuencias de 64 llamadas. Fuentes, parámetros
 iniciales y orden explícitos; no resuelven el relevo por voz ni pitch L1.
 [Contrato y reproducción](../../docs/drwave246-envelope-control-input.md).
+
+## Selector auxiliar ENV en contexto Dr. Wave
+
+`control-envelope246-mode-input.bin` / `control-envelope246-mode-output.bin`: 1.024 llamadas, cinco colores ENV, seis estados ADSR, 131.072 muestras y
+131.072 palabras de scratch dither compartido; inicializador de rangos original
+capturado. Tipo interno 2 y pool inicializado explícitos. No completa el relevo
+por voz ni el pitch L1. [Contrato](../../docs/drwave246-envelope-mode-control.md).
