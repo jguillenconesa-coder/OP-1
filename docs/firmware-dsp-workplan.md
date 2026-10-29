@@ -56,6 +56,7 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | Modificador de volumen/pitch en serie | 81 combinaciones, 65.536 muestras de volumen y 65.536 palabras de pitch; 61.568 muestras Dr. Wave posteriores. Cuatro suavizados compartidos contrastados con segundo parche GNU de cargas halfword, verificado con probes propios. Ambos buffers iniciales explícitos; no completa mezcla/salida. |
 | Entrada de control a cuatro fuentes del modificador | Ruta válida `0x01a84f8c`: 32.768 parejas + 256 llamadas continuas, tabla completa contrastada. Otros 2.048 decodes alimentan volumen/pitch y 61.568 muestras Dr. Wave; status/canal, inicializador y scheduler no recuperados. |
 | Destino instrumento en contexto Dr. Wave | Rangos originales generados, ocho selectores hacia cuatro controles, wrap/clamp y 61.568 muestras posteriores contrastados. Tipo 2, parámetros iniciales y contador explícitos; no completa dispatcher ni integración. |
+| Destinos instrumento/volumen/pitch intercalados | Las 256 combinaciones en una llamada tipo 2, 512 registros, suavizado/estado compartidos y otras 61.568 muestras contrastados. ENV sigue en ensayos separados; imágenes, contador y selección explícitos. |
 | Cadencia externa, voz completa e integración | Referencia candidata al contador en L1 junto a franjas cifradas; proveedor/cadencia aún sin verificar. Faltan también asignación/pitch/ADSR y salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
 
 [Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
@@ -105,9 +106,11 @@ segundo parche GNU acotado para cargas halfword. Se mantienen pendientes los
 productores iniciales, relevo por voz y salida. La [entrada de control hacia las cuatro fuentes](drwave246-control-source-input.md)
 ya está contrastada junto a su consumo por el modificador. Dispatcher MIDI,
 inicializador de fuentes y reloj siguen pendientes. El [destino instrumento para el tipo interno 2](drwave246-instrument-control-routing.md)
-ya está contrastado con sus rangos originales y el render posterior. El siguiente
-contrato puede combinar destinos instrumento/volumen/pitch en una misma llamada,
-manteniendo explícitos buffers, selección y orden; no completa el instrumento.
+ya está contrastado con sus rangos originales y el render posterior. Las [256 combinaciones de instrumento/volumen/pitch](drwave246-mixed-control-routing.md)
+ya están contrastadas en llamadas conjuntas, con suavizado y render posteriores.
+El siguiente contrato puede acotar su convivencia con destino ENV y los modos
+0/1, manteniendo explícitos pool, imágenes de trabajo, buffers, selección y orden;
+no completa el instrumento.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 
