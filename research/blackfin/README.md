@@ -11,6 +11,13 @@ The simulator runs bounded isolated programs with synthetic inputs and explicit
 RAM mappings, not OP-1 boot code, OS, drivers or a complete firmware image.
 [Formats, scope and limitations](../../Tests/ReferenceVectors/README.md).
 
+`control-pitch246.s.in` calls the complete original four-input callback only in
+its bounded disabled/pitch routes, then Dr. Wave. It captures all 128 modified
+words and full render state. Its `control_pitch_dispatch` symbol is synthetic,
+for private REA/GNU objdump inspection. The initial pitch buffer, sources and
+order are explicit; this caller does not reconstruct the encrypted L1 producer.
+[Contract and reproduction](../../docs/drwave246-pitch-buffer-modifier.md).
+
 
 `pd-stream.s.in` preserves original kernel state across blocks and supplies
 per-sample increment trajectories; it calls original reset only at sequence

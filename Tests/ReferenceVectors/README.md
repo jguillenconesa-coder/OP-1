@@ -1,5 +1,24 @@
 # Isolated original-instruction reference vectors
 
+## Four-input pitch-buffer modifier before Dr. Wave
+
+`control-pitch246-overrides.bin`: 512 little-endian records of 108 bytes,
+appended to the unchanged `drwave246-kernel-input.bin` records by the own caller.
+Offsets: 0 uint32 kind; 4 eight int16 controls (four targets, four destinations);
+20 a guarded 32-byte source image (four uint32 sources start at 28); 52 a guarded
+24-byte volume image; 76 a 16-byte callback object; 92 four uint32 pitch guards
+(two before the buffer, two after). These inputs reload every call; synthesis
+state follows the base fixture's independent/continuous reload actions.
+
+`control-pitch246-output.bin`: generated banks (163,840 bytes), 512 records of
+9,404 bytes, same unchanged banks. Offsets 0–8783 retain the complete kernel
+result layout; 8784 uint32 callback return; 8788 guarded pitch image of 528 bytes
+(128 words start at 8796, tail guard at 9308); 9316 source image (32 bytes);
+9348 volume image (24); 9372 callback object (16); 9388 controls (16).
+Only disabled/pitch routes run in this bounded original callback oracle.
+It consumes an explicit existing buffer, not the missing VoiceCtl-register
+producer. [Contract and limits](../../docs/drwave246-pitch-buffer-modifier.md).
+
 ## Dr. Wave complete VoiceCtl pitch refresh
 
 `drwave246-pitch-refresh-overrides.bin`: 512 little-endian 2,980-byte records.

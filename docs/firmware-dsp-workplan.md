@@ -50,6 +50,7 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | Índice de afinación VoiceCtl `0x01a842f0` | Setter contrastado con estrés signed32, 4.577 parejas de controles y 256 llamadas continuas. Otras 61.568 muestras verifican activación/render con coeficientes explícitos en índices calculados; no recupera los valores originales de la tabla ni el escritor del buffer. |
 | Productor de la tabla común de afinación | Cola SDRAM `0x01a85454` contrastada: 2400 coeficientes, tres precargas y otras 61.568 muestras de activación/render sin overrides de coeficiente. Se omite el setup previo; escritor del buffer y cadencia siguen pendientes. |
 | Refresh de pitch VoiceCtl `0x01a854cc` | Rutina completa contrastada con tabla generada, seis ADSR, lista/una/seis voces, gates Core y RNG; 61.568 muestras posteriores. Módulos auxiliares Core explícitamente ausentes; render ADSR y escritor del buffer siguen pendientes. |
+| Modificador de pitch de cuatro entradas `0x019cce68` | Ramas pitch/desactivadas contrastadas: 65.536 palabras y 61.568 muestras posteriores, 16 máscaras de canales y saturación serial. Consume un buffer ya lleno; fuentes, orden y contador explícitos. No completa su productor, otros destinos ni la identidad del módulo. |
 | Cadencia externa, voz completa e integración | Referencia candidata al contador en L1 junto a franjas cifradas; proveedor/cadencia aún sin verificar. Faltan también asignación/pitch/ADSR y salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
 
 [Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
@@ -82,6 +83,12 @@ La [repreparación de pitch por lista/modo](drwave246-pitch-refresh.md) ya está
 contrastada en el contexto acotado de módulos Core auxiliares ausentes. Incluye
 callbacks ADSR y RNG compartido, sin completar render/relevo ADSR, asignador,
 cadencia, salida ni el escritor original del buffer. Se mantiene Dr. Wave activo.
+
+El [modificador de cuatro entradas](drwave246-pitch-buffer-modifier.md) ya está
+contrastado sobre el buffer y seguido del render. No sustituye el escritor
+inicial bloqueado en L1. Sin hardware ni volcado L1 descifrado disponible, el
+siguiente avance verificable debe limitarse a otra dependencia legible del
+buffer o del relevo ADSR, conservando explícitas las entradas y la cadencia.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

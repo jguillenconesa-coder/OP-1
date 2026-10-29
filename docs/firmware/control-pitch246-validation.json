@@ -1,0 +1,82 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "source_fixture_sha256": "fcd9b57a1a67ab0adeea60477803fad001dcfb300773c99113ce7e37191c2bee",
+  "original_callback": "0x019cce68",
+  "callback_end_exclusive": "0x019cd01c",
+  "original_render": "0x0197c870",
+  "records": 512,
+  "independent_cases": 256,
+  "continuous_streams": 4,
+  "calls_per_stream": 64,
+  "pitch_buffer_words_compared": 65536,
+  "active_audio_samples": 61568,
+  "counts": {
+    "applied": 436,
+    "inactive": 76,
+    "wave_update": 240,
+    "read_only": 241,
+    "render_inactive": 31
+  },
+  "routing_masks": 16,
+  "active_channel_counts": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "source_controls": "0x01dff13c",
+  "volume_state": "0x01dd5b3c",
+  "pitch_buffer": "0xff801950",
+  "base_banks_unchanged": true,
+  "artifacts": {
+    "control-pitch246-overrides.bin": {
+      "bytes": 55296,
+      "sha256": "cb55392a05c25bb064178905a60ee7b7b5a9a0371ed1875ff6ce452da0a62027"
+    },
+    "control-pitch246-output.bin": {
+      "bytes": 5142528,
+      "sha256": "726d70af3781d40104c96d43d7698addba77af42c731b1361108060f151d6ab1"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-official-bootstrap-validated/bin/bfin-elf-as": "35e1e641c36d21464cd438830bb9dd4dd05873867fc53acaa0dbd857d44de2e1",
+    "/workspace/blackfin-official-bootstrap-validated/bin/bfin-elf-ld": "0c86f671cd091879cb3ae899c573b827a9b816c6010a9d22047e22d4bd232110",
+    "/workspace/blackfin-official-bootstrap-validated/bin/run-parallel": "1df61f309e2a3465dac357781bde0c3abdaf6e451f30c776a9aaa1525f6081fd"
+  },
+  "model": "GNU BF524 with documented deferred D-register patch; not hardware validation",
+  "limitations": [
+    "The complete callback runs unmodified only in its bounded pitch/disabled routes, with other destinations excluded. No complete LFO or module identity is inferred.",
+    "Incoming pitch buffer is explicit and generally nonconstant; modifier consumes it. This is not the missing original VoiceCtl-register-to-buffer producer.",
+    "The event order and render counter remain explicit. L1 handoff, original clock, ADSR/output and plugin integration are not completed.",
+    "Firmware, original instructions, disassembly and private ELF are not distributed."
+  ],
+  "routine_sha256": "693540bb60ffd9a9374577539e285c61b1e8be17f783d91a6bd3a8f304cb549b",
+  "rea": {
+    "version": "6.8.0",
+    "command": "inspect-with-objdump",
+    "provider": "gnu.objdump",
+    "symbol": "control_pitch_dispatch (synthetic)",
+    "private_evidence_sha256": "c97fdfe56888781ab11297baf644f93ad35fbcf1b65c20d58f88b81b71d695f2",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "symbol_start_observed": true,
+    "scope": "Static symbol-bounded disassembly only. function command rejects this Blackfin ELF; original instruction evidence and ELF remain private."
+  },
+  "validation": {
+    "core_ctest_suites_passed": 30,
+    "windows": "New comparator compiled with Windows MSVC target and passed under Wine; native Windows/macOS CI pending.",
+    "sanitizers": "New comparator passed ASan+UBSan; LeakSanitizer disabled for sandbox ptrace limit.",
+    "independent_reproduction": "Two new private directories agree byte for byte on expanded inputs, overrides and original output.",
+    "adapter_guards": "Unsupported last-channel destination or volume target rejected before pitch mutation; inactive kind preserves pitch.",
+    "plugin_runtime_unchanged": true,
+    "timing": "No hardware, DAW/ASIO, latency or dropout measurements."
+  },
+  "source_hashes": {
+    "Source/ControlPitch246.h": "738524bbf636c48d25b255a97ad74e6585ab8e37ce15d528644873c41d350576",
+    "Tests/ControlPitch246Tests.cpp": "ed373432d8e573a577543caac017e3de54160b49d628f987e34f89a36f291b8f",
+    "scripts/verify-control-pitch246.py": "00159a66162833526f8fb3d709ea35583f98549b024042846f326bb8d8f8d0fc",
+    "research/blackfin/control-pitch246.s.in": "9b9dc50c87e46478626c05812964f34fbc358a17b24f0d192e72fa6f648033e4"
+  }
+}
