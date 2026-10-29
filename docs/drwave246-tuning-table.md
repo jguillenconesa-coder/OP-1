@@ -97,3 +97,7 @@ ctest --test-dir build-dsp -R '^(voice246_tuning_table|drwave246_activation)$' -
 
 La salida debe ser nueva y externa al checkout. `--record` regenera solo los
 tres fixtures nuevos. [Evidencia y hashes](firmware/voice246-tuning-table-validation.json).
+
+La [repreparación posterior por lista/modo](drwave246-pitch-refresh.md) ya
+contrasta otra ruta VoiceCtl con esta tabla, callbacks ADSR y RNG compartido,
+en un contexto de módulos Core auxiliares ausentes. El relevo al buffer sigue pendiente.
