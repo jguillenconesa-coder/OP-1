@@ -204,6 +204,17 @@ ciphertext, using the previously credited community layout model only. No key,
 firmware, original instructions, ELF or L1 image is included, and no preset/video
 data is used. The new headers are not linked into the plugin.
 
+## Four-input pitch-buffer modifier
+
+The independent [four-input pitch-buffer modifier](docs/drwave246-pitch-buffer-modifier.md)
+and its probe/comparator are AGPL-3.0-only project work. The user-supplied rev246
+image provides private original-instruction observations under the credited GNU
+BF524 deferred D-register model. REA 6.8.0 `inspect-with-objdump`, using the GNU
+Blackfin tool and an own synthetic symbol, retains private static evidence;
+REA's `function` command does not support this Blackfin ELF. No L1 decryption,
+complete LFO identity, original buffer producer or hardware timing is claimed.
+Only numeric inputs/results and independently written source are published.
+
 ## Dr. Wave reader and five-oscillator reconstruction
 
 The independent [Dr. Wave reader](docs/drwave246-reader.md) is checked against
