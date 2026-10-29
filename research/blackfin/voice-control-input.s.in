@@ -1,0 +1,77 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own successful-path decoder caller. Original dispatcher/assert paths excluded.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P4.H = inputs;
+P4.L = inputs;
+P5.H = results;
+P5.L = results;
+record_loop:
+R0 = [P4];
+CC = BITTST(R0,0);
+IF !CC JUMP retained;
+P1 = P4;
+P1 += 16;
+imm32 P2, 0x01dff130
+P3 = 132;
+LSETUP(image_in,image_in_end) LC0 = P3;
+image_in: R0 = [P1++];
+image_in_end: [P2++] = R0;
+retained:
+P0.H = packet;
+P0.L = packet;
+R0 = [P4+12];
+[P0++] = R0;
+R0 = P4;
+R0 += 4;
+[P0++] = R0;
+R0 += 3;
+[P0] = R0;
+R0.H = packet;
+R0.L = packet;
+imm32 P0, 0x01a84f8c
+CALL (P0);
+imm32 P1, 0x01dff130
+P2 = P5;
+P3 = 132;
+LSETUP(image_out,image_out_end) LC0 = P3;
+image_out: R0 = [P1++];
+image_out_end: [P2++] = R0;
+P0.H = packet;
+P0.L = packet;
+R0 = [P0++];
+[P2++] = R0;
+R0 = [P4+4];
+[P2++] = R0;
+R0 = [P0++];
+R1 = P4;
+R0 = R0 - R1;
+[P2++] = R0;
+R0 = [P0];
+R0 = R0 - R1;
+[P2++] = R0;
+P5 = P2;
+P0 = 544;
+P4 = P4 + P0;
+R0 = P4;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF CC JUMP records_done;
+JUMP.L record_loop;
+records_done:
+R0.H = result_args;
+R0.L = result_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+packet: .space 12
+result_args: .long 1,results,@BYTES@
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"
