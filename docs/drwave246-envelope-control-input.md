@@ -94,3 +94,7 @@ los dos fixtures numéricos nuevos. [Hashes y evidencia](firmware/control-envelo
 El siguiente límite legible es el color auxiliar 4 y sus efectos compartidos,
 si su recorrido puede acotarse sin las franjas L1 cifradas. El relevo por voz,
 asignador, llenado inicial de pitch y salida siguen pendientes antes de integrar.
+
+El [avance posterior del selector auxiliar](drwave246-envelope-mode-control.md)
+contrasta el color 4 únicamente en contexto Dr. Wave/tipo 2, con pool ADSR
+inicializado, liberación de seis voces y scratch de dither compartido.
