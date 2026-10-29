@@ -535,3 +535,12 @@ entrantes, selección de mensajes y orden explícitos.
 61.568 muestras posteriores. Imagen completa de parámetros, rangos y
 contexto/estado/guardas; pitch/volumen/suavizado preservados.
 [Contrato](../../docs/drwave246-instrument-control-routing.md).
+
+## Destinos intercalados Dr. Wave
+
+`drwave246-control-mixed-overrides.bin` / `drwave246-control-mixed-output.bin`:
+512 llamadas, las 256 combinaciones de desactivado/instrumento/volumen/pitch
+probadas con kind 0, 2.048 decodificaciones y 61.568 muestras Dr. Wave.
+Parámetros, ambos buffers, suavizado, estado compartido, rangos y guardas
+contrastados. Destino ENV excluido; no completa el instrumento.
+[Contrato](../../docs/drwave246-mixed-control-routing.md).
