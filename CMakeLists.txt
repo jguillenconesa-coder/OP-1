@@ -60,6 +60,10 @@ add_test(NAME drwave246_spectral COMMAND drwave246_spectral_tests "${CMAKE_CURRE
 add_executable(drwave246_kernel_tests Tests/DrWave246KernelTests.cpp)
 target_include_directories(drwave246_kernel_tests PRIVATE Source)
 add_test(NAME drwave246_kernel COMMAND drwave246_kernel_tests "${CMAKE_CURRENT_SOURCE_DIR}/Tests/ReferenceVectors")
+add_executable(control_envelope246_tests Tests/ControlEnvelope246Tests.cpp)
+target_include_directories(control_envelope246_tests PRIVATE Source)
+add_test(NAME control_envelope246 COMMAND control_envelope246_tests "${CMAKE_CURRENT_SOURCE_DIR}/Tests/ReferenceVectors")
+
 add_executable(control_pitch246_tests Tests/ControlPitch246Tests.cpp)
 target_include_directories(control_pitch246_tests PRIVATE Source)
 add_test(NAME control_pitch246 COMMAND control_pitch246_tests "${CMAKE_CURRENT_SOURCE_DIR}/Tests/ReferenceVectors")

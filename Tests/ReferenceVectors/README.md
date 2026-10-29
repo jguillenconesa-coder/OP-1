@@ -489,3 +489,12 @@ There are 512 independent cases and eight 64-record streams. The following
 Cluster render holds the prepared pitch throughout each block as an explicit
 test convention. Tuning is supplied by the caller; counts 2/3/8 are never selected.
 [Method, hashes and limitations](../../docs/cluster246-note-activation.md).
+
+## Entrada de cuatro canales ENV rev246
+
+`control-envelope246-input.bin` y `control-envelope246-output.bin` contienen
+1.024 entradas/salidas numéricas: callback ENV 0–3 seguido del render ADSR,
+131.072 muestras, estados completos, RNG/dither, imágenes y guardas. Son 512
+estados independientes y ocho secuencias de 64 llamadas. Fuentes, parámetros
+iniciales y orden explícitos; no resuelven el relevo por voz ni pitch L1.
+[Contrato y reproducción](../../docs/drwave246-envelope-control-input.md).
