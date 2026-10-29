@@ -51,6 +51,7 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | Productor de la tabla común de afinación | Cola SDRAM `0x01a85454` contrastada: 2400 coeficientes, tres precargas y otras 61.568 muestras de activación/render sin overrides de coeficiente. Se omite el setup previo; escritor del buffer y cadencia siguen pendientes. |
 | Refresh de pitch VoiceCtl `0x01a854cc` | Rutina completa contrastada con tabla generada, seis ADSR, lista/una/seis voces, gates Core y RNG; 61.568 muestras posteriores. Módulos auxiliares Core explícitamente ausentes; render ADSR y escritor del buffer siguen pendientes. |
 | Modificador de pitch de cuatro entradas `0x019cce68` | Ramas pitch/desactivadas contrastadas: 65.536 palabras y 61.568 muestras posteriores, 16 máscaras de canales y saturación serial. Consume un buffer ya lleno; fuentes, orden y contador explícitos. No completa su productor, otros destinos ni la identidad del módulo. |
+| Entrada de cuatro canales a parámetros ADSR | Callback `0x019cce68`, destino ENV 0–3, seguido del render ADSR: 1.024 llamadas / 131.072 muestras, estado y RNG contrastados. Parámetros iniciales/cadencia explícitos; auxiliar 4 y relevo por voz pendientes. |
 | Cadencia externa, voz completa e integración | Referencia candidata al contador en L1 junto a franjas cifradas; proveedor/cadencia aún sin verificar. Faltan también asignación/pitch/ADSR y salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
 
 [Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
@@ -89,6 +90,12 @@ contrastado sobre el buffer y seguido del render. No sustituye el escritor
 inicial bloqueado en L1. Sin hardware ni volcado L1 descifrado disponible, el
 siguiente avance verificable debe limitarse a otra dependencia legible del
 buffer o del relevo ADSR, conservando explícitas las entradas y la cadencia.
+
+
+La [entrada ENV de cuatro canales](drwave246-envelope-control-input.md) está contrastada
+junto al render ADSR común. El siguiente límite legible es el color auxiliar 4 y
+sus efectos compartidos, sujeto a un contrato acotado; no se completa el relevo
+por voz, el llenado inicial de pitch ni la salida de Dr. Wave.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

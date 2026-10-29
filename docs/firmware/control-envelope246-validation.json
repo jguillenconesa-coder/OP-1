@@ -1,0 +1,66 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "callback": "0x019cce68..0x019cd01c",
+  "range_helper": "0x019f69b0",
+  "adsr_render": "0x01912128",
+  "records": 1024,
+  "samples": 131072,
+  "independent": 512,
+  "streams": 8,
+  "calls_per_stream": 64,
+  "artifacts": {
+    "control-envelope246-input.bin": {
+      "bytes": 450560,
+      "sha256": "813cb206e642ff2d9a06a6c0249ceb4ccab32b4ec9437a440cf66f2f27f65c9c"
+    },
+    "control-envelope246-output.bin": {
+      "bytes": 442368,
+      "sha256": "78391d43fc1dc2f91e56714be8c50b5565230a65f07e0c65d65fb7780fec3449"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/build-deferred/sim/bfin/run": "26799ba2bd15737b66f6ca1dc333e59c1dd16aaaea249c96e020839dda5013c6"
+  },
+  "model": "GNU BF524 with deferred D-register patch; not hardware validation",
+  "limitations": [
+    "Only ENV colours 0..3 and disabled destinations; auxiliary mode 4 excluded.",
+    "Initial parameters, source values, event order, state and dither seed are explicit; not original ADSR handoff, pitch producer, cadence or plugin integration.",
+    "Range descriptors are explicit previously observed common ADSR ranges; their original initializer is not run here.",
+    "Original instructions, firmware and ELF remain private."
+  ],
+  "coverage_verified_by_cpp_comparator": {
+    "routing_masks": 16,
+    "colours": 4,
+    "adsr_stages": 9,
+    "applied": 872,
+    "inactive": 152,
+    "repeated_colour_updates": 142,
+    "lower_clamps": 663,
+    "upper_clamps": 707
+  },
+  "source_sha256": {
+    "Source/ControlEnvelope246.h": "0e2b64d4b8879cf83c127d3bf2deaa82e12fba0d791a479f07bf4b17021aa169",
+    "Tests/ControlEnvelope246Tests.cpp": "4435676908eda1d8459a7a23049e094088f12222be242b02c1bbd4480997e7b8",
+    "scripts/verify-control-envelope246.py": "98e71c312fdb558ec8428b6d99a55d9e7f57f5d96959ce90381d2a1061ba1e23",
+    "research/blackfin/control-envelope246.s.in": "f217ae0566dd31b3ffd563f065c9d62e4bb58fad4cd3074baff5ac79cbe30469"
+  },
+  "repeat_byte_identical": true,
+  "validation": {
+    "linux_core_suites": 31,
+    "linux_juce_suites": 33,
+    "asan_ubsan": "passed; leak detection disabled due ptrace",
+    "windows_macos": "pending CI; not locally executed",
+    "pr7_oracle_reproduced": true
+  },
+  "rea": {
+    "version": "6.8.0",
+    "operation": "inspect-with-objdump/disassemble",
+    "provider": "gnu.objdump",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "private_evidence_sha256": "d42a16fc4550a966f24b5ef3a76cee8b2a78038860dd42a07b5059cba880e802"
+  }
+}
