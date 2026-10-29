@@ -1,0 +1,55 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "routine": "0x01a84f8c",
+  "routine_end_exclusive": "0x01a85000",
+  "table": "0x01dff138",
+  "records": 33024,
+  "independent_cases": 32768,
+  "controller_indices": 128,
+  "unsigned_values": 256,
+  "valid_midi_pairs": 16384,
+  "continuous_calls": 256,
+  "full_table_words_compared": 4227072,
+  "artifacts": {
+    "voice246-control-input.bin": {
+      "bytes": 528384,
+      "sha256": "2fd70874cd178870ef0118652230caff6f1aa4fc3d0135442087a709bbf5d5ea"
+    },
+    "voice246-control-output.bin": {
+      "bytes": 17965056,
+      "sha256": "e3cf9c7e4087ce8bef85f01d20003f9754ced339e5855361ff9e93dacfd880a0"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/run-halfword-v2": "bb46511919cb7c87621de746d2f69a3a9b80d40f5a9065037a6f550fcc2cb8a5"
+  },
+  "limitations": [
+    "Successful decoder path only. Original invalid-controller/length assert paths and status/channel dispatcher are not executed.",
+    "Source value is unsigned byte, no seven-bit masking. Values above 127 are stress inputs, not valid MIDI data.",
+    "No boot, original scheduler, buffer producer, mixing or plugin integration is established."
+  ],
+  "source_sha256": {
+    "Source/Voice246ControlInput.h": "5ba4951913c50e7ca1731960d3e65e8e5a01619ca289b749f28add2e6d6648a3",
+    "Tests/Voice246ControlInputTests.cpp": "be1fb7cda227e3e7932fa7051c156722d725d561fe1a04304769dd00cf1daa48",
+    "research/blackfin/voice-control-input.s.in": "42802f2c28e94b3b19352c4f0d7d2ee382708e9fda081d9fee7e2f16d4ce3835",
+    "research/blackfin/voice-control-input.ld": "9864cf545f1ae932ef54229c0bfa636a65066656ff125873bc1cf8d3dd5ce280",
+    "scripts/verify-voice246-control-input.py": "86cac3918943467bbd8a5abcc7d8c1c4c169882f48faedbe5bf4503b93c6c46f"
+  },
+  "repeat_byte_identical": true,
+  "validation": {
+    "linux_core_suites": 35,
+    "linux_juce_suites": 37,
+    "asan_ubsan": "both comparators passed; leak detection disabled due ptrace",
+    "windows_macos": "pending CI; not locally executed"
+  },
+  "rea": {
+    "version": "6.8.0",
+    "operation": "inspect-with-objdump/disassemble",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "private_evidence_sha256": "b8351ca5fa3079d91f8b71dd353faaf27c147bf42c4cb875c34ec3ce3f36f66a"
+  }
+}

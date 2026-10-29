@@ -513,3 +513,16 @@ por voz ni el pitch L1. [Contrato](../../docs/drwave246-envelope-mode-control.md
 y 61.568 muestras Dr. Wave posteriores. Suavizados compartidos continuos;
 buffers iniciales explícitos. Requiere ambos parches GNU, con probe previo
 obligatorio. [Contrato](../../docs/drwave246-volume-buffer-modifier.md).
+
+## Entrada de control VoiceCtl rev246
+
+`voice246-control-input.bin` / `voice246-control-output.bin`: 32.768 parejas
+independientes + 256 llamadas continuas, tabla completa de 128 palabras, guardas
+y objeto/mensaje. Las imágenes iniciales se generan explícitamente desde las
+semillas de entrada; el fixture de salida contiene todas las capturas numéricas.
+
+`voice246-control-chain-overrides.bin` / `voice246-control-chain-output.bin`:
+2.048 decodificaciones originales alimentan el modificador volumen/pitch y
+el render Dr. Wave: 65.536 muestras de volumen y 61.568 de motor. Buffers
+entrantes, selección de mensajes y orden explícitos.
+[Contrato y reproducción](../../docs/drwave246-control-source-input.md).
