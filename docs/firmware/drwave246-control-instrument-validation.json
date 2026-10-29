@@ -1,0 +1,98 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "source_fixture_sha256": "fcd9b57a1a67ab0adeea60477803fad001dcfb300773c99113ce7e37191c2bee",
+  "original_decoder": "0x01a84f8c",
+  "decoder_calls": 2048,
+  "decoded_controller_indices": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "original_callback": "0x019cce68",
+  "callback_end_exclusive": "0x019cd01c",
+  "original_render": "0x0197c870",
+  "records": 512,
+  "independent_cases": 256,
+  "continuous_streams": 4,
+  "calls_per_stream": 64,
+  "pitch_buffer_words_compared": 65536,
+  "active_audio_samples": 61568,
+  "counts": {
+    "applied": 436,
+    "inactive": 76,
+    "wave_update": 240,
+    "read_only": 241,
+    "render_inactive": 31
+  },
+  "routing_masks": 16,
+  "active_channel_counts": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "source_controls": "0x01dff13c",
+  "volume_state": "0x01dd5b3c",
+  "pitch_buffer": "0xff801950",
+  "amplitude_buffer": "0xff801d50",
+  "amplitude_samples_compared": 65536,
+  "routing_combinations": 16,
+  "instrument_colours": 8,
+  "range_initializer": "0x01a1e914",
+  "type": 2,
+  "type_flag": 0,
+  "base_banks_unchanged": true,
+  "artifacts": {
+    "drwave246-control-instrument-overrides.bin": {
+      "bytes": 237568,
+      "sha256": "4fcdf41942d96616381b8c95a2e20d7c9c914ef397a4938107b13efd9dbb48e4"
+    },
+    "drwave246-control-instrument-output.bin": {
+      "bytes": 5365840,
+      "sha256": "870d1cbf36882586a8952bcaf5df9e199f6d0550dd74e717501ee7a7cab6962a"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/run-halfword-v2": "bb46511919cb7c87621de746d2f69a3a9b80d40f5a9065037a6f550fcc2cb8a5"
+  },
+  "model": "GNU BF524 with deferred D-register AND disjoint-halfword-load patches; not hardware validation",
+  "limitations": [
+    "The complete callback runs unmodified in bounded Dr. Wave instrument/disabled routes. Volume/pitch/ENV destinations excluded. Parameters start in original valid ranges; type/selection are explicit.",
+    "Incoming pitch/amplitude buffers are explicit and preserved by this route; the render consumes pitch. This is not the missing original VoiceCtl-register-to-buffer producer.",
+    "The event order and render counter remain explicit. L1 handoff, original clock, ADSR/output and plugin integration are not completed.",
+    "Firmware, original instructions, disassembly and private ELF are not distributed."
+  ],
+  "patches": {
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "research/blackfin/gnu-13.1-halfword-writeback.patch": "4d3cd3764d85bb4b3ff330358d8417a2928ad0e9daff755fe643477cdfde1cf3"
+  },
+  "source_sha256": {
+    "Source/DrWave246ControlInstrument.h": "8aa83f94fb5ad8b74a52ac84b8e62255ebfad64bc46848fcb40a64adc5208517",
+    "Source/Voice246ControlInput.h": "5ba4951913c50e7ca1731960d3e65e8e5a01619ca289b749f28add2e6d6648a3",
+    "Tests/DrWave246ControlInstrumentTests.cpp": "358378cbe86922db269daeb6e05a8e54584f087eed26c6a82e60d3be267134c4",
+    "Source/DrWave246Kernel.h": "31699ebf42c9705cbe7ed90f53b4c33033e9a0e46052c842b2344eeb24739bbb",
+    "scripts/verify-voice246-control-chain.py": "d137f542b2bc288ee08a19a2a91d7abbcda10861bdad73fd469f37a6ba1146fb",
+    "research/blackfin/drwave-control-instrument.s.in": "1039b4aa260824854da3aedadaad8ec304cd67997a9a88ae664adad70a4aaa36",
+    "research/blackfin/parallel-halfword.s": "5774b7dbba69f10b60f5a2fce7796915dbe8ff641e455e3e5e9b6846abdedf7e",
+    "scripts/verify-drwave246-control-instrument.py": "c87e52aa94d8a3067743d500eb8a3b8b6ce15c6792ec36a7e4a88a5ac62e503e"
+  },
+  "repeat_byte_identical": true,
+  "validation": {
+    "linux_core_suites": 36,
+    "linux_juce_suites": 38,
+    "asan_ubsan": "passed; leak detection disabled due ptrace",
+    "windows_macos": "pending CI; not locally executed"
+  },
+  "rea": {
+    "version": "6.8.0",
+    "operation": "inspect-with-objdump/disassemble",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "private_evidence_sha256": "43705c7aebe692c165a9f6478808bb47b0728649c2e3138cfe39e02cd748e23d"
+  }
+}
