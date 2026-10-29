@@ -68,6 +68,10 @@ add_executable(control_envelope246_tests Tests/ControlEnvelope246Tests.cpp)
 target_include_directories(control_envelope246_tests PRIVATE Source)
 add_test(NAME control_envelope246 COMMAND control_envelope246_tests "${CMAKE_CURRENT_SOURCE_DIR}/Tests/ReferenceVectors")
 
+add_executable(control_volume246_tests Tests/ControlVolume246Tests.cpp)
+target_include_directories(control_volume246_tests PRIVATE Source)
+add_test(NAME control_volume246 COMMAND control_volume246_tests "${CMAKE_CURRENT_SOURCE_DIR}/Tests/ReferenceVectors")
+
 add_executable(control_pitch246_tests Tests/ControlPitch246Tests.cpp)
 target_include_directories(control_pitch246_tests PRIVATE Source)
 add_test(NAME control_pitch246 COMMAND control_pitch246_tests "${CMAKE_CURRENT_SOURCE_DIR}/Tests/ReferenceVectors")

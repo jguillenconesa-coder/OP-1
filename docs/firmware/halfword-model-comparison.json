@@ -1,0 +1,41 @@
+{
+  "probe": "research/blackfin/parallel-halfword.s",
+  "expected": [
+    "0x1234",
+    "0x200abcd",
+    "0x1234",
+    "0xabcd0300",
+    "0x2468abcd"
+  ],
+  "models": {
+    "stock": [
+      "0x1234",
+      "0x1234abcd",
+      "0x1234",
+      "0xabcd1234",
+      "0x2468beef"
+    ],
+    "dreg_v1": [
+      "0x1234",
+      "0x1234abcd",
+      "0x1234",
+      "0xabcd1234",
+      "0x2468beef"
+    ],
+    "halfword_v2": [
+      "0x1234",
+      "0x200abcd",
+      "0x1234",
+      "0xabcd0300",
+      "0x2468abcd"
+    ]
+  },
+  "existing_five_probes_unchanged": true,
+  "previous_oracles_reproduced_without_record": [
+    "control-pitch246",
+    "control-envelope246-mode",
+    "drwave246-activation",
+    "envelope246"
+  ],
+  "scope": "Disjoint low/high loads in LDSTpmod/dspLDST; old-value reads preserved. Not full pipeline or hardware validation."
+}

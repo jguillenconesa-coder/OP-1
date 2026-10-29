@@ -505,3 +505,11 @@ iniciales y orden explícitos; no resuelven el relevo por voz ni pitch L1.
 131.072 palabras de scratch dither compartido; inicializador de rangos original
 capturado. Tipo interno 2 y pool inicializado explícitos. No completa el relevo
 por voz ni el pitch L1. [Contrato](../../docs/drwave246-envelope-mode-control.md).
+
+## Modificador de volumen/pitch en serie
+
+`control-volume246-overrides.bin` y `control-volume246-output.bin`: 512 llamadas,
+81 combinaciones, 65.536 muestras signed16 de volumen, 65.536 palabras de pitch
+y 61.568 muestras Dr. Wave posteriores. Suavizados compartidos continuos;
+buffers iniciales explícitos. Requiere ambos parches GNU, con probe previo
+obligatorio. [Contrato](../../docs/drwave246-volume-buffer-modifier.md).

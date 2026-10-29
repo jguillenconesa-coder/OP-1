@@ -304,3 +304,13 @@ calibration or scheduling. Shared register preparation is extracted from the
 previous Cluster adapter; its unchanged fixtures still pass, including Windows
 under Wine and sanitizers. No firmware, original instructions, private ELF, new
 presets or L1 decryption are distributed or claimed by this delta.
+
+## Four-source volume/pitch buffer modifier
+
+The independent C++ reconstruction and own harness are checked against private
+rev246 observations under GNU BF524. A second local GNU GDB 13.1 patch,
+`research/blackfin/gnu-13.1-halfword-writeback.patch`, preserves disjoint halfword
+loads in the pending write queue. It retains GPL-3.0-or-later and is separate
+from the instrument. Own packet probes and numerical observations are published;
+firmware, original instructions and ELF remain private. See the
+[contract and model limits](docs/drwave246-volume-buffer-modifier.md).

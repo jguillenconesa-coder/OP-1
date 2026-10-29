@@ -1,0 +1,54 @@
+SPDX-License-Identifier: GPL-3.0-or-later
+Apply AFTER gnu-13.1-dreg-writeback.patch. Local GNU GDB 13.1 research fix.
+Limited to disjoint halfword loads (LDSTpmod/dspLDST); no firmware changes.
+
+--- a/sim/bfin/bfin-sim.c
++++ b/sim/bfin/bfin-sim.c
+@@ -559,0 +560,17 @@
++
++/* Merge disjoint halfword writes in the pending queue, never in the
++   architectural register file used by other slots of the packet. */
++static void
++queue_dreg_half (SIM_CPU *cpu, int reg, bu32 val, bu32 mask)
++{
++  int i;
++  bu32 *addr = &DREG (reg);
++  for (i = BFIN_CPU_STATE.n_stores - 1; i >= 0; --i)
++    if (BFIN_CPU_STATE.stores[i].addr == addr)
++      {
++        struct store *s = &BFIN_CPU_STATE.stores[i];
++        s->val = (s->val & ~mask) | (val & mask);
++        return;
++      }
++  STORE (DREG (reg), (DREG (reg) & ~mask) | (val & mask));
++}
+@@ -2960 +2977 @@
+-      STORE (DREG (reg), (DREG (reg) & 0xFFFF0000) | val);
++      queue_dreg_half (cpu, reg, val, 0x0000FFFF);
+@@ -2967 +2984 @@
+-      STORE (DREG (reg), (DREG (reg) & 0xFFFF) | (val << 16));
++      queue_dreg_half (cpu, reg, val << 16, 0xFFFF0000);
+@@ -2995 +3012 @@
+-      STORE (DREG (reg), (DREG (reg) & 0xFFFF0000) | val);
++      queue_dreg_half (cpu, reg, val, 0x0000FFFF);
+@@ -3004 +3021 @@
+-      STORE (DREG (reg), (DREG (reg) & 0xFFFF) | (val << 16));
++      queue_dreg_half (cpu, reg, val << 16, 0xFFFF0000);
+@@ -3162 +3179 @@
+-      STORE (DREG (reg), (DREG (reg) & 0xFFFF0000) | GET_WORD (addr));
++      queue_dreg_half (cpu, reg, GET_WORD (addr), 0x0000FFFF);
+@@ -3169 +3186 @@
+-      STORE (DREG (reg), (DREG (reg) & 0xFFFF) | (GET_WORD (addr) << 16));
++      queue_dreg_half (cpu, reg, GET_WORD (addr) << 16, 0xFFFF0000);
+@@ -3185 +3202 @@
+-      STORE (DREG (reg), (DREG (reg) & 0xFFFF0000) | GET_WORD (addr));
++      queue_dreg_half (cpu, reg, GET_WORD (addr), 0x0000FFFF);
+@@ -3192 +3209 @@
+-      STORE (DREG (reg), (DREG (reg) & 0xFFFF) | (GET_WORD (addr) << 16));
++      queue_dreg_half (cpu, reg, GET_WORD (addr) << 16, 0xFFFF0000);
+@@ -3206 +3223 @@
+-      STORE (DREG (reg), (DREG (reg) & 0xFFFF0000) | GET_WORD (addr));
++      queue_dreg_half (cpu, reg, GET_WORD (addr), 0x0000FFFF);
+@@ -3212 +3229 @@
+-      STORE (DREG (reg), (DREG (reg) & 0xFFFF) | (GET_WORD (addr) << 16));
++      queue_dreg_half (cpu, reg, GET_WORD (addr) << 16, 0xFFFF0000);
