@@ -58,6 +58,7 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | Destino instrumento en contexto Dr. Wave | Rangos originales generados, ocho selectores hacia cuatro controles, wrap/clamp y 61.568 muestras posteriores contrastados. Tipo 2, parámetros iniciales y contador explícitos; no completa dispatcher ni integración. |
 | Destinos instrumento/volumen/pitch intercalados | Las 256 combinaciones en una llamada tipo 2, 512 registros, suavizado/estado compartidos y otras 61.568 muestras contrastados. El ensayo se limita a kind 0; imágenes, contador y selección explícitos. |
 | Dispatch tipo 2 con ENV y kind 0/1 | Las 625 combinaciones por kind, 1.506 llamadas: 91.648 muestras activas Dr. Wave y 95.104 posiciones ADSR (86.656 escritas). Pools completos, RNG/dither y guardas contrastados; imagen de trabajo, renderer, contador y selección explícitos. No recupera el llamador original. |
+| Inicializador Core de workspaces y límite del llamador | Rutina completa `0x01968774`: 82 bytes a cero en imagen de 228, 4.096 casos + 256 llamadas continuas y preservación de pitch/ADSR/RNG. Cadena de 1.506 llamadas: 91.648 muestras Dr. Wave / 95.104 posiciones ADSR (85.120 escritas). La recarga por llamada continúa sin recuperar, con candidatos L1 protegidos inventariados; no se sustituye por ceros. |
 | Cadencia externa, voz completa e integración | Referencia candidata al contador en L1 junto a franjas cifradas; proveedor/cadencia aún sin verificar. Faltan también asignación/pitch/ADSR y salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
 
 [Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
@@ -111,9 +112,13 @@ ya está contrastado con sus rangos originales y el render posterior. Las [256 c
 ya están contrastadas en llamadas conjuntas, con suavizado y render posteriores.
 La [convivencia con ENV y kind 0/1](drwave246-control-env-dispatch.md) ya está
 contrastada en el contexto de tipo 2 y pool inicializado, con ambos renderers
-elegidos por el harness. El siguiente límite es el llamador/preparación de la
-imagen de trabajo en SDRAM legible, sin inventar el orden si conduce a L1
-cifrada. Siguen pendientes buffers iniciales, relevos, reloj y salida.
+elegidos por el harness. El [inicializador Core de workspaces](drwave246-control-workspace-init.md) está
+contrastado completo y junto al callback/render. La búsqueda de recarga de la
+imagen por llamada deja dos pares de dirección junto a franjas L1 protegidas
+y un candidato parcial: no se recupera el productor ni se le asignan ceros.
+Se conserva el inventario para no repetir el bloqueo. El siguiente contrato
+legible puede centrarse en liberación de notas/ADSR desde VoiceCtl. Siguen
+pendientes buffers iniciales, relevos, reloj y salida.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

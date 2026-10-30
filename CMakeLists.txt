@@ -68,6 +68,14 @@ add_executable(control_envelope246_tests Tests/ControlEnvelope246Tests.cpp)
 target_include_directories(control_envelope246_tests PRIVATE Source)
 add_test(NAME control_envelope246 COMMAND control_envelope246_tests "${CMAKE_CURRENT_SOURCE_DIR}/Tests/ReferenceVectors")
 
+add_executable(core246_control_workspace_tests Tests/Core246ControlWorkspaceTests.cpp)
+target_include_directories(core246_control_workspace_tests PRIVATE Source)
+add_test(NAME core246_control_workspace COMMAND core246_control_workspace_tests "${CMAKE_CURRENT_SOURCE_DIR}/Tests/ReferenceVectors")
+
+add_executable(drwave246_control_workspace_tests Tests/DrWave246ControlWorkspaceTests.cpp)
+target_include_directories(drwave246_control_workspace_tests PRIVATE Source)
+add_test(NAME drwave246_control_workspace COMMAND drwave246_control_workspace_tests "${CMAKE_CURRENT_SOURCE_DIR}/Tests/ReferenceVectors")
+
 add_executable(drwave246_control_dispatch_tests Tests/DrWave246ControlDispatchTests.cpp)
 target_include_directories(drwave246_control_dispatch_tests PRIVATE Source)
 add_test(NAME drwave246_control_dispatch COMMAND drwave246_control_dispatch_tests "${CMAKE_CURRENT_SOURCE_DIR}/Tests/ReferenceVectors")

@@ -554,3 +554,16 @@ kind 0 y 1, cuatro secuencias de 64 registros, 6.024 decodificaciones.
 escriben y el resto se preserva. Pools, RNG/scratch/vecinos, rangos, buffers
 y guardas contrastados. Imagen y elección de renderer explícitas del harness.
 [Contrato](../../docs/drwave246-control-env-dispatch.md).
+
+## Inicializador Core de workspaces
+
+`core246-control-workspace-input.bin` / `core246-control-workspace-output.bin`:
+4.096 estados y 256 llamadas continuas con un byte modificado por el harness.
+Huella de 228 bytes, pitch/ADSR/RNG y guardas contrastados.
+
+`drwave246-control-workspace-overrides.bin` /
+`drwave246-control-workspace-output.bin`: 1.506 inicializaciones originales
+antes de callback/render; 91.648 muestras Dr. Wave y 95.104 posiciones ADSR
+(85.120 escritas). La imagen cero procede del inicializador, sin overrides
+posteriores; el orden sigue siendo explícito y no recupera el productor por
+llamada. [Contrato y límites L1](../../docs/drwave246-control-workspace-init.md).

@@ -1,0 +1,152 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "workspace": "0xff801724",
+  "sdram_immediate_candidates": [
+    {
+      "address": "0x1968798",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19c9e74",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19ca266",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19ca45e",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cb102",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cb37a",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cb3e6",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cce72",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cd000",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cd0bc",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cd1f0",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cd2aa",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cda36",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cdea6",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cdf52",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cea8e",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19ceec2",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cefc4",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cfb04",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cfe68",
+      "adjacent_high_ff80_pair": true
+    },
+    {
+      "address": "0x19cff8a",
+      "adjacent_high_ff80_pair": true
+    }
+  ],
+  "initializer_pointer_references": [
+    "0x1000110"
+  ],
+  "callback_pointer_references": [
+    "0x1910840"
+  ],
+  "l1_blocks": [
+    {
+      "header_offset": "0x206214",
+      "payload_offset": "0x206224",
+      "address": "0xffa00000",
+      "bytes": 49076,
+      "flags": "0xaddb2406",
+      "candidates": [
+        {
+          "address": "0xffa006ca",
+          "complete_pair_visible": true,
+          "adjacent_high_ff80_pair": true,
+          "preceding_protected_span": [
+            "0xffa006c0",
+            "0xffa006c8"
+          ],
+          "following_protected_span": [
+            "0xffa006d8",
+            "0xffa006e0"
+          ]
+        },
+        {
+          "address": "0xffa009ce",
+          "complete_pair_visible": true,
+          "adjacent_high_ff80_pair": true,
+          "preceding_protected_span": [
+            "0xffa009c0",
+            "0xffa009c8"
+          ],
+          "following_protected_span": [
+            "0xffa009d8",
+            "0xffa009e0"
+          ]
+        },
+        {
+          "address": "0xffa01d22",
+          "complete_pair_visible": false,
+          "adjacent_high_ff80_pair": null,
+          "preceding_protected_span": [
+            "0xffa01d10",
+            "0xffa01d18"
+          ],
+          "following_protected_span": [
+            "0xffa01d28",
+            "0xffa01d30"
+          ]
+        }
+      ]
+    }
+  ],
+  "protection_assumption": "Previously documented community profile: first 8 bytes of each 24-byte group are protected; no L1 instruction execution or decryption.",
+  "limits": [
+    "Immediate/pointer matches are candidates, not a control-flow proof or exhaustive writer search; computed addresses can be missed.",
+    "Visible L1 address loads do not establish their caller, copy source, write direction or cadence. The third candidate lacks a visible complete high-half pair.",
+    "Initializer writes zeros but does not recover the per-call working-image producer. No keys/hardware assumed or requested."
+  ]
+}
