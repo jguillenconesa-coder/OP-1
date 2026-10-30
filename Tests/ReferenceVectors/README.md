@@ -596,3 +596,13 @@ activación/retirada originales, seguidos del ADSR elegido explícitamente. Comp
 argumento y 4.524 bytes de estado antes/después, muestras, guardas y efectos
 compartidos. No es el dispatcher ni el scheduler original.
 [Contrato y formato](../../docs/drwave246-note-event-chain.md).
+
+## Dr. Wave adjusted note chain rev246
+
+`drwave246-adjusted-note-chain-input.bin` / `drwave246-adjusted-note-chain-output.bin`
+usan 768 registros de 4.836 / 9.412 bytes; salida con tabla de notas de 512 bytes
+al principio/final. Ocho setters originales suministran la tabla tras un patrón
+de prueba en cada reset, seguidos de un cambio y constructor/eventos/ADSR. Se
+capturan tabla con vecinos antes del constructor (48 bytes), imágenes completas
+antes/después del ADSR (4.524 cada una), argumento, entradas, muestras y guardas.
+[Formato y límites](../../docs/drwave246-adjusted-note-chain.md).
