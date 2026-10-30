@@ -120,9 +120,12 @@ Se conserva el inventario para no repetir el bloqueo. La [retirada polifónica
 VoiceCtl y el release ADSR desde la lista](drwave246-voicectl-poly-release.md)
 ya están contrastados con lista completa, seis voces y render ADSR posterior
 explícito. No se completa el scheduler ni el relevo de campos pendientes. El
-siguiente contrato legible puede ampliar la retirada a otros selectores por
-sonido, delimitando sus cambios de pitch/RNG. Siguen pendientes buffers
-iniciales, relevos, reloj y salida.
+[avance de selectores 1–4](drwave246-release-selectors.md) contrasta también
+retirada de la última coincidencia, recuperación de pitch con afinación explícita,
+RNG y release de una/seis voces. Los modos externos y la integración siguen fuera.
+El siguiente contrato legible puede centrarse en el constructor de argumentos
+de nota `0x01a85014`, sin completar dispatcher/asignador. Siguen pendientes
+buffers iniciales, relevos, reloj y salida.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

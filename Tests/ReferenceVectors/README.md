@@ -576,3 +576,13 @@ El verificador `scripts/verify-voice246-poly-release.py` declara regiones/offset
 `Tests/Voice246PolyReleaseTests.cpp` compara las imágenes completas antes/después
 del render ADSR, salida, guardas y argumento. Son fixtures numéricos propios,
 no firmware ni instrucciones. [Contrato y límites](../../docs/drwave246-voicectl-poly-release.md).
+
+## VoiceCtl release selectors rev246
+
+`voice246-release-selectors-input.bin` contiene 772 registros de 4.768 bytes;
+`voice246-release-selectors-output.bin` contiene la tabla de notas (512 bytes),
+772 registros de 9.236 bytes y la tabla final (512 bytes). Regiones/offsets están
+en `scripts/verify-voice246-release-selectors.py`; el comparador verifica las
+imágenes completas y muestras, estado compartido, guardas y argumento. 516 casos
+independientes cubren 4 × 129 tamaños; cuatro streams de 64 retienen lista y pools.
+Son fixtures numéricos propios. [Contrato](../../docs/drwave246-release-selectors.md).
