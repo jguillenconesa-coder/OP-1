@@ -544,3 +544,13 @@ probadas con kind 0, 2.048 decodificaciones y 61.568 muestras Dr. Wave.
 Parámetros, ambos buffers, suavizado, estado compartido, rangos y guardas
 contrastados. Destino ENV excluido; no completa el instrumento.
 [Contrato](../../docs/drwave246-mixed-control-routing.md).
+
+## Callback tipo 2 con ENV y kind 0/1
+
+`drwave246-control-dispatch-overrides.bin` /
+`drwave246-control-dispatch-output.bin`: 1.506 llamadas, 625 combinaciones por
+kind 0 y 1, cuatro secuencias de 64 registros, 6.024 decodificaciones.
+91.648 muestras Dr. Wave y 95.104 posiciones ADSR, de las que 86.656 se
+escriben y el resto se preserva. Pools, RNG/scratch/vecinos, rangos, buffers
+y guardas contrastados. Imagen y elección de renderer explícitas del harness.
+[Contrato](../../docs/drwave246-control-env-dispatch.md).
