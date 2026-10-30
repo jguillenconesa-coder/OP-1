@@ -130,10 +130,14 @@ sobrescribirlo entre rutinas. El orden y las listas siguen siendo del harness,
 no el dispatcher/asignador original. El [setter `0x01a8633c`](voice246-note-adjustment.md)
 ya está contrastado por separado y la [cadena de ajustes/eventos](drwave246-adjusted-note-chain.md)
 suministra la tabla mediante setters originales, sin overrides tras ellos.
-Los valores iniciales y el orden siguen explícitos. La otra cuenta tiene
-reservada la consulta `0x01a863a8` de lista/palabra persistente; no se duplica
-esa investigación. Siguen pendientes buffers iniciales, relevos, reloj,
-mezcla y salida.
+Los valores iniciales y el orden siguen explícitos. El [llamador polifónico con
+primera voz libre](drwave246-poly-first-free.md) ya contrasta selección, inicio
+ADSR/ganancia, activación y adición de lista dentro del original, incluidos flag,
+duplicados y aceptación parcial con Core bloqueado. La actividad libre sigue
+siendo entrada del ensayo; no completa asignador/cadencia. El siguiente tramo
+puede ampliar el llamador a voces ocupadas y robo/reinicio, sin mezclarlo con
+la consulta `0x01a863a8` reservada a la otra cuenta. Siguen pendientes otros
+modos, buffers iniciales, relevos, reloj, mezcla y salida.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 
