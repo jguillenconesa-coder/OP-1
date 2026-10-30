@@ -586,3 +586,13 @@ en `scripts/verify-voice246-release-selectors.py`; el comparador verifica las
 imágenes completas y muestras, estado compartido, guardas y argumento. 516 casos
 independientes cubren 4 × 129 tamaños; cuatro streams de 64 retienen lista y pools.
 Son fixtures numéricos propios. [Contrato](../../docs/drwave246-release-selectors.md).
+
+## Dr. Wave note event chain rev246
+
+`drwave246-note-event-chain-input.bin` / `drwave246-note-event-chain-output.bin`
+contienen 768 registros de 4.828 / 9.356 bytes. La salida añade la tabla de notas
+completa (512 bytes) al principio/final. El harness propio enlaza constructor y
+activación/retirada originales, seguidos del ADSR elegido explícitamente. Compara
+argumento y 4.524 bytes de estado antes/después, muestras, guardas y efectos
+compartidos. No es el dispatcher ni el scheduler original.
+[Contrato y formato](../../docs/drwave246-note-event-chain.md).

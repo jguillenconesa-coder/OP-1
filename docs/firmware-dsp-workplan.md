@@ -123,9 +123,14 @@ explícito. No se completa el scheduler ni el relevo de campos pendientes. El
 [avance de selectores 1–4](drwave246-release-selectors.md) contrasta también
 retirada de la última coincidencia, recuperación de pitch con afinación explícita,
 RNG y release de una/seis voces. Los modos externos y la integración siguen fuera.
-El siguiente contrato legible puede centrarse en el constructor de argumentos
-de nota `0x01a85014`, sin completar dispatcher/asignador. Siguen pendientes
-buffers iniciales, relevos, reloj y salida.
+El [constructor de argumentos de nota `0x01a85014`](voice246-note-argument.md)
+ya está contrastado por separado, y la [composición con activación/retirada y
+ADSR](drwave246-note-event-chain.md) compara el argumento y sus efectos sin
+sobrescribirlo entre rutinas. El orden y las listas siguen siendo del harness,
+no el dispatcher/asignador original. La otra cuenta tiene reservado el setter
+`0x01a8633c` de ajustes y su enlace al constructor; esta cuenta conserva esa
+tabla como entrada explícita. Siguen pendientes buffers iniciales, relevos,
+reloj, mezcla y salida.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 
