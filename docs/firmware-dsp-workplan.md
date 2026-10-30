@@ -56,7 +56,8 @@ inventar coeficientes ni ejecutar instrucciones cifradas.
 | Modificador de volumen/pitch en serie | 81 combinaciones, 65.536 muestras de volumen y 65.536 palabras de pitch; 61.568 muestras Dr. Wave posteriores. Cuatro suavizados compartidos contrastados con segundo parche GNU de cargas halfword, verificado con probes propios. Ambos buffers iniciales explícitos; no completa mezcla/salida. |
 | Entrada de control a cuatro fuentes del modificador | Ruta válida `0x01a84f8c`: 32.768 parejas + 256 llamadas continuas, tabla completa contrastada. Otros 2.048 decodes alimentan volumen/pitch y 61.568 muestras Dr. Wave; status/canal, inicializador y scheduler no recuperados. |
 | Destino instrumento en contexto Dr. Wave | Rangos originales generados, ocho selectores hacia cuatro controles, wrap/clamp y 61.568 muestras posteriores contrastados. Tipo 2, parámetros iniciales y contador explícitos; no completa dispatcher ni integración. |
-| Destinos instrumento/volumen/pitch intercalados | Las 256 combinaciones en una llamada tipo 2, 512 registros, suavizado/estado compartidos y otras 61.568 muestras contrastados. ENV sigue en ensayos separados; imágenes, contador y selección explícitos. |
+| Destinos instrumento/volumen/pitch intercalados | Las 256 combinaciones en una llamada tipo 2, 512 registros, suavizado/estado compartidos y otras 61.568 muestras contrastados. El ensayo se limita a kind 0; imágenes, contador y selección explícitos. |
+| Dispatch tipo 2 con ENV y kind 0/1 | Las 625 combinaciones por kind, 1.506 llamadas: 91.648 muestras activas Dr. Wave y 95.104 posiciones ADSR (86.656 escritas). Pools completos, RNG/dither y guardas contrastados; imagen de trabajo, renderer, contador y selección explícitos. No recupera el llamador original. |
 | Cadencia externa, voz completa e integración | Referencia candidata al contador en L1 junto a franjas cifradas; proveedor/cadencia aún sin verificar. Faltan también asignación/pitch/ADSR y salida antes de integrar el núcleo. Solo se usa desde pruebas; no cambia el instalador. |
 
 [Lectura y mezcla de Dr. Wave](drwave246-reader.md) ·
@@ -108,9 +109,11 @@ ya está contrastada junto a su consumo por el modificador. Dispatcher MIDI,
 inicializador de fuentes y reloj siguen pendientes. El [destino instrumento para el tipo interno 2](drwave246-instrument-control-routing.md)
 ya está contrastado con sus rangos originales y el render posterior. Las [256 combinaciones de instrumento/volumen/pitch](drwave246-mixed-control-routing.md)
 ya están contrastadas en llamadas conjuntas, con suavizado y render posteriores.
-El siguiente contrato puede acotar su convivencia con destino ENV y los modos
-0/1, manteniendo explícitos pool, imágenes de trabajo, buffers, selección y orden;
-no completa el instrumento.
+La [convivencia con ENV y kind 0/1](drwave246-control-env-dispatch.md) ya está
+contrastada en el contexto de tipo 2 y pool inicializado, con ambos renderers
+elegidos por el harness. El siguiente límite es el llamador/preparación de la
+imagen de trabajo en SDRAM legible, sin inventar el orden si conduce a L1
+cifrada. Siguen pendientes buffers iniciales, relevos, reloj y salida.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

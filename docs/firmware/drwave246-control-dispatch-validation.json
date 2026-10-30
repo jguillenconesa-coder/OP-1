@@ -1,0 +1,84 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "source_fixture_sha256": "fcd9b57a1a67ab0adeea60477803fad001dcfb300773c99113ce7e37191c2bee",
+  "original_decoder": "0x01a84f8c",
+  "decoder_calls": 6024,
+  "original_callback": "0x019cce68",
+  "callback_end_exclusive": "0x019cd01c",
+  "original_drwave_render": "0x0197c870",
+  "original_adsr_render": "0x01912128",
+  "records": 1506,
+  "independent_cases": 1250,
+  "continuous_streams": 4,
+  "calls_per_stream": 64,
+  "kind0_combinations": 625,
+  "kind1_combinations": 625,
+  "counts": {
+    "applied": 1158,
+    "inactive": 348,
+    "wave_update": 413,
+    "read_only": 303,
+    "render_inactive": 47,
+    "adsr_calls": 743,
+    "adsr_writes": 677
+  },
+  "drwave_active_audio_samples": 91648,
+  "adsr_sample_positions": 95104,
+  "adsr_generated_samples": 86656,
+  "pitch_words_compared": 192768,
+  "amplitude_samples_compared": 192768,
+  "base_banks_unchanged": true,
+  "artifacts": {
+    "drwave246-control-dispatch-overrides.bin": {
+      "bytes": 1771056,
+      "sha256": "39e3603763d977bd7cf416f3ebc4ce51da29b8cf7e13e1145b1eda1d2b9ef1d1"
+    },
+    "drwave246-control-dispatch-output.bin": {
+      "bytes": 16484160,
+      "sha256": "9ae62e0fc4463756e9200894c00744dd55632fc7e9d1f418a216010d4dc185b4"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/run-halfword-v2": "bb46511919cb7c87621de746d2f69a3a9b80d40f5a9065037a6f550fcc2cb8a5"
+  },
+  "model": "GNU BF524 with both documented D-register and disjoint-halfword patches; not hardware validation",
+  "limitations": [
+    "Current/selected module types are explicitly 2, type flag is original zero and ADSR pool is explicitly initialized. Other types, lazy construction and assert paths excluded.",
+    "Working image is reloaded explicitly according to kind; renderer choice is harness scheduling, not an original caller/scheduler.",
+    "Both incoming buffers, parameters, event order, counter, ADSR state/volume/seed are explicit. No buffer producer, ADSR handoff, output mix or plugin integration is established.",
+    "Firmware, original instructions, disassembly and ELF remain private."
+  ],
+  "patches": {
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "research/blackfin/gnu-13.1-halfword-writeback.patch": "4d3cd3764d85bb4b3ff330358d8417a2928ad0e9daff755fe643477cdfde1cf3"
+  },
+  "source_sha256": {
+    "Source/DrWave246ControlDispatch.h": "299538659ee87dc57e13b910344bb7f25343683255d97de63361a0fbdf9851bb",
+    "Source/DrWave246MixedControl.h": "24b52045bd4529a29d213b9350537ca457e230abc326c9c0bc9a1eeba3bcac4e",
+    "Source/ControlEnvelope246Mode.h": "fd66d21e1167813900530386aeb7f88e6fd6ab9b33ef9835e99d8c197886d521",
+    "Source/Envelope246.h": "08d0039239e1ffef2d503abe5b3493613161709ebaf14d0cb00015a0c4b7157c",
+    "Tests/DrWave246ControlDispatchTests.cpp": "720948b5cc6473946a93b2fc547ee76583cff4427930a280108767065e98b7a6",
+    "scripts/verify-drwave246-control-mixed.py": "2ac5cf9164f75deed7f19f799d8868f097597bb108029407ca6a776b92c1bb50",
+    "research/blackfin/drwave-control-dispatch.s.in": "cad5b11e6a794e8a794840f6d663b060b9f34c3ff5db1a411422e48ec32dd12a",
+    "research/blackfin/drwave-control-dispatch.ld": "9864cf545f1ae932ef54229c0bfa636a65066656ff125873bc1cf8d3dd5ce280",
+    "research/blackfin/parallel-halfword.s": "5774b7dbba69f10b60f5a2fce7796915dbe8ff641e455e3e5e9b6846abdedf7e",
+    "scripts/verify-drwave246-control-dispatch.py": "13d0b53afc51dc45e565cff93313cc959fa13a134cc0ea35bf585fd93a90b271"
+  },
+  "repeat_byte_identical": true,
+  "validation": {
+    "linux_core_suites": 38,
+    "linux_juce_suites": 40,
+    "asan_ubsan": "passed; leak detection disabled due ptrace",
+    "windows_macos": "pending CI; not locally executed"
+  },
+  "rea": {
+    "version": "6.8.0",
+    "operation": "inspect-with-objdump/disassemble",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "private_evidence_sha256": "edb956d91ccd52657016658509ca50b50ff1950574c53e53cbe5a3fb5b8ce2a5"
+  }
+}
