@@ -1,0 +1,122 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own caller: original constructor then activation/release and explicit ADSR render.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+@COEFFICIENTS@
+CALL original_note_copy;
+R0.H = note_args;
+R0.L = note_args;
+P0 = 5;
+EXCPT 0;
+P4.H = inputs;
+P4.L = inputs;
+P5.H = results;
+P5.L = results;
+record_loop:
+@LOAD@
+R0 = P4;
+R0 += 16;
+R1 = [P4+16];
+R2 = [P4+20];
+imm32 P0, 0x01a85014
+CALL (P0);
+R0 = [P4+12];
+CC = R0 == 0;
+IF CC JUMP activate;
+R0 = P4;
+R0 += 16;
+imm32 P0, 0x01a85058
+CALL (P0);
+JUMP.S event_done;
+activate:
+R0 = P4;
+R0 += 16;
+R1 = [P4+4];
+imm32 P0, 0x01a84414
+CALL (P0);
+event_done:
+@BEFORE@
+// A guarded output buffer, explicitly supplied by the harness.
+P0 = @RECORD@;
+P1 = 272;
+P0 -= P1;
+P1 = P4 + P0;
+P2.H = audio;
+P2.L = audio;
+P3 = 68;
+LSETUP(audio_in,audio_in_end) LC0 = P3;
+audio_in: R0 = [P1++];
+audio_in_end: [P2++] = R0;
+R0 = [P4+4];
+R1 = 24;
+R0 *= R1;
+imm32 R1, 0xff8000d4
+R0 = R0 + R1;
+R1.H = audio;
+R1.L = audio;
+R1 += 8;
+imm32 P0, 0xff8016d4
+R2 = [P0];
+R2 <<= 4;
+imm32 R3, 0x01b60ef0
+R2 = R2 + R3;
+R3 = P4;
+R3 += 8;
+[SP+12] = R3;
+imm32 P0, 0x01912128
+CALL (P0);
+P0.H = returned;
+P0.L = returned;
+[P0] = R0;
+@AFTER@
+P1.H = audio;
+P1.L = audio;
+P2 = P5;
+P3 = 68;
+LSETUP(audio_out,audio_out_end) LC0 = P3;
+audio_out: R0 = [P1++];
+audio_out_end: [P2++] = R0;
+P0.H = returned;
+P0.L = returned;
+R0 = [P0];
+[P2++] = R0;
+P1 = P4;
+P3 = 8;
+LSETUP(argument_out,argument_out_end) LC0 = P3;
+argument_out: R0 = [P1++];
+argument_out_end: [P2++] = R0;
+P5 = P2;
+P0 = @RECORD@;
+P4 = P4 + P0;
+R0 = P4;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF CC JUMP done;
+JUMP.L record_loop;
+done:
+R0.H = args;
+R0.L = args;
+P0 = 5;
+EXCPT 0;
+R0.H = note_args;
+R0.L = note_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.align 4
+original_note_copy:
+.incbin "@WORK@/sdram.bin", 0x00a86700, 0x2e
+RTS;
+.data
+.align 4
+note_args: .long 1,0x01dfe530,512
+args: .long 1,results,@BYTES@
+returned: .long 0
+audio: .space 272
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"
