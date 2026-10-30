@@ -606,3 +606,13 @@ de prueba en cada reset, seguidos de un cambio y constructor/eventos/ADSR. Se
 capturan tabla con vecinos antes del constructor (48 bytes), imágenes completas
 antes/después del ADSR (4.524 cada una), argumento, entradas, muestras y guardas.
 [Formato y límites](../../docs/drwave246-adjusted-note-chain.md).
+
+## Dr. Wave poly first-free caller rev246
+
+`drwave246-poly-first-free-input.bin` / `drwave246-poly-first-free-output.bin` usan
+768 registros de 4.880 / 9.500 bytes, con tabla de notas de 512 bytes al principio
+y final de la salida. El llamador original elige la primera voz libre y añade la
+entrada tras ADSR/gain/activación; el harness solo repone actividad explícita.
+Imagen completa de 4.568 bytes antes/después del ADSR, argumento, ajustes,
+muestras y guardas. Robo de voces y otros modos quedan fuera.
+[Contrato y formato](../../docs/drwave246-poly-first-free.md).
