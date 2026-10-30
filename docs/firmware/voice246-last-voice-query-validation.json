@@ -1,0 +1,162 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "entry": "0x01a863a8",
+  "end_exclusive": "0x01a86420",
+  "code_bytes": 120,
+  "routine_sha256": "d0c758380e74fd12de62e51df4247d56cdd4e0a267abf276bcf6e9ecadd10765",
+  "records": 1024,
+  "independent_cases": 512,
+  "streams": 8,
+  "calls_per_stream": 64,
+  "coverage": {
+    "empty_lists": 67,
+    "fallback_returns": 291,
+    "lists_with_valid_id": 733,
+    "valid_id_reads": 3715,
+    "discarded_id_reads": 58099,
+    "repaired_previous": 199,
+    "persistent_changed": 616,
+    "duplicate_valid_lists": 109,
+    "zero_byte8_valid_reads": 1322,
+    "list_lengths": 129,
+    "returned_voices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "discarded_patterns_seen": 13,
+    "reversed_order_pairs": 32
+  },
+  "shared_bytes": 3740,
+  "input_record_bytes": 3756,
+  "output_record_bytes": 3744,
+  "regions": [
+    {
+      "address": "0x1dfe4d0",
+      "bytes": 64,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1dfe72c",
+      "bytes": 2576,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff801034",
+      "bytes": 776,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff8000d0",
+      "bytes": 160,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff802bc8",
+      "bytes": 8,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b60ef0",
+      "bytes": 128,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff8016d0",
+      "bytes": 16,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1de4c3c",
+      "bytes": 12,
+      "retained_in_stream": false
+    }
+  ],
+  "artifacts": {
+    "voice246-last-voice-query-input.bin": {
+      "bytes": 3846144,
+      "sha256": "e25e2b6c6b421e8ceb150c3e0cb8f81a0957311bb58fbfdf04d65889c102087a"
+    },
+    "voice246-last-voice-query-output.bin": {
+      "bytes": 3833856,
+      "sha256": "c62c3d0c0c668ae8e321ad699a2db61d7368c6c3f9e4d46e27c8e3e4ff3df2ba"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-note-argument-validated/bin/bfin-elf-as": "fe8b5fdb8b5c6e500f47dc6ae38b629cb391795c1e368a04279619890a6f2d27",
+    "/workspace/blackfin-note-argument-validated/bin/bfin-elf-ld": "3c9406274b737202a5fe4f54951dcfc94c869e99109943264dc61d29a3910905",
+    "/workspace/blackfin-note-argument-validated/bin/run-parallel": "dff51f542fc86f5f4dd220c2dbfe044411188a8108c96378f3cbdd7ce77db32f"
+  },
+  "patches": {
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "research/blackfin/gnu-13.1-halfword-writeback.patch": "4d3cd3764d85bb4b3ff330358d8417a2928ad0e9daff755fe643477cdfde1cf3"
+  },
+  "source_sha256": {
+    "scripts/verify-voice246-last-voice-query.py": "1b8a913bed1472c5d68765a4c40763c3bcb880e48dbd7b6d5ab5780e6d9bb57f",
+    "research/blackfin/voice-last-voice-query.s.in": "39ce51383c6b67bf90fb475a0f33a95eeb66aacd6ad052db0ffd82b8ba2250bb",
+    "Source/Voice246LastVoiceQuery.h": "505cc5310666ee88fd29c6ff6ee9d493bba79d85254620fa338b79a20f6b9911",
+    "Tests/Voice246LastVoiceQueryTests.cpp": "2ee7bc6c98f965ad1396fc25d8ac485be89d4006aaa5f3def208b724c8c61e22"
+  },
+  "model": "GNU BF524 with both documented writeback patches; not hardware timing",
+  "limitations": [
+    "Original error helper at 0x01919aa8 is excluded: eligibility is checked before execution, requiring a valid final persistent word.",
+    "Lists/counts are explicit every call, capacity 0..128. Persistent word and selected monitor regions carry between stream calls; no original list producer is recovered.",
+    "No note events, constructor, setter, renderer, allocator, MIDI dispatcher, scheduler or L1 execution. No commercial mode identity is inferred.",
+    "Raw shared monitor images are preservation stress data, not initialized voice state. Work registers/DAG state and stack are not a complete machine model.",
+    "Firmware, original instructions, disassembly and ELF remain private."
+  ],
+  "rea": {
+    "version": "6.8.0",
+    "command": "inspect-with-objdump",
+    "provider": "gnu.objdump",
+    "symbol": "voice246_last_voice_query (synthetic)",
+    "private_evidence_sha256": "fa4286f672e080d087537974bb5fb48b62dcdbe585223542374b382544501a45",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "scope": "Complete static query disassembly, including excluded error branch; original instructions, disassembly and ELF remain private."
+  },
+  "validation": {
+    "core_ctest_suites_passed": 47,
+    "windows": "New comparator compiled for Windows MSVC ABI and passed under Wine. Native Windows/macOS CI pending.",
+    "sanitizers": "New comparator passed ASan+UBSan; LeakSanitizer disabled for sandbox ptrace limitation.",
+    "fresh_private_reproductions": 2,
+    "reproduction_scope": "Expanded input and original output agree byte for byte. Previous setter/constructor oracle reproduced without --record.",
+    "eligibility_preflight": "All input records screened before simulation to exclude invalid final persistent word; original error helper never invoked.",
+    "adapter_guards": "Counts beyond capacity and invalid fallback return nullopt without invented original return; invalid prior word with valid later ID is accepted/repaired.",
+    "plugin_runtime_unchanged": true,
+    "timing": "No hardware/DAW/ASIO/latency/dropout validation.",
+    "core_suites_before_base_refresh": 46,
+    "base_refresh": "Rebased on bf854e5 after PR #22 merged; all 47 core suites passed including existing coordinated regression. Query source and numeric fixtures unchanged."
+  },
+  "original_contract": {
+    "list": "0x01dfe734",
+    "entry_bytes": 20,
+    "voice_offset": 16,
+    "count": "0x01dff134",
+    "persistent": "0x01dfe4d4",
+    "valid_ids": "signed32 0..5; all others ignored",
+    "return": "Last accepted ID, otherwise preserved valid prior word.",
+    "empty_list_clears_persistent": false,
+    "list_or_count_written": false,
+    "error_entry": "0x01a86408",
+    "excluded_error_helper": "0x01919aa8",
+    "error_condition": "No accepted ID and prior persistent word outside signed32 0..5.",
+    "error_return_inferred": false,
+    "stable_list_count_within_call": true,
+    "commercial_identity_or_allocator_inferred": false
+  },
+  "coordination": {
+    "base_main": "bf854e55c22cc15edd258394be5df7e3482408da",
+    "excluded_pr": 22,
+    "excluded_branch": "collab/drwave-adjusted-note-chain",
+    "excluded_head_observed": "7fbd5c0eb61a0b28db5c41afd0a0aa1d14e5ac85",
+    "common_plans_coverage_fixture_readme_unchanged": true,
+    "existing_voicectl_headers_unchanged": true,
+    "branch_created_from_main": "ceb1bb61c92d886277b81e9d1c663a6207fcc56c",
+    "excluded_pr_state_at_publication": "Merged into main; files kept unchanged by this branch."
+  }
+}

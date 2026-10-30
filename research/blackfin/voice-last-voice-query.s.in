@@ -1,0 +1,49 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own caller of the original non-error query, without note events or rendering.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P4.H = inputs;
+P4.L = inputs;
+P5.H = results;
+P5.L = results;
+record_loop:
+@LOAD@
+R0 = [P4+4];
+R1 = [P4+8];
+R2 = [P4+12];
+imm32 P0, 0x01a863a8
+CALL (P0);
+[P5] = R0;
+P2 = P5;
+P2 += 4;
+@SAVE@
+P5 = P2;
+P0 = @RECORD@;
+P4 = P4 + P0;
+R0 = P4;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF CC JUMP records_done;
+JUMP.L record_loop;
+records_done:
+R0.H = result_args;
+R0.L = result_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+result_args: .long 1,results,@BYTES@
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin", 0, 0x00a863a8
+.global voice246_last_voice_query
+.type voice246_last_voice_query, STT_FUNC
+voice246_last_voice_query:
+.incbin "@WORK@/sdram.bin", 0x00a863a8, 0x78
+.size voice246_last_voice_query, .-voice246_last_voice_query
+.incbin "@WORK@/sdram.bin", 0x00a86420
