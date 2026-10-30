@@ -616,3 +616,13 @@ entrada tras ADSR/gain/activación; el harness solo repone actividad explícita.
 Imagen completa de 4.568 bytes antes/después del ADSR, argumento, ajustes,
 muestras y guardas. Robo de voces y otros modos quedan fuera.
 [Contrato y formato](../../docs/drwave246-poly-first-free.md).
+
+## Dr. Wave poly busy-voice caller rev246
+
+`drwave246-poly-steal-input.bin` / `drwave246-poly-steal-output.bin` conservan
+768 registros de 4.880 / 9.500 bytes y tabla de notas de 512 bytes antes/después.
+El llamador original elige por máximo signed32, solicita reinicio ADSR, retira
+solo el primer dueño y añade la nota. Actividad, edades y flag son explícitos;
+no se recupera el consumidor de pitch/velocidad pendientes. Compara dos imágenes
+completas de 4.568 bytes, argumento, muestras y guardas.
+[Contrato](../../docs/drwave246-poly-steal.md).
