@@ -1,0 +1,254 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "accessor": {
+    "entry": "0x01a4eec0",
+    "end_exclusive": "0x01a4eee4",
+    "bytes": 36,
+    "routine_sha256": "892c0d55334f0102aa209b6ab435863461f7b156dbadd2aff16d7b0884129344",
+    "formula": "(0x010225ec + raw_u32 * 0xc000) modulo 2^32",
+    "dereferences_returned_pointer": false,
+    "index_guard_present": false,
+    "raw_calls": 80,
+    "query_linked_calls": 1024,
+    "valid_query_pointers": [
+      "0x10225ec",
+      "0x102e5ec",
+      "0x103a5ec",
+      "0x10465ec",
+      "0x10525ec",
+      "0x105e5ec"
+    ]
+  },
+  "container": {
+    "entry": "0x01a4f8a8",
+    "end_exclusive": "0x01a4fef8",
+    "bytes": 1616,
+    "routine_sha256": "0a0aec1e4a217bfcd515947f3988b9f592b51c021a815e3f6167b864e82a7cca",
+    "query_callsite": "0x01a4feaa",
+    "accessor_callsite": "0x01a4feae",
+    "executed": false,
+    "entry_pointer_word": "0x01911910",
+    "next_entry_pointer_word": "0x01000380",
+    "activity_gate": "0x01a27e48 reads six bytes at 0xff80105c",
+    "use": "16 signed16 reads with offset step 2; updates 16 object words starting at +0x80, then common geometry/drawing path",
+    "graphics_classification": "Strong static evidence; no original class name, complete callback contract or display feature reconstructed."
+  },
+  "private_monitors": {
+    "six_slabs_and_guards_start": "0x10225e4",
+    "six_slabs_and_guards_bytes": 294928,
+    "before_after_unchanged": true,
+    "shared_bytes_per_query": 3740,
+    "existing_query_return_and_full_state_match": true,
+    "caller_order": "Own query -> accessor calls, not execution from the middle of the original container.",
+    "shared_regions": [
+      {
+        "address": "0x1dfe4d0",
+        "bytes": 64,
+        "retained_in_stream": true
+      },
+      {
+        "address": "0x1dfe72c",
+        "bytes": 2576,
+        "retained_in_stream": false
+      },
+      {
+        "address": "0xff801034",
+        "bytes": 776,
+        "retained_in_stream": true
+      },
+      {
+        "address": "0xff8000d0",
+        "bytes": 160,
+        "retained_in_stream": true
+      },
+      {
+        "address": "0xff802bc8",
+        "bytes": 8,
+        "retained_in_stream": true
+      },
+      {
+        "address": "0x1b60ef0",
+        "bytes": 128,
+        "retained_in_stream": false
+      },
+      {
+        "address": "0xff8016d0",
+        "bytes": 16,
+        "retained_in_stream": false
+      },
+      {
+        "address": "0x1de4c3c",
+        "bytes": 12,
+        "retained_in_stream": false
+      }
+    ]
+  },
+  "query_coverage": {
+    "empty_lists": 67,
+    "fallback_returns": 291,
+    "lists_with_valid_id": 733,
+    "valid_id_reads": 3715,
+    "discarded_id_reads": 58099,
+    "repaired_previous": 199,
+    "persistent_changed": 616,
+    "duplicate_valid_lists": 109,
+    "zero_byte8_valid_reads": 1322,
+    "list_lengths": 129,
+    "returned_voices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "discarded_patterns_seen": 13,
+    "reversed_order_pairs": 32
+  },
+  "watches": [
+    "0x01a4f8a8,0x01a4fef7",
+    "0x01919aa8",
+    "0xffa00000,0xffafffff"
+  ],
+  "model": "GNU BF524 with both documented writeback patches; not physical timing",
+  "patches": {
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "research/blackfin/gnu-13.1-halfword-writeback.patch": "4d3cd3764d85bb4b3ff330358d8417a2928ad0e9daff755fe643477cdfde1cf3"
+  },
+  "tools": {
+    "/workspace/blackfin-note-argument-validated/bin/bfin-elf-as": "fe8b5fdb8b5c6e500f47dc6ae38b629cb391795c1e368a04279619890a6f2d27",
+    "/workspace/blackfin-note-argument-validated/bin/bfin-elf-ld": "3c9406274b737202a5fe4f54951dcfc94c869e99109943264dc61d29a3910905",
+    "/workspace/blackfin-note-argument-validated/bin/run-parallel": "dff51f542fc86f5f4dd220c2dbfe044411188a8108c96378f3cbdd7ce77db32f"
+  },
+  "private_artifacts": {
+    "inputs.bin": {
+      "bytes": 3846144,
+      "sha256": "e25e2b6c6b421e8ceb150c3e0cb8f81a0957311bb58fbfdf04d65889c102087a"
+    },
+    "buffers.bin": {
+      "bytes": 294928,
+      "sha256": "4b4a14193e37d61c96d510a3c8ca584fd82ce1c1c4091f5d7307169f106673a4"
+    },
+    "raw-input.bin": {
+      "bytes": 320,
+      "sha256": "60303c0d27fc651cf6a3b9c9c9019b3b7fc5bd2dc6cd1e5392c3da71f4ad21a6"
+    },
+    "output.bin": {
+      "bytes": 4428448,
+      "sha256": "8aa3f61fb332fbd2071e217a1642f8c7703fe38e170adc023c756f09d17843da"
+    }
+  },
+  "source_sha256": {
+    "scripts/inspect-voice246-last-voice-consumer.py": "6a5c576a7aff76b704eb4264b2f1f8950b8acb49b130bdba171b2e3c55174cb8",
+    "scripts/verify-voice246-last-voice-query.py": "1b8a913bed1472c5d68765a4c40763c3bcb880e48dbd7b6d5ab5780e6d9bb57f",
+    "research/blackfin/voice-last-voice-query.s.in": "39ce51383c6b67bf90fb475a0f33a95eeb66aacd6ad052db0ffd82b8ba2250bb",
+    "Tests/ReferenceVectors/voice246-last-voice-query-input.bin": "e25e2b6c6b421e8ceb150c3e0cb8f81a0957311bb58fbfdf04d65889c102087a",
+    "Tests/ReferenceVectors/voice246-last-voice-query-output.bin": "c62c3d0c0c668ae8e321ad699a2db61d7368c6c3f9e4d46e27c8e3e4ff3df2ba"
+  },
+  "limits": [
+    "No container/graphics/UI execution or implementation. The activity gate and draw dependencies are static observations only.",
+    "The accessor only calculates an address; slab producers, meaning, validity/lifetime, pitch/ADSR handoff and DSP integration are not recovered.",
+    "Raw out-of-range words are arithmetic stress only; resulting pointers are never dereferenced. Original query invalid fallback/error path is excluded.",
+    "No new Source implementation, CMake suite, public numeric fixtures, plugin change or reserved coordinator path. Firmware/instructions/disassembly/ELF remain private."
+  ],
+  "static_findings": {
+    "classification": "Graphics/UI consumer by static dataflow; no immediate Dr. Wave DSP dependency established.",
+    "query_call_count_in_consumer_loop": 16,
+    "query_repeated_each_iteration": true,
+    "read_width": "signed16",
+    "read_offsets_bytes": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24,
+      26,
+      28,
+      30
+    ],
+    "object_write_width_bits": 32,
+    "object_write_offsets": [
+      "0x80",
+      "0xbc (last of 16 words)"
+    ],
+    "slab_written_by_inspected_consumer_block": false,
+    "join_after_consumer": "0x01a4fc24",
+    "multiply_helper": "0x01aa5d78; multiprecision multiplication, not division; static only",
+    "geometry_path_calls": [
+      "0x01a072e8",
+      "0x01a070a4",
+      "0x01a06f98",
+      "0x01a24a4c"
+    ],
+    "four_color_like_bytes": "0x01baaf58; classification by usage, no recovered symbol",
+    "transform_context": "0x01de5e68",
+    "unexecuted_indirect_calls_to_0xffa0a1e0": [
+      "0x01a4fd66",
+      "0x01a4fe84",
+      "0x01a4fee8",
+      "0x01a4fef4"
+    ],
+    "full_container_contract_or_error_conditions_reconstructed": false,
+    "producer_format_lifetime_or_audio_identity_of_slabs_recovered": false
+  },
+  "rea": {
+    "version": "6.8.0",
+    "command": "inspect-with-objdump",
+    "provider": "gnu.objdump",
+    "symbols_synthetic": true,
+    "scope": "Complete accessor and containing routine static disassembly only. The container, activity gate, arithmetic helper and graphics dependencies are not executed. Original instructions and ELF remain private.",
+    "inspections": [
+      {
+        "symbol": "voice_address_accessor",
+        "private_evidence_sha256": "702b17b64d096e5bed9eb6cb9bd04950a717b0009fe95312419e3ddc1f8ab6dd",
+        "exit_code": 0,
+        "completion_status": "complete",
+        "output_truncated": false,
+        "artifact_changed": false
+      },
+      {
+        "symbol": "candidate_graphics_container",
+        "private_evidence_sha256": "0dc867304d5237eba052a03614e32d475d6875c8c564b799f7736f404b0e55a6",
+        "exit_code": 0,
+        "completion_status": "complete",
+        "output_truncated": false,
+        "artifact_changed": false
+      }
+    ]
+  },
+  "validation": {
+    "fresh_final_private_reproductions": 2,
+    "all_inputs_and_output_equal_bytewise": true,
+    "python_py_compile": "passed",
+    "core_ctest_suites_passed": 49,
+    "core_platform": "Linux; POCKET_BUILD_PLUGIN=OFF, rebuilt against current main baseline",
+    "guard_positive_control": {
+      "watch_before_others": "0x01a4eec0",
+      "exit_code": 5,
+      "output_bytes": 294928,
+      "meaning": "Positive PC watch still active when followed by all three unused guards; stops before original accessor instruction."
+    },
+    "windows_macos_or_hardware_claim": false,
+    "no_new_product_code_or_cmake_suite": true
+  },
+  "coordination": {
+    "base_main": "8e21b5798a9cbbd5a903977c0489c08f4096376c",
+    "branch": "collab/voice246-last-voice-consumer",
+    "pr25_state": "merged; release dispatcher not repeated",
+    "reserved_pr": 26,
+    "reserved_head_observed": "3807f9c206c50f6283cdd7c99c7d874b90d6ca61",
+    "reserved_branch": "collab/drwave-poly-steal",
+    "reserved_state_observed": "open",
+    "reserved_paths_unchanged": true,
+    "global_plans_coverage_common_fixture_readme_unchanged": true,
+    "outcome": "Stop before UI development; document negative DSP result and bounded accessor/query verification only."
+  }
+}
