@@ -127,10 +127,13 @@ El [constructor de argumentos de nota `0x01a85014`](voice246-note-argument.md)
 ya está contrastado por separado, y la [composición con activación/retirada y
 ADSR](drwave246-note-event-chain.md) compara el argumento y sus efectos sin
 sobrescribirlo entre rutinas. El orden y las listas siguen siendo del harness,
-no el dispatcher/asignador original. La otra cuenta tiene reservado el setter
-`0x01a8633c` de ajustes y su enlace al constructor; esta cuenta conserva esa
-tabla como entrada explícita. Siguen pendientes buffers iniciales, relevos,
-reloj, mezcla y salida.
+no el dispatcher/asignador original. El [setter `0x01a8633c`](voice246-note-adjustment.md)
+ya está contrastado por separado y la [cadena de ajustes/eventos](drwave246-adjusted-note-chain.md)
+suministra la tabla mediante setters originales, sin overrides tras ellos.
+Los valores iniciales y el orden siguen explícitos. La otra cuenta tiene
+reservada la consulta `0x01a863a8` de lista/palabra persistente; no se duplica
+esa investigación. Siguen pendientes buffers iniciales, relevos, reloj,
+mezcla y salida.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 
