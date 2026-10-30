@@ -1,0 +1,88 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "source_fixture_sha256": "fcd9b57a1a67ab0adeea60477803fad001dcfb300773c99113ce7e37191c2bee",
+  "original_workspace_initializer": "0x01968774",
+  "initializer_calls": 1506,
+  "original_decoder": "0x01a84f8c",
+  "decoder_calls": 6024,
+  "original_callback": "0x019cce68",
+  "callback_end_exclusive": "0x019cd01c",
+  "original_drwave_render": "0x0197c870",
+  "original_adsr_render": "0x01912128",
+  "records": 1506,
+  "independent_cases": 1250,
+  "continuous_streams": 4,
+  "calls_per_stream": 64,
+  "kind0_combinations": 625,
+  "kind1_combinations": 625,
+  "counts": {
+    "applied": 1158,
+    "inactive": 348,
+    "wave_update": 413,
+    "read_only": 303,
+    "render_inactive": 47,
+    "adsr_calls": 743,
+    "adsr_writes": 665
+  },
+  "drwave_active_audio_samples": 91648,
+  "adsr_sample_positions": 95104,
+  "adsr_generated_samples": 85120,
+  "pitch_words_compared": 192768,
+  "amplitude_samples_compared": 192768,
+  "base_banks_unchanged": true,
+  "artifacts": {
+    "drwave246-control-workspace-overrides.bin": {
+      "bytes": 2114424,
+      "sha256": "d35cc49eb99ce5ee55bbf6f9ce92efa131fd031c0ab78705ee1aa0fbf02021a8"
+    },
+    "drwave246-control-workspace-output.bin": {
+      "bytes": 16827528,
+      "sha256": "718f8f648301abadc6d78e3f1bb47768312c8ee02dfeeb97db74f53207ea456d"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/run-halfword-v2": "bb46511919cb7c87621de746d2f69a3a9b80d40f5a9065037a6f550fcc2cb8a5"
+  },
+  "model": "GNU BF524 with both documented D-register and disjoint-halfword patches; not hardware validation",
+  "limitations": [
+    "Current/selected module types are explicitly 2, type flag is original zero and ADSR pool is explicitly initialized. Other types, lazy construction and assert paths excluded.",
+    "Original Core initializer clears the working image before callback each record; this invocation schedule is harness behavior, not an original caller. Renderer choice remains explicit.",
+    "Prior workspace bytes, both buffers, event order, counter and ADSR state/volume/seed are explicit. The original initializer supplies zero parameters, but the per-call producer, ADSR handoff, output mix and integration remain unknown.",
+    "Firmware, original instructions, disassembly and ELF remain private."
+  ],
+  "patches": {
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "research/blackfin/gnu-13.1-halfword-writeback.patch": "4d3cd3764d85bb4b3ff330358d8417a2928ad0e9daff755fe643477cdfde1cf3"
+  },
+  "source_sha256": {
+    "Source/Core246ControlWorkspace.h": "7f7d54258fc20164aedfd8a7642a2d5c8b9d775c29bee24db985dfa03e26284f",
+    "Source/DrWave246ControlDispatch.h": "299538659ee87dc57e13b910344bb7f25343683255d97de63361a0fbdf9851bb",
+    "Source/DrWave246MixedControl.h": "24b52045bd4529a29d213b9350537ca457e230abc326c9c0bc9a1eeba3bcac4e",
+    "Source/ControlEnvelope246Mode.h": "fd66d21e1167813900530386aeb7f88e6fd6ab9b33ef9835e99d8c197886d521",
+    "Source/Envelope246.h": "08d0039239e1ffef2d503abe5b3493613161709ebaf14d0cb00015a0c4b7157c",
+    "Tests/DrWave246ControlWorkspaceTests.cpp": "02846475c6def7ab8c3074554507c4eed530942b1628e1cfe63093f69597b0cf",
+    "scripts/verify-drwave246-control-dispatch.py": "13d0b53afc51dc45e565cff93313cc959fa13a134cc0ea35bf585fd93a90b271",
+    "research/blackfin/drwave-control-workspace.s.in": "cc60bb7f33bc2b20647fcd31e1103f69126e2289048795bc5dd053c472c8b843",
+    "research/blackfin/drwave-control-dispatch.ld": "9864cf545f1ae932ef54229c0bfa636a65066656ff125873bc1cf8d3dd5ce280",
+    "research/blackfin/parallel-halfword.s": "5774b7dbba69f10b60f5a2fce7796915dbe8ff641e455e3e5e9b6846abdedf7e",
+    "scripts/verify-drwave246-control-workspace.py": "2b2b1e6d06779954be8449f6892f310d44ad529094417aff0b5bfac9d3741ffd"
+  },
+  "repeat_byte_identical": true,
+  "validation": {
+    "linux_core_suites": 40,
+    "linux_juce_suites": 42,
+    "asan_ubsan": "both comparators passed; leak detection disabled due ptrace",
+    "windows_macos": "pending CI; not locally executed"
+  },
+  "rea": {
+    "version": "6.8.0",
+    "operation": "inspect-with-objdump/disassemble",
+    "subject": "complete SDRAM initializer 0x01968774..0x019687c0",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "private_evidence_sha256": "f42fe931df7f303f56aa5c8076c54c097a934d0526a806d2303ca78b873d5626"
+  }
+}

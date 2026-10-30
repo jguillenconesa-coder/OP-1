@@ -1,0 +1,88 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own caller of complete original workspace initializer; explicit reset/poke.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P4.H = inputs;
+P4.L = inputs;
+P5.H = results;
+P5.L = results;
+record_loop:
+R0 = [P4];
+CC = BITTST(R0,0);
+IF !CC JUMP retained;
+P1 = P4;
+P1 += 12;
+imm32 P2, 0xff8016d8
+P3 = 57;
+LSETUP(work_in,work_in_end) LC0 = P3;
+work_in: R0 = [P1++];
+work_in_end: [P2++] = R0;
+imm32 P2, 0xff8012cc
+P3 = 10;
+LSETUP(pitch_in,pitch_in_end) LC0 = P3;
+pitch_in: R0 = [P1++];
+pitch_in_end: [P2++] = R0;
+imm32 P2, 0xff8000d0
+P3 = 37;
+LSETUP(pool_in,pool_in_end) LC0 = P3;
+pool_in: R0 = [P1++];
+pool_in_end: [P2++] = R0;
+imm32 P2, 0xff802bc8
+R0 = [P1++];
+[P2++] = R0;
+R0 = [P1];
+[P2] = R0;
+retained:
+R0 = [P4+4];
+imm32 R1, 0xff8016d8
+R0 = R0 + R1;
+P0 = R0;
+R0 = [P4+8];
+B[P0] = R0;
+imm32 P0, 0x01968774
+CALL (P0);
+imm32 P1, 0xff8016d8
+P2 = P5;
+P3 = 57;
+LSETUP(work_out,work_out_end) LC0 = P3;
+work_out: R0 = [P1++];
+work_out_end: [P2++] = R0;
+imm32 P1, 0xff8012cc
+P3 = 10;
+LSETUP(pitch_out,pitch_out_end) LC0 = P3;
+pitch_out: R0 = [P1++];
+pitch_out_end: [P2++] = R0;
+imm32 P1, 0xff8000d0
+P3 = 37;
+LSETUP(pool_out,pool_out_end) LC0 = P3;
+pool_out: R0 = [P1++];
+pool_out_end: [P2++] = R0;
+imm32 P1, 0xff802bc8
+R0 = [P1++];
+[P2++] = R0;
+R0 = [P1];
+[P2++] = R0;
+P5 = P2;
+P0 = 436;
+P4 = P4 + P0;
+R0 = P4;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF CC JUMP done;
+JUMP.L record_loop;
+done:
+R0.H = args;
+R0.L = args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+args: .long 1,results,@BYTES@
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

@@ -1,0 +1,63 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "routine": "0x01968774",
+  "routine_end_exclusive": "0x019687c0",
+  "zero_callback": "0x01968768",
+  "array_constructor": "0x01aa3862",
+  "records": 4352,
+  "independent_cases": 4096,
+  "continuous_calls": 256,
+  "workspace_image_bytes": 228,
+  "written_bytes": 82,
+  "flag_word": "0xff8016dc",
+  "common_workspace": "0xff801724",
+  "common_words": 8,
+  "secondary_workspace": "0xff801774",
+  "secondary_words": 32,
+  "pitch_image_bytes": 40,
+  "adsr_pool_image_bytes": 148,
+  "rng_image_bytes": 8,
+  "artifacts": {
+    "core246-control-workspace-input.bin": {
+      "bytes": 1897472,
+      "sha256": "efcb546c9e193b847ccf382ae06feab48dfe0455f3877ef369b7eb93e33b272e"
+    },
+    "core246-control-workspace-output.bin": {
+      "bytes": 1845248,
+      "sha256": "b6d9820653b6ff35da4bc0aa4365789ee29a8759a7418a3e707c7545c1f3897c"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/run-halfword-v2": "bb46511919cb7c87621de746d2f69a3a9b80d40f5a9065037a6f550fcc2cb8a5"
+  },
+  "limitations": [
+    "Complete isolated initializer, not original boot or the per-call parameter producer.",
+    "The 256-call stream has explicit byte pokes between calls; not an original reset schedule.",
+    "Workspace role beyond the common eight-word image is not inferred. No complete voice/pitch/ADSR handoff or integration.",
+    "Firmware, instructions, disassembly and ELF remain private."
+  ],
+  "source_sha256": {
+    "Source/Core246ControlWorkspace.h": "7f7d54258fc20164aedfd8a7642a2d5c8b9d775c29bee24db985dfa03e26284f",
+    "Tests/Core246ControlWorkspaceTests.cpp": "cc4fc4def3b166af3a78c1facb33952305537f9e058d9ee513ea6ccc58bf0231",
+    "research/blackfin/core-control-workspace.s.in": "6a91a288ed6461721f5753d1019dc830af903e38aec07405a4685fbec31e1b99",
+    "scripts/verify-core246-control-workspace.py": "009e8f4f881e15fdc7c43d784a7ff06e53d9d81e690e67831f0f935e0b28b5fd"
+  },
+  "repeat_byte_identical": true,
+  "validation": {
+    "linux_core_suites": 40,
+    "linux_juce_suites": 42,
+    "asan_ubsan": "both comparators passed; leak detection disabled due ptrace",
+    "windows_macos": "pending CI; not locally executed"
+  },
+  "rea": {
+    "version": "6.8.0",
+    "operation": "inspect-with-objdump/disassemble",
+    "subject": "complete SDRAM initializer 0x01968774..0x019687c0",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "private_evidence_sha256": "f42fe931df7f303f56aa5c8076c54c097a934d0526a806d2303ca78b873d5626"
+  }
+}
