@@ -567,3 +567,12 @@ antes de callback/render; 91.648 muestras Dr. Wave y 95.104 posiciones ADSR
 (85.120 escritas). La imagen cero procede del inicializador, sin overrides
 posteriores; el orden sigue siendo explícito y no recupera el productor por
 llamada. [Contrato y límites L1](../../docs/drwave246-control-workspace-init.md).
+
+## VoiceCtl poly release rev246
+
+`voice246-poly-release-input.bin` / `voice246-poly-release-output.bin` contienen
+768 registros de 4.744 / 9.188 bytes: 512 independientes y cuatro streams de 64.
+El verificador `scripts/verify-voice246-poly-release.py` declara regiones/offsets;
+`Tests/Voice246PolyReleaseTests.cpp` compara las imágenes completas antes/después
+del render ADSR, salida, guardas y argumento. Son fixtures numéricos propios,
+no firmware ni instrucciones. [Contrato y límites](../../docs/drwave246-voicectl-poly-release.md).

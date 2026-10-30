@@ -116,9 +116,13 @@ elegidos por el harness. El [inicializador Core de workspaces](drwave246-control
 contrastado completo y junto al callback/render. La búsqueda de recarga de la
 imagen por llamada deja dos pares de dirección junto a franjas L1 protegidas
 y un candidato parcial: no se recupera el productor ni se le asignan ceros.
-Se conserva el inventario para no repetir el bloqueo. El siguiente contrato
-legible puede centrarse en liberación de notas/ADSR desde VoiceCtl. Siguen
-pendientes buffers iniciales, relevos, reloj y salida.
+Se conserva el inventario para no repetir el bloqueo. La [retirada polifónica
+VoiceCtl y el release ADSR desde la lista](drwave246-voicectl-poly-release.md)
+ya están contrastados con lista completa, seis voces y render ADSR posterior
+explícito. No se completa el scheduler ni el relevo de campos pendientes. El
+siguiente contrato legible puede ampliar la retirada a otros selectores por
+sonido, delimitando sus cambios de pitch/RNG. Siguen pendientes buffers
+iniciales, relevos, reloj y salida.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

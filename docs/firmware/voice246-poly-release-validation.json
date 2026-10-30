@@ -1,0 +1,133 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "routine": "0x01a85058",
+  "routine_end_exclusive": "0x01a8541c",
+  "mode": 0,
+  "per_sound_mode_word_shift12": 0,
+  "records": 768,
+  "independent": 512,
+  "streams": 4,
+  "blocks_per_stream": 64,
+  "sample_positions": 98304,
+  "counts": {
+    "removed": 504,
+    "absent": 264,
+    "adsr_release_calls": 297,
+    "written_samples": 84352,
+    "preserved_samples": 13952
+  },
+  "image_bytes": 4440,
+  "input_bytes": 4744,
+  "output_bytes": 9188,
+  "regions": [
+    {
+      "address": "0x1dfe72c",
+      "bytes": 2576,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff8000d0",
+      "bytes": 664,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xffb00000",
+      "bytes": 224,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff801034",
+      "bytes": 776,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1b60ef0",
+      "bytes": 128,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff802bc8",
+      "bytes": 8,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b60534",
+      "bytes": 8,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b6053c",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff8016d4",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaac0c",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaad14",
+      "bytes": 32,
+      "retained_in_stream": false
+    }
+  ],
+  "artifacts": {
+    "voice246-poly-release-input.bin": {
+      "bytes": 3643392,
+      "sha256": "90e1f020b564dc03a45e3a888e887e902af98d2dd5a1c857c4751bf97a08f481"
+    },
+    "voice246-poly-release-output.bin": {
+      "bytes": 7056384,
+      "sha256": "81a0faf47d049cfab8b145013e4218c3ba5449e5b15d00a137dc88e15bb754a0"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/run-halfword-v2": "bb46511919cb7c87621de746d2f69a3a9b80d40f5a9065037a6f550fcc2cb8a5"
+  },
+  "limitations": [
+    "Mode zero only; flag at 0x01dfe730 is zero and VoiceCtl mode at 0xff801038 is zero. Initialized pools; all active nonnegative voice IDs are 0..5.",
+    "Controls, selected/loaded sound, registers, render voice, volume and order are explicit every call. Four streams retain the list, ADSR/scratch, Dr. Wave objects and RNG/previous state.",
+    "Following ADSR render is harness scheduling, not recovered original allocator, clock, mixer, output or pending-field consumer. Dr. Wave release callback is executed, but its audio render is not called.",
+    "First four envelope controls valid; nonnegative level/gain/volume/sustain. Other modes and assertion paths excluded. Firmware/instructions/ELF remain private."
+  ],
+  "model": "GNU BF524 with both documented D-register/disjoint-halfword writeback patches; not hardware or pipeline validation",
+  "patches": {
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "research/blackfin/gnu-13.1-halfword-writeback.patch": "4d3cd3764d85bb4b3ff330358d8417a2928ad0e9daff755fe643477cdfde1cf3"
+  },
+  "source_sha256": {
+    "scripts/verify-voice246-poly-release.py": "729a34fe2afc16ae9376db223c75c097bc8ad30d1c8921d56a96b6b1d240b75f",
+    "research/blackfin/voice-poly-release.s.in": "e0d978a6a3d3b35049f836447f9aca2e5be45291d7ed400c659dd4e3ac76ba87",
+    "Source/Envelope246.h": "08d0039239e1ffef2d503abe5b3493613161709ebaf14d0cb00015a0c4b7157c",
+    "Source/Voice246PolyRelease.h": "eabf2a47529f433914fa420b0a19e42156580356dfba53a3160f3adf86972bc9",
+    "Tests/Voice246PolyReleaseTests.cpp": "9b436bf409fa0d24605cedb6c3f7879b8a18af9be4a38d2e5fc47ff89930b07b"
+  },
+  "private_reproductions": {
+    "count": 2,
+    "inputs_identical": true,
+    "outputs_identical": true
+  },
+  "rea_inspection": {
+    "command": "inspect-with-objdump disassemble --symbol voice_poly_release --format json",
+    "evidence_sha256": "da738c12eceb7f5daa09a47f5cb1b5fa7856ea12f8d64327eb572ca67eeb65c4",
+    "artifact_sha256": "6079a5826c9e0b0bccf1f754938615147185c943a6c0f788672adbf49a8a94df",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "scope": "Original complete routine 0x01a85058..0x01a8541c, synthetic symbols; only mode-zero path numerically validated. No decryption or numerical validation by REA."
+  },
+  "validation": {
+    "linux_core_suites": 41,
+    "linux_juce_suites": 43,
+    "asan_ubsan": "passed; detect_leaks=0 (ptrace restriction)",
+    "windows_macos": "Original commit: Linux/macOS CI passed; MSVC compilation failed because comparator omitted <string>. Explicit include fixed; Windows CI pending rerun.",
+    "daw_hardware": "not tested"
+  }
+}
