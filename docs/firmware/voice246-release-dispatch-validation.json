@@ -1,0 +1,246 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "dispatcher": "0x01a85840",
+  "end_exclusive": "0x01a858d6",
+  "code_bytes": 150,
+  "routine_sha256": "b92a455816122650cd97d35aa4b010bf10e514562e9df850894707a3dd3fe1e2",
+  "notification": "0x019e2dc0",
+  "notification_end_exclusive": "0x019e2e62",
+  "release": "0x01a85058",
+  "records": 1680,
+  "independent_valid": 1280,
+  "independent_filtered": 80,
+  "streams": 5,
+  "calls_per_stream": 64,
+  "coverage": {
+    "filtered": 80,
+    "dispatched": 1600,
+    "metadata_zero": 695,
+    "metadata_nonzero": 905,
+    "removed": 1018,
+    "absent_or_disabled": 582,
+    "valid_notes_per_selector": [
+      128,
+      128,
+      128,
+      128,
+      128
+    ],
+    "list_lengths_per_selector": [
+      129,
+      129,
+      129,
+      129,
+      129
+    ]
+  },
+  "image_bytes": 4656,
+  "input_record_bytes": 4720,
+  "output_record_bytes": 4704,
+  "caller_stack_pointer": "0x03000000",
+  "own_calibrated_local_argument": "0x02ffffe8",
+  "regions": [
+    {
+      "address": "0x1dfe72c",
+      "bytes": 2576,
+      "retained": true
+    },
+    {
+      "address": "0xff8000d0",
+      "bytes": 664,
+      "retained": true
+    },
+    {
+      "address": "0xffb00000",
+      "bytes": 224,
+      "retained": true
+    },
+    {
+      "address": "0xff801034",
+      "bytes": 776,
+      "retained": false
+    },
+    {
+      "address": "0x1b60ef0",
+      "bytes": 128,
+      "retained": false
+    },
+    {
+      "address": "0xff802bc8",
+      "bytes": 8,
+      "retained": true
+    },
+    {
+      "address": "0x1b60534",
+      "bytes": 8,
+      "retained": true
+    },
+    {
+      "address": "0x1b6053c",
+      "bytes": 8,
+      "retained": false
+    },
+    {
+      "address": "0xff8016d4",
+      "bytes": 8,
+      "retained": false
+    },
+    {
+      "address": "0x1aaac0c",
+      "bytes": 8,
+      "retained": false
+    },
+    {
+      "address": "0x1aaad14",
+      "bytes": 32,
+      "retained": false
+    },
+    {
+      "address": "0x27fd9dc",
+      "bytes": 12,
+      "retained": false
+    },
+    {
+      "address": "0x18c2180",
+      "bytes": 12,
+      "retained": false
+    },
+    {
+      "address": "0x1de4c3c",
+      "bytes": 12,
+      "retained": false
+    },
+    {
+      "address": "0x1aafd5c",
+      "bytes": 136,
+      "retained": true
+    },
+    {
+      "address": "0x1aadb1c",
+      "bytes": 40,
+      "retained": true
+    },
+    {
+      "address": "0x18b600c",
+      "bytes": 4,
+      "retained": true
+    }
+  ],
+  "pc_watches": [
+    "0x019e2df4",
+    "0x01a69360",
+    "0x019e0d18",
+    "0x01919aa8",
+    "0x01a85890",
+    "0x01a8589e",
+    "0xffa00000,0xffafffff"
+  ],
+  "pc_watch_probe_exit_codes": [
+    0,
+    5,
+    5,
+    5
+  ],
+  "pc_watch_original_run_exit_code": 0,
+  "artifacts": {
+    "voice246-release-dispatch-input.bin": {
+      "bytes": 7929600,
+      "sha256": "a68a5cb4cccd8362051d7068ea3a7fb019f7ac5e816ce7dacb96e77b2deff5a7"
+    },
+    "voice246-release-dispatch-output.bin": {
+      "bytes": 7903748,
+      "sha256": "8b6017b7d70230e4a5094ec8f07e898f469ea858c64674e1de8d11dcdf562707"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-note-argument-validated/bin/bfin-elf-as": "fe8b5fdb8b5c6e500f47dc6ae38b629cb391795c1e368a04279619890a6f2d27",
+    "/workspace/blackfin-note-argument-validated/bin/bfin-elf-ld": "3c9406274b737202a5fe4f54951dcfc94c869e99109943264dc61d29a3910905",
+    "/workspace/blackfin-note-argument-validated/bin/run-parallel": "dff51f542fc86f5f4dd220c2dbfe044411188a8108c96378f3cbdd7ce77db32f"
+  },
+  "source_sha256": {
+    "scripts/verify-voice246-release-dispatch.py": "8adbcfd811178f55f1eda99192be43d126c1eccd1c574994768d1a2f5a4056d5",
+    "research/blackfin/voice-release-dispatch.s.in": "4fa00c2d86a86990f930b6a1f953d26025e43723f29abc7e21fd86c8ff4f1760",
+    "Source/Voice246ReleaseDispatch.h": "69b23e1aa531d712911aed2018e96a1c848888fc1fda0f8c1521413b58c0cd74",
+    "Tests/Voice246ReleaseDispatchTests.cpp": "6d97c7420f23eb6a3359c88441b520fa23d0e83f083feb0f2e05dd649ece0b6b",
+    "Source/Voice246ReleaseSelectors.h": "249ca6bc77cb7669c9b2e57366d94a1e04b66ce71f31aa316fb7f37aa7bff10d",
+    "Source/Voice246PolyRelease.h": "eabf2a47529f433914fa420b0a19e42156580356dfba53a3160f3adf86972bc9",
+    "scripts/verify-voice246-release-selectors.py": "41bb051c93f1ff3f8c5f481d4683c917ecd21bc607310472228756e2f9ffaa03"
+  },
+  "patches": {
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "research/blackfin/gnu-13.1-halfword-writeback.patch": "4d3cd3764d85bb4b3ff330358d8417a2928ad0e9daff755fe643477cdfde1cf3"
+  },
+  "model": "GNU BF524 with both documented writeback patches, not hardware timing",
+  "limitations": [
+    "Instrument discriminator zero only; explicit empty 128-byte notification map, initialized Core/ADSR pools, outer flags/mode zero and selectors 0..4.",
+    "Transport/active-map/error/L1 PCs are execution-guarded. Map producers and active pending output are not recovered or executed.",
+    "No constructor, allocator, poly-full caller/helper, render, output MIDI, scheduler or plugin integration is introduced. Call order, controls, list seeds and tuning coefficient remain explicit.",
+    "Source argument and local field copy are compared separately; frame position is own harness calibration, not an original fixed address. No semantic return is assigned to the dispatcher.",
+    "Firmware, original instructions, disassembly and ELF remain private."
+  ],
+  "rea": [
+    {
+      "version": "6.8.0",
+      "command": "inspect-with-objdump",
+      "provider": "gnu.objdump",
+      "symbol": "instrument_release_dispatch (synthetic)",
+      "private_evidence_sha256": "9c45faca7352aec15b4bc99da9e20993b74b1cb186bc5c14a6b046268ae36bf1",
+      "exit_code": 0,
+      "output_truncated": false,
+      "artifact_changed": false,
+      "scope": "Complete static symbol-bounded inspection. Original raw evidence/ELF remain private; no decryption or numeric validation by REA."
+    },
+    {
+      "version": "6.8.0",
+      "command": "inspect-with-objdump",
+      "provider": "gnu.objdump",
+      "symbol": "empty_map_notification (synthetic)",
+      "private_evidence_sha256": "e9a4f042fc2999b840f624a76a51509877298ce32137097c5a8c01b1d2e8402c",
+      "exit_code": 0,
+      "output_truncated": false,
+      "artifact_changed": false,
+      "scope": "Complete static symbol-bounded inspection. Original raw evidence/ELF remain private; no decryption or numeric validation by REA."
+    }
+  ],
+  "validation": {
+    "core_ctest_suites_passed": 49,
+    "windows": "New comparator compiled for Windows MSVC ABI and passed under Wine. Native Windows/macOS CI pending.",
+    "sanitizers": "New comparator passed ASan+UBSan; LeakSanitizer disabled for sandbox ptrace limitation.",
+    "fresh_private_reproductions": 2,
+    "reproduction_scope": "Expanded own input and all original output agree byte for byte.",
+    "pc_guard_preflight": "Own no-firmware probe exits 0 normally, 5 under single, multiple and range PC watches. Original runs complete with code 0 under all configured guards.",
+    "local_copy": "Own LINK-frame probe calibrates address; every original local argument and preserved padding compared with source/explicit preload.",
+    "existing_helpers_unchanged": true,
+    "plugin_runtime_unchanged": true,
+    "timing": "No hardware/DAW/ASIO/latency/dropout validation."
+  },
+  "bounded_context": {
+    "discriminator_address": "0x01de4c40",
+    "discriminator_value": 0,
+    "notification_map": "0x01aafd60",
+    "notification_map_bytes": 128,
+    "map_explicitly_empty_and_retained": true,
+    "metadata_bytes": [
+      0,
+      1,
+      2,
+      127,
+      128,
+      255
+    ],
+    "active_notification_pc_excluded": "0x019e2df4",
+    "dispatcher_return_semantics_inferred": false,
+    "render_executed": false,
+    "transport_executed": false,
+    "caller_events_or_scheduler_inferred": false
+  },
+  "coordination": {
+    "base_main": "480684468570058de09d636cbb3e9698eee16c61",
+    "reserved_routines": [
+      "0x01a84604 occupied-six-voice path",
+      "0x01a844d8"
+    ],
+    "reserved_work_modified": false,
+    "global_plans_coverage_fixture_readme_unchanged": true
+  }
+}
