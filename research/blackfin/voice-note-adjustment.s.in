@@ -1,0 +1,93 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own isolated setter + bounded setter -> constructor caller. No voice events.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P4.H = inputs;
+P4.L = inputs;
+P5.H = results;
+P5.L = results;
+record_loop:
+R0 = [P4];
+CC = BITTST(R0,0);
+IF !CC JUMP argument_retained;
+P0 = 64;
+P1 = P4 + P0;
+P2.H = argument_area;
+P2.L = argument_area;
+P3 = 16;
+LSETUP(argument_in,argument_in_end) LC0 = P3;
+argument_in: R0 = [P1++];
+argument_in_end: [P2++] = R0;
+argument_retained:
+@LOAD@
+R0 = [P4];
+CC = BITTST(R0,0);
+IF !CC JUMP no_initialization;
+R0 = [P4+56];
+CC = R0 == 0;
+IF CC JUMP no_initialization;
+@INITIALIZE@
+no_initialization:
+R0 = [P4+4];
+R1 = [P4+8];
+imm32 P0, 0x01a8633c
+CALL (P0);
+[P5] = R0;
+P2 = P5;
+P2 += 4;
+@ARG_BEFORE@
+@SAVE_BEFORE@
+R0 = [P4+56];
+CC = R0 == 0;
+IF CC JUMP no_constructor;
+R0.H = argument_area;
+R0.L = argument_area;
+R0 += 16;
+R3 = [P4+20];
+R0 = R0 + R3;
+R1 = [P4+12];
+R2 = [P4+16];
+imm32 P0, 0x01a85014
+CALL (P0);
+no_constructor:
+P0 = @AFTER@;
+P2 = P5 + P0;
+@ARG_AFTER@
+@SAVE_AFTER@
+P5 = P2;
+P0 = @RECORD@;
+P4 = P4 + P0;
+R0 = P4;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF CC JUMP records_done;
+JUMP.L record_loop;
+records_done:
+R0.H = result_args;
+R0.L = result_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+argument_area: .space 64
+result_args: .long 1,results,@BYTES@
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin", 0, 0x00a85014
+.global voice246_adjustment_constructor
+.type voice246_adjustment_constructor, STT_FUNC
+voice246_adjustment_constructor:
+.incbin "@WORK@/sdram.bin", 0x00a85014, 0x44
+.size voice246_adjustment_constructor, .-voice246_adjustment_constructor
+.incbin "@WORK@/sdram.bin", 0x00a85058, 0x12e4
+.global voice246_note_adjustment
+.type voice246_note_adjustment, STT_FUNC
+voice246_note_adjustment:
+.incbin "@WORK@/sdram.bin", 0x00a8633c, 0x6a
+.size voice246_note_adjustment, .-voice246_note_adjustment
+.incbin "@WORK@/sdram.bin", 0x00a863a6
