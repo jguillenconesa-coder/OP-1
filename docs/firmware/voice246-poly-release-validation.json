@@ -107,7 +107,7 @@
     "research/blackfin/voice-poly-release.s.in": "e0d978a6a3d3b35049f836447f9aca2e5be45291d7ed400c659dd4e3ac76ba87",
     "Source/Envelope246.h": "08d0039239e1ffef2d503abe5b3493613161709ebaf14d0cb00015a0c4b7157c",
     "Source/Voice246PolyRelease.h": "eabf2a47529f433914fa420b0a19e42156580356dfba53a3160f3adf86972bc9",
-    "Tests/Voice246PolyReleaseTests.cpp": "46bc0ef9b1a41ce074f97b6f82aac23d94cc3f96460e5a70f4700e1ae170b907"
+    "Tests/Voice246PolyReleaseTests.cpp": "9b436bf409fa0d24605cedb6c3f7879b8a18af9be4a38d2e5fc47ff89930b07b"
   },
   "private_reproductions": {
     "count": 2,
@@ -127,7 +127,7 @@
     "linux_core_suites": 41,
     "linux_juce_suites": 43,
     "asan_ubsan": "passed; detect_leaks=0 (ptrace restriction)",
-    "windows_macos": "not tested locally; CI pending publication",
+    "windows_macos": "Original commit: Linux/macOS CI passed; MSVC compilation failed because comparator omitted <string>. Explicit include fixed; Windows CI pending rerun.",
     "daw_hardware": "not tested"
   }
 }
