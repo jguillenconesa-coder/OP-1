@@ -101,8 +101,14 @@ Dos ejecuciones privadas nuevas producen entradas y salida idénticas byte a
 byte. Pasan **44 suites de núcleo Linux**, el nuevo comparador compilado para
 **Windows bajo Wine** y **ASan/UBSan** (LeakSanitizer desactivado por la limitación
 de ptrace). El oráculo previo del constructor reproduce sus fixtures sin
-regenerarlos usando estas herramientas. CI nativo Windows/macOS queda pendiente;
-no se han medido hardware, DAW/ASIO, latencia ni dropouts.
+regenerarlos usando estas herramientas.
+
+La [comprobación nativa de la PR #20](https://github.com/jguillenconesa-coder/Tiny-one/actions/runs/41046600595),
+para el commit `0698a77`, también terminó correctamente: **46 suites en Linux**,
+**48 en Windows 2022 x64** y **46 en macOS 15 ARM64**, con la nueva suite
+`voice246_note_adjustment` aprobada en las tres plataformas. Esos recuentos incluyen
+las pruebas del plugin de esa revisión; no corresponden al número de suites de
+un `main` posterior. No se han medido hardware, DAW/ASIO, latencia ni dropouts.
 
 ## Reproducción y coordinación
 

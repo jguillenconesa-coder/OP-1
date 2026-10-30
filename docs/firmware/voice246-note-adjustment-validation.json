@@ -112,7 +112,7 @@
   },
   "validation": {
     "core_ctest_suites_passed": 44,
-    "windows": "New comparator compiled with Windows MSVC ABI and passed under Wine. Native Windows/macOS CI pending.",
+    "windows": "New comparator passed under Wine and native Windows 2022 x64 CI; native macOS 15 ARM64 CI also passed.",
     "sanitizers": "New comparator passed ASan+UBSan. LeakSanitizer disabled for sandbox ptrace limitation.",
     "fresh_private_reproductions": 2,
     "reproduction_scope": "Expanded own inputs and original output match byte for byte; retained previous constructor fixtures also reproduced without --record.",
@@ -120,7 +120,40 @@
     "private_toolchain_report_sha256": "229f3a014a84dbd33d18408f25edc8cf178ccbd0dd0376cc81f2a0222849c616",
     "adapter_rejection": "Full signed32 invalid slot and adjustment patterns rejected before writes; original error routes are not executed or emulated.",
     "plugin_runtime_unchanged": true,
-    "timing": "No hardware/DAW/ASIO/latency/dropout validation."
+    "timing": "No hardware/DAW/ASIO/latency/dropout validation.",
+    "native_ci": {
+      "head_commit": "0698a7753f102ffa31fdc4a100228fd86006ad54",
+      "event": "pull_request",
+      "run_url": "https://github.com/jguillenconesa-coder/Tiny-one/actions/runs/41046600595",
+      "conclusion": "success",
+      "results": [
+        {
+          "platform": "Linux x86_64",
+          "conclusion": "success",
+          "ctest_suites_passed": 46,
+          "new_comparator_passed": true,
+          "job_url": "https://github.com/jguillenconesa-coder/Tiny-one/actions/runs/41046600595/job/124032089978",
+          "observed_log_sha256": "6fc8f3db60638af9a1b06c32f725d031e11c057610d6932bc670adb76be17667"
+        },
+        {
+          "platform": "Windows 2022 x64",
+          "conclusion": "success",
+          "ctest_suites_passed": 48,
+          "new_comparator_passed": true,
+          "job_url": "https://github.com/jguillenconesa-coder/Tiny-one/actions/runs/41046600595/job/124032089744",
+          "observed_log_sha256": "b70b36ef7f90ef3453f1c440b63fffe47d06f20c4be4cdfb71856a8f6ffce689"
+        },
+        {
+          "platform": "macOS 15 ARM64",
+          "conclusion": "success",
+          "ctest_suites_passed": 46,
+          "new_comparator_passed": true,
+          "job_url": "https://github.com/jguillenconesa-coder/Tiny-one/actions/runs/41046600595/job/124032090034",
+          "observed_log_sha256": "0570bb9624180a62a0a80bd8e803bfca756cd3fe682dcf6ce94e88abd0770732"
+        }
+      ],
+      "scope": "Counts describe PR #20 revision with plugin tests, not later main. No additional firmware oracle, audio or hardware timing validation."
+    }
   },
   "original_contract": {
     "slot": "signed32 0..7",
