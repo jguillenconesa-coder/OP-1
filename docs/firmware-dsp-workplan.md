@@ -139,9 +139,17 @@ ocupadas y solicitud de reinicio](drwave246-poly-steal.md) ya contrasta máximo
 signed32, primer empate, producción de pitch/velocidad pendientes y primera
 reasignación de lista, con rampa ADSR posterior. No recupera el consumidor de
 esos campos. La [consulta `0x01a863a8`](voice246-last-voice-query.md) también está
-contrastada por separado. La otra cuenta tiene reservado el despachador de
-retirada `0x01a85840`; no se duplica esa ruta. Siguen pendientes otros modos,
-buffers iniciales, relevos, reloj, mezcla y salida.
+contrastada por separado. El [dispatcher de retirada](voice246-release-dispatch.md)
+ya está contrastado para discriminador cero y mapa de notificación vacío (PR #25).
+El [consumidor gráfico de última voz](voice246-last-voice-consumer.md) quedó
+clasificado y cerrado (PR #27): no aporta un productor DSP.
+Los [selectores de activación 1–3 con lista vacía](drwave246-note-modes.md)
+ya contrastan inicio frente a reinicio pendiente por actividad, diferencia de
+escala RNG, aceptación parcial Core y entrada de lista con voz -2. El contador
+cero y la actividad se suministran cada vez; no se recupera el scheduler.
+La otra cuenta tiene reservados esos selectores **con lista no vacía**, en
+`collab/drwave-held-note-modes`; no se duplica ese contexto. Siguen pendientes
+buffers iniciales, consumidor de pendientes, reloj, mezcla y salida.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

@@ -626,3 +626,22 @@ solo el primer dueño y añade la nota. Actividad, edades y flag son explícitos
 no se recupera el consumidor de pitch/velocidad pendientes. Compara dos imágenes
 completas de 4.568 bytes, argumento, muestras y guardas.
 [Contrato](../../docs/drwave246-poly-steal.md).
+
+
+## VoiceCtl release dispatcher rev246
+
+`voice246-release-dispatch-input.bin` / `voice246-release-dispatch-output.bin`
+contrastan 1.680 llamadas completas con discriminador cero y mapa explícitamente
+vacío, sin render. Las dimensiones, calibración del argumento local y formato
+propio están en [el contrato de la PR #25](../../docs/voice246-release-dispatch.md).
+
+## Dr. Wave empty-list note modes rev246
+
+`drwave246-note-modes-input.bin` / `drwave246-note-modes-output.bin` contienen
+768 registros de 4.880 / 9.500 bytes, con tabla de 512 bytes antes/después de la
+salida. Selectores 1–3 con lista vacía: inicio/reinicio según actividad de cada
+voz, RNG, aceptación Core, entrada de lista -2 y ADSR posterior explícito.
+Dos imágenes completas de 4.568 bytes, argumento, ajustes, muestras y guardas.
+En los streams se retienen pools/registros/RNG, pero contador cero, gate y
+actividad se suministran cada vez. No es el scheduler ni la ruta de lista no vacía.
+[Contrato y formato](../../docs/drwave246-note-modes.md).

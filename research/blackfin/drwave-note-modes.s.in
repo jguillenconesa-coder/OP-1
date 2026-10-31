@@ -1,0 +1,167 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own caller: original constructor, full note entry, explicit ADSR render.
+// Empty list count is supplied before EVERY invocation; no held-note path.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+@COEFFICIENTS@
+CALL original_note_copy;
+R0.H = note_args;
+R0.L = note_args;
+P0 = 5;
+EXCPT 0;
+P4.H = inputs;
+P4.L = inputs;
+P5.H = results;
+P5.L = results;
+record_loop:
+@LOAD@
+@ACTIVITY@
+imm32 P0, 0x01dff134
+R0 = 0;
+[P0] = R0;
+P0 = 44;
+P0 = P4 + P0;
+R0 = B[P0] (Z);
+imm32 P0, 0x01dfe730
+B[P0] = R0;
+R0 = [P4];
+CC = R0 == 0;
+IF CC JUMP change_adjustment;
+// Poison the table, then supply ALL eight words through original setters.
+imm32 P1, 0x01dfe4e0
+imm32 R0, 0xa5a5a5a5
+P2 = 8;
+LSETUP(poison,poison_end) LC0 = P2;
+poison: NOP;
+poison_end: [P1++] = R0;
+R6 = 0;
+initialize_adjustment:
+R0 = R6;
+R0 <<= 2;
+P0 = 4524;
+P0 = P4 + P0;
+P1 = R0;
+P0 = P0 + P1;
+R1 = [P0];
+R0 = R6;
+imm32 P0, 0x01a8633c
+CALL (P0);
+R6 += 1;
+R0 = 8;
+CC = R6 < R0;
+IF CC JUMP initialize_adjustment;
+change_adjustment:
+R0 = [P4+32];
+R1 = [P4+36];
+imm32 P0, 0x01a8633c
+CALL (P0);
+// Snapshot the complete guarded table BEFORE the constructor/events.
+imm32 P1, 0x01dfe4d8
+P2.H = setter_table;
+P2.L = setter_table;
+P3 = 12;
+LSETUP(setter_snapshot,setter_snapshot_end) LC0 = P3;
+setter_snapshot: R0 = [P1++];
+setter_snapshot_end: [P2++] = R0;
+R0 = P4;
+R0 += 16;
+R1 = [P4+16];
+R2 = [P4+20];
+imm32 P0, 0x01a85014
+CALL (P0);
+R0 = P4;
+R0 += 16;
+imm32 P0, 0x01a84604
+CALL (P0);
+@BEFORE@
+// A guarded output buffer, explicitly supplied by the harness.
+P0 = @RECORD@;
+P1 = 272;
+P0 -= P1;
+P1 = P4 + P0;
+P2.H = audio;
+P2.L = audio;
+P3 = 68;
+LSETUP(audio_in,audio_in_end) LC0 = P3;
+audio_in: R0 = [P1++];
+audio_in_end: [P2++] = R0;
+R0 = [P4+4];
+R1 = 24;
+R0 *= R1;
+imm32 R1, 0xff8000d4
+R0 = R0 + R1;
+R1.H = audio;
+R1.L = audio;
+R1 += 8;
+imm32 P0, 0xff8016d4
+R2 = [P0];
+R2 <<= 4;
+imm32 R3, 0x01b60ef0
+R2 = R2 + R3;
+R3 = P4;
+R3 += 8;
+[SP+12] = R3;
+imm32 P0, 0x01912128
+CALL (P0);
+P0.H = returned;
+P0.L = returned;
+[P0] = R0;
+@AFTER@
+P1.H = audio;
+P1.L = audio;
+P2 = P5;
+P3 = 68;
+LSETUP(audio_out,audio_out_end) LC0 = P3;
+audio_out: R0 = [P1++];
+audio_out_end: [P2++] = R0;
+P0.H = returned;
+P0.L = returned;
+R0 = [P0];
+[P2++] = R0;
+P1.H = setter_table;
+P1.L = setter_table;
+P3 = 12;
+LSETUP(setter_out,setter_out_end) LC0 = P3;
+setter_out: R0 = [P1++];
+setter_out_end: [P2++] = R0;
+P1 = P4;
+P3 = 10;
+LSETUP(argument_out,argument_out_end) LC0 = P3;
+argument_out: R0 = [P1++];
+argument_out_end: [P2++] = R0;
+P5 = P2;
+P0 = @RECORD@;
+P4 = P4 + P0;
+R0 = P4;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF CC JUMP done;
+JUMP.L record_loop;
+done:
+R0.H = args;
+R0.L = args;
+P0 = 5;
+EXCPT 0;
+R0.H = note_args;
+R0.L = note_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.align 4
+original_note_copy:
+.incbin "@WORK@/sdram.bin", 0x00a86700, 0x2e
+RTS;
+.data
+.align 4
+note_args: .long 1,0x01dfe530,512
+args: .long 1,results,@BYTES@
+returned: .long 0
+setter_table: .space 48
+audio: .space 272
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin"

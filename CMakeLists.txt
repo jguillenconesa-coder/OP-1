@@ -71,6 +71,10 @@ add_test(NAME control_envelope246 COMMAND control_envelope246_tests "${CMAKE_CUR
 add_executable(drwave246_poly_steal_tests Tests/DrWave246PolyStealTests.cpp)
 target_include_directories(drwave246_poly_steal_tests PRIVATE Source)
 add_test(NAME drwave246_poly_steal COMMAND drwave246_poly_steal_tests "${CMAKE_CURRENT_SOURCE_DIR}/Tests/ReferenceVectors")
+add_executable(drwave246_note_modes_tests Tests/DrWave246NoteModesTests.cpp)
+target_include_directories(drwave246_note_modes_tests PRIVATE Source)
+add_test(NAME drwave246_note_modes COMMAND drwave246_note_modes_tests "${CMAKE_CURRENT_SOURCE_DIR}/Tests/ReferenceVectors")
+
 add_executable(drwave246_poly_first_free_tests Tests/DrWave246PolyFirstFreeTests.cpp)
 target_include_directories(drwave246_poly_first_free_tests PRIVATE Source)
 add_test(NAME drwave246_poly_first_free COMMAND drwave246_poly_first_free_tests "${CMAKE_CURRENT_SOURCE_DIR}/Tests/ReferenceVectors")
