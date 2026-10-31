@@ -134,10 +134,14 @@ Los valores iniciales y el orden siguen explícitos. El [llamador polifónico co
 primera voz libre](drwave246-poly-first-free.md) ya contrasta selección, inicio
 ADSR/ganancia, activación y adición de lista dentro del original, incluidos flag,
 duplicados y aceptación parcial con Core bloqueado. La actividad libre sigue
-siendo entrada del ensayo; no completa asignador/cadencia. El siguiente tramo
-puede ampliar el llamador a voces ocupadas y robo/reinicio, sin mezclarlo con
-la consulta `0x01a863a8` reservada a la otra cuenta. Siguen pendientes otros
-modos, buffers iniciales, relevos, reloj, mezcla y salida.
+siendo entrada del ensayo; no completa asignador/cadencia. La [rama de voces
+ocupadas y solicitud de reinicio](drwave246-poly-steal.md) ya contrasta máximo
+signed32, primer empate, producción de pitch/velocidad pendientes y primera
+reasignación de lista, con rampa ADSR posterior. No recupera el consumidor de
+esos campos. La [consulta `0x01a863a8`](voice246-last-voice-query.md) también está
+contrastada por separado. La otra cuenta tiene reservado el despachador de
+retirada `0x01a85840`; no se duplica esa ruta. Siguen pendientes otros modos,
+buffers iniciales, relevos, reloj, mezcla y salida.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

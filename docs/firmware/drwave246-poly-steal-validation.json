@@ -1,0 +1,248 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "poly_caller": "0x01a84604",
+  "next_routine": "0x01a84ba0",
+  "path": "Poly selector zero with all voices busy and a nonnegative signed maximum age, or gate/duplicate early return.",
+  "constructor": "0x01a85014",
+  "setter": "0x01a8633c",
+  "activation": "0x01a84414",
+  "adsr_render": "0x01912128",
+  "records": 768,
+  "independent": 512,
+  "streams": 4,
+  "blocks_per_stream": 64,
+  "sample_positions": 98304,
+  "counts": {
+    "appended": 320,
+    "gated": 256,
+    "duplicates": 192,
+    "detached_owner": 247,
+    "duplicate_owners": 100,
+    "ties": 126,
+    "written_samples": 94720,
+    "preserved_samples": 3584
+  },
+  "image_bytes": 4568,
+  "input_bytes": 4880,
+  "output_bytes": 9500,
+  "regions": [
+    {
+      "address": "0x1dfe72c",
+      "bytes": 2576,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff8000d0",
+      "bytes": 664,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xffb00000",
+      "bytes": 224,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff801034",
+      "bytes": 776,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b60ef0",
+      "bytes": 128,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff802bc8",
+      "bytes": 8,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b60534",
+      "bytes": 8,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b6053c",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff8016d4",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaac0c",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaad14",
+      "bytes": 32,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x27fd9dc",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x18c2180",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1de4c3c",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1dfe4d8",
+      "bytes": 48,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1aaad68",
+      "bytes": 32,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaac40",
+      "bytes": 12,
+      "retained_in_stream": false
+    }
+  ],
+  "artifacts": {
+    "drwave246-poly-steal-input.bin": {
+      "bytes": 3747840,
+      "sha256": "4121bfcf259dda6b9992bb882403241697ef3c4e62bbcbfa4a0c5d6c7e968cb3"
+    },
+    "drwave246-poly-steal-output.bin": {
+      "bytes": 7297024,
+      "sha256": "abd7aeae4717f2285508fe1354bbca3e626ded095c47a40278347eaba5e90997"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/run-halfword-v2": "bb46511919cb7c87621de746d2f69a3a9b80d40f5a9065037a6f550fcc2cb8a5"
+  },
+  "limitations": [
+    "Original parent executes signed age selection and its restart/detach/append helper. First-free branch, other modes, present auxiliary modules, lazy ADSR init, invalid capacity and all-negative-age error paths excluded.",
+    "Original setters/constructor and ADSR rendering have explicit harness order. Activity, six age words and gate byte are supplied per call; no original aging, voice-free schedule or clock inferred.",
+    "List, pending state, levels/gains, other registers and RNG retained in streams except explicit activity/age/gate inputs. Pending words are produced, not consumed by a recovered handoff. No Dr. Wave audio render, pitch-buffer producer, scheduler, output or host integration.",
+    "Dr. Wave vtables are valid with other stress fields, not claimed render-ready objects. Firmware/instructions/ELF remain private."
+  ],
+  "busy_helper": {
+    "entry": "0x01a844d8",
+    "end_exclusive": "0x01a84604",
+    "scope": "Unmodified helper invoked by original parent; zero explicit pitch and notes 0..127 in this linked oracle."
+  },
+  "age_selection": {
+    "field": "ADSR offset 4",
+    "comparison": "signed32 maximum, strict greater than initial -1; first tie wins",
+    "all_negative_unique_note_path": "excluded original assertion path; C++ rejects before mutation"
+  },
+  "pending_fields": {
+    "offset12": "Prepared pitch from original note table and explicit tuning Q31, saturated shift 1",
+    "offset16": "Velocity low signed16 shifted/saturated 8, then uint16 shifted 16",
+    "preserved_before_render": [
+      "level",
+      "gain",
+      "Dr. Wave objects",
+      "VoiceCtl pitch/velocity/activity registers"
+    ],
+    "runtime_consumer": "Not recovered; no invented commit to pitch buffer."
+  },
+  "setter_table_snapshot": {
+    "address": "0x01dfe4d8",
+    "bytes": 48,
+    "stage": "After original setters and before constructor; table plus neighbors."
+  },
+  "table_supply": {
+    "poison_before_initializing_setters": true,
+    "initializing_setters_per_reset": 8,
+    "changing_setters_per_record": 1,
+    "direct_override_after_setters": false,
+    "valid_slots": [
+      0,
+      7
+    ],
+    "valid_adjustments": [
+      -4,
+      4
+    ],
+    "schedule": "Explicit harness order, not recovered boot/settings/dispatcher cadence."
+  },
+  "note_table": {
+    "source": "0x018c21b0",
+    "destination": "0x01dfe530",
+    "words": 128,
+    "copy_fragment_start": "0x01a86700",
+    "copy_fragment_end_exclusive": "0x01a8672e",
+    "copy_fragment_sha256": "f879c0b4703370e0a161b0981a550cb67034ff532a960da84043a210eacdc4d1",
+    "scope": "Original copy fragment plus own RTS, not complete initializer; full table captured before/after. Leading list neighbor 0x01dfe72c is note word 127."
+  },
+  "tuning": {
+    "index_address": "0x018c2184",
+    "explicit_index": 1200,
+    "coefficient_address": "0x027fd9e0",
+    "coefficient": "Explicit per-call input including zero, one, signs and extremes; no default calibration inferred."
+  },
+  "model": "GNU BF524 with both documented D-register/disjoint-halfword writeback patches; not hardware or pipeline validation",
+  "patches": {
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "research/blackfin/gnu-13.1-halfword-writeback.patch": "4d3cd3764d85bb4b3ff330358d8417a2928ad0e9daff755fe643477cdfde1cf3"
+  },
+  "source_sha256": {
+    "scripts/verify-drwave246-poly-steal.py": "0e4528fc1cfaea657a5a2bceb90b46aab679d98f49ee83209b244ec971d390e9",
+    "research/blackfin/drwave-poly-steal.s.in": "a679febb7861ee585327b9325bb8e5b99cb447b80882b71ea1171d864534fa81",
+    "Source/Envelope246.h": "08d0039239e1ffef2d503abe5b3493613161709ebaf14d0cb00015a0c4b7157c",
+    "Source/Voice246PolyRelease.h": "eabf2a47529f433914fa420b0a19e42156580356dfba53a3160f3adf86972bc9",
+    "Source/Voice246ReleaseSelectors.h": "249ca6bc77cb7669c9b2e57366d94a1e04b66ce71f31aa316fb7f37aa7bff10d",
+    "Source/Voice246NoteArgument.h": "41fab6c04fdb7f43814ae1757cbda7e2e8b137b98c9e773785770ca001d6707c",
+    "Source/DrWave246Activation.h": "af5f1bf35089f84575845eef6b933b3c9c47c1149255ad3d3204ff1459a4566e",
+    "Source/Voice246Activation.h": "49f7a1355d12d03e6e2abae15d954d3a15a96a5ade56c089d972cda2f337b4ce",
+    "Tests/DrWave246PolyStealTests.cpp": "ec55cefa2b61e9333c6852a753dd4079e6e5f25e01a5a3f17ad674b63430d847",
+    "Source/DrWave246PolySteal.h": "5513cfc0a3c6404455419295752ce54850c02fe61fe7b0767a03d42e453053b4",
+    "Source/Envelope246Transition.h": "c1fc3b8b7130d5816da36700c7725e2478d74488d9f699e9b9a9d733dd3c154f",
+    "scripts/verify-drwave246-poly-first-free.py": "205e68eef45249626a2e875e4a3c8d31308ec6cedfa041deff78278853cc7e1c",
+    "scripts/verify-voice246-release-selectors.py": "41bb051c93f1ff3f8c5f481d4683c917ecd21bc607310472228756e2f9ffaa03",
+    "scripts/verify-drwave246-note-event-chain.py": "32096c8d779a51306f42794b85149825f134714ff90701cff03b4969604df05d",
+    "scripts/verify-drwave246-adjusted-note-chain.py": "f74191d5bf47ef0b56846a99261bed9eafbb298ffad516fa1af695488111f542",
+    "Source/Voice246NoteAdjustment.h": "a34e64afcd0ba7ee1ece7fb602ad8f0a92009a8cc864e0e4e1c7616be5d587b3",
+    "Source/Voice246NoteTable.h": "fd5c365d39491eb4939f47f55f229113484aecb0d48347057457390a55959383",
+    "Source/DrWave246Routing.h": "cf94b002b0f16b0eab77332b2368fbe3e4f9c383d2959a1fe903282f0e89b9bd",
+    "Source/DrWave246.h": "a98063b94e23857d7863ea92b3ba35cbe82591ddcf7ebd654094bfaf00078aa6",
+    "Source/ReferenceDsp.h": "6f237e97236494636a71ae47582b4b9b0f75357176bdf102a45c87d230808acd",
+    "Source/Envelope246Tables.h": "94f6473d5fd63db6b590a73d5994cb25459318d32d136456577365ad01d1e3a0",
+    "research/blackfin/voice-control-input.ld": "9864cf545f1ae932ef54229c0bfa636a65066656ff125873bc1cf8d3dd5ce280",
+    "research/blackfin/parallel-halfword.s": "5774b7dbba69f10b60f5a2fce7796915dbe8ff641e455e3e5e9b6846abdedf7e"
+  },
+  "private_reproductions": {
+    "count": 2,
+    "inputs_identical": true,
+    "outputs_identical": true
+  },
+  "rea_inspection": {
+    "command": "inspect-with-objdump disassemble --symbol poly_steal_helper --format json",
+    "evidence_sha256": "886de268e66f1b34885259dd83e6985f8c1b464d2840d0425f4c3805d6962725",
+    "artifact_sha256": "0dc99d8ab5b0e88d46206765cf41bdd2cc037c0ca78b230b6e13bc8dd87a9dd3",
+    "exit_code": 0,
+    "output_truncated": false,
+    "artifact_changed": false,
+    "scope": "Complete helper, synthetic symbols; linked original parent executes the bounded busy-poly path. No decryption or numerical validation by REA."
+  },
+  "last_voice_regression": {
+    "verifier": "scripts/verify-voice246-last-voice-query.py",
+    "existing_fixtures_unchanged": true,
+    "private_evidence_sha256": "e741e9b15acc58b8702c4dd36953c410ca4a75c375f835c21b8e7bfd02496762"
+  },
+  "validation": {
+    "linux_core_suites": 49,
+    "linux_juce_suites": 51,
+    "asan_ubsan": "passed; detect_leaks=0 (ptrace restriction)",
+    "windows_macos": "not run locally; CI pending publication",
+    "daw_hardware": "not tested"
+  }
+}
