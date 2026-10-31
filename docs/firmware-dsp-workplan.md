@@ -159,8 +159,15 @@ activación](voice246-note-dispatch.md) contrasta discriminador cero con metadat
 cero: indicador byte, normalización de velocidad -1 y copia local antes de gate/
 duplicados interiores. La metadata 1 del constructor habitual y su notificación
 no se sustituyen por ese contexto acotado.
-La otra cuenta reserva **selector polifónico 0 con pitch explícito no cero**,
-en `collab/drwave-poly-explicit-pitch`; aquí se usa pitch cero.
+El [pitch explícito del selector polifónico 0](drwave246-poly-explicit-pitch.md)
+ya está contrastado en PR #32, tanto libre como ocupado, sin desviación RNG.
+La [composición con metadata 1 y salida explícitamente cero](voice246-quiet-note-lifecycle.md)
+ya ejecuta constructor, ambos dispatchers, notificaciones y ADSR con mapa/estado
+retenidos, sin borrar metadata ni inventar transporte. Se contrasta actualización
+del mapa incluso con on bloqueado/duplicado o retirada ausente; la palabra cero
+no se presenta como configuración de fábrica.
+La otra cuenta reserva **acceso/inicialización diferida del pool ADSR**,
+`0x0191264c..0x019126d8`, en `collab/adsr246-lazy-pool`. Aquí el pool sigue ready=1.
 Siguen pendientes buffers iniciales, consumidor de pendientes, reloj, mezcla y salida.
 
 ## Cluster rev246: conservado con dependencias bloqueadas

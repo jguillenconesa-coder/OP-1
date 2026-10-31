@@ -684,3 +684,22 @@ Imagen compartida de 4.568 bytes, argumento fuente/guardas 32 y copia local 16.
 Incluye normalización de velocidad full-word -1, indicador byte y padding local
 preservado. Sin constructor, notificación o render.
 [Contrato y formato](../../docs/voice246-note-dispatch.md).
+
+
+## Dr. Wave poly explicit pitch rev246
+
+`drwave246-poly-explicit-pitch-input.bin` / `drwave246-poly-explicit-pitch-output.bin`
+contrastan 4.552 entradas completas del selector 0 con palabra de pitch no cero,
+voz libre/ocupada y retornos tempranos (PR #32). Regiones y formato propio en
+[este documento](drwave246-poly-explicit-pitch-format.md); contrato en
+[las notas DSP](../../docs/drwave246-poly-explicit-pitch.md).
+
+## VoiceCtl quiet notified lifecycle rev246
+
+`voice246-quiet-note-lifecycle-input.bin` / `voice246-quiet-note-lifecycle-output.bin`
+usan 1.536 registros de 5.072 / 9.900 bytes; salida con tabla de 512 antes/después.
+Constructor con metadata 1, dispatchers exteriores on/off, notificación con palabra
+de salida cero y ADSR explícito. Mapa, lista, actividad, pools y RNG retenidos;
+gate interior suministrado por evento y cero en off. Dos imágenes de 4.760 bytes,
+argumento, ajustes, audio/guardas, retorno y copia local previa al render. Sin
+transporte habilitado ni scheduler. [Contrato](../../docs/voice246-quiet-note-lifecycle.md).

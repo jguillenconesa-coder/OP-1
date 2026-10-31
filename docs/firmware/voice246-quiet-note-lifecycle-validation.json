@@ -1,0 +1,326 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "entries": [
+    "0x01a85750",
+    "0x01a85840"
+  ],
+  "notification_entries": [
+    "0x019e2e64",
+    "0x019e2dc0"
+  ],
+  "output_getter": "0x01a69360..0x01a6936c",
+  "output_word": "0x01dfe03c",
+  "explicit_output_word": 0,
+  "context": "Original constructor metadata 1, full outer on/off, initialized pools, selectors 1-3, output word zero. No notification transport or erased metadata.",
+  "records": 1536,
+  "streams": 12,
+  "blocks_per_stream": 128,
+  "counts": {
+    "on": 768,
+    "off": 768,
+    "appended": 432,
+    "gated": 192,
+    "duplicates": 144,
+    "removed": 432,
+    "absent": 336,
+    "empty_on": 336,
+    "held_on": 432,
+    "map_changes": 999
+  },
+  "image_bytes": 4760,
+  "input_bytes": 5072,
+  "output_bytes": 9900,
+  "regions": [
+    {
+      "address": "0x1dfe72c",
+      "bytes": 2576,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff8000d0",
+      "bytes": 664,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xffb00000",
+      "bytes": 224,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff801034",
+      "bytes": 776,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b60ef0",
+      "bytes": 128,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff802bc8",
+      "bytes": 8,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b60534",
+      "bytes": 8,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b6053c",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff8016d4",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaac0c",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaad14",
+      "bytes": 32,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x27fd9dc",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x18c2180",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1de4c3c",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1dfe4d8",
+      "bytes": 48,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1aaad68",
+      "bytes": 32,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaac40",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aafd5c",
+      "bytes": 136,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1aadb1c",
+      "bytes": 40,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x18b600c",
+      "bytes": 4,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1dfe038",
+      "bytes": 12,
+      "retained_in_stream": true
+    }
+  ],
+  "artifacts": {
+    "voice246-quiet-note-lifecycle-input.bin": {
+      "bytes": 7790592,
+      "sha256": "7955bd10864a3e5bc5db1765d8b4d9cca3b2490bd9ac7b3d8f4d77d786bb2345"
+    },
+    "voice246-quiet-note-lifecycle-output.bin": {
+      "bytes": 15207424,
+      "sha256": "bbf679b91caff4938f863b3ab7925c2304912366ae1796ba5662610b1ebd4ca6"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/run-halfword-v2": "bb46511919cb7c87621de746d2f69a3a9b80d40f5a9065037a6f550fcc2cb8a5"
+  },
+  "model": "GNU BF524 with both documented writeback patches; not hardware or pipeline validation",
+  "limitations": [
+    "Event order, controls/tuning/selection and ADSR render voice/volume explicit; no recovered scheduler or host integration.",
+    "List, activity, registers, pools, RNG, notification map, output word and monitor sentinels retained within each sequence; inner gate explicit per event and zero for off.",
+    "Output word zero is a supplied precondition, not a factory default. No packet preparation, actual transport, pending-field consumer or pitch-buffer producer."
+  ],
+  "pc_watches": [
+    "0x01a84690",
+    "0x019e2ebe",
+    "0x019e2f2c",
+    "0x019e2e00",
+    "0x019e0d18",
+    "0x01919aa8",
+    "0x01a857d0",
+    "0x01a85890",
+    "0x01a8589e",
+    "0xffa00000,0xffafffff"
+  ],
+  "pc_watch_probe_exit_codes": [
+    0,
+    5,
+    5,
+    5
+  ],
+  "pc_watch_original_run_exit_code": 0,
+  "source_sha256": {
+    "scripts/verify-voice246-quiet-note-lifecycle.py": "dd71ae8ace125849df11d4de03445fa5b595e9a5632ad78f1a533ef2cac37b89",
+    "research/blackfin/voice-quiet-note-lifecycle.s.in": "5adfae7871a3119f27a61d5e9304e0de55e70c02d8ac936f005694c7c96ca13a",
+    "Source/DrWave246NoteModes.h": "da67e0b2763239e6d8311ba8250be14d2d2b77eec3f96c7d2196ab0ba4f5349f",
+    "Source/DrWave246HeldNoteModes.h": "6edfca56633809c17b8f2c0385456d3bde22cf3248c225193bcd742746373ed9",
+    "Source/Voice246QuietNoteDispatch.h": "4e1070a5713c03d0e38a2a59f1124f648528384c38978c6bb02f788729d122c9",
+    "Source/Voice246NoteDispatch.h": "a8f601446f8ecbdcf614190b23cacbc9f0a45df45ea90b4027983b47064fcc40",
+    "Tests/Voice246QuietNoteLifecycleTests.cpp": "87ab89a84bfe7ff30c6877efbf60b5925e84c163f8d02186be6b0a467750d12e",
+    "scripts/verify-drwave246-note-lifecycle.py": "19fdefa56813ef905c4067422ade0236a95f5e2e29f31394393641fa605f0a07",
+    "scripts/verify-drwave246-poly-first-free.py": "205e68eef45249626a2e875e4a3c8d31308ec6cedfa041deff78278853cc7e1c",
+    "scripts/verify-drwave246-adjusted-note-chain.py": "f74191d5bf47ef0b56846a99261bed9eafbb298ffad516fa1af695488111f542",
+    "scripts/verify-drwave246-note-event-chain.py": "32096c8d779a51306f42794b85149825f134714ff90701cff03b4969604df05d",
+    "scripts/verify-voice246-release-selectors.py": "41bb051c93f1ff3f8c5f481d4683c917ecd21bc607310472228756e2f9ffaa03",
+    "Source/Cluster246.h": "b4201d47d4a25a18a4ac6b38b9ecaf077373dfc4eabdd986986b32367733e135",
+    "Source/Cluster246Activation.h": "5b39abdb5a07a215deaa399ca55c6eedb449e84ef08c926c03f8251d975f2879",
+    "Source/Cluster246Routing.h": "690c8dd956be29103cfc32ec481f4efcfc4b900afd72c3dc06eb54b055498131",
+    "Source/ControlEnvelope246.h": "0e2b64d4b8879cf83c127d3bf2deaa82e12fba0d791a479f07bf4b17021aa169",
+    "Source/ControlEnvelope246Mode.h": "fd66d21e1167813900530386aeb7f88e6fd6ab9b33ef9835e99d8c197886d521",
+    "Source/ControlPitch246.h": "738524bbf636c48d25b255a97ad74e6585ab8e37ce15d528644873c41d350576",
+    "Source/ControlVolume246.h": "cd718282c95a0dd72e6df48c41c9f4c5b2d5990b4f8976fc042b05ac142129af",
+    "Source/Digital246.h": "04812199cca6ff40f270523ce2af32af0f461c430914e7c8b0201fc248f1396b",
+    "Source/Digital246Presets.h": "7e87facad5e5fef04cf0dfd61bc1e6ee4055bc01b1636ffe6f8180e18334cdea",
+    "Source/Digital246Voice.h": "975c7eaea09bbe47f146a3784bdad929d86ac3ca030f3d032d5233c3a6580991",
+    "Source/DrWave246.h": "a98063b94e23857d7863ea92b3ba35cbe82591ddcf7ebd654094bfaf00078aa6",
+    "Source/DrWave246Activation.h": "af5f1bf35089f84575845eef6b933b3c9c47c1149255ad3d3204ff1459a4566e",
+    "Source/DrWave246ControlInstrument.h": "8aa83f94fb5ad8b74a52ac84b8e62255ebfad64bc46848fcb40a64adc5208517",
+    "Source/DrWave246Kernel.h": "31699ebf42c9705cbe7ed90f53b4c33033e9a0e46052c842b2344eeb24739bbb",
+    "Source/DrWave246MixedControl.h": "24b52045bd4529a29d213b9350537ca457e230abc326c9c0bc9a1eeba3bcac4e",
+    "Source/DrWave246PitchRefresh.h": "35036f828a2521c14b7df69011e979ba2ae23178f4768ff0cccb3a53fc1a06e7",
+    "Source/DrWave246Routing.h": "cf94b002b0f16b0eab77332b2368fbe3e4f9c383d2959a1fe903282f0e89b9bd",
+    "Source/DrWave246Spectral.h": "a216f1fdd92b1512e7e9968b7096fa1b83f00163fb221995b6b355ba1cd7402d",
+    "Source/DrWave246WaveBank.h": "001316372cb37a05cb2286da761c99472c94ba2629407d626cf57786f21bc4d5",
+    "Source/DrWave246WaveTransform.h": "4a978bbea471ef60ccfab83213a1977553af14bcc28d7209bd30066cb505d4a3",
+    "Source/Envelope246.h": "08d0039239e1ffef2d503abe5b3493613161709ebaf14d0cb00015a0c4b7157c",
+    "Source/Envelope246Tables.h": "94f6473d5fd63db6b590a73d5994cb25459318d32d136456577365ad01d1e3a0",
+    "Source/Envelope246Transition.h": "c1fc3b8b7130d5816da36700c7725e2478d74488d9f699e9b9a9d733dd3c154f",
+    "Source/Fractional246.h": "ea523c878ddf3caaec9c46d5073be38f4dbab357a291552693a978880a22604b",
+    "Source/Phase246.h": "7c73a8ce25fc61231050ab142f6291ee1c9239c7ad799c9567a1a3cce02e3938",
+    "Source/Phase246Envelopes.h": "32029150550a1469dd586f25658c19f925f3f581ac9efdc38b807f6c6962260e",
+    "Source/Phase246Presets.h": "b39aa55a25848718b488f7977147e03280d698ea5377afc13c06b6629c5e0c0d",
+    "Source/Punch246.h": "95f1643afd75b41ded25a0d9d25f929208ad3a0e25cf5e8b5d27d3912c175dad",
+    "Source/Punch246Effect.h": "37627fabb62f8fb0837ba5d7b83a9955e4670c5cb8c87513af6bfdc9abeda016",
+    "Source/Punch246Presets.h": "ec0f32defc259253b236a38d5887d8afd47182d85ea083ef7c9db137a6c9e575",
+    "Source/Punch246Tables.h": "7bd3793fff30d025374edf7217a6c35761db994ba4082d14cf9b82e200622248",
+    "Source/Value246.h": "2ed22967c1bec2776fe4f77946b2bf28f0f281fa680e95f4a2bfa4641d75b6a6",
+    "Source/Value246Fx.h": "2ec14f352b7e2e76fe1e16104aab57598229a72fbaa494636ebe0b789531cec1",
+    "Source/Value246Ranges.h": "fbca9060b3f2028ff2847a3a9e065e4de3d6b61141ef3f24b6b9637c6abafd6d",
+    "Source/ValueVoice246.h": "af23edd20d72d17426ff2974b48a407d1956596c935429b719016dd96542d649",
+    "Source/ValueVoice246Control.h": "871cd6ab6ddeee545bcaaa3d19871d97555244f7339f688df5f28184415e2ba3",
+    "Source/ValueVoice246Ranges.h": "6024ca4e7360af9ac966e1f9455be1468ef1d043ec5eecb9d2f82a5d4cdd3681",
+    "Source/Voice246Activation.h": "49f7a1355d12d03e6e2abae15d954d3a15a96a5ade56c089d972cda2f337b4ce",
+    "Source/Voice246ControlInput.h": "5ba4951913c50e7ca1731960d3e65e8e5a01619ca289b749f28add2e6d6648a3",
+    "Source/Voice246NoteTable.h": "fd5c365d39491eb4939f47f55f229113484aecb0d48347057457390a55959383",
+    "Source/Voice246PitchBend.h": "2b63b17d85922e20152fe9705d0d96ea3a6fa697c1e522b73a01779aee0e2141",
+    "Source/Voice246PitchUpdate.h": "7dcbcd05cd415e4c84eb6422cb6b6d4bd2c2684a1fe1924b71905615ad34939f",
+    "Source/Voice246TuningIndex.h": "95fb21e101764f9589341223e221dc98b760fc084e802fab4f38746a7f00d4f9",
+    "Source/Voice246TuningTable.h": "321d8a90e893f9972929f1d0aff64b0ccf7849b8367b5ab8c19bbfabd47cf89f",
+    "Source/Voice246ReleaseSelectors.h": "249ca6bc77cb7669c9b2e57366d94a1e04b66ce71f31aa316fb7f37aa7bff10d",
+    "Source/DrWave246PolyExplicitPitch.h": "635afc8ab59b9c1ec403c71affd5a3b1d6fed8dbe9489649e0a7eb170063ddf4",
+    "Source/Voice246NoteArgument.h": "41fab6c04fdb7f43814ae1757cbda7e2e8b137b98c9e773785770ca001d6707c",
+    "Source/DrWave246PolyFirstFree.h": "d37d687b3b69d6463d129362e6fe6485caa75e96975ded9c1b5ff33476d56acc",
+    "Source/DrWave246EmptyExplicitPitch.h": "300adfd59e90ea59778956cebd5d29b5d857c657daf7a554071cfc31891cb5fc",
+    "Source/Voice246ReleaseDispatch.h": "69b23e1aa531d712911aed2018e96a1c848888fc1fda0f8c1521413b58c0cd74",
+    "Source/Voice246PolyRelease.h": "eabf2a47529f433914fa420b0a19e42156580356dfba53a3160f3adf86972bc9",
+    "Source/Voice246NoteAdjustment.h": "a34e64afcd0ba7ee1ece7fb602ad8f0a92009a8cc864e0e4e1c7616be5d587b3",
+    "Source/DrWave246ControlDispatch.h": "299538659ee87dc57e13b910344bb7f25343683255d97de63361a0fbdf9851bb",
+    "Source/DrWave246PolySteal.h": "5513cfc0a3c6404455419295752ce54850c02fe61fe7b0767a03d42e453053b4",
+    "Source/Voice246LastVoiceQuery.h": "505cc5310666ee88fd29c6ff6ee9d493bba79d85254620fa338b79a20f6b9911",
+    "Source/Core246ControlWorkspace.h": "7f7d54258fc20164aedfd8a7642a2d5c8b9d775c29bee24db985dfa03e26284f"
+  },
+  "patches": {
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "research/blackfin/gnu-13.1-halfword-writeback.patch": "4d3cd3764d85bb4b3ff330358d8417a2928ad0e9daff755fe643477cdfde1cf3"
+  },
+  "base_main": "41ad48b",
+  "validation": {
+    "linux_core_suites": 57,
+    "linux_full_juce_suites": 59,
+    "asan_ubsan": "pass, detect_leaks=0 due to ptrace restriction",
+    "windows": "pending native CI, not run locally",
+    "macos": "pending native CI, not run locally",
+    "hardware_daw": "not tested"
+  },
+  "reproductions": [
+    {
+      "inputs.bin": "7955bd10864a3e5bc5db1765d8b4d9cca3b2490bd9ac7b3d8f4d77d786bb2345",
+      "output.bin": "bbf679b91caff4938f863b3ab7925c2304912366ae1796ba5662610b1ebd4ca6"
+    },
+    {
+      "inputs.bin": "7955bd10864a3e5bc5db1765d8b4d9cca3b2490bd9ac7b3d8f4d77d786bb2345",
+      "output.bin": "bbf679b91caff4938f863b3ab7925c2304912366ae1796ba5662610b1ebd4ca6"
+    }
+  ],
+  "comparator_counts": {
+    "map_changes": 999,
+    "setter_calls": 1632,
+    "adsr_written_positions": 156032,
+    "adsr_preserved_positions": 40576,
+    "original_metadata": 1,
+    "raw_zero_velocity_on": 96,
+    "raw_sentinel_velocity_on": 96
+  },
+  "local_copy": {
+    "bytes": 16,
+    "capture": "After event, before ADSR render",
+    "address": "0x02ffffe8",
+    "own_frame_probe_sha256": "d375eca5121e61cc6abdf37ce73eb6a9263bc7552eccb2d5be033059dffbea2f",
+    "padding_initial": [
+      119,
+      102,
+      85
+    ]
+  },
+  "pr32_independent_review": {
+    "records": 4552,
+    "fixtures_matched": true,
+    "output_sha256": "afe51b5b1f9a2cab662ac66a6991ccb07c56a8523078a803bb78735bad4a7d24"
+  },
+  "rea": {
+    "version": "6.8.0",
+    "role": "inspection only, synthetic function symbols",
+    "elf_sha256": "ad10b6cba7e5976f70a2f4f0a2fa7fe278b00044187ad7501beb395fd7b7488a",
+    "observations": [
+      {
+        "symbol": "notify_on",
+        "sha256": "63bed365a9203d77b4cb27f838ee6110caa45bef2318598ebf2794d09ab23f28",
+        "exit_code": 0,
+        "output_truncated": false,
+        "artifact_changed": false
+      },
+      {
+        "symbol": "notify_off",
+        "sha256": "b9829dee74b437feb2e80f18b3648a61fddda41adbd3a3d654b715fec2cf1399",
+        "exit_code": 0,
+        "output_truncated": false,
+        "artifact_changed": false
+      },
+      {
+        "symbol": "output_gate",
+        "sha256": "13262e3d1a02cc5798c8cbc3bf2cc12f0d7d52ea9bc769ef2562446d44fce033",
+        "exit_code": 0,
+        "output_truncated": false,
+        "artifact_changed": false
+      }
+    ]
+  }
+}
