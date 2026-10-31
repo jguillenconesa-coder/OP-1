@@ -153,8 +153,14 @@ reinicio pendiente y conservan actividad. La [composición de eventos con estado
 retenido](drwave246-note-lifecycle.md) contrasta activación/duplicados/retirada y
 ADSR sin reponer lista ni actividad entre eventos. El orden sigue siendo del
 harness y retirar la última nota no se sustituye por una limpieza de actividad.
-La otra cuenta tiene reservado **pitch explícito no cero con lista vacía**, en
-`collab/drwave-empty-explicit-pitch`; este ensayo usa el cero del constructor.
+El [pitch explícito no cero con lista vacía](drwave246-empty-explicit-pitch.md)
+ya está contrastado en PR #31 para selectores 1–3. El [despacho exterior de
+activación](voice246-note-dispatch.md) contrasta discriminador cero con metadata
+cero: indicador byte, normalización de velocidad -1 y copia local antes de gate/
+duplicados interiores. La metadata 1 del constructor habitual y su notificación
+no se sustituyen por ese contexto acotado.
+La otra cuenta reserva **selector polifónico 0 con pitch explícito no cero**,
+en `collab/drwave-poly-explicit-pitch`; aquí se usa pitch cero.
 Siguen pendientes buffers iniciales, consumidor de pendientes, reloj, mezcla y salida.
 
 ## Cluster rev246: conservado con dependencias bloqueadas

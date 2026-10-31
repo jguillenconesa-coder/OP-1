@@ -665,3 +665,22 @@ se retienen, sin overrides por evento. Dos imágenes de 4.748 bytes, argumento,
 snapshot de ajustes, audio/guardas y retorno. Mapa de notificación vacío; orden
 y render explícitos, sin scheduler ni consumidor L1.
 [Contrato y formato](../../docs/drwave246-note-lifecycle.md).
+
+
+## Dr. Wave empty-list explicit pitch rev246
+
+`drwave246-empty-explicit-pitch-input.bin` / `drwave246-empty-explicit-pitch-output.bin`
+contrastan 3.462 llamadas de lista vacía/selectores 1–3, incluidas comparaciones
+con lookup (PR #31). Sin render. Regiones y formato propio en
+[este documento](drwave246-empty-explicit-pitch-format.md); contrato en
+[las notas DSP](../../docs/drwave246-empty-explicit-pitch.md).
+
+## VoiceCtl outer note dispatcher rev246
+
+`voice246-note-dispatch-input.bin` / `voice246-note-dispatch-output.bin` usan
+1.536 registros de 4.608 / 4.616 bytes; salida con tabla de notas de 512 bytes
+antes/después. Discriminador cero, metadata/pitch cero, selectores 1–3.
+Imagen compartida de 4.568 bytes, argumento fuente/guardas 32 y copia local 16.
+Incluye normalización de velocidad full-word -1, indicador byte y padding local
+preservado. Sin constructor, notificación o render.
+[Contrato y formato](../../docs/voice246-note-dispatch.md).

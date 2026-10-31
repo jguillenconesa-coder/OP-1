@@ -1,0 +1,81 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own caller of complete outer dispatcher; metadata zero. No render/transport.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+CALL original_note_copy;
+R0.H = note_args;
+R0.L = note_args;
+P0 = 5;
+EXCPT 0;
+P4.H = inputs;
+P4.L = inputs;
+P5.H = results;
+P5.L = results;
+record_loop:
+@LOAD@
+P1.H = local_initial;
+P1.L = local_initial;
+imm32 P2, 0x02ffffe8
+P3 = 4;
+LSETUP(local_in,local_in_end) LC0 = P3;
+local_in: R0 = [P1++];
+local_in_end: [P2++] = R0;
+R0 = P4;
+R0 += 16;
+R1 = [P4+12];
+imm32 P0, 0x01a85750
+CALL (P0);
+@SAVE@
+// Argument plus both eight-byte guards, unchanged even on early returns.
+P1 = P4;
+P1 += 8;
+P2 = P5;
+P3 = 8;
+LSETUP(argument_out,argument_out_end) LC0 = P3;
+argument_out: R0 = [P1++];
+argument_out_end: [P2++] = R0;
+imm32 P1, 0x02ffffe8
+P3 = 4;
+LSETUP(local_out,local_out_end) LC0 = P3;
+local_out: R0 = [P1++];
+local_out_end: [P2++] = R0;
+P5 = P2;
+P0 = @RECORD@;
+P4 = P4 + P0;
+R0 = P4;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF CC JUMP done;
+JUMP.L record_loop;
+done:
+R0.H = args;
+R0.L = args;
+P0 = 5;
+EXCPT 0;
+R0.H = note_args;
+R0.L = note_args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.align 4
+original_note_copy:
+.incbin "@WORK@/sdram.bin", 0x00a86700, 0x2e
+RTS;
+.data
+.align 4
+note_args: .long 1,0x01dfe530,512
+args: .long 1,results,@BYTES@
+local_initial: .long 0x11223344,0xdeadbeef,0x55667788,0xa5a5a5a5
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin",0,0xa85750
+.global note_dispatch_original
+.type note_dispatch_original, STT_FUNC
+note_dispatch_original:
+.incbin "@WORK@/sdram.bin",0xa85750,0xf0
+.size note_dispatch_original,.-note_dispatch_original
+.incbin "@WORK@/sdram.bin",0xa85840
