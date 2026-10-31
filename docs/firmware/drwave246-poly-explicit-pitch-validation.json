@@ -1,0 +1,559 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "routines": {
+    "free_helper": {
+      "entry": "0x1a84414",
+      "end_exclusive": "0x1a844d8",
+      "bytes": 196,
+      "routine_sha256": "22e6a72e7962a3225a40423a7611ec23875e84e9acf5b4b63062a94dd0cd6091"
+    },
+    "busy_helper": {
+      "entry": "0x1a844d8",
+      "end_exclusive": "0x1a84604",
+      "bytes": 300,
+      "routine_sha256": "7509b8eb306599fc32d51a976b0ddcea493252b5e03259a78a6d8c0ed1540b7a"
+    },
+    "caller": {
+      "entry": "0x1a84604",
+      "end_exclusive": "0x1a84ba0",
+      "bytes": 1436,
+      "routine_sha256": "8f2f6eddecb16164ba3d7f3b0325c7e869f5843a28a4ee4733438f70cb502e09"
+    }
+  },
+  "records": 4552,
+  "independent": 4168,
+  "streams": 6,
+  "calls_per_stream": 64,
+  "matrix_records": 3976,
+  "pitch_words": [
+    "0x1",
+    "0x2",
+    "0x4",
+    "0x8",
+    "0x10",
+    "0x20",
+    "0x40",
+    "0x80",
+    "0x100",
+    "0x200",
+    "0x400",
+    "0x800",
+    "0x1000",
+    "0x2000",
+    "0x4000",
+    "0x8000",
+    "0x10000",
+    "0x20000",
+    "0x40000",
+    "0x80000",
+    "0x100000",
+    "0x200000",
+    "0x400000",
+    "0x800000",
+    "0x1000000",
+    "0x2000000",
+    "0x4000000",
+    "0x8000000",
+    "0x10000000",
+    "0x20000000",
+    "0x40000000",
+    "0x80000000",
+    "0xfffffffe",
+    "0xfffffffd",
+    "0xfffffffb",
+    "0xfffffff7",
+    "0xffffffef",
+    "0xffffffdf",
+    "0xffffffbf",
+    "0xffffff7f",
+    "0xfffffeff",
+    "0xfffffdff",
+    "0xfffffbff",
+    "0xfffff7ff",
+    "0xffffefff",
+    "0xffffdfff",
+    "0xffffbfff",
+    "0xffff7fff",
+    "0xfffeffff",
+    "0xfffdffff",
+    "0xfffbffff",
+    "0xfff7ffff",
+    "0xffefffff",
+    "0xffdfffff",
+    "0xffbfffff",
+    "0xff7fffff",
+    "0xfeffffff",
+    "0xfdffffff",
+    "0xfbffffff",
+    "0xf7ffffff",
+    "0xefffffff",
+    "0xdfffffff",
+    "0xbfffffff",
+    "0x7fffffff",
+    "0xffffffff",
+    "0x3fffffff",
+    "0x40000001",
+    "0xc0000000",
+    "0xc0000001",
+    "0x7ffffffe",
+    "0x80000001"
+  ],
+  "tuning_words": [
+    "0x0",
+    "0x1",
+    "0x7fffffff",
+    "0x80000000",
+    "0xffffffff",
+    "0x40000000",
+    "0xc0000000"
+  ],
+  "coverage": {
+    "counts": {
+      "free": 2132,
+      "busy": 2132,
+      "gated": 144,
+      "duplicate": 144,
+      "accepted": 1066,
+      "blocked": 1066,
+      "detached": 1605,
+      "duplicate_owners": 541,
+      "tied": 850,
+      "early_all_negative": 288
+    },
+    "free_voices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "victims": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "entry_lengths": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128
+    ],
+    "pitch_patterns": 71,
+    "lookup_invariant_pairs": 1988,
+    "busy_core_invariant_pairs": 497,
+    "rng_unchanged_all_calls": true
+  },
+  "image_bytes": 4568,
+  "input_record_bytes": 5120,
+  "output_record_bytes": 5112,
+  "regions": [
+    {
+      "address": "0x1dfe72c",
+      "bytes": 2576,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff8000d0",
+      "bytes": 664,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xffb00000",
+      "bytes": 224,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff801034",
+      "bytes": 776,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b60ef0",
+      "bytes": 128,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff802bc8",
+      "bytes": 8,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b60534",
+      "bytes": 8,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b6053c",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff8016d4",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaac0c",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaad14",
+      "bytes": 32,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x27fd9dc",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x18c2180",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1de4c3c",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1dfe4d8",
+      "bytes": 48,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1aaad68",
+      "bytes": 32,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaac40",
+      "bytes": 12,
+      "retained_in_stream": false
+    }
+  ],
+  "artifacts": {
+    "drwave246-poly-explicit-pitch-input.bin": {
+      "bytes": 23306240,
+      "sha256": "35634bcdc812f8ea18261dfa3059d43d1e14a6f09b1d80bea4c40cf1b3d650bc"
+    },
+    "drwave246-poly-explicit-pitch-output.bin": {
+      "bytes": 23269824,
+      "sha256": "afe51b5b1f9a2cab662ac66a6991ccb07c56a8523078a803bb78735bad4a7d24"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-note-argument-validated/bin/bfin-elf-as": "fe8b5fdb8b5c6e500f47dc6ae38b629cb391795c1e368a04279619890a6f2d27",
+    "/workspace/blackfin-note-argument-validated/bin/bfin-elf-ld": "3c9406274b737202a5fe4f54951dcfc94c869e99109943264dc61d29a3910905",
+    "/workspace/blackfin-note-argument-validated/bin/run-parallel": "dff51f542fc86f5f4dd220c2dbfe044411188a8108c96378f3cbdd7ce77db32f"
+  },
+  "patches": {
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "research/blackfin/gnu-13.1-halfword-writeback.patch": "4d3cd3764d85bb4b3ff330358d8417a2928ad0e9daff755fe643477cdfde1cf3"
+  },
+  "source_sha256": {
+    "scripts/verify-drwave246-poly-explicit-pitch.py": "a298d516eb5d73d46a5f4e5f9cc03c687ce7137f15ead89eabe8e14578864db3",
+    "research/blackfin/drwave-poly-explicit-pitch.s.in": "2b6cedff67dadcfa755fcf904d2bc8d6d2c9da22acd3503c8bbf79d223f51777",
+    "Source/DrWave246PolyExplicitPitch.h": "635afc8ab59b9c1ec403c71affd5a3b1d6fed8dbe9489649e0a7eb170063ddf4",
+    "Tests/DrWave246PolyExplicitPitchTests.cpp": "0ce5fbe0f2d30f449baef0e4cd3b116b79c36545f478e52927cbbbf912ead53a",
+    "scripts/verify-drwave246-held-note-modes.py": "0b117d17464c59098e5263d5b1e077ea039219d421e5d46021e404f23c19d03f",
+    "scripts/verify-drwave246-empty-explicit-pitch.py": "ae41e3970ee8e92f42ca6f0144aa5fc79c23ace9f360cd515a84488962e1723b",
+    "scripts/verify-drwave246-poly-first-free.py": "205e68eef45249626a2e875e4a3c8d31308ec6cedfa041deff78278853cc7e1c",
+    "scripts/verify-drwave246-adjusted-note-chain.py": "f74191d5bf47ef0b56846a99261bed9eafbb298ffad516fa1af695488111f542",
+    "scripts/verify-drwave246-note-event-chain.py": "32096c8d779a51306f42794b85149825f134714ff90701cff03b4969604df05d",
+    "scripts/verify-voice246-release-selectors.py": "41bb051c93f1ff3f8c5f481d4683c917ecd21bc607310472228756e2f9ffaa03",
+    "Source/DrWave246Activation.h": "af5f1bf35089f84575845eef6b933b3c9c47c1149255ad3d3204ff1459a4566e",
+    "Source/DrWave246Routing.h": "cf94b002b0f16b0eab77332b2368fbe3e4f9c383d2959a1fe903282f0e89b9bd",
+    "Source/DrWave246Kernel.h": "31699ebf42c9705cbe7ed90f53b4c33033e9a0e46052c842b2344eeb24739bbb",
+    "Source/DrWave246.h": "a98063b94e23857d7863ea92b3ba35cbe82591ddcf7ebd654094bfaf00078aa6",
+    "Source/Voice246Activation.h": "49f7a1355d12d03e6e2abae15d954d3a15a96a5ade56c089d972cda2f337b4ce",
+    "Source/Voice246NoteArgument.h": "41fab6c04fdb7f43814ae1757cbda7e2e8b137b98c9e773785770ca001d6707c",
+    "Source/Voice246PolyRelease.h": "eabf2a47529f433914fa420b0a19e42156580356dfba53a3160f3adf86972bc9",
+    "Source/Envelope246Transition.h": "c1fc3b8b7130d5816da36700c7725e2478d74488d9f699e9b9a9d733dd3c154f",
+    "Source/Envelope246.h": "08d0039239e1ffef2d503abe5b3493613161709ebaf14d0cb00015a0c4b7157c",
+    "Source/Envelope246Tables.h": "94f6473d5fd63db6b590a73d5994cb25459318d32d136456577365ad01d1e3a0",
+    "Source/ReferenceDsp.h": "6f237e97236494636a71ae47582b4b9b0f75357176bdf102a45c87d230808acd"
+  },
+  "pc_watches": [
+    "0x01a847e6",
+    "0x01a85750",
+    "0x01a84450,0x01a8445d",
+    "0x01a84504,0x01a84511",
+    "0x01919aa8",
+    "0xffa00000,0xffafffff"
+  ],
+  "model": "GNU BF524 with both documented writeback patches; no hardware/timing claim",
+  "limits": [
+    "Only complete caller selector0 with nonzero explicit pitch, raw note0..127, six ADSR ready, outer mode0 and absent auxiliary modules.",
+    "New entry at count128, all-negative busy ages when selection is reached, lazy init and other modes are excluded before simulation. Own adapter guards are not original assertion returns.",
+    "Arguments, activity, ages, tuning, lookup table and order are explicit; lists and other selected state carry in streams. No original allocator/scheduler or cadence inferred.",
+    "No constructor, outer dispatcher, release, ADSR/audio render, pending-field consumer or plugin integration. Register/pending writes do not establish render-buffer control.",
+    "Only selected shared RAM regions plus table/arguments/guards monitored; no complete CPU/stack/hardware claim. Firmware/instructions/disassembly/ELF private."
+  ],
+  "inspection": {
+    "rea_parent": {
+      "version": "6.8.0",
+      "command": "inspect-with-objdump",
+      "provider": "gnu.objdump",
+      "symbol": "poly_explicit_original_caller (synthetic)",
+      "private_evidence_sha256": "350b00169777eb0b0b33a0cd0c0b11a23c2b029893c563c95f5042f09126cb39",
+      "exit_code": 0,
+      "completion_status": "complete",
+      "output_truncated": false,
+      "artifact_changed": false
+    },
+    "failed_rea_helper_attempt": {
+      "symbol": "poly_explicit_free_helper",
+      "completed": false,
+      "error_code": "cleanup_incomplete",
+      "reason": "process ownership token could not be read for 2 live process(es): environment_errno_EACCES=2; live candidates 33901=environment_errno_EACCES, 33903=environment_errno_EACCES",
+      "scope": "Not counted as completed REA evidence; diagnostic and captured instruction output remain private.",
+      "private_failure_sha256": "6c8bd7b0a9e9c9b69d7f9a41504e564d0e0edc7c1c51365c82f741ff1eb3e430"
+    },
+    "gnu_direct_helpers": {
+      "exit_code": 0,
+      "command": "objdump --disassemble-zeroes --disassemble=<synthetic symbol>",
+      "tool_sha256": "01a5132bebb6ac7b26973ed4dc91529738bf74887036341a47a81384e730168b",
+      "private_disassemblies": {
+        "free-helper-gnu-private.asm": {
+          "bytes": 3614,
+          "sha256": "62dae2c2619acf979aef7ec156f89386d08927d721cc37f37b58e5da3ad1f917"
+        },
+        "busy-helper-gnu-private.asm": {
+          "bytes": 5303,
+          "sha256": "409e0efdded9a81e33b5fd235f6e6aa621004acb6e44d2a9bb35924af330ef5c"
+        }
+      },
+      "scope": "Complete 196/300-byte helper ranges, including final NOPs. No original instructions or ELF published."
+    },
+    "private_elf_current_sha256": "d505868939289767f74a71a0658a85ed1c668963eea47de8d2ca8dc5875e9489",
+    "matches_successful_parent_post_digest": true,
+    "rea_numeric_validation_or_decryption": false
+  },
+  "explicit_selection": {
+    "free_helper": {
+      "load": "0x01a84446",
+      "nonzero_branch": "0x01a8444e",
+      "multiply": "0x01a8445e",
+      "excluded_lookup_inclusive": [
+        "0x01a84450",
+        "0x01a8445d"
+      ],
+      "ordering": "Core acceptance precedes helper pitch preparation; reject returns without register writes"
+    },
+    "busy_helper": {
+      "load": "0x01a844fa",
+      "nonzero_branch": "0x01a84502",
+      "multiply": "0x01a84512",
+      "excluded_lookup_inclusive": [
+        "0x01a84504",
+        "0x01a84511"
+      ],
+      "ordering": "No Core acceptance query; explicit/tuned value goes to pending ADSR fields"
+    },
+    "source": "Nonzero raw32 interpreted signed, before Q31 and saturated shift1; no render-buffer producer inferred",
+    "tuning_index_explicit": 1200,
+    "coefficient_address": "0x027fd9e0",
+    "defaults_or_calibration_inferred": false
+  },
+  "contract": {
+    "selector": "Signed selected-sound halfword arithmetic>>12 equals0; outer mode0",
+    "new_notes": "Raw0..127, nonzero explicit pitch, count<128",
+    "early_returns": "Byte gate then full-word duplicate search, before activity/age/capacity selection",
+    "free_choice": "First activity byte equal zero, in voice order0..5; negative preceding ages allowed",
+    "busy_choice": "All six active; signed32 strict maximum over ADSR offset4, initial -1; first tie wins; all-negative new selection excluded",
+    "free_path": "ADSR noteOn + low gain before Core; accepted Core resets Dr. Wave phases/field32 and writes pitch/velocity/activity. Reject preserves objects/registers but still appends.",
+    "busy_path": "ADSR restart with prepared pitch/velocity; preserves level, full gain, all VoiceCtl registers and all Dr. Wave objects; first exact owner detached to0xffffffff, not removed",
+    "rng": "Unchanged in every original call, both branches and early returns. No modes1..3 deviation or random advance imported.",
+    "list": "Copies note/velocity full words, metadata byte, raw explicit word and chosen voice0..5; destination padding9..11 and tail preserved. Only busy first owner can change beforehand.",
+    "no_semantic_R0_return": "Adapter statuses/voice/Core bool are own labels, not original return ABI",
+    "ready_aux_context": "Six ADSR initialized, Core Dr. Wave, auxiliary pointers all zero",
+    "pending_consumer": "Not recovered or implemented; no scheduler or render-buffer control attributed"
+  },
+  "lookup_core_proofs": {
+    "table_address": "0x01dfe530",
+    "table_bytes": 512,
+    "table0": "Zeros",
+    "table1": "Own deterministic nonzero raw32 words",
+    "lookup_pairs": 1988,
+    "lookup_watch_triggered": false,
+    "busy_core_pairs": 497,
+    "busy_effects_identical_except_loaded_slot": true,
+    "free_core_pair_adsr_and_list_identical": true,
+    "table_tail_overlap": "0x01dfe72c is both last table word and first shared monitor word; explicitly respected"
+  },
+  "validation": {
+    "fresh_final_private_reproductions": 2,
+    "same_inputs_and_outputs_bytewise": true,
+    "core_linux_ctest_suites_passed": 55,
+    "sanitizers": "New comparator passed ASan+UBSan; detect_leaks=0 for sandbox ptrace limitation",
+    "windows": "New Windows MSVC ABI comparator passed under Wine; native Windows/macOS CI pending",
+    "python_py_compile": "passed",
+    "positive_pc_controls": [
+      {
+        "path": "free",
+        "positive_pc": "0x01a8445e",
+        "exit_code": 5,
+        "output_bytes": 0,
+        "position": "Before all six negative PC-watch options",
+        "meaning": "Original helper reaches multiply entry after explicit-word decision; positive run stops before that instruction."
+      },
+      {
+        "path": "busy",
+        "positive_pc": "0x01a84512",
+        "exit_code": 5,
+        "output_bytes": 0,
+        "position": "Before all six negative PC-watch options",
+        "meaning": "Original helper reaches multiply entry after explicit-word decision; positive run stops before that instruction."
+      }
+    ],
+    "no_plugin_or_audio_render_changes": true,
+    "hardware_daw_latency_dropout_claim": false
+  },
+  "coordination": {
+    "base_main": "8cabef51b8a3be95e0f108c460fa388aab163cce",
+    "branch": "collab/drwave-poly-explicit-pitch",
+    "baseline_prs_merged": [
+      30,
+      31
+    ],
+    "reserved_branch": "collab/voice246-note-dispatch",
+    "reserved_head_observed": "d1e85c105d771322b7da0e9e5e868f2083b9f213",
+    "reserved_context": "Outer dispatcher0x01a85750..0x01a85840, discriminator0, metadata0, pitch0",
+    "reserved_files_reused_or_modified": false,
+    "outer_dispatcher_executed": false,
+    "existing_helpers_modified": false,
+    "global_plans_coverage_common_fixture_readme_modified": false,
+    "cmake": "Only three registration lines for own suite"
+  }
+}
