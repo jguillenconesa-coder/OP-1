@@ -1,0 +1,69 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Own caller: raw nonzero pitch, complete original entry, no render/events chain.
+.include "testutils.inc"
+start
+imm32 SP, 0x03000000
+P4.H = inputs;
+P4.L = inputs;
+P5.H = results;
+P5.L = results;
+record_loop:
+@LOAD@
+// The count and activity are EXPLICIT inputs at every call, including streams.
+imm32 P0, 0x01dff134
+R0 = 0;
+[P0] = R0;
+// Supply a complete synthetic lookup table; nonzero pitch must bypass it.
+P0 = @TABLE_OFFSET@;
+P1 = P4 + P0;
+imm32 P2, 0x01dfe530
+P3 = 128;
+LSETUP(table_in,table_in_end) LC0 = P3;
+table_in: R0 = [P1++];
+table_in_end: [P2++] = R0;
+R0 = P4;
+R0 += 16;
+imm32 P0, 0x01a84604
+CALL (P0);
+@SAVE@
+P1 = P4;
+P1 += 8;
+P2 = P5;
+P3 = 8;
+LSETUP(argument_out,argument_out_end) LC0 = P3;
+argument_out: R0 = [P1++];
+argument_out_end: [P2++] = R0;
+imm32 P1, 0x01dfe530
+P3 = 128;
+LSETUP(table_out,table_out_end) LC0 = P3;
+table_out: R0 = [P1++];
+table_out_end: [P2++] = R0;
+P5 = P2;
+P0 = @RECORD@;
+P4 = P4 + P0;
+R0 = P4;
+R1.H = inputs_end;
+R1.L = inputs_end;
+CC = R0 == R1;
+IF CC JUMP done;
+JUMP.L record_loop;
+done:
+R0.H = args;
+R0.L = args;
+P0 = 5;
+EXCPT 0;
+exit 0
+.data
+.align 4
+args: .long 1,results,@BYTES@
+inputs: .incbin "@WORK@/inputs.bin"
+inputs_end:
+results: .space @BYTES@
+.section .sdram,"awx"
+.incbin "@WORK@/sdram.bin",0,0xa84604
+.global empty_explicit_pitch_original_caller
+.type empty_explicit_pitch_original_caller, STT_FUNC
+empty_explicit_pitch_original_caller:
+.incbin "@WORK@/sdram.bin",0xa84604,0x59c
+.size empty_explicit_pitch_original_caller,.-empty_explicit_pitch_original_caller
+.incbin "@WORK@/sdram.bin",0xa84ba0
