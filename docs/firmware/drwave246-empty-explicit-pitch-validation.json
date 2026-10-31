@@ -1,0 +1,364 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "entry": "0x01a84604",
+  "end_exclusive": "0x01a84ba0",
+  "code_bytes": 1436,
+  "routine_sha256": "8f2f6eddecb16164ba3d7f3b0325c7e869f5843a28a4ee4733438f70cb502e09",
+  "records": 3462,
+  "independent": 3078,
+  "streams": 6,
+  "calls_per_stream": 64,
+  "matrix_records": 2982,
+  "pitch_words": [
+    "0x1",
+    "0x2",
+    "0x4",
+    "0x8",
+    "0x10",
+    "0x20",
+    "0x40",
+    "0x80",
+    "0x100",
+    "0x200",
+    "0x400",
+    "0x800",
+    "0x1000",
+    "0x2000",
+    "0x4000",
+    "0x8000",
+    "0x10000",
+    "0x20000",
+    "0x40000",
+    "0x80000",
+    "0x100000",
+    "0x200000",
+    "0x400000",
+    "0x800000",
+    "0x1000000",
+    "0x2000000",
+    "0x4000000",
+    "0x8000000",
+    "0x10000000",
+    "0x20000000",
+    "0x40000000",
+    "0x80000000",
+    "0xfffffffe",
+    "0xfffffffd",
+    "0xfffffffb",
+    "0xfffffff7",
+    "0xffffffef",
+    "0xffffffdf",
+    "0xffffffbf",
+    "0xffffff7f",
+    "0xfffffeff",
+    "0xfffffdff",
+    "0xfffffbff",
+    "0xfffff7ff",
+    "0xffffefff",
+    "0xffffdfff",
+    "0xffffbfff",
+    "0xffff7fff",
+    "0xfffeffff",
+    "0xfffdffff",
+    "0xfffbffff",
+    "0xfff7ffff",
+    "0xffefffff",
+    "0xffdfffff",
+    "0xffbfffff",
+    "0xff7fffff",
+    "0xfeffffff",
+    "0xfdffffff",
+    "0xfbffffff",
+    "0xf7ffffff",
+    "0xefffffff",
+    "0xdfffffff",
+    "0xbfffffff",
+    "0x7fffffff",
+    "0xffffffff",
+    "0x3fffffff",
+    "0x40000001",
+    "0xc0000000",
+    "0xc0000001",
+    "0x7ffffffe",
+    "0x80000001"
+  ],
+  "tuning_words": [
+    "0x0",
+    "0x1",
+    "0x7fffffff",
+    "0x80000000",
+    "0xffffffff",
+    "0x40000000",
+    "0xc0000000"
+  ],
+  "coverage": {
+    "counts": {
+      "appended": 3318,
+      "gated": 144,
+      "started": 2317,
+      "restarted": 4351,
+      "blocked": 2185,
+      "rng_steps": 6668
+    },
+    "appends_per_selector": [
+      1107,
+      1104,
+      1107
+    ],
+    "pitch_patterns": 71,
+    "activity_masks": 64,
+    "velocities_low16": [
+      0,
+      1,
+      127,
+      128,
+      255,
+      32767,
+      32768,
+      65535
+    ],
+    "metadata": [
+      0,
+      1,
+      128,
+      255
+    ],
+    "lookup_invariant_pairs": 1491,
+    "selector_triples": 994,
+    "observed_saturated_outputs": {
+      "positive": 76,
+      "negative": 97
+    }
+  },
+  "image_bytes": 4568,
+  "input_record_bytes": 5120,
+  "output_record_bytes": 5112,
+  "regions": [
+    {
+      "address": "0x1dfe72c",
+      "bytes": 2576,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff8000d0",
+      "bytes": 664,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xffb00000",
+      "bytes": 224,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff801034",
+      "bytes": 776,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b60ef0",
+      "bytes": 128,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff802bc8",
+      "bytes": 8,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b60534",
+      "bytes": 8,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b6053c",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff8016d4",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaac0c",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaad14",
+      "bytes": 32,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x27fd9dc",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x18c2180",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1de4c3c",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1dfe4d8",
+      "bytes": 48,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1aaad68",
+      "bytes": 32,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaac40",
+      "bytes": 12,
+      "retained_in_stream": false
+    }
+  ],
+  "artifacts": {
+    "drwave246-empty-explicit-pitch-input.bin": {
+      "bytes": 17725440,
+      "sha256": "a27fad0c5659876c5596705ac74a2f5cffb406cafdfeedcd884cacce2bc87e82"
+    },
+    "drwave246-empty-explicit-pitch-output.bin": {
+      "bytes": 17697744,
+      "sha256": "41f400cde2ec6e975dcdb2ebc8ca5e91b90fd128929ebb2506e5b1b601a1af78"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-note-argument-validated/bin/bfin-elf-as": "fe8b5fdb8b5c6e500f47dc6ae38b629cb391795c1e368a04279619890a6f2d27",
+    "/workspace/blackfin-note-argument-validated/bin/bfin-elf-ld": "3c9406274b737202a5fe4f54951dcfc94c869e99109943264dc61d29a3910905",
+    "/workspace/blackfin-note-argument-validated/bin/run-parallel": "dff51f542fc86f5f4dd220c2dbfe044411188a8108c96378f3cbdd7ce77db32f"
+  },
+  "patches": {
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "research/blackfin/gnu-13.1-halfword-writeback.patch": "4d3cd3764d85bb4b3ff330358d8417a2928ad0e9daff755fe643477cdfde1cf3"
+  },
+  "source_sha256": {
+    "scripts/verify-drwave246-empty-explicit-pitch.py": "ae41e3970ee8e92f42ca6f0144aa5fc79c23ace9f360cd515a84488962e1723b",
+    "research/blackfin/drwave-empty-explicit-pitch.s.in": "d5d2c27205d0c84f5169cbfb74601d4b0d73c7a5e880c23664870c49e64d8fcf",
+    "Source/DrWave246EmptyExplicitPitch.h": "300adfd59e90ea59778956cebd5d29b5d857c657daf7a554071cfc31891cb5fc",
+    "Tests/DrWave246EmptyExplicitPitchTests.cpp": "38309c47e540919a184fc736ee38403a5dfedaaf2041647a1df3d7f9c4baaf9f",
+    "scripts/verify-drwave246-held-note-modes.py": "0b117d17464c59098e5263d5b1e077ea039219d421e5d46021e404f23c19d03f",
+    "scripts/verify-drwave246-poly-first-free.py": "205e68eef45249626a2e875e4a3c8d31308ec6cedfa041deff78278853cc7e1c",
+    "scripts/verify-drwave246-adjusted-note-chain.py": "f74191d5bf47ef0b56846a99261bed9eafbb298ffad516fa1af695488111f542",
+    "scripts/verify-drwave246-note-event-chain.py": "32096c8d779a51306f42794b85149825f134714ff90701cff03b4969604df05d",
+    "scripts/verify-voice246-release-selectors.py": "41bb051c93f1ff3f8c5f481d4683c917ecd21bc607310472228756e2f9ffaa03",
+    "Source/DrWave246Routing.h": "cf94b002b0f16b0eab77332b2368fbe3e4f9c383d2959a1fe903282f0e89b9bd",
+    "Source/DrWave246Kernel.h": "31699ebf42c9705cbe7ed90f53b4c33033e9a0e46052c842b2344eeb24739bbb",
+    "Source/DrWave246.h": "a98063b94e23857d7863ea92b3ba35cbe82591ddcf7ebd654094bfaf00078aa6",
+    "Source/Voice246Activation.h": "49f7a1355d12d03e6e2abae15d954d3a15a96a5ade56c089d972cda2f337b4ce",
+    "Source/Voice246NoteArgument.h": "41fab6c04fdb7f43814ae1757cbda7e2e8b137b98c9e773785770ca001d6707c",
+    "Source/Voice246PolyRelease.h": "eabf2a47529f433914fa420b0a19e42156580356dfba53a3160f3adf86972bc9",
+    "Source/Envelope246Transition.h": "c1fc3b8b7130d5816da36700c7725e2478d74488d9f699e9b9a9d733dd3c154f",
+    "Source/Envelope246.h": "08d0039239e1ffef2d503abe5b3493613161709ebaf14d0cb00015a0c4b7157c",
+    "Source/Envelope246Tables.h": "94f6473d5fd63db6b590a73d5994cb25459318d32d136456577365ad01d1e3a0",
+    "Source/ReferenceDsp.h": "6f237e97236494636a71ae47582b4b9b0f75357176bdf102a45c87d230808acd"
+  },
+  "pc_watches": [
+    "0x01a84a70",
+    "0x01a84690",
+    "0x01a84814,0x01a84821",
+    "0x01919aa8",
+    "0xffa00000,0xffafffff"
+  ],
+  "model": "GNU BF524 with both documented writeback patches; no hardware/timing claim",
+  "limits": [
+    "Empty entry list and nonzero explicit pitch only, selectors1..3, ready ADSR and absent auxiliary modules. New note index0..127 bounds gain conversion.",
+    "Raw arguments, zero count, activity, controls, tuning and complete synthetic lookup table are supplied by own harness. No constructor, original list producer or note lifecycle.",
+    "Streams retain selected states/objects/list bytes/RNG, but count and activity are explicit every call. No scheduler/cadence inferred.",
+    "No ADSR/Dr. Wave render or pending-field consumer. Register or pending pitch is not a claimed render buffer writer. CPU/stack/whole-device state is not reconstructed.",
+    "Firmware, original instructions, disassembly and ELF stay private. Only numeric results and own source are versioned."
+  ],
+  "rea": {
+    "version": "6.8.0",
+    "command": "inspect-with-objdump",
+    "provider": "gnu.objdump",
+    "symbol": "empty_explicit_pitch_original_caller (synthetic)",
+    "scope": "Complete 1436-byte containing routine; inspection only. Original instructions, disassembly and ELF private. REA does not decrypt or numerically validate.",
+    "private_evidence_sha256": "f1adde3c6ee282355d00a313eb73ca6ab582c78b6b2325b8a0af01b896f4d1d3",
+    "exit_code": 0,
+    "completion_status": "complete",
+    "output_truncated": false,
+    "artifact_changed": false
+  },
+  "original_explicit_selection": {
+    "load_argument_word12": "0x01a84800",
+    "branch_nonzero": "0x01a84812",
+    "multiply_entry": "0x01a84822",
+    "excluded_lookup_range_inclusive": [
+      "0x01a84814",
+      "0x01a84821"
+    ],
+    "selection_before_q31": true,
+    "instruction_patches": false,
+    "q31_and_tuning_scope": "Full signed32 explicit source crossed with seven explicit tuning words. Saturated multiply/shift, then per-voice RNG deviation as observed. No units/calibration/defaults inferred."
+  },
+  "lookup_invariance": {
+    "synthetic_table_start": "0x01dfe530",
+    "bytes": 512,
+    "table0": "All zero words",
+    "table1": "Own deterministic nonzero raw32 words",
+    "pairs": 1491,
+    "all_other_inputs_identical_except_selector_in_triples": true,
+    "compared": "Full shared monitor image except overlapping final table word, arguments/guards; complete table unchanged per call",
+    "overlap": "0x01dfe72c is final table word and first shared monitor word; actual overlap retained in comparison",
+    "pc_watch_on_lookup_block_triggered": false
+  },
+  "contract": {
+    "entry_list_count": "Explicit zero every call, including streams; not recovered producer",
+    "explicit_pitch": "Raw32 argument offset12 nonzero; signed numerical interpretation; unchanged full bits copied to list",
+    "bounded_note_index": "0..127 for gain conversion; no constructor in this oracle",
+    "outer_mode": "Zero",
+    "selectors": "Signed selected-sound halfword arithmetic>>12, values1..3",
+    "selection1_vs2": "Same behavior for empty list, both process voice0",
+    "selector3": "Six voices in ascending order",
+    "inactive_voice": "ADSR noteOn/gain precedes conditional Core start. Core acceptance resets Dr. Wave phases/field32 and writes pitch/velocity/activity after RNG; rejection preserves object/registers and omits RNG",
+    "active_voice": "RNG/velocity plus pending ADSR restart and low gain, preserving pitch/activity registers and object",
+    "rng": "u32 LCG 1664525/1013904223 per accepted start/restart; signed high halfword shifted8 inactive /9 active; multiplied by voice index, raw shift16; Q31 deviation and saturated sum",
+    "gain": "Low16 only, note0 saturates32767, other bounded notes32768-note*128; high16 retained",
+    "velocity": "Low signed16, saturated shift8; received full word copied to list",
+    "list_append": "Marker0xfffffffe; fields0..8/12..19 copied, destination padding9..11 and tail preserved; append even if all Core starts rejected",
+    "pending_consumer": "Not recovered; no render buffer control attributed to argument/pending writes",
+    "status_results": "Adapter labels/counters; no semantic R0 result inferred"
+  },
+  "validation": {
+    "fresh_final_private_reproductions": 2,
+    "same_input_output_bytewise": true,
+    "core_linux_ctest_suites_passed": 53,
+    "sanitizers": "New comparator passed ASan+UBSan; detect_leaks=0 for ptrace restriction",
+    "windows": "New Windows MSVC ABI comparator passed under Wine; native Windows/macOS CI pending",
+    "python_py_compile": "passed",
+    "positive_pc_watch": {
+      "positive_watch": "0x01a84822",
+      "position": "Before all five negative PC-watch options",
+      "exit_code": 5,
+      "output_bytes": 0,
+      "meaning": "First call reaches multiplication entry after explicit-word decision. No multiplication instruction executes in this control. Guard coexistence checked."
+    },
+    "no_render_or_plugin_integration": true,
+    "hardware_timing_daw_asio_claim": false
+  },
+  "coordination": {
+    "base_main": "ac34c323ef617d64f6036080884eb4cd428a9afb",
+    "branch": "collab/drwave-empty-explicit-pitch",
+    "baseline_prs_merged": [
+      28,
+      29
+    ],
+    "reserved_pr": 30,
+    "reserved_branch": "collab/drwave-note-lifecycle",
+    "reserved_head_observed": "c9234dc226f441d9ba7882c73cddeb4079ee6e7c",
+    "reserved_context": "Activation/held notes/release dispatcher composition with original constructor and ZERO explicit pitch",
+    "exclusive_context": "Complete caller with EMPTY entry list and NONZERO raw explicit pitch, selectors1..3",
+    "reserved_files_reused_or_modified": false,
+    "existing_helpers_modified": false,
+    "global_workplan_coverage_common_fixture_readme_modified": false,
+    "cmake": "Only three lines registering own suite"
+  }
+}
