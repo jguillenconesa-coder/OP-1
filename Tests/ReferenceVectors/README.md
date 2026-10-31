@@ -645,3 +645,23 @@ Dos imágenes completas de 4.568 bytes, argumento, ajustes, muestras y guardas.
 En los streams se retienen pools/registros/RNG, pero contador cero, gate y
 actividad se suministran cada vez. No es el scheduler ni la ruta de lista no vacía.
 [Contrato y formato](../../docs/drwave246-note-modes.md).
+
+
+## Dr. Wave held-note modes rev246
+
+`drwave246-held-note-modes-input.bin` / `drwave246-held-note-modes-output.bin`
+contrastan la entrada completa con lista no vacía y selectores 1–3 (PR #29).
+Son 1.536 casos, con argumento raw y sin render. Su formato propio está en
+[este documento](drwave246-held-note-modes-format.md) y el contrato en
+[las notas DSP](../../docs/drwave246-held-note-modes.md).
+
+## Dr. Wave retained note lifecycle rev246
+
+`drwave246-note-lifecycle-input.bin` / `drwave246-note-lifecycle-output.bin`
+contienen 1.536 registros de 5.060 / 9.860 bytes; la salida añade la tabla de
+notas de 512 bytes al principio/final. Doce secuencias de 128 eventos enlazan
+constructor, on/off originales y ADSR. Lista, actividad, registros, pools y RNG
+se retienen, sin overrides por evento. Dos imágenes de 4.748 bytes, argumento,
+snapshot de ajustes, audio/guardas y retorno. Mapa de notificación vacío; orden
+y render explícitos, sin scheduler ni consumidor L1.
+[Contrato y formato](../../docs/drwave246-note-lifecycle.md).
