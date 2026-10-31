@@ -147,9 +147,15 @@ Los [selectores de activación 1–3 con lista vacía](drwave246-note-modes.md)
 ya contrastan inicio frente a reinicio pendiente por actividad, diferencia de
 escala RNG, aceptación parcial Core y entrada de lista con voz -2. El contador
 cero y la actividad se suministran cada vez; no se recupera el scheduler.
-La otra cuenta tiene reservados esos selectores **con lista no vacía**, en
-`collab/drwave-held-note-modes`; no se duplica ese contexto. Siguen pendientes
-buffers iniciales, consumidor de pendientes, reloj, mezcla y salida.
+Los [selectores con lista no vacía](drwave246-held-note-modes.md) ya están
+contrastados en PR #29: el 2 escribe pitch directamente, el 1/3 producen
+reinicio pendiente y conservan actividad. La [composición de eventos con estado
+retenido](drwave246-note-lifecycle.md) contrasta activación/duplicados/retirada y
+ADSR sin reponer lista ni actividad entre eventos. El orden sigue siendo del
+harness y retirar la última nota no se sustituye por una limpieza de actividad.
+La otra cuenta tiene reservado **pitch explícito no cero con lista vacía**, en
+`collab/drwave-empty-explicit-pitch`; este ensayo usa el cero del constructor.
+Siguen pendientes buffers iniciales, consumidor de pendientes, reloj, mezcla y salida.
 
 ## Cluster rev246: conservado con dependencias bloqueadas
 

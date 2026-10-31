@@ -1,0 +1,289 @@
+{
+  "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74",
+  "entries": [
+    "0x01a84604",
+    "0x01a85840"
+  ],
+  "context": "Explicit event order with retained list, voice state and RNG, selectors 1-3, constructor pitch zero, empty notification map, null auxiliaries and initialized ADSR.",
+  "records": 1536,
+  "streams": 12,
+  "blocks_per_stream": 128,
+  "counts": {
+    "on": 768,
+    "off": 768,
+    "appended": 576,
+    "duplicates": 192,
+    "removed": 576,
+    "absent": 192,
+    "empty_on": 192,
+    "held_on": 576
+  },
+  "image_bytes": 4748,
+  "input_bytes": 5060,
+  "output_bytes": 9860,
+  "regions": [
+    {
+      "address": "0x1dfe72c",
+      "bytes": 2576,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff8000d0",
+      "bytes": 664,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xffb00000",
+      "bytes": 224,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0xff801034",
+      "bytes": 776,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b60ef0",
+      "bytes": 128,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff802bc8",
+      "bytes": 8,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b60534",
+      "bytes": 8,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1b6053c",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0xff8016d4",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaac0c",
+      "bytes": 8,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaad14",
+      "bytes": 32,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x27fd9dc",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x18c2180",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1de4c3c",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1dfe4d8",
+      "bytes": 48,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1aaad68",
+      "bytes": 32,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aaac40",
+      "bytes": 12,
+      "retained_in_stream": false
+    },
+    {
+      "address": "0x1aafd5c",
+      "bytes": 136,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x1aadb1c",
+      "bytes": 40,
+      "retained_in_stream": true
+    },
+    {
+      "address": "0x18b600c",
+      "bytes": 4,
+      "retained_in_stream": true
+    }
+  ],
+  "artifacts": {
+    "drwave246-note-lifecycle-input.bin": {
+      "bytes": 7772160,
+      "sha256": "b40b6dbce2f608bd2342ff4ae4e36f7d5857dd1d107d3f7dbc63af9c5dd5391a"
+    },
+    "drwave246-note-lifecycle-output.bin": {
+      "bytes": 15145984,
+      "sha256": "c643a01d275138c13ebe7a335d99fb88b77461aec6ef9267a119b2967e1f605f"
+    }
+  },
+  "tools": {
+    "/workspace/blackfin-tools/build/gas/as-new": "7e3d6755944fa593ebc5760b6252db6dc3d31c414c3d9913953eff50f21c2b58",
+    "/workspace/blackfin-tools/build/ld/ld-new": "618e9ec4cd6ae0b0957e859466ca277c6a1bd4d7bde6a25e11a3a49e8cdcd453",
+    "/workspace/blackfin-tools/run-halfword-v2": "bb46511919cb7c87621de746d2f69a3a9b80d40f5a9065037a6f550fcc2cb8a5"
+  },
+  "model": "GNU BF524 with both documented writeback patches; not hardware or pipeline validation",
+  "limitations": [
+    "Harness supplies event order, controls, tuning, selected/loaded sound and explicit ADSR render voice/volume. No recovered MIDI dispatcher cadence, scheduler or realtime host integration.",
+    "List count, activity, pitch, velocity and state carry between events without per-call overrides. Initial activity is explicit and release does not invent activity clearing.",
+    "No pending-field consumer, pitch-buffer producer, Dr. Wave audio or notification transport. Map is initialized empty and retained."
+  ],
+  "pc_watches": [
+    "0x01a84690",
+    "0x019e2df4",
+    "0x01a69360",
+    "0x019e0d18",
+    "0x01919aa8",
+    "0x01a85890",
+    "0x01a8589e",
+    "0xffa00000,0xffafffff"
+  ],
+  "pc_watch_probe_exit_codes": [
+    0,
+    5,
+    5,
+    5
+  ],
+  "pc_watch_original_run_exit_code": 0,
+  "source_sha256": {
+    "scripts/verify-drwave246-note-lifecycle.py": "19fdefa56813ef905c4067422ade0236a95f5e2e29f31394393641fa605f0a07",
+    "research/blackfin/drwave-note-lifecycle.s.in": "e3ad5f8d46fd6ecccd25fc81f3e8e3122a242764ae61653f9136d8ecebd86196",
+    "Source/DrWave246NoteModes.h": "da67e0b2763239e6d8311ba8250be14d2d2b77eec3f96c7d2196ab0ba4f5349f",
+    "Source/DrWave246HeldNoteModes.h": "6edfca56633809c17b8f2c0385456d3bde22cf3248c225193bcd742746373ed9",
+    "Source/Voice246ReleaseDispatch.h": "69b23e1aa531d712911aed2018e96a1c848888fc1fda0f8c1521413b58c0cd74",
+    "Tests/DrWave246NoteLifecycleTests.cpp": "8966038d9e1e9db8b818802b8d23e0591f1f5e96baa43d77f08ad577991f7cae",
+    "scripts/verify-drwave246-poly-first-free.py": "205e68eef45249626a2e875e4a3c8d31308ec6cedfa041deff78278853cc7e1c",
+    "scripts/verify-drwave246-adjusted-note-chain.py": "f74191d5bf47ef0b56846a99261bed9eafbb298ffad516fa1af695488111f542",
+    "scripts/verify-drwave246-note-event-chain.py": "32096c8d779a51306f42794b85149825f134714ff90701cff03b4969604df05d",
+    "scripts/verify-voice246-release-selectors.py": "41bb051c93f1ff3f8c5f481d4683c917ecd21bc607310472228756e2f9ffaa03",
+    "Source/Cluster246.h": "b4201d47d4a25a18a4ac6b38b9ecaf077373dfc4eabdd986986b32367733e135",
+    "Source/Cluster246Activation.h": "5b39abdb5a07a215deaa399ca55c6eedb449e84ef08c926c03f8251d975f2879",
+    "Source/Cluster246Routing.h": "690c8dd956be29103cfc32ec481f4efcfc4b900afd72c3dc06eb54b055498131",
+    "Source/ControlEnvelope246.h": "0e2b64d4b8879cf83c127d3bf2deaa82e12fba0d791a479f07bf4b17021aa169",
+    "Source/ControlEnvelope246Mode.h": "fd66d21e1167813900530386aeb7f88e6fd6ab9b33ef9835e99d8c197886d521",
+    "Source/ControlPitch246.h": "738524bbf636c48d25b255a97ad74e6585ab8e37ce15d528644873c41d350576",
+    "Source/ControlVolume246.h": "cd718282c95a0dd72e6df48c41c9f4c5b2d5990b4f8976fc042b05ac142129af",
+    "Source/Digital246.h": "04812199cca6ff40f270523ce2af32af0f461c430914e7c8b0201fc248f1396b",
+    "Source/Digital246Presets.h": "7e87facad5e5fef04cf0dfd61bc1e6ee4055bc01b1636ffe6f8180e18334cdea",
+    "Source/Digital246Voice.h": "975c7eaea09bbe47f146a3784bdad929d86ac3ca030f3d032d5233c3a6580991",
+    "Source/DrWave246.h": "a98063b94e23857d7863ea92b3ba35cbe82591ddcf7ebd654094bfaf00078aa6",
+    "Source/DrWave246Activation.h": "af5f1bf35089f84575845eef6b933b3c9c47c1149255ad3d3204ff1459a4566e",
+    "Source/DrWave246ControlInstrument.h": "8aa83f94fb5ad8b74a52ac84b8e62255ebfad64bc46848fcb40a64adc5208517",
+    "Source/DrWave246Kernel.h": "31699ebf42c9705cbe7ed90f53b4c33033e9a0e46052c842b2344eeb24739bbb",
+    "Source/DrWave246MixedControl.h": "24b52045bd4529a29d213b9350537ca457e230abc326c9c0bc9a1eeba3bcac4e",
+    "Source/DrWave246PitchRefresh.h": "35036f828a2521c14b7df69011e979ba2ae23178f4768ff0cccb3a53fc1a06e7",
+    "Source/DrWave246Routing.h": "cf94b002b0f16b0eab77332b2368fbe3e4f9c383d2959a1fe903282f0e89b9bd",
+    "Source/DrWave246Spectral.h": "a216f1fdd92b1512e7e9968b7096fa1b83f00163fb221995b6b355ba1cd7402d",
+    "Source/DrWave246WaveBank.h": "001316372cb37a05cb2286da761c99472c94ba2629407d626cf57786f21bc4d5",
+    "Source/DrWave246WaveTransform.h": "4a978bbea471ef60ccfab83213a1977553af14bcc28d7209bd30066cb505d4a3",
+    "Source/Envelope246.h": "08d0039239e1ffef2d503abe5b3493613161709ebaf14d0cb00015a0c4b7157c",
+    "Source/Envelope246Tables.h": "94f6473d5fd63db6b590a73d5994cb25459318d32d136456577365ad01d1e3a0",
+    "Source/Envelope246Transition.h": "c1fc3b8b7130d5816da36700c7725e2478d74488d9f699e9b9a9d733dd3c154f",
+    "Source/Fractional246.h": "ea523c878ddf3caaec9c46d5073be38f4dbab357a291552693a978880a22604b",
+    "Source/Phase246.h": "7c73a8ce25fc61231050ab142f6291ee1c9239c7ad799c9567a1a3cce02e3938",
+    "Source/Phase246Envelopes.h": "32029150550a1469dd586f25658c19f925f3f581ac9efdc38b807f6c6962260e",
+    "Source/Phase246Presets.h": "b39aa55a25848718b488f7977147e03280d698ea5377afc13c06b6629c5e0c0d",
+    "Source/Punch246.h": "95f1643afd75b41ded25a0d9d25f929208ad3a0e25cf5e8b5d27d3912c175dad",
+    "Source/Punch246Effect.h": "37627fabb62f8fb0837ba5d7b83a9955e4670c5cb8c87513af6bfdc9abeda016",
+    "Source/Punch246Presets.h": "ec0f32defc259253b236a38d5887d8afd47182d85ea083ef7c9db137a6c9e575",
+    "Source/Punch246Tables.h": "7bd3793fff30d025374edf7217a6c35761db994ba4082d14cf9b82e200622248",
+    "Source/Value246.h": "2ed22967c1bec2776fe4f77946b2bf28f0f281fa680e95f4a2bfa4641d75b6a6",
+    "Source/Value246Fx.h": "2ec14f352b7e2e76fe1e16104aab57598229a72fbaa494636ebe0b789531cec1",
+    "Source/Value246Ranges.h": "fbca9060b3f2028ff2847a3a9e065e4de3d6b61141ef3f24b6b9637c6abafd6d",
+    "Source/ValueVoice246.h": "af23edd20d72d17426ff2974b48a407d1956596c935429b719016dd96542d649",
+    "Source/ValueVoice246Control.h": "871cd6ab6ddeee545bcaaa3d19871d97555244f7339f688df5f28184415e2ba3",
+    "Source/ValueVoice246Ranges.h": "6024ca4e7360af9ac966e1f9455be1468ef1d043ec5eecb9d2f82a5d4cdd3681",
+    "Source/Voice246Activation.h": "49f7a1355d12d03e6e2abae15d954d3a15a96a5ade56c089d972cda2f337b4ce",
+    "Source/Voice246ControlInput.h": "5ba4951913c50e7ca1731960d3e65e8e5a01619ca289b749f28add2e6d6648a3",
+    "Source/Voice246NoteTable.h": "fd5c365d39491eb4939f47f55f229113484aecb0d48347057457390a55959383",
+    "Source/Voice246PitchBend.h": "2b63b17d85922e20152fe9705d0d96ea3a6fa697c1e522b73a01779aee0e2141",
+    "Source/Voice246PitchUpdate.h": "7dcbcd05cd415e4c84eb6422cb6b6d4bd2c2684a1fe1924b71905615ad34939f",
+    "Source/Voice246TuningIndex.h": "95fb21e101764f9589341223e221dc98b760fc084e802fab4f38746a7f00d4f9",
+    "Source/Voice246TuningTable.h": "321d8a90e893f9972929f1d0aff64b0ccf7849b8367b5ab8c19bbfabd47cf89f",
+    "Source/Voice246ReleaseSelectors.h": "249ca6bc77cb7669c9b2e57366d94a1e04b66ce71f31aa316fb7f37aa7bff10d",
+    "Source/Voice246NoteArgument.h": "41fab6c04fdb7f43814ae1757cbda7e2e8b137b98c9e773785770ca001d6707c",
+    "Source/DrWave246PolyFirstFree.h": "d37d687b3b69d6463d129362e6fe6485caa75e96975ded9c1b5ff33476d56acc",
+    "Source/Voice246PolyRelease.h": "eabf2a47529f433914fa420b0a19e42156580356dfba53a3160f3adf86972bc9",
+    "Source/Voice246NoteAdjustment.h": "a34e64afcd0ba7ee1ece7fb602ad8f0a92009a8cc864e0e4e1c7616be5d587b3",
+    "Source/DrWave246ControlDispatch.h": "299538659ee87dc57e13b910344bb7f25343683255d97de63361a0fbdf9851bb",
+    "Source/DrWave246PolySteal.h": "5513cfc0a3c6404455419295752ce54850c02fe61fe7b0767a03d42e453053b4",
+    "Source/Voice246LastVoiceQuery.h": "505cc5310666ee88fd29c6ff6ee9d493bba79d85254620fa338b79a20f6b9911",
+    "Source/Core246ControlWorkspace.h": "7f7d54258fc20164aedfd8a7642a2d5c8b9d775c29bee24db985dfa03e26284f"
+  },
+  "patches": {
+    "research/blackfin/gnu-13.1-dreg-writeback.patch": "2c6ab7239ea1c0d61eec27df6337aa35da2c2dee179d1cf68b52ba6492fc6325",
+    "research/blackfin/gnu-13.1-halfword-writeback.patch": "4d3cd3764d85bb4b3ff330358d8417a2928ad0e9daff755fe643477cdfde1cf3"
+  },
+  "base_main": "ac34c32",
+  "comparator_counts": {
+    "starts": 8,
+    "core_rejected_after_adsr": 2,
+    "on_pending_restarts": 1398,
+    "setter_calls": 1632,
+    "adsr_positions": 196608,
+    "adsr_written": 156032,
+    "adsr_preserved": 40576,
+    "cycle_end_list_count": 0
+  },
+  "reproductions": [
+    {
+      "inputs.bin": "b40b6dbce2f608bd2342ff4ae4e36f7d5857dd1d107d3f7dbc63af9c5dd5391a",
+      "output.bin": "c643a01d275138c13ebe7a335d99fb88b77461aec6ef9267a119b2967e1f605f"
+    },
+    {
+      "inputs.bin": "b40b6dbce2f608bd2342ff4ae4e36f7d5857dd1d107d3f7dbc63af9c5dd5391a",
+      "output.bin": "c643a01d275138c13ebe7a335d99fb88b77461aec6ef9267a119b2967e1f605f"
+    }
+  ],
+  "validation": {
+    "linux_core_suites": 53,
+    "linux_full_juce_suites": 55,
+    "asan_ubsan": "pass; detect_leaks=0 due to ptrace restriction",
+    "windows": "pending native CI, not run locally",
+    "macos": "pending native CI, not run locally",
+    "hardware_daw": "not tested"
+  },
+  "rea": {
+    "version": "6.8.0",
+    "role": "inspection only, synthetic function symbols",
+    "elf_sha256": "7049e04ba15e7cd8433828a3610c989d0d4e24fb85cfd800a9771486edad4827",
+    "observations": [
+      {
+        "symbol": "poly_note",
+        "sha256": "b8534dcfc998b5246d9ed39076372618bf37652356699cad03a8214cbc90f4f4",
+        "exit_code": 0,
+        "output_truncated": false,
+        "artifact_changed": false
+      },
+      {
+        "symbol": "release_dispatch",
+        "sha256": "98c11305a89a98bb516c0d2c47f11b39c890afb88e835a7704d5d68c61b7ba86",
+        "exit_code": 0,
+        "output_truncated": false,
+        "artifact_changed": false
+      }
+    ]
+  },
+  "pr29_independent_review": {
+    "records": 1536,
+    "fixtures_matched": true,
+    "output_sha256": "92dee1b455b11b1c767e573deb11eace14ba55dd712ea0e4fde1372e6ccc124b",
+    "ldr_sha256": "f79d299f6f9019c998013a4176223a6a1bc999a2d8c54451346861f6ea455c74"
+  }
+}
